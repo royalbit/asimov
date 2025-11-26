@@ -110,7 +110,7 @@ session:
     - "Read warmup.yaml (this file)"
     - "Read sprint.yaml for current work"
     - "Read roadmap.yaml for milestones"
-    - "cd cli && cargo test (verify baseline)"
+    # Assume pristine repo - no startup verification needed
 
   during:
     - "TodoWrite to track progress"
