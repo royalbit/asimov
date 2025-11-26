@@ -1,0 +1,10 @@
+# Valid sprint.yaml for testing
+sprint:
+  current: "Test sprint"
+  started: "2025-01-01"
+  status: in_progress
+  tasks:
+    - "[ ] Task one"
+    - "[x] Task two"
+  blockers: []
+  notes: "Test notes"

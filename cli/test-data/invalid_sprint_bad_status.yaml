@@ -1,0 +1,4 @@
+# Invalid sprint.yaml - bad status enum value
+sprint:
+  current: "Test sprint"
+  status: invalid_status_value
