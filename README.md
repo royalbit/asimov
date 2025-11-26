@@ -46,6 +46,28 @@ session:
 | `sprint.yaml`    | Active work tracking   | Optional |
 | `roadmap.yaml`   | Milestones & planning  | Optional |
 
+## Proven at Scale
+
+The Forge Protocol powers an entire product ecosystem:
+
+| Project | AI Role | Stack | Status |
+| ------- | ------- | ----- | ------ |
+| **[Forge](https://github.com/royalbit/forge)** (FOSS) | Principal Engineer | Rust | Production |
+| Backend API | Principal Backend Engineer | Rust + Axum | Production |
+| Mobile Prototype | Principal Mobile Engineer | Flutter | Production |
+| Architecture Docs | Principal AI Architect | C4 + ADRs | Production |
+| Business Strategy | AI Strategist | YAML | Production |
+| Data Enrichment | Principal Engineer | Python | Active |
+
+**Stats:**
+- 10-phase autonomous build plan
+- 4 mobile apps planned (Flutter)
+- 1,100+ line master roadmap
+- 850+ financial formulas validated
+- 213+ tests across ecosystem
+
+See [ECOSYSTEM.md](docs/ECOSYSTEM.md) for the full story.
+
 ## How It Works
 
 ```mermaid
@@ -64,6 +86,10 @@ flowchart LR
 - [Manifesto](docs/MANIFESTO.md) - The full philosophy and methodology
 - [Presentation](docs/PRESENTATION.md) - Marp slide deck ([PDF](Forge_Protocol_Suite.pdf))
 
+### Ecosystem
+- [Ecosystem Case Study](docs/ECOSYSTEM.md) - How the protocol powers a full product suite
+- [Green Coding Economics](docs/GREEN_CODING.md) - Cost and carbon savings analysis
+
 ### Guides
 - [Autonomous Session Guide](docs/guides/AUTONOMOUS_SESSION_GUIDE.md) - How to run autonomous AI sessions
 - [Sprint Protocol](docs/guides/SPRINT_AUTONOMY_PROTOCOL.md) - Bounded sessions with shipping discipline
@@ -77,7 +103,9 @@ flowchart LR
 
 ## Origin
 
-Extracted from [Forge](https://github.com/lctavares/forge) - a YAML formula calculator built entirely by Claude using this protocol.
+Born from building [Forge](https://github.com/royalbit/forge) - a YAML formula calculator. The protocol emerged from solving real problems: How do you maintain context across AI sessions? How do you ship quality code autonomously? How do you scale to an entire ecosystem?
+
+The answers became the Forge Protocol.
 
 ## License
 
