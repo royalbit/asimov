@@ -203,3 +203,196 @@ backlog:
 "#
     .to_string()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // ========== ProjectType Tests ==========
+
+    #[test]
+    fn test_project_type_default() {
+        let pt: ProjectType = Default::default();
+        assert!(matches!(pt, ProjectType::Generic));
+    }
+
+    #[test]
+    fn test_project_type_display() {
+        assert_eq!(ProjectType::Generic.to_string(), "generic");
+        assert_eq!(ProjectType::Rust.to_string(), "rust");
+    }
+
+    #[test]
+    fn test_project_type_from_str_valid() {
+        assert!(matches!(
+            "generic".parse::<ProjectType>(),
+            Ok(ProjectType::Generic)
+        ));
+        assert!(matches!(
+            "rust".parse::<ProjectType>(),
+            Ok(ProjectType::Rust)
+        ));
+        assert!(matches!(
+            "GENERIC".parse::<ProjectType>(),
+            Ok(ProjectType::Generic)
+        ));
+        assert!(matches!(
+            "RUST".parse::<ProjectType>(),
+            Ok(ProjectType::Rust)
+        ));
+        assert!(matches!(
+            "Rust".parse::<ProjectType>(),
+            Ok(ProjectType::Rust)
+        ));
+    }
+
+    #[test]
+    fn test_project_type_from_str_invalid() {
+        let result = "invalid".parse::<ProjectType>();
+        assert!(result.is_err());
+        let err = result.unwrap_err();
+        assert!(err.contains("Unknown project type"));
+        assert!(err.contains("invalid"));
+    }
+
+    // ========== warmup_template Tests ==========
+
+    #[test]
+    fn test_warmup_template_generic_contains_project_name() {
+        let template = warmup_template("my-project", ProjectType::Generic);
+        assert!(template.contains("my-project"));
+        assert!(template.contains("identity:"));
+        assert!(template.contains("project:"));
+    }
+
+    #[test]
+    fn test_warmup_template_generic_is_generic() {
+        let template = warmup_template("test", ProjectType::Generic);
+        // Should NOT contain Rust-specific content
+        assert!(!template.contains("cargo"));
+        assert!(!template.contains("Cargo.toml"));
+        assert!(!template.contains("clippy"));
+        assert!(!template.contains("main.rs"));
+        // Should contain generic content
+        assert!(template.contains("src/ - Source code"));
+        assert!(template.contains("Run linter"));
+    }
+
+    #[test]
+    fn test_warmup_template_rust_contains_rust_specific() {
+        let template = warmup_template("rust-project", ProjectType::Rust);
+        assert!(template.contains("rust-project"));
+        // Should contain Rust-specific content
+        assert!(template.contains("cargo test"));
+        assert!(template.contains("cargo clippy"));
+        assert!(template.contains("Cargo.toml"));
+        assert!(template.contains("src/main.rs"));
+        assert!(template.contains("src/lib.rs"));
+        assert!(template.contains("Result<T, E>"));
+        assert!(template.contains("thiserror"));
+    }
+
+    #[test]
+    fn test_warmup_template_is_valid_yaml() {
+        for project_type in [ProjectType::Generic, ProjectType::Rust] {
+            let template = warmup_template("test", project_type);
+            let result: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+            assert!(
+                result.is_ok(),
+                "Template should be valid YAML for {:?}",
+                project_type
+            );
+        }
+    }
+
+    #[test]
+    fn test_warmup_template_has_required_fields() {
+        for project_type in [ProjectType::Generic, ProjectType::Rust] {
+            let template = warmup_template("test", project_type);
+            let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+
+            // Check required identity section
+            assert!(
+                yaml.get("identity").is_some(),
+                "Should have identity section"
+            );
+            let identity = yaml.get("identity").unwrap();
+            assert!(
+                identity.get("project").is_some(),
+                "Should have project field"
+            );
+        }
+    }
+
+    // ========== sprint_template Tests ==========
+
+    #[test]
+    fn test_sprint_template_is_valid_yaml() {
+        let template = sprint_template();
+        let result: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        assert!(result.is_ok(), "Sprint template should be valid YAML");
+    }
+
+    #[test]
+    fn test_sprint_template_has_required_fields() {
+        let template = sprint_template();
+        let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+
+        assert!(yaml.get("sprint").is_some(), "Should have sprint section");
+        let sprint = yaml.get("sprint").unwrap();
+        assert!(sprint.get("current").is_some(), "Should have current field");
+    }
+
+    #[test]
+    fn test_sprint_template_has_valid_status() {
+        let template = sprint_template();
+        let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+        let status = yaml["sprint"]["status"].as_str().unwrap();
+        assert!(
+            ["planned", "in_progress", "blocked", "done"].contains(&status),
+            "Status should be valid enum value"
+        );
+    }
+
+    // ========== roadmap_template Tests ==========
+
+    #[test]
+    fn test_roadmap_template_is_valid_yaml() {
+        let template = roadmap_template();
+        let result: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        assert!(result.is_ok(), "Roadmap template should be valid YAML");
+    }
+
+    #[test]
+    fn test_roadmap_template_has_sections() {
+        let template = roadmap_template();
+        let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+
+        assert!(
+            yaml.get("metadata").is_some(),
+            "Should have metadata section"
+        );
+        assert!(yaml.get("current").is_some(), "Should have current section");
+        assert!(yaml.get("next").is_some(), "Should have next section");
+        assert!(yaml.get("backlog").is_some(), "Should have backlog section");
+    }
+
+    #[test]
+    fn test_roadmap_template_has_valid_statuses() {
+        let template = roadmap_template();
+        let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+
+        let current_status = yaml["current"]["status"].as_str().unwrap();
+        let next_status = yaml["next"]["status"].as_str().unwrap();
+
+        let valid_statuses = ["planned", "in_progress", "released"];
+        assert!(
+            valid_statuses.contains(&current_status),
+            "Current status should be valid"
+        );
+        assert!(
+            valid_statuses.contains(&next_status),
+            "Next status should be valid"
+        );
+    }
+}

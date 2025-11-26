@@ -1,0 +1,22 @@
+# Valid roadmap.yaml for testing
+metadata:
+  current_version: "1.0.0"
+  last_updated: "2025-01-01"
+
+current:
+  version: "1.0.0"
+  status: released
+  summary: "Initial release"
+  highlights:
+    - "Feature one"
+    - "Feature two"
+
+next:
+  version: "1.1.0"
+  status: planned
+  summary: "Next release"
+  features:
+    - "New feature"
+
+backlog:
+  - "Future idea"
