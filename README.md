@@ -62,6 +62,7 @@ flowchart LR
 - [Full Specification](docs/SPECIFICATION.md) - Protocol schema and details
 - [Examples](docs/EXAMPLES.md) - Configurations for Rust, Python, JS, monorepos
 - [Manifesto](docs/MANIFESTO.md) - The full philosophy and methodology
+- [Presentation](docs/PRESENTATION.md) - Marp slide deck ([PDF](Forge_Protocol_Suite.pdf))
 
 ### Guides
 - [Autonomous Session Guide](docs/guides/AUTONOMOUS_SESSION_GUIDE.md) - How to run autonomous AI sessions

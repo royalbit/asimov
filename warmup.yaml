@@ -45,11 +45,16 @@ files:
   core:
     - "warmup.yaml - This file (the protocol itself)"
     - "README.md - Quick start guide"
+    - "Makefile - Build presentation PDFs"
     - ".markdownlint.json - Linter config"
 
   protocol:
     - "sprint.yaml - Current work tracking"
     - "roadmap.yaml - Milestones and planning"
+
+  presentation:
+    - "docs/PRESENTATION.md - Marp slide deck"
+    - "Forge_Protocol_Suite.pdf - Generated PDF"
 
   docs:
     - "docs/SPECIFICATION.md - Full protocol specification"
