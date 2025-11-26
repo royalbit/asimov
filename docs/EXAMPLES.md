@@ -232,3 +232,144 @@ quality:
   backend: "cargo test && cargo clippy"
   frontend: "npm test && npm run lint"
 ```
+
+## Flutter/Dart Project
+
+Mobile-first projects with iOS/Android considerations:
+
+```yaml
+# warmup.yaml
+identity:
+  project: "my-mobile-app"
+  version: "0.1.0"
+
+files:
+  source:
+    - "lib/main.dart - Entry point"
+    - "lib/screens/ - Screen widgets"
+    - "lib/widgets/ - Reusable components"
+    - "lib/services/ - API and data services"
+  config:
+    - "pubspec.yaml - Dependencies"
+    - "analysis_options.yaml - Lint rules"
+  assets:
+    - "assets/fixtures/ - Demo data (JSON)"
+  tests:
+    - "test/widgets/ - Widget tests"
+    - "test/services/ - Unit tests"
+
+session:
+  start:
+    - "Read warmup.yaml"
+    - "flutter test"
+    - "flutter analyze"
+  end:
+    - "dart format lib/ test/"
+    - "flutter analyze"
+    - "flutter test"
+
+quality:
+  tests: "flutter test must pass"
+  analyzer: "flutter analyze (zero warnings)"
+  format: "dart format lib/ test/"
+
+style:
+  flutter:
+    - "Prefer const constructors"
+    - "Use RepaintBoundary for expensive widgets"
+    - "StatelessWidget when possible"
+```
+
+## Business Documentation Project
+
+Non-code projects with financial models, grant applications, or validated YAML:
+
+```yaml
+# warmup.yaml
+identity:
+  project: "acme-business"
+  tagline: "Grant applications and financial planning"
+
+files:
+  models:
+    - "models/assumptions.yaml - Financial assumptions"
+    - "models/projections.yaml - Revenue projections"
+  grants:
+    - "grants/grant-application.md - Main application"
+    - "grants/budget.yaml - Grant budget"
+  references:
+    - "references/data-sources.yaml - Dynamic data with dates"
+
+session:
+  start:
+    - "Read warmup.yaml"
+    - "Check data-sources.yaml for stale data (>90 days)"
+  during:
+    - "Cite sources with verification dates"
+    - "Use conservative estimates"
+  end:
+    - "Validate YAML files (yamllint)"
+    - "Validate markdown (markdownlint)"
+
+quality:
+  yaml: "yamllint models/ grants/"
+  markdown: "markdownlint-cli2 '**/*.md'"
+  formulas: "All calculations must be verifiable"
+
+dynamic_data:
+  description: "Track time-sensitive information"
+  file: "references/data-sources.yaml"
+  stale_threshold: "90 days"
+  categories:
+    - "Market data (refresh quarterly)"
+    - "Grant programs (refresh monthly)"
+    - "Competitor pricing (refresh quarterly)"
+```
+
+## Multi-repo Ecosystem
+
+When your project spans multiple repositories that work together:
+
+```yaml
+# In each repo: warmup.yaml
+# Coordinates with sibling repos via shared conventions
+
+# === repo: acme-api/warmup.yaml ===
+identity:
+  project: "acme-api"
+  ecosystem: "acme"  # Links related repos
+
+files:
+  source:
+    - "src/ - Rust backend"
+  docs:
+    - "docs/ - API documentation"
+
+session:
+  start:
+    - "Read warmup.yaml"
+    - "Check ecosystem status if cross-repo work"
+
+ecosystem:
+  repos:
+    - name: "acme-api"
+      role: "Backend API"
+      warmup: "acme-api/warmup.yaml"
+    - name: "acme-mobile"
+      role: "Flutter app"
+      warmup: "acme-mobile/warmup.yaml"
+    - name: "acme-web"
+      role: "React frontend"
+      warmup: "acme-web/warmup.yaml"
+    - name: "acme-docs"
+      role: "Business documentation"
+      warmup: "acme-docs/warmup.yaml"
+
+  coordination:
+    master_roadmap: "acme-docs/master-roadmap.yaml"
+    shared_conventions:
+      - "API contracts in acme-api/api/openapi.yaml"
+      - "Shared types generated from OpenAPI"
+```
+
+See [Ecosystem Pattern](ECOSYSTEM_PATTERN.md) for the master-roadmap orchestration pattern.
