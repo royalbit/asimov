@@ -31,18 +31,31 @@ mission:
     - "Works with Claude, GPT, Gemini, Grok, or any future AI"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
+# GREEN CODING - Zero tokens. Zero emissions. (PROTOCOL CORE)
 # ═══════════════════════════════════════════════════════════════════════════════
+# Every project initialized with `forge-protocol init` is a green-coding project.
+# This is not optional - it's our moat and our mission.
 green_coding:
-  philosophy: "Local validation = less compute = less CO₂"
+  status: "REQUIRED"  # All forge-protocol projects are green by default
+  philosophy: "Local-first tools over cloud AI for routine tasks"
+  principles:
+    - "Use CLI tools for validation, linting, formatting - not AI"
+    - "Reserve AI tokens for complex reasoning, architecture, creativity"
+    - "Smaller binaries = less bandwidth = less energy"
+    - "Efficient code = less compute = less carbon"
   why:
     - "AI validation costs ~$0.002-0.04 per file (input + output tokens)"
     - "Local CLI validation costs $0 per file (runs on your machine)"
     - "99.6% carbon reduction vs cloud AI validation"
   practices:
-    - "UPX compression: 4.5MB → 1.3MB binary (71% smaller)"
-    - "Rust: Zero runtime, minimal memory footprint"
-    - "Local-first: No API calls, no network, no waiting"
+    rust:
+      - "UPX compression: 4.5MB → 1.3MB binary (71% smaller)"
+      - "LTO + strip + panic=abort in release profile"
+      - "Zero runtime, minimal memory footprint"
+    all_languages:
+      - "Local-first: No API calls for routine tasks"
+      - "Prefer compiled languages or efficient runtimes"
+      - "Minimize dependencies"
   savings:
     per_validation: "$0.02 saved (avg)"
     daily_team: "$4-20 saved (10-person team, 20-100 validations/day)"
