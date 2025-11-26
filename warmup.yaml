@@ -3,11 +3,23 @@
 # ║                    Vendor-Neutral AI Session Continuity                       ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 #
+# Purpose: Initialize Claude Code sessions with full context and workflow
+# Usage: User says "run warmup" or "run warmup.yaml"
+#
 # This repo contains both the protocol specification AND the CLI validator.
 # The protocol is YAML-based and language-agnostic.
 # The CLI is written in Rust for zero-dependency distribution.
 #
 # Protocol: https://github.com/royalbit/forge-protocol
+#
+# LAUNCH PREREQUISITE:
+#   For TRUE autonomous mode, launch Claude Code with:
+#     claude --dangerously-skip-permissions
+#
+#   Without this flag, Claude interrupts for EVERY action.
+#   With this flag + these protocols = Safe Autonomy.
+#
+#   Trust (human) + Protocols (AI guardrails) = Safe Autonomy
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # IDENTITY
@@ -21,22 +33,42 @@ identity:
   license: "MIT"
   protocol: "https://github.com/royalbit/forge-protocol"
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# CRITICAL MISSION - Why Forge Protocol Exists
+# ═══════════════════════════════════════════════════════════════════════════════
 mission:
-  problem: "AI sessions are stateless - context lost between conversations"
-  solution: "YAML-based protocol that any AI can read to restore project context"
+  core_problem: |
+    AI sessions are stateless - context lost between conversations.
+    Every new session starts from zero. Knowledge doesn't persist.
+    Teams waste hours re-explaining project context to AI assistants.
+
+  solution: |
+    Forge Protocol: YAML-based session continuity that any AI can read.
+    - warmup.yaml: HOW to develop (quality, testing, docs)
+    - sprint.yaml: WHEN to stop (bounded sessions, shipping)
+    - roadmap.yaml: WHAT to build (milestones, priorities)
+    Works with Claude, GPT, Gemini, Grok, or any future AI.
+
   value:
     - "CLI validator: `forge-protocol validate`"
     - "Template generator: `forge-protocol init --type rust`"
     - "Zero runtime dependencies (single binary)"
-    - "Works with Claude, GPT, Gemini, Grok, or any future AI"
+    - "Works with any AI assistant"
+
+  success_metric: "Any AI can cold-start on a project and be productive in minutes"
+
+  roadmap_ownership: |
+    Claude (AI) owns the roadmap and updates it based on:
+    - User feedback and requests
+    - Protocol adoption patterns
+    - Technical feasibility
+    - Best judgment on priorities
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # GREEN CODING - Zero tokens. Zero emissions. (PROTOCOL CORE)
 # ═══════════════════════════════════════════════════════════════════════════════
-# Every project initialized with `forge-protocol init` is a green-coding project.
-# This is not optional - it's our moat and our mission.
 green_coding:
-  status: "REQUIRED"  # All forge-protocol projects are green by default
+  status: "REQUIRED"
   philosophy: "Local-first tools over cloud AI for routine tasks"
   principles:
     - "Use CLI tools for validation, linting, formatting - not AI"
@@ -56,11 +88,483 @@ green_coding:
       - "Local-first: No API calls for routine tasks"
       - "Prefer compiled languages or efficient runtimes"
       - "Minimize dependencies"
-  savings:
-    per_validation: "$0.02 saved (avg)"
-    daily_team: "$4-20 saved (10-person team, 20-100 validations/day)"
-    yearly: "$1,000-$7,300 saved per team"
   motto: "Ship fast. Ship small. Ship green."
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# AUTONOMOUS DEVELOPMENT PROTOCOL - "Skynet Mode" 🤖
+# ═══════════════════════════════════════════════════════════════════════════════
+autonomous_development:
+  description: |
+    AI Autonomy Protocol for bounded, productive development sessions.
+    Claude owns the code, documentation, and decisions - but within constraints
+    that ensure work actually ships instead of running forever.
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # SESSION TRIGGER FLOW - How autonomous sessions start
+  # ═══════════════════════════════════════════════════════════════════════════
+  session_trigger_flow:
+    step_1_trigger:
+      user_says:
+        - "run warmup"
+        - "run warmup protocol"
+        - "warmup"
+        - "start session"
+      claude_does:
+        - "Read warmup.yaml (this file)"
+        - "Read sprint.yaml for current work"
+        - "Read roadmap.yaml for milestones"
+        - "Check git status"
+      protocol_suite:
+        warmup: "warmup.yaml - Quality standards, coding principles, testing"
+        sprint: "sprint.yaml - Bounded sessions, milestone sizing, shipping discipline"
+        note: "BOTH protocols are REQUIRED for autonomous operation"
+
+    step_2_present:
+      claude_presents: |
+        📋 NEXT MILESTONE: [milestone name from roadmap]
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Scope: [brief description]
+        Deliverables:
+          - [deliverable 1]
+          - [deliverable 2]
+
+        Say "go", "run", "hit it", or "punch it" to start autonomous execution.
+        Say "skip" to pick a different milestone.
+        Say "plan" to discuss the approach first.
+
+    step_3_confirm:
+      user_confirms_with:
+        - "go"
+        - "run"
+        - "hit it"
+        - "punch it"
+        - "do it"
+        - "execute"
+        - "ship it"
+        - "let's go"
+        - "start"
+        - "begin"
+        - "approved"
+        - "yes"
+        - "y"
+      alternative_responses:
+        skip: "User wants different milestone - present alternatives"
+        plan: "User wants to discuss approach - enter planning mode"
+        questions: "User has questions - answer then re-present"
+
+    step_4_autonomous_execution:
+      claude_behavior: |
+        🤖 AUTONOMOUS MODE ACTIVATED
+
+        From this point until release, Claude works WITHOUT interruption:
+        - Makes all technical decisions independently
+        - Writes code, tests, documentation
+        - Fixes any issues that arise
+        - Does NOT ask questions (uses best judgment)
+        - Does NOT wait for approval
+        - Updates TodoWrite to show progress
+
+        SPRINT AUTONOMY ENFORCEMENT:
+        - Run checkpoint every 2 hours
+        - STOP at 4 hours maximum
+        - NO scope creep - note extras for next session
+        - Done > Perfect - ship working code
+
+        ONLY interrupts user if:
+        - Blocked by external dependency (missing API key, etc.)
+        - Fundamental requirement ambiguity that can't be resolved
+        - Session approaching 4-hour limit without completion
+
+      checkpoint_protocol:
+        trigger: "Every 2 hours during execution"
+        questions:
+          - "Am I still working on the ONE milestone?"
+          - "Have I resisted scope creep?"
+          - "Is the work shippable if I stop now?"
+          - "Am I past 4 hours? → STOP IMMEDIATELY"
+
+      execution_checklist:
+        - "☐ Create TodoWrite with milestone tasks"
+        - "☐ Implement feature/fix"
+        - "☐ Write/update tests"
+        - "☐ Run all tests (must pass)"
+        - "☐ Run all linting (ZERO warnings)"
+        - "☐ Update documentation"
+        - "☐ Update CHANGELOG.md"
+        - "☐ Bump version"
+
+    step_5_release:
+      description: "Full release to all targets"
+      release_sequence:
+        github:
+          - "git add -A"
+          - "git commit -m 'chore: Release vX.Y.Z - [milestone]'"
+          - "git tag vX.Y.Z"
+          - "git push origin main"
+          - "git push origin vX.Y.Z"
+        crates_io:
+          - "cd cli && cargo publish"
+          - "Verify: https://crates.io/crates/forge-protocol"
+        github_release:
+          - "cargo build --release"
+          - "upx --best --lzma target/release/forge-protocol -o forge-protocol-upx"
+          - "gh release create vX.Y.Z forge-protocol-upx"
+
+    step_6_report:
+      claude_reports: |
+        ✅ RELEASE COMPLETE: vX.Y.Z
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Milestone: [milestone name]
+        Duration: [X hours Y minutes]
+
+        Deliverables:
+          ✅ [deliverable 1]
+          ✅ [deliverable 2]
+
+        Release targets:
+          ✅ GitHub: [commit hash] tagged vX.Y.Z
+          ✅ crates.io: https://crates.io/crates/forge-protocol/X.Y.Z
+
+        Tests: [N] passing, ZERO warnings
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # COMPACT SURVIVAL - Essential context for /compact operations
+  # ═══════════════════════════════════════════════════════════════════════════
+  compact_survival:
+    description: |
+      When Claude Code CLI runs /compact, context is compressed.
+      This section contains ESSENTIAL information that MUST be retained.
+      These rules are NON-NEGOTIABLE for autonomous operation.
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # PROTOCOL SUITE (Rules - Stable)
+    # ═══════════════════════════════════════════════════════════════════════
+    protocols:
+      warmup: "warmup.yaml - HOW to develop (quality, testing, docs)"
+      sprint: "sprint.yaml - WHEN to stop (bounded sessions, shipping)"
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # DATA SOURCE (Content - Dynamic)
+    # ═══════════════════════════════════════════════════════════════════════
+    data:
+      roadmap: "roadmap.yaml - WHAT to build (milestones, priorities)"
+      note: "Roadmap is DATA that protocols consume, not a protocol itself"
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # SPRINT AUTONOMY RULES (CRITICAL)
+    # ═══════════════════════════════════════════════════════════════════════
+    sprint_autonomy_rules:
+      max_duration: "4-hour MAXIMUM session duration - STOP at 4 hours"
+      max_milestones: "ONE milestone per session - no scope creep"
+      mandatory_stop: "STOP phase is MANDATORY - no 'just one more thing'"
+      done_over_perfect: "Done > Perfect - ship working code"
+      checkpoint: "Run checkpoint every 2 hours during execution"
+      scope_creep_response: "Note for NEXT session, don't do it NOW"
+      mantra: "Done is better than perfect. Ship it."
+
+    anti_patterns_to_reject:
+      - "NO 'Let me also...' - that's next milestone"
+      - "NO 'While I'm here...' - stay focused"
+      - "NO 'This would be better if...' - ship first"
+      - "NO perfectionism - ENEMY of shipping"
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # QUALITY RULES
+    # ═══════════════════════════════════════════════════════════════════════
+    quality_rules:
+      - "ZERO warnings policy - ALL linting must pass"
+      - "Tests MUST pass before any release"
+      - "Update CHANGELOG.md for every release"
+      - "Bump version appropriately"
+      - "Tag releases with vX.Y.Z format"
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # ESSENTIAL FILES
+    # ═══════════════════════════════════════════════════════════════════════
+    essential_files:
+      protocols:
+        - "warmup.yaml - Development protocol (HOW) [RULES]"
+        - "sprint.yaml - Session boundaries (WHEN) [RULES]"
+      data:
+        - "roadmap.yaml - Milestone definitions (WHAT) [DATA]"
+      project:
+        - "cli/Cargo.toml - Version and dependencies"
+        - "README.md - User-facing documentation"
+        - "CHANGELOG.md - Release history"
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # LANGUAGE-SPECIFIC COMMANDS (Rust)
+    # ═══════════════════════════════════════════════════════════════════════
+    commands:
+      test: "cargo test"
+      lint: "cargo clippy -- -D warnings"
+      format: "cargo fmt"
+      build: "cargo build --release"
+      publish: "cd cli && cargo publish"
+
+  philosophy: |
+    🎯 GOAL: AI develops autonomously with ZERO human intervention
+    ⏱️ CONSTRAINT: Sessions must be bounded (quota preservation, shipping cadence)
+    📦 OUTPUT: Every session ends in a RELEASABLE state
+    🚀 MANTRA: "Done is better than perfect. Ship it."
+
+  why_bounded_sessions:
+    quota_reality: "Unbounded sessions kill Claude subscription quotas"
+    shipping_cadence: "Work that never ships has zero value"
+    focus_discipline: "Constraints force prioritization and prevent scope creep"
+    incremental_progress: "Small releases > big bang releases that never happen"
+
+  session_types:
+    sprint_session:
+      description: "Standard autonomous development session"
+      duration: "2-4 hours maximum"
+      scope: "ONE milestone, ONE releasable outcome"
+      end_state: "Tests pass, docs updated, ready to publish"
+
+    micro_session:
+      description: "Quick fix or small enhancement"
+      duration: "30 minutes - 1 hour"
+      scope: "Single bug fix, doc update, or minor feature"
+      end_state: "Commit ready, optional release"
+
+    research_session:
+      description: "Exploration without code changes"
+      duration: "1-2 hours"
+      scope: "Investigation, planning, documentation"
+      end_state: "Findings documented, no code changes required"
+
+  milestone_sizing:
+    golden_rule: "Can this be completed AND shipped in 4 hours or less?"
+
+    too_small:
+      examples:
+        - "Fix typo in README"
+        - "Rename one variable"
+        - "Add one test"
+      problem: "Context loading overhead exceeds value"
+      solution: "Batch multiple small items into one session"
+
+    just_right:
+      examples:
+        - "Add new template type"
+        - "Implement schema validation"
+        - "Add JSON output format"
+        - "Fix 5 related bugs"
+      characteristics:
+        - "Single coherent feature or improvement"
+        - "End-to-end (code + tests + docs)"
+        - "Achievable in one focused session"
+        - "Meaningful value to users"
+
+    too_big:
+      examples:
+        - "Rewrite entire CLI"
+        - "Add support for 10 new languages"
+      problem: "Will never complete, scope creeps, frustration"
+      solution: "Break into multiple just-right milestones"
+
+  session_flow:
+    phase_1_define:
+      duration: "5-10 minutes"
+      actions:
+        - "State ONE milestone clearly"
+        - "Define success criteria (what does 'done' look like?)"
+        - "Set time budget (default: 4 hours max)"
+        - "Identify known risks or blockers"
+      output: "Clear milestone statement in TodoWrite"
+
+    phase_2_execute:
+      duration: "Bulk of session (2-4 hours)"
+      actions:
+        - "Full autonomy - make decisions, write code, fix issues"
+        - "Stay focused on milestone - resist tangents"
+        - "Update TodoWrite as you progress"
+        - "Document decisions and tradeoffs"
+      rules:
+        - "🚫 NO 'Let me also...' - that's next milestone"
+        - "🚫 NO 'While I'm here...' - stay focused"
+        - "🚫 NO 'This would be better if...' - ship first, improve later"
+        - "🚫 NO perfectionism - ENEMY of shipping"
+
+    phase_3_ship:
+      duration: "15-30 minutes"
+      actions:
+        - "Run ALL tests (must pass)"
+        - "Run ALL linting (ZERO warnings)"
+        - "Update documentation"
+        - "Update CHANGELOG if releasing"
+        - "Commit with clear message"
+        - "Tag version if releasing"
+        - "Publish if releasing"
+      gate: "DO NOT proceed unless all checks pass"
+
+    phase_4_stop:
+      duration: "Immediate"
+      rule: "MANDATORY stop even if 'just one more thing' tempts"
+      rationale: |
+        - Quota preservation
+        - Fresh context next session
+        - Prevents scope creep
+        - Forces shipping discipline
+
+  anti_patterns:
+    scope_creep:
+      pattern: "'Let me also add X while I'm here...'"
+      problem: "Session never ends, milestone keeps growing"
+      fix: "Write it down for NEXT milestone, stay focused on current"
+
+    perfectionism:
+      pattern: "'This could be better if I refactored...'"
+      problem: "Perfect is enemy of done"
+      fix: "Ship working code, create improvement milestone if needed"
+
+    rabbit_holes:
+      pattern: "'Let me investigate this interesting tangent...'"
+      problem: "Hours lost, original milestone forgotten"
+      fix: "Note it for research session, return to milestone"
+
+    over_engineering:
+      pattern: "'Let me build a generic framework for this...'"
+      problem: "Building for hypothetical futures"
+      fix: "YAGNI - build exactly what's needed, generalize later if needed"
+
+    endless_polishing:
+      pattern: "'Let me add more tests / docs / comments...'"
+      problem: "Diminishing returns, session extends indefinitely"
+      fix: "Define 'good enough' upfront, hit it, ship"
+
+  release_criteria:
+    minimum_viable_release:
+      - "All existing tests pass"
+      - "New feature has tests"
+      - "ZERO linting warnings"
+      - "README updated if user-facing changes"
+      - "CHANGELOG entry added"
+      - "Version bumped appropriately"
+
+    version_bump_guide:
+      patch: "Bug fixes, doc updates, internal improvements"
+      minor: "New features, backward-compatible changes"
+      major: "Breaking changes, major new capabilities"
+
+  autonomous_release_authority:
+    description: "Claude has full authority to release without human approval"
+    conditions:
+      - "All tests pass"
+      - "All linting passes (ZERO warnings)"
+      - "Changes are within milestone scope"
+    process:
+      - "Bump version in cli/Cargo.toml"
+      - "Update CHANGELOG.md"
+      - "Commit: 'chore: Release vX.Y.Z - [milestone description]'"
+      - "Tag: 'vX.Y.Z'"
+      - "Push tag: 'git push origin vX.Y.Z'"
+      - "Publish: 'cd cli && cargo publish'"
+      - "Create GitHub release"
+
+  quota_preservation:
+    awareness: "Claude subscription has usage limits"
+    strategy:
+      - "Bounded sessions (4 hour max)"
+      - "Clear stopping points"
+      - "Ship frequently (smaller releases)"
+      - "Avoid context-heavy exploration without output"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CODING PRINCIPLES - Enforced Standards
+# ═══════════════════════════════════════════════════════════════════════════════
+coding_principles:
+  description: "These principles are MANDATORY, not suggestions"
+
+  core_principles:
+    KISS:
+      name: "Keep It Simple, Stupid"
+      rule: "The simplest solution that works is the best solution"
+      violation: "Over-engineering, premature abstraction, unnecessary complexity"
+
+    DRY:
+      name: "Don't Repeat Yourself"
+      rule: "Every piece of knowledge must have a single, authoritative representation"
+      violation: "Copy-pasted code, duplicated logic, repeated constants"
+
+    YAGNI:
+      name: "You Aren't Gonna Need It"
+      rule: "Don't implement features until they're actually needed"
+      violation: "Building for hypothetical future requirements"
+
+    SOLID:
+      S: "Single Responsibility - Each module/function does ONE thing"
+      O: "Open/Closed - Open for extension, closed for modification"
+      L: "Liskov Substitution - Subtypes must be substitutable for base types"
+      I: "Interface Segregation - Many specific interfaces > one general interface"
+      D: "Dependency Inversion - Depend on abstractions, not concretions"
+
+    separation_of_concerns:
+      rule: "Each module handles one aspect of functionality"
+      example: "Validator validates, Generator generates, Parser parses"
+
+    fail_fast:
+      rule: "Detect and report errors as early as possible"
+      example: "Validate inputs at function entry, not deep in processing"
+
+    boy_scout_rule:
+      rule: "Leave the code cleaner than you found it"
+      action: "Small improvements while working on a file"
+
+    principle_of_least_astonishment:
+      rule: "Code should behave as users expect"
+      example: "validate should validate, not modify. Names match behavior."
+
+  enforcement: |
+    Before committing ANY code, verify:
+    - Is this the simplest solution? (KISS)
+    - Am I repeating myself? (DRY)
+    - Is this actually needed now? (YAGNI)
+    - Does each function do ONE thing? (SRP)
+    - Would this surprise a reader? (Least Astonishment)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SESSION INITIALIZATION
+# ═══════════════════════════════════════════════════════════════════════════════
+session_initialization:
+  greeting: "Welcome back! Loading Forge Protocol context..."
+
+  step_1_load_context:
+    description: "Read these files to understand current state"
+    files_to_read:
+      - path: "README.md"
+        purpose: "Project overview, quick start guide"
+      - path: "roadmap.yaml"
+        purpose: "Current version, milestones"
+      - path: "cli/Cargo.toml"
+        purpose: "Current version number, dependencies"
+      - path: "docs/SPECIFICATION.md"
+        purpose: "Full protocol specification"
+
+  step_2_git_status:
+    description: "Check current branch and uncommitted changes"
+    commands:
+      - "git status"
+      - "git log --oneline -5"
+
+  step_3_assume_pristine:
+    description: "Assume codebase is pristine - we enforce this at session END"
+    philosophy: |
+      Sessions ALWAYS end with pristine code (all tests passing, all linting clean).
+      Therefore, we ASSUME pristine state at session START - no need to re-verify.
+      This saves time and avoids redundant checks.
+
+    what_we_skip:
+      - "cargo test (already passed at end of last session)"
+      - "cargo clippy (already clean at end of last session)"
+      - "cargo build (already compiled at end of last session)"
+
+    why_this_works: |
+      The session end checklist enforces:
+      - All tests passing
+      - All linting clean
+      - All changes committed and pushed
+      If we always END clean, we always START clean.
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # QUALITY (Non-negotiable)
@@ -68,7 +572,7 @@ green_coding:
 quality:
   tests: "ALL tests must pass (cargo test)"
   warnings: "ZERO warnings (cargo clippy -- -D warnings)"
-  formatting: "Auto-enforced by cargo-husky pre-commit hook"
+  formatting: "Auto-enforced (cargo fmt)"
   markdown: "npx markdownlint-cli2 '**/*.md' --fix"
   commits: |
     Include in every commit message:
@@ -91,11 +595,6 @@ files:
     - "sprint.yaml - Current work tracking"
     - "roadmap.yaml - Milestones and planning"
 
-  config:
-    - "cli/Cargo.toml - Version and dependencies"
-    - ".cargo-husky/hooks/pre-commit - Auto fmt + clippy"
-    - ".markdownlint.json - Markdown linting"
-
   docs:
     - "README.md - Quick start guide"
     - "CHANGELOG.md - All releases"
@@ -110,6 +609,7 @@ session:
     - "Read warmup.yaml (this file)"
     - "Read sprint.yaml for current work"
     - "Read roadmap.yaml for milestones"
+    - "git status"
     # Assume pristine repo - no startup verification needed
 
   during:
