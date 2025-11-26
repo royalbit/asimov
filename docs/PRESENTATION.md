@@ -544,7 +544,7 @@ Many tools push vendor lock-in:
 
 5. Say: **`run warmup`** → **`punch it`** → ☕
 
-**Protocol:** github.com/lctavares/forge-protocol
+**Protocol:** github.com/royalbit/forge-protocol
 **Example project:** github.com/royalbit/forge
 
 ---
@@ -575,7 +575,7 @@ The Sprint Autonomy Mantra
 
 # Questions?
 
-**Protocol:** github.com/lctavares/forge-protocol
+**Protocol:** github.com/royalbit/forge-protocol
 **Example:** github.com/royalbit/forge
 
 **The Forge Protocol Suite:**
@@ -598,7 +598,7 @@ The Sprint Autonomy Mantra
 **Built with:** The Forge Protocol
 *Vendor-agnostic AI autonomy framework*
 
-**License:** MIT | **Repo:** github.com/lctavares/forge-protocol
+**License:** MIT | **Repo:** github.com/royalbit/forge-protocol
 
 ---
 
