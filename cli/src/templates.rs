@@ -59,6 +59,21 @@ mission:
     - "Principle one"
     - "Principle two"
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# GREEN CODING - Zero tokens. Zero emissions.
+# ═══════════════════════════════════════════════════════════════════════════════
+green_coding:
+  philosophy: "Local-first tools over cloud AI for routine tasks"
+  practices:
+    - "Use CLI tools for validation, linting, formatting"
+    - "Reserve AI for complex reasoning tasks"
+    - "Prefer compiled languages or efficient runtimes"
+    - "Minimize dependencies and binary sizes"
+  why:
+    - "Local validation: $0 and ~0.002g CO₂"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
+    - "99.6% carbon reduction with local tools"
+
 files:
   source:
     - "src/ - Source code"
@@ -108,6 +123,29 @@ mission:
   principles:
     - "Principle one"
     - "Principle two"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# GREEN CODING - Zero tokens. Zero emissions.
+# ═══════════════════════════════════════════════════════════════════════════════
+green_coding:
+  philosophy: "Local-first tools over cloud AI for routine tasks"
+  practices:
+    - "Use cargo test/clippy/fmt for validation (not AI)"
+    - "Reserve AI for complex reasoning tasks"
+    - "UPX compress release binaries (70%+ smaller)"
+    - "Enable LTO and strip symbols in release profile"
+  why:
+    - "Rust: Zero runtime, minimal memory footprint"
+    - "Local validation: $0 and ~0.002g CO₂"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
+    - "99.6% carbon reduction with local tools"
+  release_profile: |
+    [profile.release]
+    opt-level = 3
+    lto = true
+    codegen-units = 1
+    strip = true
+    panic = "abort"
 
 files:
   source:
@@ -276,6 +314,10 @@ mod tests {
         // Should contain generic content
         assert!(template.contains("src/ - Source code"));
         assert!(template.contains("Run linter"));
+        // Should contain green_coding (core protocol requirement)
+        assert!(template.contains("green_coding:"));
+        assert!(template.contains("Local-first"));
+        assert!(template.contains("99.6% carbon reduction"));
     }
 
     #[test]
@@ -290,6 +332,11 @@ mod tests {
         assert!(template.contains("src/lib.rs"));
         assert!(template.contains("Result<T, E>"));
         assert!(template.contains("thiserror"));
+        // Should contain green_coding with Rust-specific practices
+        assert!(template.contains("green_coding:"));
+        assert!(template.contains("UPX compress"));
+        assert!(template.contains("LTO"));
+        assert!(template.contains("[profile.release]"));
     }
 
     #[test]

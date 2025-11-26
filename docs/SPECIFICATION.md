@@ -1,10 +1,12 @@
 # Forge Protocol Specification
 
-Version 1.0.0
+Version 1.1.0
 
 ## Overview
 
 The Forge Protocol is a YAML-based standard for preserving project context across AI sessions. It enables any AI assistant to quickly understand a project's identity, structure, and workflow conventions.
+
+**All Forge Protocol projects are green-coding projects by default.** See [ADR-001](adr/001-green-coding-by-default.md).
 
 ## Design Principles
 
@@ -12,6 +14,7 @@ The Forge Protocol is a YAML-based standard for preserving project context acros
 2. **Human-readable** - No encoded or proprietary formats
 3. **Minimal** - Include only what's needed
 4. **Self-documenting** - The protocol describes itself
+5. **Green by default** - Local-first tools over cloud AI for routine tasks
 
 ## File Structure
 
@@ -114,6 +117,35 @@ style:
     - "Markdown for documentation"
     - "Mermaid for diagrams"
 ```
+
+### green_coding (recommended)
+
+Sustainability practices. **Included by default in all `forge-protocol init` templates.**
+
+```yaml
+green_coding:
+  philosophy: "Local-first tools over cloud AI for routine tasks"
+  practices:
+    - "Use CLI tools for validation, linting, formatting"
+    - "Reserve AI for complex reasoning tasks"
+    - "Prefer compiled languages or efficient runtimes"
+    - "Minimize dependencies and binary sizes"
+  why:
+    - "Local validation: $0 and ~0.002g CO₂"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
+    - "99.6% carbon reduction with local tools"
+```
+
+#### Why Green Coding?
+
+| Approach | Cost per File | Carbon | Speed |
+| -------- | ------------- | ------ | ----- |
+| AI validation | $0.002-0.04 | ~0.5g CO₂ | 1-3s |
+| Local CLI | $0 | ~0.002g CO₂ | <100ms |
+
+**Team savings:** $1,000-7,300/year for a 10-person team.
+
+See [Green Coding Economics](GREEN_CODING.md) for full analysis and [ADR-001](adr/001-green-coding-by-default.md) for the decision rationale.
 
 ## sprint.yaml Schema (Optional)
 

@@ -138,6 +138,9 @@ flowchart LR
 - [Ecosystem Case Study](docs/ECOSYSTEM.md) - How the protocol powers a full product suite
 - [Green Coding Economics](docs/GREEN_CODING.md) - Cost and carbon savings analysis
 
+### Architecture Decisions
+- [ADR-001: Green Coding By Default](docs/adr/001-green-coding-by-default.md) - Why all projects are green
+
 ### Guides
 - [Autonomous Session Guide](docs/guides/AUTONOMOUS_SESSION_GUIDE.md) - How to run autonomous AI sessions
 - [Sprint Protocol](docs/guides/SPRINT_AUTONOMY_PROTOCOL.md) - Bounded sessions with shipping discipline
