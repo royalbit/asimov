@@ -1,0 +1,210 @@
+# SKYNET MODE Setup Guide
+
+> **One command to full autonomous session capability**
+
+## Quick Start
+
+```bash
+# Install forge-protocol
+cargo install forge-protocol
+
+# Full SKYNET MODE setup
+forge-protocol init --type rust --skynet
+
+# Launch and go
+claude --dangerously-skip-permissions
+> run warmup
+> punch it
+```
+
+## What Gets Created
+
+```
+project/
+├── warmup.yaml           # Protocol rules (HOW)
+├── sprint.yaml           # Session boundaries (WHEN)
+├── roadmap.yaml          # Milestones (WHAT)
+├── CLAUDE.md             # Self-healing trigger
+├── .gitignore            # + .claude_checkpoint.yaml
+└── .hooks/               # Pre-commit hooks
+    ├── pre-commit
+    └── install.sh
+```
+
+## Setup by Project Type
+
+### Rust
+
+```bash
+forge-protocol init --type rust --skynet
+```
+
+**Hooks:** Uses cargo-husky (add to Cargo.toml dev-dependencies)
+
+**Quality gates:**
+- `cargo test`
+- `cargo clippy -- -D warnings`
+- `cargo fmt --check`
+
+### Python
+
+```bash
+forge-protocol init --type python --skynet
+```
+
+**Hooks:** `.hooks/pre-commit` + `.hooks/install.sh`
+
+**Quality gates:**
+- `pytest`
+- `ruff check .`
+- `ruff format --check .`
+- `mypy .`
+
+### Node.js
+
+```bash
+forge-protocol init --type node --skynet
+```
+
+**Hooks:** `.hooks/pre-commit` (or use husky)
+
+**Quality gates:**
+- `npm test`
+- `npm run lint`
+- `npm run format:check`
+
+### Go
+
+```bash
+forge-protocol init --type go --skynet
+```
+
+**Hooks:** `.hooks/pre-commit`
+
+**Quality gates:**
+- `go test ./...`
+- `golangci-lint run`
+- `gofmt -l .`
+
+### Flutter
+
+```bash
+forge-protocol init --type flutter --skynet
+```
+
+**Hooks:** `.hooks/pre-commit`
+
+**Quality gates:**
+- `flutter test`
+- `dart analyze lib/`
+- `dart format --set-exit-if-changed lib/ test/`
+
+### Documentation
+
+```bash
+forge-protocol init --type docs --skynet
+```
+
+**Hooks:** `.hooks/pre-commit`
+
+**Quality gates:**
+- `forge-protocol lint-docs .`
+- `markdownlint '**/*.md'`
+
+## Post-Setup Steps
+
+### 1. Install Hooks
+
+**Rust (cargo-husky):**
+```bash
+# Add to Cargo.toml [dev-dependencies]
+cargo-husky = { version = "1", features = ["precommit-hook", "run-cargo-clippy", "run-cargo-fmt"] }
+
+# Install
+cargo test
+```
+
+**Other languages:**
+```bash
+./.hooks/install.sh
+```
+
+### 2. Edit Protocol Files
+
+```bash
+# Edit with your project details
+$EDITOR warmup.yaml
+$EDITOR roadmap.yaml
+```
+
+### 3. Validate
+
+```bash
+forge-protocol validate
+```
+
+### 4. Launch SKYNET MODE
+
+```bash
+# Terminal 1: Launch Claude Code
+claude --dangerously-skip-permissions
+
+# In Claude Code
+> run warmup
+> punch it
+```
+
+## Verification Checklist
+
+```bash
+# Check files exist
+ls -la warmup.yaml CLAUDE.md
+
+# Validate protocol
+forge-protocol validate
+
+# Check hooks installed
+ls -la .git/hooks/pre-commit
+
+# Test pre-commit
+git commit --allow-empty -m "test" --dry-run
+```
+
+## Troubleshooting
+
+### "warmup.yaml not found"
+```bash
+forge-protocol init --type <your-type> --skynet
+```
+
+### "Hooks not running"
+```bash
+./.hooks/install.sh
+# or for Rust
+cargo test
+```
+
+### "Self-healing not working"
+1. Check CLAUDE.md exists
+2. Check CLAUDE.md has "re-read warmup.yaml" instruction
+3. Check warmup.yaml has self_healing section
+
+### "AI forgets rules"
+Say: "Re-read warmup.yaml and .claude_checkpoint.yaml"
+
+## Requirements Summary
+
+| Component | Required |
+|-----------|----------|
+| Claude Code | Yes |
+| `--dangerously-skip-permissions` | Yes (for autonomy) |
+| warmup.yaml | Yes |
+| CLAUDE.md | Yes (for self-healing) |
+| Pre-commit hooks | Recommended |
+
+## Related Documentation
+
+- [SKYNET MODE Overview](SKYNET_MODE.md)
+- [Component 1: Protocol Files](components/1-PROTOCOL_FILES.md)
+- [Component 4: Self-Healing](components/4-SELF_HEALING.md)
+- [Vendor Implementation](VENDOR_IMPLEMENTATION.md)

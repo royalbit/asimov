@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Creates pre-commit hooks (.hooks/ for non-Rust, cargo-husky instructions for Rust)
   - Updates .gitignore with checkpoint file entry
 - **New Project Types**: Flutter (`--type flutter`) and Docs (`--type docs`)
-- **SKYNET Setup Guide**: `docs/SKYNET_SETUP.md` - Per-project-type setup checklists
+- **SKYNET Setup Guide**: `docs/SETUP.md` - Per-project-type setup checklists
 - **Vendor Implementation Guide**: `docs/VENDOR_IMPLEMENTATION.md` - What AI tools need for SKYNET MODE
 
 ### Changed
