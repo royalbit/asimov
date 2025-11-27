@@ -262,6 +262,136 @@ flowchart LR
     B -->|No| E[Start from zero]
 ```
 
+## Self-Healing Protocol (Unattended Autonomy)
+
+**The key enabler for 8-10 hour autonomous sessions.**
+
+### The Problem
+
+During long autonomous sessions, Claude Code's auto-compact summarizes conversation history. Rules defined in warmup.yaml get compressed. The AI "forgets" guidelines and starts making mistakes.
+
+### The Insight
+
+Everyone else: *Make rules survive compaction* (fragile)
+Forge Protocol: **Recover from compaction** (reliable)
+
+It's like databases: don't try to make transactions survive crashes - use write-ahead logs to recover.
+
+### The Solution
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    SELF-HEALING PROTOCOL                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  CLAUDE.md (auto-loaded)     warmup.yaml (full rules)          │
+│  ┌─────────────────────┐     ┌─────────────────────┐           │
+│  │ Core rules (short)  │     │ Complete protocol   │           │
+│  │ "Re-read warmup.yaml│────▶│ self_healing:       │           │
+│  │  after compaction"  │     │   triggers:         │           │
+│  └─────────────────────┘     │     every_2_hours   │           │
+│                              │     before_commit   │           │
+│                              │     when_confused   │           │
+│                              └──────────┬──────────┘           │
+│                                         │                       │
+│                                         ▼                       │
+│                              .claude_checkpoint.yaml            │
+│                              ┌─────────────────────┐           │
+│                              │ Session state       │           │
+│                              │ Progress breadcrumbs│           │
+│                              │ Rules reminder      │           │
+│                              └─────────────────────┘           │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### The Flow
+
+```mermaid
+flowchart TD
+    A[Session Start] --> B[Load CLAUDE.md + warmup.yaml]
+    B --> C[Autonomous Work]
+    C --> D{Auto-compact triggers}
+    D --> E[Rules lost/summarized]
+    E --> F{2hr checkpoint}
+    F --> G[Re-read warmup.yaml from disk]
+    G --> H[Rules restored]
+    H --> C
+```
+
+### Implementation
+
+**1. CLAUDE.md** (travels with repo, ~40 lines)
+```markdown
+## CRITICAL: Self-Healing Protocol
+After ANY compaction/confusion, RE-READ:
+1. warmup.yaml
+2. .claude_checkpoint.yaml (if exists)
+
+## Checkpoints (MANDATORY)
+- Every 2 hours: checkpoint + re-read warmup.yaml
+- Before commit: re-read quality gates
+- When confused: STOP → re-read → resume
+```
+
+**2. warmup.yaml** (self_healing section)
+```yaml
+self_healing:
+  checkpoint_file: ".claude_checkpoint.yaml"
+
+  mandatory_triggers:
+    every_2_hours:
+      - "Write progress to .claude_checkpoint.yaml"
+      - "Re-read this warmup.yaml completely"
+    before_any_commit:
+      - "Re-read quality gates"
+    when_confused:
+      - "STOP → re-read → resume"
+
+  core_rules_summary:
+    - "4hr MAX, 1 milestone, NO scope creep"
+    - "Tests pass + ZERO warnings → commit"
+    - "Done > Perfect. Ship it."
+```
+
+**3. .claude_checkpoint.yaml** (written during session)
+```yaml
+timestamp: "2025-11-26T03:00:00Z"
+session_started: "2025-11-26T01:00:00Z"
+milestone: "Add feature X"
+completed: ["Task 1", "Task 2"]
+in_progress: "Task 3"
+rules_reminder:
+  - "4hr max - check timestamp"
+  - "NO scope creep"
+```
+
+### Why It Works
+
+| Component | Survives Compact? | Recovery Method |
+|-----------|-------------------|-----------------|
+| CLAUDE.md | Partially (system prompt) | Auto-loaded at session start |
+| warmup.yaml | No | Re-read from disk at checkpoint |
+| .claude_checkpoint.yaml | N/A (on disk) | Always available |
+
+The "re-read warmup.yaml" instruction is short enough to survive summarization. Even if all other rules are lost, the AI knows to reload them.
+
+### The Analogy
+
+| Problem | Traditional | Self-Healing |
+|---------|-------------|--------------|
+| Database crash | Hope data survives | Write-ahead log + replay |
+| Context compact | Hope rules survive | **Checkpoint + re-read** |
+
+### Results
+
+- **8-10 hour unattended sessions** that follow rules
+- **Portable** - travels with git, works on any machine
+- **AI-agnostic** - any AI that reads CLAUDE.md can use it
+- **Battle-tested** - powers 9+ production projects
+
+See [Self-Healing Deep Dive](docs/SELF-HEALING.md) for the full technical specification.
+
 ## Documentation
 
 ### Core
@@ -280,6 +410,7 @@ flowchart LR
 ### Guides
 - [Autonomous Session Guide](docs/guides/AUTONOMOUS_SESSION_GUIDE.md) - How to run autonomous AI sessions
 - [Sprint Protocol](docs/guides/SPRINT_AUTONOMY_PROTOCOL.md) - Bounded sessions with shipping discipline
+- [Self-Healing Protocol](docs/SELF-HEALING.md) - Unattended autonomy for 8-10hr sessions
 
 ### Stories
 - [The Autonomous Developer Story](docs/stories/AUTONOMOUS_STORY.md) - How Forge was built by AI
