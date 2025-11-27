@@ -406,6 +406,7 @@ See [Self-Healing Deep Dive](docs/SELF-HEALING.md) for the full technical specif
 
 ### Architecture Decisions
 - [ADR-001: Green Coding By Default](docs/adr/001-green-coding-by-default.md) - Why all projects are green
+- [ADR-002: Self-Healing Protocol](docs/adr/002-self-healing-protocol.md) - Unattended autonomy via recovery
 
 ### Guides
 - [Autonomous Session Guide](docs/guides/AUTONOMOUS_SESSION_GUIDE.md) - How to run autonomous AI sessions

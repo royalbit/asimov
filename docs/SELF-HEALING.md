@@ -383,10 +383,15 @@ grep claude_checkpoint .gitignore
 
 This protocol is based on research into Claude Code's auto-compact behavior:
 
+- [DoltHub: Claude Code Gotchas](https://www.dolthub.com/blog/2025-06-30-claude-code-gotchas/) - **"definitely dumber after compaction"**
 - [Claude Code Compaction](https://stevekinney.com/courses/ai-development/claude-code-compaction)
 - [GitHub: /compact loses CLAUDE.md context](https://github.com/anthropics/claude-code/issues/4517)
+- [GitHub: Does Claude include CLAUDE.md after compact?](https://github.com/anthropics/claude-code/issues/2714)
 - [Why Claude Forgets](https://www.arsturn.com/blog/why-does-claude-forget-things-understanding-auto-compact-context-windows)
 - [Anthropic: Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+
+> *"The summary is cool but Claude Code is **definitely dumber after the compaction**. It doesn't know what files it was looking at and needs to re-read them. It will make mistakes you specifically corrected earlier in the session."*
+> — DoltHub
 
 Key findings:
 - Auto-compact triggers at ~95% context capacity
