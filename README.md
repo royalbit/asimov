@@ -206,14 +206,13 @@ The Forge Protocol powers an entire product ecosystem:
 | Mobile Prototype | Principal Mobile Engineer | Flutter | Production |
 | Architecture Docs | Principal AI Architect | C4 + ADRs | Production |
 | Business Strategy | AI Strategist | YAML | Production |
-| Data Enrichment | Principal Engineer | Python | Active |
+| Data Services | Principal Engineer | Rust + gRPC | Active |
 
 **Stats:**
 - 10-phase autonomous build plan
-- 4 mobile apps planned (Flutter)
-- 1,100+ line master roadmap
-- 850+ financial formulas validated
-- 213+ tests across ecosystem
+- Multiple mobile apps (Flutter)
+- 1,000+ line master roadmap
+- Comprehensive test suites across ecosystem
 
 See [ECOSYSTEM.md](docs/ECOSYSTEM.md) for the full story.
 
@@ -457,6 +456,40 @@ See [Component 4: Self-Healing](docs/components/4-SELF_HEALING.md) for details.
 - [ADR-001: Green Coding By Default](docs/adr/001-green-coding-by-default.md)
 - [ADR-002: Self-Healing Protocol](docs/adr/002-self-healing-protocol.md)
 - [ADR-003: Self-Healing Based on Real Compaction Data](docs/adr/003-self-healing-real-compaction-data.md) - **v2.0**
+
+## Case Study: Protocol v2.0 (This Session)
+
+The v2.0 specification was written using SKYNET MODE - proving the protocol works on itself.
+
+### The Problem
+
+v1.x assumed "checkpoint every 2 hours". Research showed this was fiction:
+- With `MAX_THINKING_TOKENS=200000`, compaction happens every **10-20 minutes**
+- The "2hr checkpoint" never triggered
+- Self-healing was broken in production
+
+### The Session
+
+| Phase | What Happened |
+|-------|---------------|
+| **Research** | Analyzed forge-protocol git log: 32 commits, ~4-5 hours, estimated 5-10 compactions |
+| **Spec Rewrite** | v2.0 based on empirical data, not assumptions |
+| **Multi-Project Update** | 9 repositories updated with v2.0 CLAUDE.md format |
+| **Ship** | Committed, tagged v2.0.0, pushed to GitHub |
+
+### The Proof
+
+```
+Human: "look at the forge's git log... estimate how many compaction cycles really happened"
+Claude: [analyzes git history, token math, user settings]
+Claude: "Compaction happens every 10-20 minutes, not 2 hours"
+Human: "yes, and let's document the research... start the new specification"
+Claude: [rewrites spec, updates 9 projects, ships v2.0.0]
+```
+
+**One session. One human. One milestone. Shipped.**
+
+See [ADR-003](docs/adr/003-self-healing-real-compaction-data.md) for the research findings.
 
 ## Origin
 
