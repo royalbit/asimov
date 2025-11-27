@@ -436,39 +436,29 @@ The "re-read warmup.yaml" instruction is short enough to survive summarization. 
 - **AI-agnostic** - any AI that reads CLAUDE.md can use it
 - **Battle-tested** - powers 9+ production projects
 
-See [Self-Healing Deep Dive](docs/SELF-HEALING.md) for the full technical specification.
+See [Component 4: Self-Healing](docs/components/4-SELF_HEALING.md) for details.
 
 ## Documentation
 
-### Core
-- [Full Specification](docs/SPECIFICATION.md) - Protocol schema and details
-- [Examples](docs/EXAMPLES.md) - Configurations for Rust, Python, JS, monorepos
-- [Manifesto](docs/MANIFESTO.md) - The full philosophy and methodology
-- [Presentation](docs/PRESENTATION.md) - Marp slide deck (run `make presentation` to generate PDF)
+### SKYNET MODE (Start Here)
+- **[SKYNET MODE Overview](docs/SKYNET_MODE.md)** - The complete autonomous AI development system
+- [Setup Guide](docs/SETUP.md) - Get started with one command
 
-### Ecosystem
-- [Ecosystem Case Study](docs/ECOSYSTEM.md) - How the protocol powers a full product suite
-- [Green Coding Economics](docs/GREEN_CODING.md) - Cost and carbon savings analysis
+### The Five Components
+1. [Protocol Files](docs/components/1-PROTOCOL_FILES.md) - warmup.yaml, sprint.yaml, roadmap.yaml
+2. [Sprint Autonomy](docs/components/2-SPRINT_AUTONOMY.md) - Bounded sessions that ship
+3. [Quality Gates](docs/components/3-QUALITY_GATES.md) - Tests pass + zero warnings
+4. [Self-Healing](docs/components/4-SELF_HEALING.md) - Survive context compaction
+5. [Release Discipline](docs/components/5-RELEASE_DISCIPLINE.md) - Triple release to everywhere
+
+### Reference
+- [Full Specification](docs/SPECIFICATION.md) - Protocol schema and details
+- [Vendor Implementation](docs/VENDOR_IMPLEMENTATION.md) - What other AI tools need
+- [Presentation](docs/PRESENTATION.md) - Marp slide deck
 
 ### Architecture Decisions
-- [ADR-001: Green Coding By Default](docs/adr/001-green-coding-by-default.md) - Why all projects are green
-- [ADR-002: Self-Healing Protocol](docs/adr/002-self-healing-protocol.md) - Unattended autonomy via recovery
-
-### Vendor Integration
-- [Vendor Implementation Guide](docs/VENDOR_IMPLEMENTATION.md) - What AI tools need for SKYNET MODE
-
-### Guides
-- [Autonomous Session Guide](docs/guides/AUTONOMOUS_SESSION_GUIDE.md) - How to run autonomous AI sessions
-- [Sprint Protocol](docs/guides/SPRINT_AUTONOMY_PROTOCOL.md) - Bounded sessions with shipping discipline
-- [Self-Healing Protocol](docs/SELF-HEALING.md) - Unattended autonomy for 8-10hr sessions
-- [Markdown Standards](docs/MARKDOWN_STANDARDS.md) - Documentation-as-code quality enforcement
-
-### Stories
-- [The Autonomous Developer Story](docs/stories/AUTONOMOUS_STORY.md) - How Forge was built by AI
-- [AI Promotion Story](docs/stories/AI-PROMOTION-STORY.md) - From junior to senior developer
-
-### Research
-- [Experiential Continuity](docs/research/EXPERIENTIAL_CONTINUITY.md) - Beyond knowledge persistence
+- [ADR-001: Green Coding By Default](docs/adr/001-green-coding-by-default.md)
+- [ADR-002: Self-Healing Protocol](docs/adr/002-self-healing-protocol.md)
 
 ## Origin
 
