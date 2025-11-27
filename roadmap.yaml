@@ -46,9 +46,6 @@ previous:
     status: released
     date: "2025-11-26"
     summary: "Documentation Linter"
-    highlights:
-      - "`forge-protocol lint-docs` with auto-fix"
-      - "79 tests"
 
   - version: "1.2.0"
     status: released
@@ -63,17 +60,14 @@ previous:
 # ═══════════════════════════════════════════════════════════════════════════════
 # CURRENT: v2.1.0 - SELF-HEALING COMPLETENESS
 # ═══════════════════════════════════════════════════════════════════════════════
-# Goal: Make self-healing actually work end-to-end (SELF-HEALING)
+# Goal: SELF-HEALING - Make self-healing actually work end-to-end
 # ═══════════════════════════════════════════════════════════════════════════════
 current:
   version: "2.1.0"
   status: planned
   summary: "Self-Healing Completeness"
+  goal: SELF-HEALING
   priority: HIGH
-
-  # Checkpoint schema: Bootstrap chain depends on checkpoint but it's not validated
-  # CLAUDE.md validation: Self-healing depends on CLAUDE.md but it's not validated
-  # Self-healing test: We claim it works but have no systematic test
   features:
     - "Checkpoint schema: Define .claude_checkpoint.yaml schema in SPECIFICATION.md"
     - "Checkpoint validation: Add checkpoint validation to CLI"
@@ -84,17 +78,14 @@ current:
 # ═══════════════════════════════════════════════════════════════════════════════
 # NEXT: v2.2.0 - ANTI-HALLUCINATION HARDENING
 # ═══════════════════════════════════════════════════════════════════════════════
-# Goal: Prevent "lost in the middle" and context overflow (ANTI-HALLUCINATION)
+# Goal: ANTI-HALLUCINATION - Prevent "lost in the middle" and context overflow
 # ═══════════════════════════════════════════════════════════════════════════════
 next:
   version: "2.2.0"
   status: planned
   summary: "Anti-Hallucination Hardening"
+  goal: ANTI-HALLUCINATION
   priority: HIGH
-
-  # Size guidelines: Large files trigger 'lost in middle' - critical info ignored
-  # Structure guidance: LLMs attend better to beginning/end, ignore middle
-  # Modular structure: Monolithic warmup.yaml doesn't scale - Forge uses bin/
   features:
     - "Size guidelines: Document max sizes (CLAUDE.md: 20 lines, warmup: 200 lines)"
     - "Size warnings: Add file size warnings to CLI validation"
@@ -103,32 +94,52 @@ next:
     - "Modular structure: Design .forge/ directory for splitting large configs"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# FUTURE MILESTONES
+# FUTURE MILESTONES - Goal-Aligned
 # ═══════════════════════════════════════════════════════════════════════════════
 future:
-  # v2.3.0: Multi-day/multi-session workflows (SESSION CONTINUITY)
+  # Goal: SESSION CONTINUITY
   - version: "2.3.0"
     status: planned
     summary: "Multi-Session Continuity"
+    goal: SESSION_CONTINUITY
+    priority: HIGH
     features:
       - "Session handoff: Document session-end and session-start workflows"
       - "Session-end command: Add CLI command to finalize session state"
       - "Staleness detection: Warn when warmup.yaml older than code changes"
 
-  # v2.4.0: Clear what works where (HONEST COMMUNICATION)
+  # Goal: HONEST COMMUNICATION
   - version: "2.4.0"
     status: planned
     summary: "Vendor Clarity"
+    goal: HONEST_COMMUNICATION
+    priority: HIGH
     features:
       - "Compatibility matrix: Document file format (universal) vs SKYNET (Claude only)"
       - "Vendor checklist: What other AI tools need to implement"
       - "Vendor status: Track which vendors support which features"
 
+  # Goal: AUTONOMOUS DEVELOPMENT - Real-world stack support
+  - version: "2.5.0"
+    status: planned
+    summary: "Production Stack Templates"
+    goal: AUTONOMOUS_DEVELOPMENT
+    priority: HIGH
+    description: |
+      Templates and validation for real-world production stacks.
+      Based on battle-tested configurations from proprietary ecosystems.
+    features:
+      - "Rust + Axum: Backend API template with quality gates"
+      - "Flutter/Dart: Mobile app template with test requirements"
+      - "Rust + gRPC: Data services template"
+      - "Full-stack: Coordinated templates for multi-repo ecosystems"
+      - "Master roadmap: Cross-repo orchestration patterns"
+
 # ═══════════════════════════════════════════════════════════════════════════════
-# BACKLOG - Lower priority, may be dropped
+# BACKLOG - Nice to Have (lower priority than Goal-aligned features)
 # ═══════════════════════════════════════════════════════════════════════════════
 backlog:
-  - "CI Integration: GitHub Action for protocol validation"
-  - "JSON Schema: Editor autocomplete for protocol files"
-  - "VS Code Extension: Syntax highlighting, validation"
-  - "Experiential Continuity: Research on cross-session memory"
+  - "CI Integration: GitHub Action for protocol validation (nice to have)"
+  - "JSON Schema: Editor autocomplete for protocol files (nice to have)"
+  - "VS Code Extension: Syntax highlighting, validation (nice to have)"
+  - "Experiential Continuity: Research on cross-session memory (nice to have)"
