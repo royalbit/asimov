@@ -173,7 +173,7 @@ The protocol is designed so that IF alternatives emerge, migration is easy (it's
 | Self-healing | ✓ Full | ✗ None |
 | Hook refresh | ✓ Works | ✗ Can't |
 | Checkpoints | ✓ Auto-written | ✗ Manual |
-| 8-10hr unattended | ✓ Yes | ✗ No |
+| Multiple 4hr sprints | ✓ Yes | ✗ No |
 | Quality gates | ✓ Enforced | ✗ Trust-based |
 | Context recovery | ✓ Automatic | ✗ Start over |
 

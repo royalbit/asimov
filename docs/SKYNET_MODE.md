@@ -5,7 +5,7 @@
 
 ## What is SKYNET MODE?
 
-SKYNET MODE is a **complete autonomous AI development system** that enables 8-10 hour unattended coding sessions with consistent quality and shipping discipline.
+SKYNET MODE is a **complete autonomous AI development system** that enables bounded 4-hour sprints with consistent quality and shipping discipline. Self-healing enables multiple consecutive sessions without human intervention.
 
 It's not just one thing—it's five components working together:
 
@@ -228,7 +228,7 @@ claude --dangerously-skip-permissions
 
 | Metric | Without SKYNET | With SKYNET MODE |
 |--------|----------------|------------------|
-| Session length | 30-60min (manual intervention) | 8-10hr (unattended) |
+| Session length | 30-60min (manual intervention) | 4hr sprints (self-healing chains them) |
 | Shipping frequency | When human decides | Every session |
 | Quality consistency | Varies | Tests + zero warnings |
 | Context after compaction | Lost | Recovered |
