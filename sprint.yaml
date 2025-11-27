@@ -11,33 +11,83 @@ rules:
   mantra: "Done is better than perfect. Ship it."
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CURRENT SPRINT
+# CURRENT SPRINT: v2.0.0 - SPECIFICATION REWRITE (TOP PRIORITY)
 # ═══════════════════════════════════════════════════════════════════════════════
 sprint:
-  current: "v1.2.0 - Multi-Language Templates"
-  started: "2025-11-26"
-  status: done
+  current: "v2.0.0 - SPECIFICATION v2.0 Based on Reality"
+  started: "2025-11-27"
+  status: in_progress
 
-  completed:
-    - "[x] --type python template (pytest, ruff, mypy)"
-    - "[x] --type node template (npm, eslint, prettier, TypeScript)"
-    - "[x] --type go template (go test, golangci-lint, CGO_ENABLED)"
-    - "[x] Template aliases: py, js, javascript, nodejs, golang"
-    - "[x] Green coding in ALL templates by default"
-    - "[x] Unit tests (40 tests)"
-    - "[x] E2E tests (34 tests)"
-    - "[x] ADR-001: Green Coding By Default"
-    - "[x] Update SPECIFICATION.md with green_coding"
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CRITICAL PROBLEM STATEMENT
+  # ─────────────────────────────────────────────────────────────────────────────
+  # The current SPECIFICATION.md (v1.1.0) documents a MINIMAL protocol.
+  # But forge-protocol's OWN warmup.yaml (676 lines) uses features that
+  # aren't in the spec. We're not eating our own dog food.
+  #
+  # Worse: Self-healing is BROKEN. The "2hr checkpoint" is FICTION.
+  # We documented what we HOPED would work, not what ACTUALLY works.
+  #
+  # Fix: Research Forge's real patterns first, then rewrite the spec.
+  # ─────────────────────────────────────────────────────────────────────────────
 
-  next_up:
-    - "v1.3.0: GitHub Action for CI validation"
-    - "JSON Schema for editor autocomplete"
+  phase_1_research:
+    status: pending
+    description: "Study REAL compaction patterns before writing spec"
+    tasks:
+      - "[ ] Analyze Forge (royalbit/forge) for real compaction frequency"
+      - "[ ] Document when /compact ACTUALLY triggers"
+      - "[ ] Test what ACTUALLY survives compaction in CLAUDE.md"
+      - "[ ] Identify why self-healing is broken"
+      - "[ ] Study successful vs failed recovery patterns"
+
+  phase_2_specification:
+    status: blocked_by_research
+    description: "Rewrite spec based on research findings"
+    tasks:
+      - "[ ] Document SKYNET MODE 5-component system"
+      - "[ ] Document Bootstrap Chain (CLAUDE.md → warmup → checkpoint)"
+      - "[ ] Fix Self-Healing based on REAL patterns"
+      - "[ ] Add extended warmup.yaml schema sections"
+      - "[ ] Design modular structure (bin/) to deflate warmup"
+      - "[ ] Define checkpoint file format and ACTUAL triggers"
+
+  phase_3_implementation:
+    status: blocked_by_spec
+    description: "Update CLI and templates to match new spec"
+    tasks:
+      - "[ ] Update --skynet to generate modular structure"
+      - "[ ] Implement checkpoint file writing/reading"
+      - "[ ] Update CLAUDE.md template for real self-healing"
+      - "[ ] Add tests for new features"
+
+  deliverables:
+    - "SPECIFICATION.md v2.0"
+    - "Working self-healing (actually recovers)"
+    - "Modular warmup structure (bin/)"
+    - "ADR-003: Self-Healing Based on Real Patterns"
 
   notes: |
-    v1.2.0 - Multi-Language Templates
-    - All `forge-protocol init` projects are now green-coding projects
-    - 75 total tests (40 unit + 34 e2e + 1 doctest)
-    - See docs/adr/001-green-coding-by-default.md
+    v2.0.0 - SPECIFICATION REWRITE
+
+    Key insight from human: "the 2h checkpoint is NOT real, it's YOUR
+    imagination, not based in reality... /compact happens more often
+    than you think, and self-healing is broken even in forge"
+
+    Action: Research first, spec second. No more fiction.
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PREVIOUS SPRINT (completed)
+# ═══════════════════════════════════════════════════════════════════════════════
+previous:
+  sprint: "v1.4.0 - SKYNET MODE Setup"
+  status: done
+  date: "2025-11-26"
+  highlights:
+    - "forge-protocol init --skynet"
+    - "CLAUDE.md generation"
+    - "Pre-commit hooks"
+    - "5-component documentation"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # SESSION PHASES

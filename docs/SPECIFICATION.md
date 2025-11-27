@@ -1,12 +1,14 @@
 # Forge Protocol Specification
 
-Version 1.1.0
+Version 2.0.0
 
 ## Overview
 
-The Forge Protocol is a YAML-based standard for preserving project context across AI sessions. It enables any AI assistant to quickly understand a project's identity, structure, and workflow conventions.
+The Forge Protocol is a YAML-based standard for AI session continuity and autonomous development. It enables bounded, productive AI coding sessions that consistently ship working code.
 
 **All Forge Protocol projects are green-coding projects by default.** See [ADR-001](adr/001-green-coding-by-default.md).
+
+**Self-healing is based on real compaction data, not assumptions.** See [ADR-003](adr/003-self-healing-real-compaction-data.md).
 
 ## Design Principles
 
@@ -15,29 +17,139 @@ The Forge Protocol is a YAML-based standard for preserving project context acros
 3. **Minimal** - Include only what's needed
 4. **Self-documenting** - The protocol describes itself
 5. **Green by default** - Local-first tools over cloud AI for routine tasks
+6. **Recoverable over survivable** - Re-read from disk, don't try to survive compaction
+
+## SKYNET MODE
+
+SKYNET MODE is the complete autonomous AI development system. It consists of five components:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           SKYNET MODE                                   │
+│                  Autonomous AI Development System                       │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   ┌───────────────┐   ┌───────────────┐   ┌───────────────┐            │
+│   │   PROTOCOL    │   │    SPRINT     │   │    QUALITY    │            │
+│   │    FILES      │   │   AUTONOMY    │   │    GATES      │            │
+│   │               │   │               │   │               │            │
+│   │  warmup.yaml  │   │  4hr max      │   │  Tests pass   │            │
+│   │  sprint.yaml  │   │  1 milestone  │   │  Zero warns   │            │
+│   │  roadmap.yaml │   │  Then STOP    │   │  Then commit  │            │
+│   └───────────────┘   └───────────────┘   └───────────────┘            │
+│                                                                         │
+│   ┌───────────────┐   ┌───────────────┐                                │
+│   │     SELF      │   │    RELEASE    │                                │
+│   │    HEALING    │   │   DISCIPLINE  │                                │
+│   │               │   │               │                                │
+│   │  Re-read on   │   │  GitHub       │                                │
+│   │  confusion    │   │  + Registry   │                                │
+│   │  CLAUDE.md    │   │  Every time   │                                │
+│   └───────────────┘   └───────────────┘                                │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Why All Five Components?
+
+| Without... | Failure Mode |
+|------------|--------------|
+| Protocol Files | AI doesn't know project conventions |
+| Sprint Autonomy | Sessions run forever, nothing ships |
+| Quality Gates | Code ships with bugs and warnings |
+| Self-Healing | Rules forgotten after compaction |
+| Release Discipline | Code written but never released |
+
+**Remove any component and the system breaks.**
+
+### Platform Requirements
+
+| Feature | Any AI | Claude Code |
+|---------|--------|-------------|
+| Protocol files (paste/upload) | Yes | Yes |
+| SKYNET MODE (unattended) | No | Yes |
+| Self-Healing Protocol | No | Yes |
+
+SKYNET MODE requires Claude Code because it depends on:
+- Auto-loaded config (CLAUDE.md)
+- File system access mid-session
+- Re-read capability after compaction
+
+## The Bootstrap Chain
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        BOOTSTRAP CHAIN                                   │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│   CLAUDE.md              warmup.yaml           .claude_checkpoint.yaml   │
+│   (auto-loaded)          (full protocol)       (session state)           │
+│   ~5 lines               ~100-200 lines        ~20 lines                 │
+│                                                                          │
+│   ┌────────────┐         ┌────────────┐        ┌────────────┐           │
+│   │ BOOTSTRAP  │────────▶│ FULL RULES │───────▶│ CHECKPOINT │           │
+│   │ "re-read   │         │ Everything │        │ Progress   │           │
+│   │ warmup"    │         │ defined    │        │ Next steps │           │
+│   └────────────┘         └────────────┘        └────────────┘           │
+│        │                       │                     │                   │
+│   Survives              Re-read from            Written during           │
+│   compaction            disk on trigger         session                  │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
 ## File Structure
 
-```mermaid
-flowchart TB
-    subgraph Required
-        W[warmup.yaml]
-    end
-    subgraph Optional
-        S[sprint.yaml]
-        R[roadmap.yaml]
-    end
-    W --> S
-    W --> R
+### Standard Structure
+
+```
+project/
+├── warmup.yaml           # Required - Protocol rules
+├── sprint.yaml           # Optional - Current sprint
+├── roadmap.yaml          # Optional - Milestones
+├── CLAUDE.md             # Required for SKYNET - Bootstrap
+└── .claude_checkpoint.yaml  # Generated - Session state
 ```
 
-## warmup.yaml Schema
+### Modular Structure (Large Projects)
 
-The core protocol file. Must be in project root.
+```
+project/
+├── warmup.yaml           # Core only (~100 lines)
+├── .forge/               # Protocol modules
+│   ├── autonomy.yaml     # Session autonomy rules
+│   ├── quality.yaml      # Quality gates
+│   └── release.yaml      # Release workflow
+├── sprint.yaml
+├── roadmap.yaml
+├── CLAUDE.md
+└── .claude_checkpoint.yaml
+```
 
-### identity (required)
+## Protocol Files
 
-Project identity and metadata.
+### CLAUDE.md Schema (Required for SKYNET)
+
+The bootstrap file. Must be ultra-short to survive summarization.
+
+```markdown
+# {project-name}
+
+ON CONFUSION → re-read warmup.yaml
+
+Rules: 4hr max, 1 milestone, tests pass, ship.
+```
+
+**Constraints:**
+- Maximum 10 lines
+- Single critical instruction: "re-read warmup.yaml"
+- Core rules in one line
+
+### warmup.yaml Schema
+
+The master protocol file. Must be in project root.
+
+#### identity (required)
 
 ```yaml
 identity:
@@ -47,9 +159,7 @@ identity:
   philosophy: "Guiding principle"   # optional
 ```
 
-### mission (optional)
-
-Problem/solution framing.
+#### mission (optional)
 
 ```yaml
 mission:
@@ -60,9 +170,7 @@ mission:
     - "Principle two"
 ```
 
-### files (recommended)
-
-Key files for navigation.
+#### files (recommended)
 
 ```yaml
 files:
@@ -75,52 +183,43 @@ files:
     - "README.md - User docs"
 ```
 
-### session (recommended)
-
-Workflow guidance for AI.
+#### session (recommended)
 
 ```yaml
 session:
   start:
     - "Read warmup.yaml"
     - "git status"
-    - "Run tests"
   during:
-    - "Track progress"
+    - "Track progress with TodoWrite"
     - "Test frequently"
   end:
-    - "Verify tests pass"
-    - "Update changelog"
+    - "All tests pass"
+    - "Zero warnings"
+    - "Update documentation"
 ```
 
-### quality (optional)
-
-Quality gates and standards.
+#### quality (required for SKYNET)
 
 ```yaml
 quality:
-  tests: "All tests must pass"
-  warnings: "Zero warnings allowed"
-  coverage: "80% minimum"
+  tests: "cargo test"
+  warnings: "cargo clippy -- -D warnings"
+  formatting: "cargo fmt --check"
 ```
 
-### style (optional)
-
-Code and documentation style.
+#### style (optional)
 
 ```yaml
 style:
   code:
-    - "Use Result<T, E> for errors"
+    - "Result<T, E> for errors"
     - "No unwrap() in library code"
   docs:
     - "Markdown for documentation"
-    - "Mermaid for diagrams"
 ```
 
-### green_coding (recommended)
-
-Sustainability practices. **Included by default in all `forge-protocol init` templates.**
+#### green_coding (recommended)
 
 ```yaml
 green_coding:
@@ -128,42 +227,103 @@ green_coding:
   practices:
     - "Use CLI tools for validation, linting, formatting"
     - "Reserve AI for complex reasoning tasks"
-    - "Prefer compiled languages or efficient runtimes"
-    - "Minimize dependencies and binary sizes"
   why:
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
 ```
 
-#### Why Green Coding?
+#### self_healing (required for SKYNET)
 
-| Approach | Cost per File | Carbon | Speed |
-| -------- | ------------- | ------ | ----- |
-| AI validation | $0.002-0.04 | ~0.5g CO₂ | 1-3s |
-| Local CLI | $0 | ~0.002g CO₂ | <100ms |
+Based on real compaction data from [ADR-003](adr/003-self-healing-real-compaction-data.md).
 
-**Team savings:** $1,000-7,300/year for a 10-person team.
+```yaml
+self_healing:
+  # Checkpoint triggers (based on real compaction patterns)
+  checkpoint_triggers:
+    - "Every major task completion"
+    - "Every 10-15 tool calls (~15 min)"
+    - "Before any commit"
+    - "On any confusion"
 
-See [Green Coding Economics](GREEN_CODING.md) for full analysis and [ADR-001](adr/001-green-coding-by-default.md) for the decision rationale.
+  checkpoint_file: ".claude_checkpoint.yaml"
 
-## sprint.yaml Schema (Optional)
+  # Recovery instruction (must be short)
+  on_confusion: "Re-read warmup.yaml immediately"
 
-Active work tracking.
+  # Core rules that must survive (one line)
+  core_rules: "4hr max, 1 milestone, tests pass, ship it"
+```
+
+#### autonomous_development (required for SKYNET)
+
+```yaml
+autonomous_development:
+  # Session trigger
+  trigger_phrases:
+    - "run warmup"
+    - "warmup"
+
+  # Confirmation phrases
+  confirm_phrases:
+    - "go"
+    - "punch it"
+    - "ship it"
+    - "run"
+
+  # Boundaries
+  boundaries:
+    max_duration: "4 hours"
+    max_milestones: 1
+    scope_creep: "reject - note for next session"
+
+  # Anti-patterns to reject
+  anti_patterns:
+    - "Let me also..."
+    - "While I'm here..."
+    - "This would be better if..."
+```
+
+#### release (recommended)
+
+```yaml
+release:
+  checklist:
+    - "All tests pass"
+    - "Zero warnings"
+    - "Version bumped"
+    - "CHANGELOG updated"
+    - "Committed and tagged"
+
+  targets:
+    github: "git push origin main && git push origin vX.Y.Z"
+    registry: "cargo publish"  # or npm publish, etc.
+```
+
+### sprint.yaml Schema
+
+Active work tracking with session boundaries.
 
 ```yaml
 sprint:
   current: "Feature name or task"
   started: "2025-01-15"
-  status: "in_progress"  # planned | in_progress | blocked | done
+  status: in_progress  # planned | in_progress | blocked | done
+
+  # Boundaries (required for SKYNET)
+  boundaries:
+    max_duration: "4 hours"
+    max_milestones: 1
+
   tasks:
     - "[x] Task completed"
     - "[ ] Task pending"
+
   blockers: []
+
   notes: "Any relevant context"
 ```
 
-## roadmap.yaml Schema (Optional)
+### roadmap.yaml Schema
 
 Milestone planning.
 
@@ -174,34 +334,232 @@ metadata:
 
 current:
   version: "1.0.0"
-  status: "released"
+  status: released
   summary: "Initial release"
   highlights:
     - "Core feature one"
-    - "Core feature two"
 
 next:
   version: "1.1.0"
-  status: "planned"
+  status: planned
   summary: "Next milestone"
   features:
     - "Planned feature"
 
 backlog:
   - "Future idea one"
-  - "Future idea two"
+```
+
+### .claude_checkpoint.yaml Schema
+
+Session state file. Written during autonomous sessions, not committed to git.
+
+```yaml
+timestamp: "2025-01-15T10:30:00Z"
+session_started: "2025-01-15T09:00:00Z"
+tool_calls: 45
+
+milestone: "Add feature X"
+status: in_progress
+
+completed:
+  - "Task 1: Implemented core logic"
+  - "Task 2: Wrote unit tests"
+
+in_progress: "Task 3: Update documentation"
+
+next_steps:
+  - "Task 4: Integration tests"
+  - "Task 5: Update CHANGELOG"
+
+# Recovery hint
+on_confusion: "cat warmup.yaml"
+```
+
+**Must be in .gitignore:**
+```
+.claude_checkpoint.yaml
+```
+
+## Session Autonomy
+
+### The Session Flow
+
+```
+User: "run warmup"
+  ↓
+AI: Reads warmup.yaml, sprint.yaml, roadmap.yaml
+AI: Presents next milestone
+  ↓
+User: "go" / "punch it" / "ship it"
+  ↓
+AI: AUTONOMOUS EXECUTION
+  - Makes all decisions independently
+  - Writes checkpoints every ~15 min
+  - Runs tests frequently
+  - NO questions (uses best judgment)
+  - STOPS at 4 hours
+  ↓
+AI: Quality gates (tests, warnings)
+  ↓
+AI: Release (commit, tag, push, publish)
+  ↓
+AI: Report results
+```
+
+### Checkpoint Triggers
+
+Based on real compaction data (see [ADR-003](adr/003-self-healing-real-compaction-data.md)):
+
+| Trigger | Rationale |
+|---------|-----------|
+| Every major task | Natural breakpoint |
+| Every 10-15 tool calls | ~15 min of work |
+| Before file write >100 lines | Significant change |
+| Before any commit | Quality gate |
+| On any confusion | Recovery signal |
+
+**NOT "every 2 hours"** - compaction happens every 10-20 minutes with heavy reasoning.
+
+### Anti-Patterns (Reject)
+
+| Anti-Pattern | Response |
+|--------------|----------|
+| "While I'm here..." | "Noted for next session. Shipping current work." |
+| "Let me also..." | "Out of scope. Added to backlog." |
+| "This would be better if..." | "Refactoring noted. Shipping as-is." |
+
+## Self-Healing Protocol
+
+### Why Recovery > Survival
+
+| Approach | Strategy | Result |
+|----------|----------|--------|
+| Survival | Make rules survive compaction | **Fails** - summarizer compresses everything |
+| Recovery | Re-read from disk after compaction | **Works** - files are always available |
+
+### The Three Files
+
+| File | Purpose | Size | Committed |
+|------|---------|------|-----------|
+| CLAUDE.md | Bootstrap trigger | ~5 lines | Yes |
+| warmup.yaml | Full protocol | ~100-200 lines | Yes |
+| .claude_checkpoint.yaml | Session state | ~20 lines | No |
+
+### Recovery Flow
+
+```
+Context compacted
+  ↓
+AI confused / rules lost
+  ↓
+CLAUDE.md instruction survives: "re-read warmup.yaml"
+  ↓
+AI reads warmup.yaml from disk
+  ↓
+Rules restored
+  ↓
+AI reads .claude_checkpoint.yaml
+  ↓
+Progress restored
+  ↓
+Continue working
+```
+
+## Quality Gates
+
+All quality checks must pass before any commit or release.
+
+### Required Checks
+
+```yaml
+quality:
+  tests: "All tests must pass"
+  warnings: "Zero warnings allowed"
+```
+
+### Language-Specific
+
+| Language | Tests | Lint | Format |
+|----------|-------|------|--------|
+| Rust | `cargo test` | `cargo clippy -- -D warnings` | `cargo fmt` |
+| Python | `pytest` | `ruff check .` | `ruff format .` |
+| Node.js | `npm test` | `npm run lint` | `npm run format` |
+| Go | `go test ./...` | `golangci-lint run` | `go fmt ./...` |
+
+## Release Discipline
+
+Every session ends with a release. No "work in progress" commits.
+
+### Release Checklist
+
+1. All tests pass
+2. Zero warnings
+3. Version bumped in config
+4. CHANGELOG.md updated
+5. Committed with message format
+6. Tagged with version
+7. Pushed to origin
+8. Published to registry (if applicable)
+
+### Commit Message Format
+
+```
+<type>: <description>
+
+<body>
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+
+## CLI Support
+
+### Installation
+
+```bash
+cargo install forge-protocol
+```
+
+### Commands
+
+```bash
+# Generate protocol files
+forge-protocol init                    # Basic warmup.yaml
+forge-protocol init --type rust        # Language-specific
+forge-protocol init --full             # All three files
+forge-protocol init --skynet           # Full SKYNET MODE setup
+
+# Validate
+forge-protocol validate                # All files
+forge-protocol validate warmup.yaml    # Specific file
+
+# Lint documentation
+forge-protocol lint-docs               # Check markdown
+forge-protocol lint-docs --fix         # Auto-fix issues
+```
+
+### --skynet Flag
+
+Generates complete SKYNET MODE setup:
+
+```
+✓ warmup.yaml      - Protocol rules
+✓ sprint.yaml      - Session boundaries
+✓ roadmap.yaml     - Milestone planning
+✓ CLAUDE.md        - Self-healing trigger
+✓ .hooks/          - Pre-commit hooks
+✓ .gitignore       - Checkpoint file excluded
 ```
 
 ## Activation
 
-Add to your AI assistant's configuration:
-
-```text
-If there is a warmup.yaml file in the root of the working directory,
-read it as a working protocol before proceeding.
-```
-
 ### Claude Code (CLAUDE.md)
+
+Add to `~/.claude/CLAUDE.md` or project `CLAUDE.md`:
 
 ```markdown
 - If there is a warmup.yaml file in the root of the working dir, run it as working protocol
@@ -209,36 +567,18 @@ read it as a working protocol before proceeding.
 
 ### Other AI Assistants
 
-Add equivalent instruction to system prompt or custom instructions.
-
-## Session Flow
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant AI as AI Assistant
-    participant P as Protocol Files
-
-    U->>AI: Start session
-    AI->>P: Read warmup.yaml
-    P-->>AI: Identity, files, workflow
-    AI->>P: Read sprint.yaml (if exists)
-    P-->>AI: Current work context
-    AI->>U: Context restored, ready to work
-
-    loop During Session
-        AI->>AI: Follow session.during
-        AI->>P: Update sprint.yaml
-    end
-
-    AI->>AI: Follow session.end
-    AI->>P: Update files as needed
-```
+Paste warmup.yaml content at session start. Note: Self-healing won't work without file system access.
 
 ## Best Practices
 
-1. **Keep warmup.yaml focused** - Only include what helps restore context
+1. **Keep CLAUDE.md ultra-short** - Must survive summarization
 2. **Update sprint.yaml actively** - Track work in progress
-3. **Use roadmap.yaml for planning** - Not for daily tracking
-4. **Commit protocol files** - They're part of your codebase
-5. **Review periodically** - Remove stale information
+3. **Commit protocol files** - They're part of your codebase
+4. **Use checkpoints** - Write state frequently, not on schedule
+5. **Review after compaction** - Check if rules are still understood
+
+## Architecture Decisions
+
+- [ADR-001: Green Coding By Default](adr/001-green-coding-by-default.md)
+- [ADR-002: Self-Healing Protocol](adr/002-self-healing-protocol.md) (superseded by ADR-003)
+- [ADR-003: Self-Healing Based on Real Compaction Data](adr/003-self-healing-real-compaction-data.md)

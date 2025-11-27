@@ -1,47 +1,115 @@
 # Forge Protocol Roadmap
 
 metadata:
-  current_version: "1.2.0"
-  last_updated: "2025-11-26"
+  current_version: "2.0.0"
+  last_updated: "2025-11-27"
   philosophy: "Vendor-neutral AI session continuity. Green by default."
 
-# Current Release
-current:
-  version: "1.2.0"
-  status: released
-  date: "2025-11-26"
-  summary: "Multi-Language Templates"
-  highlights:
-    - "Language templates: `--type python`, `--type node`, `--type go`"
-    - "Template aliases: `py`, `js`, `golang`"
-    - "Green coding in all templates by default"
-    - "75 tests (40 unit + 34 e2e + 1 doctest)"
+# ═══════════════════════════════════════════════════════════════════════════════
+# TOP PRIORITY: SPECIFICATION v2.0 - SKYNET MODE Edition
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# CRITICAL: The current specification (v1.1.0) documents a MINIMAL protocol
+# but Forge Protocol's own warmup.yaml uses UNDOCUMENTED features that make
+# SKYNET MODE actually work. We're not eating our own dog food.
+#
+# Problems to solve:
+#   1. SKYNET MODE (5-component system) not in spec
+#   2. Self-Healing Protocol not in spec
+#   3. Bootstrap chain (CLAUDE.md → warmup → checkpoint) not documented
+#   4. "2hr checkpoint" is FICTION - need to study REAL compaction patterns
+#   5. .claude_checkpoint.yaml exists in .gitignore but is NEVER WRITTEN
+#   6. warmup.yaml is 676 lines - needs modular structure (bin/)
+#
+# Research required:
+#   - Study Forge (royalbit/forge) daily work to understand REAL patterns
+#   - When does /compact actually trigger?
+#   - What ACTUALLY survives compaction?
+#   - What recovery patterns ACTUALLY work?
+#
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# Previous Release
+# Previous Releases
 previous:
-  version: "1.1.0"
-  status: released
-  date: "2025-11-26"
-  summary: "CLI Tooling & Green Coding Core"
-  highlights:
-    - "CLI validator: `forge-protocol validate`"
-    - "Template generator: `forge-protocol init`"
-    - "Language-specific templates: `--type rust` (generic default)"
-    - "Green coding as protocol core (ADR-001)"
-    - "Built-in help: `-h` / `--help`"
+  - version: "1.4.0"
+    status: released
+    date: "2025-11-26"
+    summary: "SKYNET MODE Setup"
+    highlights:
+      - "`forge-protocol init --skynet` - Full autonomous setup"
+      - "CLAUDE.md generation for self-healing trigger"
+      - "Pre-commit hooks for quality enforcement"
 
-# Next Milestone
+  - version: "1.3.0"
+    status: released
+    date: "2025-11-26"
+    summary: "Documentation Linter"
+    highlights:
+      - "`forge-protocol lint-docs` with auto-fix"
+      - "79 tests"
+
+  - version: "1.2.0"
+    status: released
+    date: "2025-11-26"
+    summary: "Multi-Language Templates"
+    highlights:
+      - "Python, Node, Go templates"
+      - "Green coding in all templates"
+
+  - version: "1.1.0"
+    status: released
+    date: "2025-11-26"
+    summary: "CLI Tooling"
+    highlights:
+      - "Validator and template generator"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CURRENT: v2.0.0 - SPECIFICATION REWRITE (IN PROGRESS)
+# ═══════════════════════════════════════════════════════════════════════════════
+current:
+  version: "2.0.0"
+  status: in_progress
+  summary: "SPECIFICATION v2.0 - Based on Real Compaction Data"
+  priority: TOP
+  date: "2025-11-27"
+
+  completed:
+    - "[x] Research: Analyzed forge-protocol git log for compaction patterns"
+    - "[x] Research: Documented real compaction frequency (10-20 min, not 2hr)"
+    - "[x] Research: Identified why self-healing was broken"
+    - "[x] ADR-003: Self-Healing Based on Real Compaction Data"
+    - "[x] SPECIFICATION.md v2.0 with SKYNET MODE"
+    - "[x] CLAUDE.md: Ultra-short for survival"
+    - "[x] warmup.yaml: Realistic checkpoint triggers"
+    - "[x] CHANGELOG.md: v2.0.0 release notes"
+
+  remaining:
+    - "[ ] Run tests (cargo test)"
+    - "[ ] Run clippy (zero warnings)"
+    - "[ ] Commit and tag v2.0.0"
+    - "[ ] Push to GitHub"
+
+  research_findings:
+    compaction_frequency: "Every 10-20 minutes with MAX_THINKING_TOKENS=200000"
+    context_fill_rate: "1-3 heavy turns fills 200k context"
+    session_compactions: "5-10 compactions per 1.5hr session"
+    key_insight: "Recovery > Survival - re-read from disk, don't try to survive"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# NEXT MILESTONE: v2.1.0 - Modular Structure Implementation
+# ═══════════════════════════════════════════════════════════════════════════════
 next:
-  version: "1.3.0"
+  version: "2.1.0"
   status: planned
-  summary: "CI & Editor Support"
+  summary: "Modular Protocol Structure (.forge/ directory)"
   features:
-    - "GitHub Action for CI validation"
-    - "JSON Schema for editor autocomplete"
-    - "More examples (Java, documentation-only repos)"
+    - "Split warmup.yaml into .forge/ modules"
+    - "Update CLI to generate modular structure"
+    - "Implement checkpoint file writing in autonomous flow"
+    - "Add forge-protocol checkpoint command"
 
-# Backlog
+# Backlog (after v2.1.0)
 backlog:
-  - "VS Code extension (syntax highlighting, snippets)"
-  - "Integration guides for popular AI assistants"
-  - "Experiential Continuity Layer (research)"
+  - "CI & Editor Support: GitHub Action, JSON Schema for autocomplete"
+  - "Extensions: VS Code extension, integration guides"
+  - "Research: Experiential Continuity Layer"
