@@ -168,24 +168,16 @@ Every session is a **bounded sprint**:
 
 # Compatibility (Hard Truth)
 
-<div class="small">
-
-| AI Tool | Files | SKYNET | Why |
-|---------|-------|--------|-----|
-| **Claude Code** | ✓ Auto | ✓ Full | **Use this** |
-| ChatGPT | Paste | **Never** | Cloud-sandboxed |
-| Copilot | N/A | **Never** | Autocomplete only |
-| Cursor | ✓ | **Unlikely** | No terminal→context |
-
-</div>
-
-**Why "Never"?** Needs 4 things only Claude Code has:
-- Persistent context that compacts
-- Terminal visibility (hooks reach AI)
-- File re-read mid-session
-- Auto-loaded config (CLAUDE.md)
+| AI Tool | SKYNET | Why |
+|---------|--------|-----|
+| **Claude Code** | ✓ | **Use this** |
+| ChatGPT | **Never** | Cloud-sandboxed |
+| Copilot | **Never** | Autocomplete |
+| Cursor | **Unlikely** | Missing arch |
 
 *Files portable. Magic isn't.*
+
+**Details:** github.com/royalbit/forge-protocol/docs/VENDOR_IMPLEMENTATION.md
 
 ---
 
