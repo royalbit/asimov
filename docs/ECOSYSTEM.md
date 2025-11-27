@@ -24,15 +24,15 @@ flowchart TB
     subgraph foss["OPEN SOURCE"]
         FORGE[Forge Calculator<br/>Rust • 183 tests]
         ZED[Zed Extension<br/>WASM]
-        VSCODE[VSCode Extension<br/>TypeScript]
+        PROTOCOL[Forge Protocol<br/>Rust CLI • 79 tests]
     end
 
     subgraph proprietary["PROPRIETARY ECOSYSTEM"]
         API[Backend API<br/>Rust + Axum]
-        PROTO[Mobile Prototype<br/>Flutter • 161 tests]
+        PROTO[Mobile App<br/>Flutter]
         ARCH[Architecture Docs<br/>C4 + ADRs]
         BIZ[Business Strategy<br/>Financial Models]
-        ENRICH[Data Enrichment<br/>Python]
+        ENRICH[Data Services<br/>Rust + gRPC]
     end
 
     protocol --> foss
@@ -46,12 +46,13 @@ The same AI (Claude Opus 4.5) serves different roles depending on the project:
 | Repository | AI Role | Responsibilities |
 | ---------- | ------- | ---------------- |
 | **forge** | Principal Engineer | Full ownership of Rust codebase, 183 tests |
+| **forge-protocol** | Principal Engineer | CLI, specification, 79 tests |
 | **forge-zed** | Extension Developer | WASM extension, LSP integration |
-| **backend-api** | Principal Backend Engineer | Attribution engine, API design, <2ms queries |
-| **mobile-proto** | Principal Mobile Engineer | Flutter app, 161 tests, glassmorphism UI |
+| **backend-api** | Principal Backend Engineer | Core API, performance-critical queries |
+| **mobile-app** | Principal Mobile Engineer | Flutter app, production-quality UI |
 | **architecture** | Principal AI Architect | C4 diagrams, ADRs, cross-repo consistency |
-| **business** | AI Strategist | Financial models, 850+ formulas |
-| **data-enrich** | Principal Engineer | Data pipelines, enrichment |
+| **business** | AI Strategist | Financial models, grant applications |
+| **data-services** | Principal Engineer | Data pipelines, gRPC services |
 
 ## The Master Roadmap
 
@@ -141,22 +142,18 @@ The `master-roadmap.yaml` coordinates across repositories:
 | Metric | Value |
 | ------ | ----- |
 | Repositories | 6+ |
-| Master roadmap | 1,100+ lines |
-| Mobile tests | 161 (prototype) |
-| Demo tests | 213 |
-| Financial formulas | 850+ |
+| Master roadmap | 1,000+ lines |
+| Tech stacks | Rust, Flutter, gRPC |
 | API endpoints | 15+ working |
-| Database indexes | 70+ |
-| Planned mobile apps | 4 |
+| Mobile apps | Multiple planned |
 
-### Attribution Engine (The Moat)
+### Core Engine (Competitive Advantage)
 
 | Metric | Value |
 | ------ | ----- |
-| Query latency | <2ms |
-| Accuracy | 97% |
-| Tracking levels | 3-tier hierarchical |
-| Status | Production ready |
+| Query latency | Sub-millisecond |
+| Architecture | Production-ready |
+| Test coverage | Comprehensive |
 
 ## The Velocity Transformation
 
@@ -258,7 +255,7 @@ Local validation + deterministic execution:
 
 ### The Infrastructure Moat
 
-RoyalBit's proprietary ecosystem uses Rust + UPX compression for backend services:
+The proprietary ecosystem uses Rust + UPX compression for backend services:
 
 | Metric | Competitors (Node.js/Python) | With Protocol (Rust + UPX) | Advantage |
 | ------ | ---------------------------- | -------------------------- | --------- |
