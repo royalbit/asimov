@@ -9,7 +9,7 @@
 
 **AI session continuity framework. Zero tokens. Zero emissions.**
 
-Green by design. Best experienced with Claude Code.
+Green by design. **SKYNET MODE requires Claude Code.**
 
 ## The Problem
 
@@ -19,7 +19,9 @@ AI hallucinates. It invents project conventions. It forgets rules mid-session. I
 
 **Ground AI in file-based truth.**
 
-A simple YAML file (`warmup.yaml`) that any AI can read to restore project context. Not from memory. From disk.
+A simple YAML file (`warmup.yaml`) that grounds AI in file-based truth. Not from memory. From disk.
+
+*The file format works with any AI (paste it). SKYNET MODE's magic requires Claude Code.*
 
 ## Core Goals
 

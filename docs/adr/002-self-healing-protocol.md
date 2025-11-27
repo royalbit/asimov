@@ -6,7 +6,7 @@
 
 ## Context
 
-Long autonomous AI sessions (8-10 hours) face a fundamental problem: context compaction.
+Multiple autonomous AI sessions (4-hour sprints chained via self-healing) face a fundamental problem: context compaction.
 
 ### The Problem
 
@@ -141,7 +141,7 @@ Separation provides defense in depth. If one mechanism fails, others remain.
 
 ### Positive
 
-- **True unattended autonomy**: 8-10hr sessions that follow rules
+- **True unattended autonomy**: Multiple 4hr sprints chained via self-healing
 - **Portable**: Travels with git, works on any machine with Claude Code
 - **File format universal**: warmup.yaml can be used with any AI (paste)
 - **Battle-tested**: Deployed across 9 production projects

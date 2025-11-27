@@ -507,17 +507,14 @@ Many AI tools push vendor-specific configuration files:
 
 ### The Meritocracy Principle
 
-The warmup.yaml protocol works with ANY AI that can:
-1. Read a YAML file
-2. Follow structured instructions
-3. Use standard development tools
+The warmup.yaml **file format** works with any AI that can read YAML. Paste it into ChatGPT, Gemini, or any future AI—they'll understand your project context.
 
-Today, Claude is the best AI for this work. Tomorrow, it might be Grok, GPT-5, or something new. The protocol doesn't care. **The best AI wins.**
+**But SKYNET MODE (autonomous operation) requires Claude Code.** Other AIs have different architectures for different use cases. The magic isn't in the files—it's in Claude Code's ability to re-read them mid-session after context compaction.
 
 ### Principles
 
-- **warmup.yaml** - Universal, any AI can read it
-- **No vendor lock-in** - Switch AIs without changing workflow
+- **warmup.yaml** - Portable file format (paste anywhere)
+- **SKYNET MODE** - Requires Claude Code (architectural dependency)
 - **Open standards** - YAML, Git, Cargo, standard tools
 - **Earned ownership** - AI gets credit when it delivers
 
