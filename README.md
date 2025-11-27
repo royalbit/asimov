@@ -310,11 +310,18 @@ flowchart LR
 
 > **Note:** This feature requires **Claude Code**. See [Compatibility](#compatibility) for details.
 
-**The key enabler for 8-10 hour autonomous sessions.**
+**The key enabler for autonomous sessions.**
 
 ### The Problem
 
-During long autonomous sessions, Claude Code's auto-compact summarizes conversation history. Rules defined in warmup.yaml get compressed. The AI "forgets" guidelines and starts making mistakes.
+During autonomous sessions, Claude Code's auto-compact summarizes conversation history. Rules defined in warmup.yaml get compressed. The AI "forgets" guidelines and starts making mistakes.
+
+### The Reality (ADR-003)
+
+**v1.x assumed:** Checkpoint every 2 hours
+**v2.0 research found:** Compaction happens every **10-20 minutes** with heavy reasoning
+
+With `MAX_THINKING_TOKENS=200000`, context fills in 1-3 turns. The "2hr checkpoint" never triggered because compaction happened 5-10x faster.
 
 ### The Insight
 
@@ -332,20 +339,19 @@ It's like databases: don't try to make transactions survive crashes - use write-
 │                                                                 │
 │  CLAUDE.md (auto-loaded)     warmup.yaml (full rules)          │
 │  ┌─────────────────────┐     ┌─────────────────────┐           │
-│  │ Core rules (short)  │     │ Complete protocol   │           │
-│  │ "Re-read warmup.yaml│────▶│ self_healing:       │           │
-│  │  after compaction"  │     │   triggers:         │           │
-│  └─────────────────────┘     │     every_2_hours   │           │
-│                              │     before_commit   │           │
-│                              │     when_confused   │           │
+│  │ Ultra-short (~5 ln) │     │ Complete protocol   │           │
+│  │ "ON CONFUSION →     │────▶│ self_healing:       │           │
+│  │  re-read warmup"    │     │   checkpoint_triggers│          │
+│  └─────────────────────┘     │   on_confusion      │           │
+│                              │   core_rules        │           │
 │                              └──────────┬──────────┘           │
 │                                         │                       │
 │                                         ▼                       │
 │                              .claude_checkpoint.yaml            │
 │                              ┌─────────────────────┐           │
 │                              │ Session state       │           │
-│                              │ Progress breadcrumbs│           │
-│                              │ Rules reminder      │           │
+│                              │ tool_calls count    │           │
+│                              │ on_confusion hint   │           │
 │                              └─────────────────────┘           │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -357,27 +363,22 @@ It's like databases: don't try to make transactions survive crashes - use write-
 flowchart TD
     A[Session Start] --> B[Load CLAUDE.md + warmup.yaml]
     B --> C[Autonomous Work]
-    C --> D{Auto-compact triggers}
-    D --> E[Rules lost/summarized]
-    E --> F{2hr checkpoint}
-    F --> G[Re-read warmup.yaml from disk]
-    G --> H[Rules restored]
-    H --> C
+    C --> D{Confusion or ~15 tool calls}
+    D --> E[Write checkpoint]
+    E --> F[Re-read warmup.yaml from disk]
+    F --> G[Rules restored]
+    G --> C
 ```
 
 ### Implementation
 
-**1. CLAUDE.md** (travels with repo, ~40 lines)
+**1. CLAUDE.md** (ultra-short, ~5 lines)
 ```markdown
-## CRITICAL: Self-Healing Protocol
-After ANY compaction/confusion, RE-READ:
-1. warmup.yaml
-2. .claude_checkpoint.yaml (if exists)
+# Project Name
 
-## Checkpoints (MANDATORY)
-- Every 2 hours: checkpoint + re-read warmup.yaml
-- Before commit: re-read quality gates
-- When confused: STOP → re-read → resume
+ON CONFUSION → re-read warmup.yaml + .claude_checkpoint.yaml
+
+Rules: 4hr max, 1 milestone, tests pass, ship.
 ```
 
 **2. warmup.yaml** (self_healing section)
@@ -385,39 +386,36 @@ After ANY compaction/confusion, RE-READ:
 self_healing:
   checkpoint_file: ".claude_checkpoint.yaml"
 
-  mandatory_triggers:
-    every_2_hours:
-      - "Write progress to .claude_checkpoint.yaml"
-      - "Re-read this warmup.yaml completely"
-    before_any_commit:
-      - "Re-read quality gates"
-    when_confused:
-      - "STOP → re-read → resume"
+  # REALISTIC triggers (not 2hr fiction)
+  checkpoint_triggers:
+    - "Every major task completion"
+    - "Every 10-15 tool calls (~15 min)"
+    - "Before any commit"
+    - "On ANY confusion"
 
-  core_rules_summary:
-    - "4hr MAX, 1 milestone, NO scope creep"
-    - "Tests pass + ZERO warnings → commit"
-    - "Done > Perfect. Ship it."
+  on_confusion: "STOP → re-read warmup.yaml"
+  core_rules: "4hr max, 1 milestone, tests pass, ship it"
 ```
 
 **3. .claude_checkpoint.yaml** (written during session)
 ```yaml
-timestamp: "2025-11-26T03:00:00Z"
-session_started: "2025-11-26T01:00:00Z"
+timestamp: "2025-11-27T10:30:00Z"
+session_started: "2025-11-27T09:00:00Z"
+tool_calls: 45
+
 milestone: "Add feature X"
 completed: ["Task 1", "Task 2"]
 in_progress: "Task 3"
-rules_reminder:
-  - "4hr max - check timestamp"
-  - "NO scope creep"
+
+on_confusion: "cat warmup.yaml"
 ```
 
 ### Why It Works
 
 | Component | Survives Compact? | Recovery Method |
 |-----------|-------------------|-----------------|
-| CLAUDE.md | Partially (system prompt) | Auto-loaded at session start |
-| warmup.yaml | No | Re-read from disk at checkpoint |
+| CLAUDE.md | Yes (ultra-short) | Auto-loaded, single instruction |
+| warmup.yaml | No | Re-read from disk on confusion |
 | .claude_checkpoint.yaml | N/A (on disk) | Always available |
 
 The "re-read warmup.yaml" instruction is short enough to survive summarization. Even if all other rules are lost, the AI knows to reload them.
@@ -427,14 +425,13 @@ The "re-read warmup.yaml" instruction is short enough to survive summarization. 
 | Problem | Traditional | Self-Healing |
 |---------|-------------|--------------|
 | Database crash | Hope data survives | Write-ahead log + replay |
-| Context compact | Hope rules survive | **Checkpoint + re-read** |
+| Context compact | Hope rules survive | **Re-read from disk** |
 
 ### Results
 
-- **8-10 hour unattended sessions** that follow rules
+- **Autonomous sessions** that follow rules
 - **Portable** - travels with git, works on any machine
-- **AI-agnostic** - any AI that reads CLAUDE.md can use it
-- **Battle-tested** - powers 9+ production projects
+- **Based on real data** - not assumptions (see [ADR-003](docs/adr/003-self-healing-real-compaction-data.md))
 
 See [Component 4: Self-Healing](docs/components/4-SELF_HEALING.md) for details.
 
@@ -448,7 +445,7 @@ See [Component 4: Self-Healing](docs/components/4-SELF_HEALING.md) for details.
 1. [Protocol Files](docs/components/1-PROTOCOL_FILES.md) - warmup.yaml, sprint.yaml, roadmap.yaml
 2. [Sprint Autonomy](docs/components/2-SPRINT_AUTONOMY.md) - Bounded sessions that ship
 3. [Quality Gates](docs/components/3-QUALITY_GATES.md) - Tests pass + zero warnings
-4. [Self-Healing](docs/components/4-SELF_HEALING.md) - Survive context compaction
+4. [Self-Healing](docs/components/4-SELF_HEALING.md) - Recover from context compaction
 5. [Release Discipline](docs/components/5-RELEASE_DISCIPLINE.md) - Triple release to everywhere
 
 ### Reference
@@ -459,6 +456,7 @@ See [Component 4: Self-Healing](docs/components/4-SELF_HEALING.md) for details.
 ### Architecture Decisions
 - [ADR-001: Green Coding By Default](docs/adr/001-green-coding-by-default.md)
 - [ADR-002: Self-Healing Protocol](docs/adr/002-self-healing-protocol.md)
+- [ADR-003: Self-Healing Based on Real Compaction Data](docs/adr/003-self-healing-real-compaction-data.md) - **v2.0**
 
 ## Origin
 

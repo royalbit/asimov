@@ -5,6 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-11-27
+
+### BREAKING: Specification Rewrite Based on Real Data
+
+This release rewrites the protocol specification based on **empirical research** from building forge-protocol itself, not assumptions.
+
+### The Problem We Fixed
+
+The "2-hour checkpoint" in v1.x was **fiction** - a reasonable-sounding number not based on reality.
+
+**Research findings (ADR-003):**
+- With `MAX_THINKING_TOKENS=200000`, compaction happens every **10-20 minutes**
+- The "2hr checkpoint" never triggered because compaction happened 5-10x faster
+- Self-healing was broken because it relied on AI memory, which gets wiped
+
+### What Changed
+
+| v1.x (Fiction) | v2.0 (Reality) |
+|----------------|----------------|
+| Checkpoint every 2 hours | Checkpoint every 10-15 tool calls |
+| Hope rules survive compaction | Re-read from disk on confusion |
+| Complex CLAUDE.md | Ultra-short CLAUDE.md (~5 lines) |
+| 676-line warmup.yaml | Modular structure proposed |
+
+### Added
+
+- **ADR-003**: Self-Healing Based on Real Compaction Data
+- **SPECIFICATION.md v2.0**: Complete rewrite with SKYNET MODE documentation
+- **Bootstrap Chain**: CLAUDE.md → warmup.yaml → checkpoint documented
+- **Checkpoint triggers**: Based on tool calls, not time
+- **Confusion signals**: Patterns that indicate need for recovery
+- **Modular structure**: `.forge/` directory for large projects
+
+### Changed
+
+- **CLAUDE.md**: Reduced to ~15 lines (was 37), focused on recovery instruction
+- **warmup.yaml self_healing**: Based on real compaction patterns
+- **Version**: 2.0.0 (major version bump for breaking spec changes)
+
+### Research Data
+
+```
+forge-protocol build stats:
+- Total commits: 32
+- Time: ~4-5 hours across 3 sessions
+- Estimated compactions: 15-30 total
+- Compaction interval: ~10-20 minutes
+
+Environment analyzed:
+- MAX_THINKING_TOKENS=200000
+- Opus 4.5 context window: 200k tokens
+- Result: Context fills in 1-3 heavy turns
+```
+
+### Documentation
+
+- [ADR-003](docs/adr/003-self-healing-real-compaction-data.md) - Full research analysis
+- [SPECIFICATION.md](docs/SPECIFICATION.md) - Protocol v2.0
+
 ## [1.4.0] - 2025-11-26
 
 ### Added

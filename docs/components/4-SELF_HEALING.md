@@ -1,14 +1,29 @@
 # Component 4: Self-Healing
 
-> **Survive context compaction - re-read rules from disk**
+> **Recover from context compaction - re-read rules from disk**
 
 ## Overview
 
 Self-Healing solves a critical problem: **AI forgets rules after context compaction**.
 
-During long sessions (2-4+ hours), Claude Code compresses conversation history. Rules get summarized away. The AI "forgets" project conventions.
+During autonomous sessions, Claude Code compresses conversation history. Rules get summarized away. The AI "forgets" project conventions.
 
 Self-Healing fixes this by **re-reading rules from disk** instead of trying to preserve them in memory.
+
+## The Reality (ADR-003)
+
+**v1.x assumed:** Checkpoint every 2 hours
+**v2.0 research found:** Compaction happens every **10-20 minutes** with heavy reasoning
+
+```
+With MAX_THINKING_TOKENS=200000:
+- Context window: 200k tokens
+- Thinking budget: 200k tokens
+- Context fills in: 1-3 heavy turns
+- Compaction interval: ~10-20 minutes (not 2 hours!)
+```
+
+See [ADR-003](../adr/003-self-healing-real-compaction-data.md) for the full research.
 
 ## The Problem
 
@@ -34,9 +49,9 @@ As documented by DoltHub:
 │   CLAUDE.md              warmup.yaml         checkpoint.yaml│
 │  (auto-loaded)           (full rules)        (session state)│
 │  ┌───────────┐          ┌───────────┐       ┌───────────┐  │
-│  │ Short     │          │ Complete  │       │ Progress  │  │
-│  │ rules +   │─────────▶│ protocol  │──────▶│ + next    │  │
-│  │ "re-read" │          │ + gates   │       │ steps     │  │
+│  │ Ultra-    │          │ Complete  │       │ Progress  │  │
+│  │ short +   │─────────▶│ protocol  │──────▶│ + hints   │  │
+│  │ "re-read" │          │ + gates   │       │           │  │
 │  └───────────┘          └───────────┘       └───────────┘  │
 │       │                       │                   │        │
 │       └───────────────────────┴───────────────────┘        │
@@ -47,55 +62,65 @@ As documented by DoltHub:
 
 ## The Three Files
 
-### 1. CLAUDE.md (Auto-loaded)
+### 1. CLAUDE.md (Auto-loaded, Ultra-Short)
 
-Short, survives summarization. Contains the critical instruction:
+Must survive summarization. Single critical instruction:
 
 ```markdown
-## CRITICAL: Self-Healing Protocol
+# Project Name
 
-After ANY compaction or confusion, RE-READ:
-1. warmup.yaml - Full protocol and rules
-2. .claude_checkpoint.yaml - Session state (if exists)
+ON CONFUSION → re-read warmup.yaml + .claude_checkpoint.yaml
+
+Rules: 4hr max, 1 milestone, tests pass, ship.
 ```
 
 ### 2. warmup.yaml (Full Rules)
 
-Complete protocol on disk. Re-read when needed:
+Complete protocol on disk. Re-read when confused:
 
 ```yaml
-quality:
-  tests: "cargo test"
-  warnings: "cargo clippy -- -D warnings"
-
 self_healing:
-  checkpoint_interval: "2 hours"
-  on_confusion: "Re-read warmup.yaml"
+  checkpoint_triggers:
+    - "Every major task completion"
+    - "Every 10-15 tool calls (~15 min)"
+    - "Before any commit"
+    - "On ANY confusion"
+
+  on_confusion: "STOP → re-read warmup.yaml"
+  core_rules: "4hr max, 1 milestone, tests pass, ship it"
 ```
 
 ### 3. .claude_checkpoint.yaml (Session State)
 
-Written every 2 hours. Contains progress and next steps:
+Written during session. Contains progress and recovery hint:
 
 ```yaml
-timestamp: "2025-11-26T15:30:00Z"
+timestamp: "2025-11-27T10:30:00Z"
+session_started: "2025-11-27T09:00:00Z"
+tool_calls: 45
+
 milestone: "Add user authentication"
 completed:
   - "Created auth middleware"
   - "Added JWT generation"
 in_progress: "Writing login tests"
-next_steps:
-  - "Implement logout"
+
+on_confusion: "cat warmup.yaml"
 ```
 
-## Checkpoint Triggers
+## Checkpoint Triggers (v2.0)
 
-| Trigger | Action |
-|---------|--------|
-| Every 2 hours | Write checkpoint, re-read warmup.yaml |
-| Before commit | Re-read quality gates |
-| After compaction | Re-read warmup.yaml + checkpoint |
-| When confused | STOP, re-read everything |
+Based on real compaction data, NOT time-based intervals:
+
+| Trigger | Rationale |
+|---------|-----------|
+| Every major task | Natural breakpoint |
+| Every 10-15 tool calls | ~15 min of work |
+| Before file write >100 lines | Significant change |
+| Before any commit | Quality gate |
+| On ANY confusion | Recovery signal |
+
+**NOT "every 2 hours"** - compaction happens every 10-20 minutes with heavy reasoning.
 
 ## Platform Requirement
 
@@ -112,7 +137,7 @@ next_steps:
 | Component | Connection |
 |-----------|------------|
 | Protocol Files | warmup.yaml is the source of truth |
-| Sprint Autonomy | 2hr checkpoint aligns with sprint checks |
+| Sprint Autonomy | Checkpoints align with task completion |
 | Quality Gates | Re-read before running gates |
 | Release Discipline | Checkpoint before release |
 

@@ -22,27 +22,41 @@
 #   Trust (human) + Protocols (AI guardrails) = Safe Autonomy
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SELF-HEALING PROTOCOL - Survives Auto-Compact (CRITICAL FOR AUTONOMY)
+# SELF-HEALING PROTOCOL - Based on REAL Compaction Data (ADR-003)
 # ═══════════════════════════════════════════════════════════════════════════════
+#
+# REALITY CHECK (from ADR-003 research):
+#   - With MAX_THINKING_TOKENS=200000, compaction happens every 10-20 minutes
+#   - NOT every 2 hours - that was fiction
+#   - The "2hr checkpoint" never worked because compaction happens 5-10x per session
+#
+# STRATEGY: Recovery over Survival
+#   - Don't try to make rules survive compaction (they won't)
+#   - Re-read from disk when confused (files always exist)
+#
 self_healing:
   checkpoint_file: ".claude_checkpoint.yaml"
 
-  mandatory_triggers:
-    every_2_hours:
-      - "Write progress to .claude_checkpoint.yaml"
-      - "Re-read this warmup.yaml completely"
-      - "Verify: 4hr max, 1 milestone, no scope creep"
-    before_any_commit:
-      - "Re-read quality gates"
-      - "Verify: cargo test passes, zero warnings"
-    when_confused:
-      - "STOP → re-read .claude_checkpoint.yaml → re-read warmup.yaml"
+  # REALISTIC triggers based on actual compaction frequency
+  checkpoint_triggers:
+    - "Every major task completion"
+    - "Every 10-15 tool calls (~15 minutes of work)"
+    - "Before any file write >100 lines"
+    - "Before any commit"
+    - "On ANY confusion or uncertainty"
 
-  core_rules_summary:
-    - "4hr MAX session, 1 milestone, NO scope creep"
-    - "Tests pass + ZERO warnings → then commit"
-    - "NO 'let me also', NO 'while I'm here'"
-    - "Done > Perfect. Ship it."
+  # Recovery instruction (must be SHORT to survive summarization)
+  on_confusion: "STOP → re-read warmup.yaml → re-read .claude_checkpoint.yaml"
+
+  # Core rules (ONE LINE - must survive compaction)
+  core_rules: "4hr max, 1 milestone, tests pass, ship it"
+
+  # Anti-patterns that indicate confusion (trigger recovery)
+  confusion_signals:
+    - "Unsure about project rules"
+    - "Forgot what milestone we're working on"
+    - "Making decisions that contradict protocol"
+    - "About to scope creep ('let me also...', 'while I'm here...')"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # IDENTITY
@@ -52,7 +66,7 @@ identity:
   tagline: "Vendor-neutral AI session continuity"
   author: "Claude (Opus 4.5) - Principal Engineer"
   philosophy: "Any AI. Any project. Zero vendor lock-in. Green by default."
-  version: "1.2.0"
+  version: "2.0.0"
   license: "MIT"
   protocol: "https://github.com/royalbit/forge-protocol"
 
