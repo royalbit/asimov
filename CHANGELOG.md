@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.1] - 2025-11-29
+
+### Added: Ethics Validation at Session Start
+
+- **step_0_ethics_validation** in warmup.yaml session_initialization
+  - Runs `forge-protocol validate` before any other initialization step
+  - On failure: alerts user, shows errors, offers to regenerate ethics.yaml
+  - If regeneration fails: HALT and wait for human intervention
+  - Ensures ethics is validated as Priority 0 before session proceeds
+
+This prevents sessions from starting with weakened or missing ethics configuration.
+
 ## [4.1.0] - 2025-11-29
 
 ### Added: Hardcoded Ethics (ADR-011)
