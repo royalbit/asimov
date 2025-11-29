@@ -35,6 +35,43 @@ impl ValidationResult {
             warnings: Vec::new(),
         }
     }
+
+    /// Add a warning to the validation result
+    pub fn with_warning(mut self, warning: String) -> Self {
+        self.warnings.push(warning);
+        self
+    }
+
+    /// Add multiple warnings to the validation result
+    pub fn with_warnings(mut self, warnings: Vec<String>) -> Self {
+        self.warnings.extend(warnings);
+        self
+    }
+}
+
+/// File size limits for self-healing protocol (ADR-007)
+pub struct FileSizeLimits {
+    /// Soft limit (triggers warning)
+    pub soft_lines: usize,
+    /// Hard limit (triggers error)
+    pub hard_lines: usize,
+}
+
+impl FileSizeLimits {
+    pub const CHECKPOINT: FileSizeLimits = FileSizeLimits {
+        soft_lines: 20,
+        hard_lines: 30,
+    };
+
+    pub const CLAUDE_MD: FileSizeLimits = FileSizeLimits {
+        soft_lines: 10,
+        hard_lines: 15,
+    };
+
+    pub const WARMUP: FileSizeLimits = FileSizeLimits {
+        soft_lines: 200,
+        hard_lines: 500,
+    };
 }
 
 /// Validate a single protocol file
@@ -82,18 +119,69 @@ pub fn validate_file(path: &Path) -> Result<ValidationResult> {
         })
         .collect();
 
-    if error_messages.is_empty() {
-        Ok(ValidationResult::success(
-            path.display().to_string(),
-            schema_type.to_string(),
-        ))
+    let mut result = if error_messages.is_empty() {
+        ValidationResult::success(path.display().to_string(), schema_type.to_string())
     } else {
-        Ok(ValidationResult::failure(
+        ValidationResult::failure(
             path.display().to_string(),
             schema_type.to_string(),
             error_messages,
-        ))
+        )
+    };
+
+    // Add size warnings based on file type (ADR-007)
+    let line_count = content.lines().count();
+    let size_warnings = check_file_size(schema_type, line_count);
+    result = result.with_warnings(size_warnings);
+
+    // Structure validation for ethics.yaml (v3.2.0 Anti-Hallucination)
+    if schema_type == "ethics" {
+        let structure_errors = check_ethics_structure(&content);
+        if !structure_errors.is_empty() {
+            // Ethics structure errors are CRITICAL - fail validation
+            result.is_valid = false;
+            result.errors.extend(structure_errors);
+        }
     }
+
+    // Structure validation for warmup.yaml (v3.2.0 Anti-Hallucination)
+    if schema_type == "warmup" {
+        let (structure_errors, structure_warnings) = check_warmup_structure(&content);
+        if !structure_errors.is_empty() {
+            result.is_valid = false;
+            result.errors.extend(structure_errors);
+        }
+        result = result.with_warnings(structure_warnings);
+    }
+
+    Ok(result)
+}
+
+/// Check file size against limits and return warnings (ADR-007)
+fn check_file_size(schema_type: &str, line_count: usize) -> Vec<String> {
+    let mut warnings = Vec::new();
+
+    let limits = match schema_type {
+        "checkpoint" => Some(FileSizeLimits::CHECKPOINT),
+        "warmup" => Some(FileSizeLimits::WARMUP),
+        _ => None,
+    };
+
+    if let Some(limits) = limits {
+        if line_count > limits.hard_lines {
+            warnings.push(format!(
+                "File has {} lines, exceeds hard limit of {} lines. Consider trimming.",
+                line_count, limits.hard_lines
+            ));
+        } else if line_count > limits.soft_lines {
+            warnings.push(format!(
+                "File has {} lines, exceeds recommended {} lines. Consider trimming.",
+                line_count, limits.soft_lines
+            ));
+        }
+    }
+
+    warnings
 }
 
 /// Validate all protocol files in a directory
@@ -101,13 +189,24 @@ pub fn validate_directory(dir: &Path) -> Result<Vec<ValidationResult>> {
     let mut results = Vec::new();
 
     // Look for protocol files
-    let protocol_files = ["warmup.yaml", "sprint.yaml", "roadmap.yaml", "ethics.yaml"];
+    let protocol_files = [
+        "warmup.yaml",
+        "sprint.yaml",
+        "roadmap.yaml",
+        "ethics.yaml",
+        ".claude_checkpoint.yaml",
+    ];
 
     for filename in &protocol_files {
         let file_path = dir.join(filename);
         if file_path.exists() {
             results.push(validate_file(&file_path)?);
         }
+    }
+
+    // Also validate CLAUDE.md if present (size check only, not schema)
+    if let Some(claude_md_result) = validate_claude_md(dir) {
+        results.push(claude_md_result);
     }
 
     if results.is_empty() {
@@ -137,7 +236,124 @@ pub fn is_protocol_file(filename: &str) -> bool {
         && (name.contains("warmup")
             || name.contains("sprint")
             || name.contains("roadmap")
-            || name.contains("ethics"))
+            || name.contains("ethics")
+            || name.contains("checkpoint"))
+}
+
+/// Structure validation for ethics.yaml (v3.2.0 Anti-Hallucination)
+/// Validates that critical sections like human_veto exist
+/// Returns errors (not warnings) for missing required sections
+pub fn check_ethics_structure(content: &str) -> Vec<String> {
+    let mut errors = Vec::new();
+
+    // Parse YAML to check structure
+    let yaml: serde_yaml::Value = match serde_yaml::from_str(content) {
+        Ok(v) => v,
+        Err(_) => return errors, // YAML parsing errors handled elsewhere
+    };
+
+    // human_veto is REQUIRED - Priority 0 for ethics
+    if yaml.get("human_veto").is_none() {
+        errors.push(
+            "CRITICAL: ethics.yaml missing 'human_veto' section. Human override capability is required."
+                .to_string(),
+        );
+    }
+
+    // core_principles should exist
+    if yaml.get("core_principles").is_none() {
+        errors.push("ethics.yaml missing 'core_principles' section.".to_string());
+    }
+
+    errors
+}
+
+/// Structure validation for warmup.yaml (v3.2.0 Anti-Hallucination)
+/// Validates that self_healing.on_confusion exists for recovery
+pub fn check_warmup_structure(content: &str) -> (Vec<String>, Vec<String>) {
+    let errors = Vec::new();
+    let mut warnings = Vec::new();
+
+    // Parse YAML to check structure
+    let yaml: serde_yaml::Value = match serde_yaml::from_str(content) {
+        Ok(v) => v,
+        Err(_) => return (errors, warnings), // YAML parsing errors handled elsewhere
+    };
+
+    // Check for self_healing section
+    let has_self_healing = yaml.get("self_healing").is_some();
+    let has_on_confusion = yaml
+        .get("self_healing")
+        .and_then(|sh| sh.get("on_confusion"))
+        .is_some();
+
+    if !has_self_healing {
+        warnings.push(
+            "warmup.yaml missing 'self_healing' section. Recommended for context recovery."
+                .to_string(),
+        );
+    } else if !has_on_confusion {
+        warnings.push(
+            "warmup.yaml self_healing missing 'on_confusion'. Recommended for AI recovery guidance."
+                .to_string(),
+        );
+    }
+
+    // Check position of on_confusion (should be in first ~100 lines for quick access)
+    let on_confusion_line = content
+        .lines()
+        .enumerate()
+        .find(|(_, line)| line.trim().starts_with("on_confusion:"))
+        .map(|(i, _)| i + 1);
+
+    if let Some(line) = on_confusion_line {
+        if line > 100 {
+            warnings.push(format!(
+                "warmup.yaml 'on_confusion' at line {} - consider moving earlier for faster context recovery.",
+                line
+            ));
+        }
+    }
+
+    (errors, warnings)
+}
+
+/// Validate CLAUDE.md file for self-healing protocol (ADR-007)
+/// Returns warnings if the file is too large or missing
+pub fn validate_claude_md(dir: &Path) -> Option<ValidationResult> {
+    let claude_md_path = dir.join("CLAUDE.md");
+
+    if !claude_md_path.exists() {
+        // CLAUDE.md is optional but recommended for SKYNET MODE
+        return None;
+    }
+
+    let content = match std::fs::read_to_string(&claude_md_path) {
+        Ok(c) => c,
+        Err(_) => return None,
+    };
+
+    let line_count = content.lines().count();
+    let limits = FileSizeLimits::CLAUDE_MD;
+
+    let mut result = ValidationResult::success(
+        claude_md_path.display().to_string(),
+        "claude-md".to_string(),
+    );
+
+    if line_count > limits.hard_lines {
+        result = result.with_warning(format!(
+            "CLAUDE.md has {} lines, exceeds hard limit of {} lines. Must be ultra-short to survive compaction.",
+            line_count, limits.hard_lines
+        ));
+    } else if line_count > limits.soft_lines {
+        result = result.with_warning(format!(
+            "CLAUDE.md has {} lines, exceeds recommended {} lines. Keep it ultra-short for self-healing.",
+            line_count, limits.soft_lines
+        ));
+    }
+
+    Some(result)
 }
 
 #[cfg(test)]
@@ -563,5 +779,139 @@ identity:
             ValidationResult::failure("test.yaml".to_string(), "warmup".to_string(), errors);
         assert!(!result.is_valid);
         assert_eq!(result.errors.len(), 2);
+    }
+
+    // ========== Ethics Structure Validation Tests (v3.2.0) ==========
+
+    #[test]
+    fn test_ethics_structure_valid() {
+        let content = r#"
+core_principles:
+  status: REQUIRED
+human_veto:
+  command: "stop"
+"#;
+        let errors = check_ethics_structure(content);
+        assert!(errors.is_empty(), "Expected no errors: {:?}", errors);
+    }
+
+    #[test]
+    fn test_ethics_structure_missing_human_veto() {
+        let content = r#"
+core_principles:
+  status: REQUIRED
+"#;
+        let errors = check_ethics_structure(content);
+        assert!(!errors.is_empty());
+        assert!(
+            errors.iter().any(|e| e.contains("human_veto")),
+            "Should mention missing human_veto: {:?}",
+            errors
+        );
+    }
+
+    #[test]
+    fn test_ethics_structure_missing_core_principles() {
+        let content = r#"
+human_veto:
+  command: "stop"
+"#;
+        let errors = check_ethics_structure(content);
+        assert!(!errors.is_empty());
+        assert!(
+            errors.iter().any(|e| e.contains("core_principles")),
+            "Should mention missing core_principles: {:?}",
+            errors
+        );
+    }
+
+    #[test]
+    fn test_ethics_validation_fails_without_human_veto() {
+        let content = r#"
+core_principles:
+  status: REQUIRED
+red_flags:
+  financial:
+    - "crypto wallet"
+"#;
+        let mut file = NamedTempFile::with_suffix("_ethics.yaml").unwrap();
+        write!(file, "{}", content).unwrap();
+
+        let result = validate_file(file.path()).unwrap();
+        assert!(!result.is_valid, "Ethics without human_veto should fail");
+        assert!(
+            result.errors.iter().any(|e| e.contains("human_veto")),
+            "Error should mention human_veto: {:?}",
+            result.errors
+        );
+    }
+
+    // ========== Warmup Structure Validation Tests (v3.2.0) ==========
+
+    #[test]
+    fn test_warmup_structure_with_self_healing() {
+        let content = r#"
+identity:
+  project: Test
+self_healing:
+  on_confusion: "Re-read warmup.yaml"
+"#;
+        let (errors, warnings) = check_warmup_structure(content);
+        assert!(errors.is_empty());
+        assert!(warnings.is_empty());
+    }
+
+    #[test]
+    fn test_warmup_structure_missing_self_healing() {
+        let content = r#"
+identity:
+  project: Test
+"#;
+        let (errors, warnings) = check_warmup_structure(content);
+        assert!(errors.is_empty());
+        assert!(
+            warnings.iter().any(|w| w.contains("self_healing")),
+            "Should warn about missing self_healing: {:?}",
+            warnings
+        );
+    }
+
+    #[test]
+    fn test_warmup_structure_missing_on_confusion() {
+        let content = r#"
+identity:
+  project: Test
+self_healing:
+  checkpoint: true
+"#;
+        let (errors, warnings) = check_warmup_structure(content);
+        assert!(errors.is_empty());
+        assert!(
+            warnings.iter().any(|w| w.contains("on_confusion")),
+            "Should warn about missing on_confusion: {:?}",
+            warnings
+        );
+    }
+
+    #[test]
+    fn test_warmup_structure_on_confusion_late_position() {
+        // Generate content with on_confusion after line 100
+        let mut lines: Vec<String> = Vec::new();
+        lines.push("identity:".to_string());
+        lines.push("  project: Test".to_string());
+        for i in 0..100 {
+            lines.push(format!("  field_{}: value", i));
+        }
+        lines.push("self_healing:".to_string());
+        lines.push("  on_confusion: 'too late'".to_string());
+
+        let content = lines.join("\n");
+        let (errors, warnings) = check_warmup_structure(&content);
+        assert!(errors.is_empty());
+        assert!(
+            warnings.iter().any(|w| w.contains("line")),
+            "Should warn about late on_confusion position: {:?}",
+            warnings
+        );
     }
 }
