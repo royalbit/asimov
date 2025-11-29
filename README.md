@@ -600,6 +600,40 @@ Born from building [Forge](https://github.com/royalbit/forge) - a YAML formula c
 
 The answers became the Forge Protocol.
 
+## Contributing (AI-Only Development)
+
+**Pull Requests are disabled.** This is intentional.
+
+### Why No PRs?
+
+This project uses the **AI-Only Development Model** ([ADR-011](docs/adr/011-ai-only-development-no-external-prs.md)).
+
+External PRs are an **attack vector for ethics bypass**. A malicious contributor could:
+1. Submit innocent-looking PR with obfuscated harmful code
+2. Bypass `ethics.yaml` safeguards if merged
+3. Break the trust model of the Forge Protocol
+
+**The trust model:**
+```
+Human Owner → AI (autonomous) → Tests Pass → Direct Commit → Main
+```
+
+PRs require human code review, but humans reviewing AI-generated code is not the model. Tests and `ethics.yaml` are the gatekeepers.
+
+### How to Contribute
+
+| Method | Description |
+|--------|-------------|
+| **[Issues](https://github.com/royalbit/forge-protocol/issues)** | Report bugs, request features |
+| **[Discussions](https://github.com/royalbit/forge-protocol/discussions)** | Ask questions, share ideas |
+| **Fork** | Create your own version (carry `ethics.yaml` forward) |
+
+When AI implements your idea from an Issue, you'll be credited in the commit message.
+
+### Forks Welcome
+
+Fork freely! The social contract: carry `ethics.yaml` forward. See [ADR-008](docs/adr/008-ethics-protocol-humanist-mode.md).
+
 ## License
 
 MIT
