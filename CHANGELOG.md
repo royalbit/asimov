@@ -27,14 +27,18 @@ Focus on unique value: Ethics, Sprint Autonomy, Green Coding, Schema Validation.
 
 - **CLAUDE.md template**: Now uses Claude Code's native `@import` syntax for memory hierarchy
 - **Design principles**: Added "Integrate, don't duplicate" and "Focus on unique value"
-- **Self-healing section**: Updated to reference native `/rewind` checkpoints
-- **Session continuity**: Updated to reference native `--continue`/`--resume`
+- **Cross-session resume**: Use native `--continue`/`--resume` (MANUAL, cross-session only)
 
 ### Deprecated
 
-- **.claude_checkpoint.yaml**: Use Claude Code's native `/rewind` checkpoints instead
-- **Session handoff features**: Use Claude Code's native `--continue`/`--resume` instead
-- **Checkpoint validation**: Removed (native checkpoints are superior)
+- **.claude_checkpoint.yaml**: Use TodoWrite for tasks (native `/rewind` is MANUAL)
+- **Session handoff features**: Use `--continue`/`--resume` (MANUAL, cross-session only)
+- **Checkpoint validation**: Removed
+
+### NOT Deprecated (ADR-013)
+
+- **Mid-session self-healing**: `warmup.yaml` re-read pattern is NOT replaced by native features
+- **Commit cadence**: Required (~15 min) for self-healing to work via git hook refresh
 
 ### Documentation
 
@@ -45,14 +49,15 @@ Focus on unique value: Ethics, Sprint Autonomy, Green Coding, Schema Validation.
 
 ### Rationale
 
-Claude Code 2.0 (November 2025) provides native:
-- Checkpoints with `/rewind` (replaces .claude_checkpoint.yaml)
-- Session resume with `--continue`/`--resume`
+Claude Code 2.0 (November 2025) provides native features for CROSS-SESSION (all MANUAL):
+- `/rewind` checkpoints (MANUAL command, not automatic)
+- `--continue`/`--resume` (MANUAL CLI start, cross-session only)
 - CLAUDE.md memory hierarchy with `@import` syntax
 - Auto-compact at 95% capacity (confirms ADR-003 findings)
-- MCP is now industry standard (OpenAI, Google adopted it)
 
-Building duplicate features wastes effort. Instead, integrate with native features and focus on what Claude Code doesn't have: Ethics, Sprint Autonomy, Green Coding, Schema Validation.
+**IMPORTANT (ADR-013)**: Native features do NOT replace mid-session self-healing. The `warmup.yaml` re-read pattern + commit cadence (~15 min) is still required for unattended autonomous operation.
+
+Focus on unique value: Ethics, Sprint Autonomy, Green Coding, Schema Validation, **Mid-Session Self-Healing**.
 
 ## [3.2.0] - 2025-11-29
 
