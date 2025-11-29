@@ -12,7 +12,7 @@ The Forge Protocol is a YAML-based standard for AI session continuity and autono
 
 **All Forge Protocol projects are green-coding projects by default.** See [ADR-001](adr/001-green-coding-by-default.md).
 
-**Self-healing uses Claude Code native features.** Use `/rewind` for checkpoints, `--continue`/`--resume` for sessions. See [ADR-009](adr/009-claude-code-native-integration.md).
+**Mid-session self-healing is NOT replaced by Claude Code native features** (ADR-013). Native `/rewind`, `--continue`, `--resume` are MANUAL commands. Mid-session recovery uses `warmup.yaml` re-read + commit cadence (~15 min). See [ADR-013](adr/013-self-healing-not-replaced.md).
 
 ## Design Principles
 
@@ -33,10 +33,11 @@ Forge Protocol v4.0.0 integrates with Claude Code 2.0's native features instead 
 
 | Feature | Claude Code Native | Forge Protocol Role |
 |---------|-------------------|---------------------|
-| Checkpoints | `/rewind`, Esc+Esc | **Use native** (deprecated .claude_checkpoint.yaml) |
-| Session resume | `--continue`, `--resume` | **Use native** |
+| Checkpoints | `/rewind`, Esc+Esc | **MANUAL** - use TodoWrite for tasks |
+| Session resume | `--continue`, `--resume` | **MANUAL** - cross-session only |
 | Memory hierarchy | `CLAUDE.md` with `@imports` | **Integrate** (warmup.yaml via @import) |
 | Auto-compact | 95% capacity trigger | **Documented** in ADR-003 |
+| Mid-session self-healing | **NONE** | **Forge Protocol** (warmup.yaml re-read) |
 
 ### What Forge Protocol Uniquely Provides
 
@@ -550,17 +551,17 @@ backlog:
 
 ### .claude_checkpoint.yaml Schema (DEPRECATED)
 
-> **DEPRECATED in v4.0.0**: Use Claude Code's native `/rewind` checkpoints instead.
-> Native checkpoints track both code state AND conversation context.
-> See [ADR-009](adr/009-claude-code-native-integration.md).
+> **DEPRECATED in v4.0.0**: Task tracking moved to TodoWrite.
+> See [ADR-009](adr/009-claude-code-native-integration.md) and [ADR-013](adr/013-self-healing-not-replaced.md).
 
-Claude Code 2.0 provides superior checkpoint functionality:
-- `/rewind` or Esc+Esc to restore previous state
+**IMPORTANT (ADR-013)**: Claude Code's `/rewind` is a **MANUAL** command. It does NOT provide automatic mid-session self-healing. Mid-session recovery still requires the Forge Protocol's `warmup.yaml` re-read pattern.
+
+Claude Code 2.0 provides checkpoint functionality for **MANUAL** restore:
+- `/rewind` or Esc+Esc to restore previous state (requires human command)
 - Can restore code only, conversation only, or both
-- Automatic checkpoint before every file edit
-- No manual checkpoint file management needed
+- Useful for cross-session recovery (with `--continue`/`--resume`)
 
-**Migration**: Remove `.claude_checkpoint.yaml` from your workflow. Use `/rewind` instead.
+**Migration**: Use TodoWrite for task tracking. Mid-session self-healing uses `warmup.yaml` re-read + commit cadence (~15 min).
 
 ## Session Autonomy
 

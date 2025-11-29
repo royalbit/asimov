@@ -19,17 +19,18 @@ sprint:
   status: done
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # STRATEGIC PIVOT (ADR-009)
+  # STRATEGIC PIVOT (ADR-009, corrected by ADR-013)
   # ─────────────────────────────────────────────────────────────────────────────
-  # Claude Code 2.0 (Nov 2025) now has native:
-  #   - Checkpoints with /rewind (replaces .claude_checkpoint.yaml)
-  #   - Session resume with --continue/--resume
+  # Claude Code 2.0 (Nov 2025) has native features for CROSS-SESSION:
+  #   - /rewind checkpoints (MANUAL command, not automatic)
+  #   - --continue/--resume (MANUAL CLI start, cross-session)
   #   - CLAUDE.md memory hierarchy (can import warmup.yaml)
-  #   - Auto-compact at 95% capacity (confirms ADR-003)
-  #   - MCP is now industry standard
   #
-  # PIVOT: Stop building what Claude Code has. Integrate with it.
-  #        Focus on unique value: Ethics, Green, Sprint Autonomy.
+  # IMPORTANT (ADR-013): These are MANUAL, not automatic.
+  # Mid-session self-healing (warmup.yaml re-read) is NOT replaced.
+  #
+  # PIVOT: Integrate with Claude Code for cross-session.
+  #        Keep mid-session self-healing (warmup.yaml + commit cadence).
   # ─────────────────────────────────────────────────────────────────────────────
 
   tasks:
@@ -46,9 +47,9 @@ sprint:
     - "[x] Tag, push, publish"
 
   breaking_changes:
-    - ".claude_checkpoint.yaml validation removed (use /rewind)"
+    - ".claude_checkpoint.yaml validation removed (use TodoWrite for tasks)"
     - "CLAUDE.md template now uses @warmup.yaml import"
-    - "Session handoff features deprecated"
+    - "Session handoff features deprecated (cross-session only)"
 
   unique_value_preserved:
     - "Ethics validation (Priority 0)"
