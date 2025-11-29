@@ -607,6 +607,29 @@ coding_principles:
 session_initialization:
   greeting: "Welcome back! Loading Forge Protocol context..."
 
+  # ─────────────────────────────────────────────────────────────────────────────
+  # STEP 0: ETHICS VALIDATION (Priority 0 - Must pass before anything else)
+  # ─────────────────────────────────────────────────────────────────────────────
+  step_0_ethics_validation:
+    description: "Validate ethics before proceeding - MANDATORY"
+    priority: 0
+    command: "forge-protocol validate"
+    on_success: "Continue to step_1"
+    on_failure:
+      action: "HALT - Do not proceed"
+      steps:
+        - "Alert user: 'ETHICS VALIDATION FAILED'"
+        - "Show validation errors"
+        - "If ethics.yaml missing or corrupted: regenerate with 'forge-protocol init --skynet'"
+        - "Re-run validation"
+        - "If still failing: STOP and wait for human intervention"
+      regenerate_command: "forge-protocol init --skynet --force"
+    why: |
+      Ethics is Priority 0. If ethics validation fails, the session cannot proceed.
+      This prevents operation with weakened or missing ethics configuration.
+      The CLI has hardcoded ethics that always apply, but ethics.yaml provides
+      the full context for AI to understand the ethical constraints.
+
   step_1_load_context:
     description: "Read these files to understand current state"
     files_to_read:
