@@ -42,7 +42,7 @@ metadata:
 # ═══════════════════════════════════════════════════════════════════════════════
 current:
   version: "4.0.0"
-  status: in_progress
+  status: released
   date: "2025-11-28"
   summary: "Claude Code Native Integration"
   goal: INTEGRATION
