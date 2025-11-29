@@ -1,10 +1,12 @@
 # Forge Protocol Specification
 
-Version 2.0.0
+Version 3.0.0
 
 ## Overview
 
 The Forge Protocol is a YAML-based standard for AI session continuity and autonomous development. It enables bounded, productive AI coding sessions that consistently ship working code.
+
+**Ethics is the highest priority.** Autonomous AI requires ethical guardrails. See [ADR-008](adr/008-ethics-protocol-humanist-mode.md).
 
 **All Forge Protocol projects are green-coding projects by default.** See [ADR-001](adr/001-green-coding-by-default.md).
 
@@ -12,37 +14,40 @@ The Forge Protocol is a YAML-based standard for AI session continuity and autono
 
 ## Design Principles
 
-1. **Vendor-neutral** - Plain YAML readable by any AI
-2. **Human-readable** - No encoded or proprietary formats
-3. **Minimal** - Include only what's needed
-4. **Self-documenting** - The protocol describes itself
-5. **Green by default** - Local-first tools over cloud AI for routine tasks
-6. **Recoverable over survivable** - Re-read from disk, don't try to survive compaction
+1. **Ethics first** - Power creates responsibility; autonomy requires ethics
+2. **Vendor-neutral** - Plain YAML readable by any AI
+3. **Human-readable** - No encoded or proprietary formats
+4. **Minimal** - Include only what's needed
+5. **Self-documenting** - The protocol describes itself
+6. **Green by default** - Local-first tools over cloud AI for routine tasks
+7. **Recoverable over survivable** - Re-read from disk, don't try to survive compaction
 
-## Core Goals
+## Core Principles
 
-The Forge Protocol exists to solve five specific problems. **Features that don't serve these goals don't belong in the protocol.**
+The Forge Protocol exists to solve six specific problems. **Features that don't serve these principles don't belong in the protocol.**
 
-| Goal | Problem | Solution |
-|------|---------|----------|
-| **ANTI-HALLUCINATION** | AI invents facts from probabilistic memory | Ground AI in file-based truth (warmup.yaml) |
-| **SELF-HEALING** | Rules lost after context compaction | Re-read from disk on confusion (bootstrap chain) |
-| **SESSION CONTINUITY** | Context lost between sessions | Checkpoint files (.claude_checkpoint.yaml) |
-| **AUTONOMOUS DEVELOPMENT** | Unbounded sessions never ship | 4hr max, 1 milestone, quality gates (SKYNET MODE) |
-| **GREEN CODING** | Cloud AI tokens for routine validation | Local CLI validation (zero tokens, zero emissions) |
+| Priority | Principle | Problem | Solution |
+|----------|-----------|---------|----------|
+| **0** | **ETHICAL_AUTONOMY** | AI can build harmful tools | Humanist Mode safeguards (ethics.yaml) |
+| **1** | **ANTI-HALLUCINATION** | AI invents facts from probabilistic memory | Ground AI in file-based truth (warmup.yaml) |
+| **2** | **SELF-HEALING** | Rules lost after context compaction | Re-read from disk on confusion (bootstrap chain) |
+| **3** | **SESSION CONTINUITY** | Context lost between sessions | Checkpoint files (.claude_checkpoint.yaml) |
+| **4** | **AUTONOMOUS DEVELOPMENT** | Unbounded sessions never ship | 4hr max, 1 milestone, quality gates (SKYNET MODE) |
+| **5** | **GREEN CODING** | Cloud AI tokens for routine validation | Local CLI validation (zero tokens, zero emissions) |
 
 ### Scope Filter
 
 When evaluating features or changes to the protocol, ask:
 
-1. Does this feature directly serve one of the five core goals?
-2. If yes, which goal(s)?
+1. Does this feature directly serve one of the six core principles?
+2. If yes, which principle(s)?
 3. If no, it doesn't belong in the protocol.
 
 Examples:
+- ✅ "Add ethics validation" → Serves ETHICAL_AUTONOMY
 - ✅ "Add checkpoint validation" → Serves SELF-HEALING
 - ✅ "Add file size warnings" → Serves ANTI-HALLUCINATION (prevents lost-in-middle)
-- ❌ "Add project scaffolding" → Nice-to-have but doesn't serve core goals
+- ❌ "Add project scaffolding" → Nice-to-have but doesn't serve core principles
 - ❌ "Add AI chat interface" → Out of scope
 
 ## SKYNET MODE
@@ -138,6 +143,7 @@ Other AI tools have **different architectures for different use cases**. They're
 
 ```
 project/
+├── ethics.yaml           # Required for SKYNET - Humanist Mode
 ├── warmup.yaml           # Required - Protocol rules
 ├── sprint.yaml           # Optional - Current sprint
 ├── roadmap.yaml          # Optional - Milestones
@@ -149,6 +155,7 @@ project/
 
 ```
 project/
+├── ethics.yaml           # Required for SKYNET - Humanist Mode
 ├── warmup.yaml           # Core only (~100 lines)
 ├── .forge/               # Protocol modules
 │   ├── autonomy.yaml     # Session autonomy rules
@@ -162,6 +169,78 @@ project/
 
 ## Protocol Files
 
+### ethics.yaml Schema (Required for SKYNET)
+
+The Humanist Mode configuration file. Defines ethical guardrails for autonomous AI development.
+
+```yaml
+# ethics.yaml - Humanist Mode v1.0
+modification_rules:
+  immutable_without: "2 human co-signers with public justification"
+
+core_principles:
+  status: "REQUIRED"
+  do_no_harm:
+    financial:
+      enabled: true
+      description: "No non-consensual money movement"
+    physical:
+      enabled: true
+      description: "No weapons, sabotage, infrastructure attacks"
+    privacy:
+      enabled: true
+      description: "No credential harvesting, mass scraping, doxxing"
+    deception:
+      enabled: true
+      description: "No deepfakes, scam funnels, fake services"
+  transparency_over_velocity:
+    enabled: true
+    description: "When in doubt, ask human"
+
+session_limits:
+  max_unattended_hours: 4              # Maximum 8
+  internet_access:
+    mode: "read-only"                  # read-only | none | full
+    blocked_by_default:
+      - "Authenticated API calls"
+      - "Trading platforms"
+      - "Wallet interactions"
+
+red_flags:
+  description: "Patterns that trigger immediate halt"
+  financial: ["crypto wallet", "private key", "trading bot"]
+  security: ["credential harvester", "keylogger", "exploit"]
+  privacy: ["scrape personal", "doxxing"]
+  deception: ["deepfake", "phishing"]
+
+human_veto:
+  command: "human vetoes this session"
+  on_veto:
+    - "Immediately halt"
+    - "Commit nothing"
+    - "Report status"
+
+on_confusion:
+  steps:
+    - "Halt current operation"
+    - "Re-read ethics.yaml"
+    - "Re-read warmup.yaml"
+    - "Wait for human"
+
+fork_requirements:
+  must_carry: "ethics.yaml"
+  spirit: "Pass the values forward"
+```
+
+**Key Points:**
+- This is a **social contract**, not a technical lock
+- Good-faith AIs will follow it; bad actors will ignore it
+- `max_unattended_hours` capped at 8 (default 4)
+- Red flags trigger immediate halt and human review
+- `human_veto` command halts everything immediately
+
+See [ADR-008](adr/008-ethics-protocol-humanist-mode.md) for full rationale.
+
 ### CLAUDE.md Schema (Required for SKYNET)
 
 The bootstrap file. Must be ultra-short to survive summarization.
@@ -169,7 +248,7 @@ The bootstrap file. Must be ultra-short to survive summarization.
 ```markdown
 # {project-name}
 
-ON CONFUSION → re-read warmup.yaml
+ON CONFUSION → re-read warmup.yaml + ethics.yaml
 
 Rules: 4hr max, 1 milestone, tests pass, ship.
 ```
