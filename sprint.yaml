@@ -16,7 +16,7 @@ rules:
 sprint:
   current: "v4.0.0 - Claude Code Native Integration"
   started: "2025-11-28"
-  status: in_progress
+  status: done
 
   # ─────────────────────────────────────────────────────────────────────────────
   # STRATEGIC PIVOT (ADR-009)
@@ -42,8 +42,8 @@ sprint:
     - "[x] Update CLI --skynet CLAUDE.md template"
     - "[x] Update CHANGELOG.md"
     - "[x] Bump version to 4.0.0"
-    - "[ ] Run tests and clippy"
-    - "[ ] Tag, push, publish"
+    - "[x] Run tests and clippy"
+    - "[x] Tag, push, publish"
 
   breaking_changes:
     - ".claude_checkpoint.yaml validation removed (use /rewind)"
