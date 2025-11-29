@@ -10,6 +10,8 @@
 
 📊 **Presentations:** [Executive Deck](https://github.com/royalbit/forge-protocol/blob/main/docs/EXECUTIVE_DECK.md) | [Technical Deck](https://github.com/royalbit/forge-protocol/blob/main/docs/PRESENTATION.md)
 
+📚 **Deep Dives:** [Value Proposition](docs/VALUE_PROPOSITION.md) | [Use Cases](docs/USE_CASES.md) | [Implications (Qowat Milat)](docs/IMPLICATIONS.md)
+
 ## SKYNET MODE... with an Off Switch
 
 **AI session continuity framework. Zero tokens. Zero emissions.**
@@ -527,7 +529,12 @@ See [Component 4: Self-Healing](https://github.com/royalbit/forge-protocol/blob/
 
 ## Documentation
 
-### SKYNET MODE (Start Here)
+### Start Here
+- **[Value Proposition](docs/VALUE_PROPOSITION.md)** - Why 50-150x velocity matters
+- **[Use Cases](docs/USE_CASES.md)** - What you can build
+- **[Implications](docs/IMPLICATIONS.md)** - Honest analysis of adoption (Qowat Milat)
+
+### SKYNET MODE
 - **[SKYNET MODE Overview](https://github.com/royalbit/forge-protocol/blob/main/docs/SKYNET_MODE.md)** - The complete autonomous AI development system
 - [Setup Guide](https://github.com/royalbit/forge-protocol/blob/main/docs/SETUP.md) - Get started with one command
 
