@@ -184,6 +184,17 @@ Every `asimov init` project is a green-coding project by default.
 - 1M protocol users = 50-150M dev-equivalent output
 - Global developers today: ~28 million
 
+**The Harder Truth:**
+
+The displacement doesn't come from bad actors. It comes from **good actors**.
+
+| Who | What They Do | Consequence |
+|-----|--------------|-------------|
+| **Good actor** | Ships ethical code, follows quality gates, uses green coding | 9 of 10 positions eliminated |
+| **Bad actor** | Removes ethics, builds malware | Security threat |
+
+Both are real. But the workforce impact comes from people using the protocol *exactly as designed*. The student in Mumbai shipping production code IS the displacement for the team in San Francisco. Same event, two frames.
+
 **The Dual Reality:**
 
 | Displacement Frame | Democratization Frame |
@@ -195,9 +206,11 @@ Every `asimov init` project is a green-coding project by default.
 
 **The Honest Truth:**
 
-The protocol doesn't choose sides. It multiplies capability. The same tool that democratizes creation for a student in Mumbai accelerates displacement for a team in San Francisco.
+The protocol doesn't choose sides. It multiplies capability. Ethics prevent harm to *users*. They don't prevent economic disruption to *workers*.
 
-*The outcome depends on who uses it and how.*
+We built guardrails against malware, surveillance, and deception. We cannot build guardrails against efficiency.
+
+*The outcome depends on who uses it and how - but displacement happens either way.*
 
 See [IMPLICATIONS.md](IMPLICATIONS.md) for the full Qowat Milat analysis - absolute candor about both potential and peril.
 
