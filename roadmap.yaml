@@ -1,7 +1,7 @@
 # Forge Protocol Roadmap
 
 metadata:
-  current_version: "4.1.5"
+  current_version: "4.1.6"
   last_updated: "2025-11-29"
   philosophy: "Integrate with Claude Code. Focus on unique value."
 
@@ -48,49 +48,51 @@ metadata:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CURRENT: v4.1.5 - PROTOCOL SELF-HEALING (ADR-017)
+# CURRENT: v4.1.6 - CLAUDE CODE HOOKS INTEGRATION (ADR-018)
 # ═══════════════════════════════════════════════════════════════════════════════
 current:
-  version: "4.1.5"
+  version: "4.1.6"
   status: released
   date: "2025-11-29"
-  summary: "Protocol Self-Healing - Auto-Regeneration"
-  goal: ANTI-HALLUCINATION
-  priority: HIGH
+  summary: "Claude Code Hooks Integration - True Autonomous Operation"
+  goal: AUTONOMOUS_DEVELOPMENT
+  priority: CRITICAL
 
   rationale: |
-    Self-healing is foundational infrastructure for autonomous AI operation:
-    - Session start brittleness: If protocol files missing, recover gracefully
-    - Mid-session vulnerability: Compaction happens every ~15 min, files can disappear
-    - Dependency chain: All protections depend on protocol files existing
-    Recovery over surveillance. Auto-create missing files, don't block.
+    CLAUDE.md @import loads content but doesn't trigger execution.
+    Compaction loses protocol rules every ~15 minutes.
+    Without hooks, users must manually say "run warmup" every session.
+    SessionStart + PostCompact hooks enable TRUE autonomous operation.
 
   deliverables:
     implementation:
-      - "[x] Auto-regenerate missing protocol files during validation"
-      - "[x] green.yaml schema and validation support"
-      - "[x] green_template() for template generation"
-      - "[x] Skeleton roadmap template (not full protocol)"
-      - "[x] --no-regenerate flag to skip auto-creation"
-      - "[x] Sprint reclassified as protocol (not optional data)"
-
-    files_auto_created:
-      - "[x] ethics.yaml (WARN level)"
-      - "[x] warmup.yaml (WARN level)"
-      - "[x] green.yaml (INFO level)"
-      - "[x] sprint.yaml (INFO level)"
-      - "[x] roadmap.yaml (INFO level, skeleton)"
-      - "[x] CLAUDE.md - NEVER auto-created (on/off switch)"
+      - "[x] .claude/hooks/session-start.sh - Auto-initialize on startup/resume/clear"
+      - "[x] .claude/hooks/post-compact.sh - Re-inject rules after compaction"
+      - "[x] .claude/hooks.json - Hook configuration"
 
     documentation:
-      - "[x] ADR-017: Protocol Self-Healing - Accepted"
-      - "[x] SPECIFICATION.md updated"
+      - "[x] ADR-018: Claude Code Hooks Integration - Accepted"
+      - "[x] SPECIFICATION.md updated with hooks schema"
       - "[x] CHANGELOG.md updated"
+
+  vendor_exclusivity: |
+    Claude Code is the ONLY AI with lifecycle hooks.
+    Cursor, Copilot, Windsurf, Gemini have no equivalent.
+    SKYNET MODE requires Claude Code.
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # RELEASED VERSIONS
 # ═══════════════════════════════════════════════════════════════════════════════
 previous:
+  - version: "4.1.5"
+    status: released
+    date: "2025-11-29"
+    summary: "Protocol Self-Healing (ADR-017)"
+    highlights:
+      - "Auto-regenerate missing protocol files during validation"
+      - "--no-regenerate flag to skip auto-creation"
+      - "Sprint reclassified as protocol (not optional data)"
+
   - version: "4.1.2"
     status: released
     date: "2025-11-29"

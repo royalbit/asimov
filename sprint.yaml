@@ -11,49 +11,48 @@ rules:
   mantra: "Done is better than perfect. Ship it."
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CURRENT: v4.1.2 - GREEN CODING PROTOCOL SEPARATION (ADR-016)
+# CURRENT: v4.1.6 - CLAUDE CODE HOOKS INTEGRATION (ADR-018)
 # ═══════════════════════════════════════════════════════════════════════════════
 sprint:
-  current: "v4.1.2 - Green Coding Protocol Separation"
+  current: "v4.1.6 - Claude Code Hooks Integration"
   started: "2025-11-29"
   status: done
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # GREEN CODING PROTOCOL SEPARATION (ADR-016)
+  # CLAUDE CODE HOOKS INTEGRATION (ADR-018)
   # ─────────────────────────────────────────────────────────────────────────────
-  # Green coding now has its own dedicated protocol file (green.yaml).
-  # Achieves parity with ethics protocol structure.
-  # Includes validation at session start and anti-tampering rules.
+  # True autonomous operation via Claude Code lifecycle hooks.
+  # SessionStart hook auto-initializes on startup/resume/clear.
+  # PostCompact hook re-injects rules after context compaction.
   # ─────────────────────────────────────────────────────────────────────────────
 
   tasks:
-    - "[x] Create ADR-016 for Green Coding Protocol separation"
-    - "[x] Create green.yaml protocol file"
-    - "[x] Update warmup.yaml with step_0b_green_validation"
-    - "[x] Update CLAUDE.md template to include @green.yaml"
-    - "[x] Update SPECIFICATION.md with green.yaml schema"
-    - "[x] Update roadmap.yaml with future v4.1.5 directory restructure"
+    - "[x] Create .claude/hooks/ directory structure"
+    - "[x] Create .claude/hooks/session-start.sh"
+    - "[x] Create .claude/hooks/post-compact.sh"
+    - "[x] Create .claude/hooks.json configuration"
+    - "[x] Write ADR-018 for Claude Code Hooks Integration"
+    - "[x] Update SPECIFICATION.md with hooks schema"
     - "[x] Update CHANGELOG.md"
-    - "[x] Bump version to 4.1.2"
+    - "[x] Bump version to 4.1.6"
 
   deliverables:
-    - "green.yaml - Dedicated green coding protocol file"
-    - "ADR-016: Green Coding Protocol - Accepted"
-    - "step_0b_green_validation in session initialization"
-    - "CLAUDE.md imports @green.yaml"
-    - "v4.1.5 roadmap: Protocol directory restructure (.forge/)"
+    - ".claude/hooks/session-start.sh - Auto-initialize protocol"
+    - ".claude/hooks/post-compact.sh - Re-inject rules post-compaction"
+    - ".claude/hooks.json - Hook configuration"
+    - "ADR-018: Claude Code Hooks Integration - Accepted"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # PREVIOUS SPRINT (completed)
 # ═══════════════════════════════════════════════════════════════════════════════
 previous:
-  sprint: "v4.1.1 - Ethics Validation at Session Start"
+  sprint: "v4.1.5 - Protocol Self-Healing"
   status: done
   date: "2025-11-29"
   highlights:
-    - "step_0_ethics_validation in session initialization"
-    - "Halt session if ethics validation fails"
-    - "Regenerate ethics.yaml if missing"
+    - "Auto-regenerate missing protocol files during validation"
+    - "--no-regenerate flag to skip auto-creation"
+    - "Sprint reclassified as protocol (not optional data)"
 
 older_sprints:
   - sprint: "v4.1.0 - Hardcoded Ethics (ADR-011)"

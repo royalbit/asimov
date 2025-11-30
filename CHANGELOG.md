@@ -5,6 +5,69 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.6] - 2025-11-29
+
+### Added: Claude Code Hooks Integration (ADR-018)
+
+True autonomous operation via Claude Code lifecycle hooks. Auto-initialize on session start, recover context after compaction.
+
+#### SessionStart Hook
+
+**File**: `.claude/hooks/session-start.sh`
+
+**Triggers**: `startup`, `resume`, `clear`
+
+- Auto-initializes Forge Protocol on every session start
+- Instructs AI to read roadmap.yaml, sprint.yaml
+- Presents next milestone and waits for "go"
+- Eliminates need for manual "run warmup" command
+
+#### PostCompact Hook
+
+**File**: `.claude/hooks/post-compact.sh`
+
+**Triggers**: `compact` (after context compaction)
+
+- Re-injects protocol rules lost during compaction
+- Restores core rules: 4hr max, 1 milestone, tests pass
+- Reminds AI to check TodoWrite for in-progress tasks
+- Includes ethics reminder
+
+**Why this is critical**: Compaction happens every ~15 minutes with MAX_THINKING_TOKENS=200000. Without PostCompact hook, protocol rules are lost mid-session.
+
+#### Hook Configuration
+
+**File**: `.claude/hooks.json`
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      { "matcher": "startup", "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }] },
+      { "matcher": "resume", "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }] },
+      { "matcher": "clear", "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }] },
+      { "matcher": "compact", "hooks": [{ "type": "command", "command": ".claude/hooks/post-compact.sh" }] }
+    ]
+  }
+}
+```
+
+#### Vendor Exclusivity
+
+Claude Code is the **only** AI coding assistant with lifecycle hooks:
+
+| AI | Session Init | Post-Compact |
+|----|-------------|--------------|
+| **Claude Code** | ✅ SessionStart | ✅ PostCompact |
+| Cursor | .cursorrules (static) | /summarize (manual) |
+| Copilot | .github/copilot-instructions.md | None |
+| Windsurf | .windsurfrules + Memories | None |
+| Gemini | Context Drawer + MCP | None |
+
+SKYNET MODE autonomous operation requires Claude Code. File-based protocols work anywhere as static context.
+
+See [ADR-018](docs/adr/018-claude-code-hooks-integration.md) for full rationale.
+
 ## [4.1.5] - 2025-11-29
 
 ### Added: Protocol Self-Healing (ADR-017)
