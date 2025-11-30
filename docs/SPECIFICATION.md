@@ -1,6 +1,6 @@
 # Forge Protocol Specification
 
-Version 4.1.6
+Version 4.1.7
 
 ## Overview
 
@@ -867,58 +867,65 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
 
-## Claude Code Hooks (v4.1.6+)
+## Claude Code Hooks (v4.1.7+)
 
-Claude Code lifecycle hooks enable true autonomous operation by auto-initializing the protocol on session start and recovering context after compaction.
+Claude Code lifecycle hooks enable true autonomous operation by auto-initializing the protocol on session start and injecting context before compaction.
 
 ### Why Hooks Are Required
 
 | Problem | Solution |
 |---------|----------|
 | `@import` loads content but doesn't trigger execution | SessionStart hook auto-initializes |
-| Compaction loses protocol rules mid-session | PostCompact hook re-injects rules |
+| Compaction loses protocol rules mid-session | PreCompact hook injects rules into summary |
 | User must manually say "run warmup" | Hooks make it automatic |
 
 ### Hook Files
 
 ```
 .claude/
-├── hooks.json           # Hook configuration
+├── settings.json        # Hook configuration (NOT hooks.json)
 └── hooks/
-    ├── session-start.sh # Triggers: startup, resume, clear
-    └── post-compact.sh  # Triggers: compact
+    ├── session-start.sh # Triggers on session start
+    └── pre-compact.sh   # Triggers before compaction
 ```
 
-### hooks.json Schema
+### settings.json Schema
 
 ```json
 {
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup",
-        "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }]
-      },
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-start.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
       {
-        "matcher": "resume",
-        "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }]
-      },
-      {
-        "matcher": "clear",
-        "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }]
-      },
-      {
-        "matcher": "compact",
-        "hooks": [{ "type": "command", "command": ".claude/hooks/post-compact.sh" }]
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/pre-compact.sh",
+            "timeout": 30
+          }
+        ]
       }
     ]
   }
 }
 ```
 
+**Note**: v4.1.6 used incorrect `.claude/hooks.json` with wrong event names. v4.1.7 fixed the schema.
+
 ### SessionStart Hook
 
-**Triggers**: `startup`, `resume`, `clear`
+**Event**: `SessionStart`
 
 **Behavior**:
 - Outputs protocol initialization message
@@ -944,26 +951,26 @@ CORE RULES (non-negotiable):
 - ZERO warnings policy
 ```
 
-### PostCompact Hook
+### PreCompact Hook
 
-**Triggers**: `compact` (via SessionStart matcher)
+**Event**: `PreCompact`
 
 **Behavior**:
-- Outputs protocol refresh message
-- Re-injects core rules lost during compaction
-- Instructs AI to re-read warmup.yaml, sprint.yaml
+- Fires BEFORE context compaction
+- Injects protocol rules that will survive in the compaction summary
+- Instructs AI to re-read warmup.yaml post-compaction
 - Reminds to check TodoWrite for in-progress tasks
 - Includes ethics reminder
 
-**Why this is critical**: Compaction happens every ~15 minutes with MAX_THINKING_TOKENS=200000. Without this hook, protocol rules are lost mid-session and the AI operates without ethical constraints or sprint boundaries.
+**Why this is critical**: Compaction happens every ~15 minutes with MAX_THINKING_TOKENS=200000. The PreCompact hook injects rules into the context right before summarization, increasing their chances of survival.
 
 ### Vendor Exclusivity
 
 **These hooks only work with Claude Code.** No other AI coding assistant provides lifecycle hooks:
 
-| AI | Session Init | Post-Compact |
-|----|-------------|--------------|
-| **Claude Code** | ✅ SessionStart | ✅ PostCompact |
+| AI | Session Init | Pre-Compact |
+|----|-------------|-------------|
+| **Claude Code** | ✅ SessionStart | ✅ PreCompact |
 | Cursor | .cursorrules (static) | /summarize (manual) |
 | Copilot | .github/copilot-instructions.md | None |
 | Windsurf | .windsurfrules + Memories | None |
@@ -1064,7 +1071,7 @@ See [ADR-010: Context Window Optimization](adr/010-velocity-constraints-tier-ana
 
 ## Architecture Decisions
 
-- [ADR-018: Claude Code Hooks Integration](adr/018-claude-code-hooks-integration.md) - **v4.1.6** SessionStart + PostCompact
+- [ADR-018: Claude Code Hooks Integration](adr/018-claude-code-hooks-integration.md) - **v4.1.7** SessionStart + PreCompact
 - [ADR-017: Protocol Self-Healing](adr/017-protocol-self-healing.md) - **v4.1.5** Auto-regeneration
 - [ADR-016: Green Coding Protocol](adr/016-green-coding-protocol.md) - **v4.1.2** Dedicated green.yaml
 - [ADR-010: Context Window Optimization](adr/010-velocity-constraints-tier-analysis.md) - **v4.0.0** 50-150x proven
