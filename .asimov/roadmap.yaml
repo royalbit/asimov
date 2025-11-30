@@ -4,9 +4,9 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "7.0.3"
+  version: "7.0.5"
   status: released
-  summary: "README header consistency with Forge"
+  summary: "Prevent accidental init in git subdirectories"
   goal: DX_QUALITY
 
 next:
