@@ -2,6 +2,7 @@
 
 use crate::error::{Error, Result};
 use crate::schemas::{schema_for_file, schema_type_for_file};
+use colored::Colorize;
 use jsonschema::Validator;
 use std::path::Path;
 
@@ -334,8 +335,8 @@ fn validate_directory_internal(
         }
     }
 
-    // CLAUDE.md validation removed - CLAUDE.md is deprecated (ADR-024)
-    // SessionStart hooks provide context injection without needing CLAUDE.md
+    // CLAUDE.md is deprecated - delete if found
+    delete_deprecated_claude_md(base_dir);
 
     if results.is_empty() {
         return Err(Error::ValidationError(
@@ -448,42 +449,25 @@ pub fn check_warmup_structure(content: &str) -> (Vec<String>, Vec<String>) {
     (errors, warnings)
 }
 
-/// Validate CLAUDE.md file for self-healing protocol (ADR-007)
-/// Returns warnings if the file is too large or missing
-pub fn validate_claude_md(dir: &Path) -> Option<ValidationResult> {
+/// Delete CLAUDE.md if it exists - deprecated since v7.1.0
+/// CLAUDE.md was replaced by SessionStart hooks which inject context directly.
+/// The @import syntax in CLAUDE.md didn't trigger execution, making it redundant.
+pub fn delete_deprecated_claude_md(dir: &Path) {
     let claude_md_path = dir.join("CLAUDE.md");
 
-    if !claude_md_path.exists() {
-        // CLAUDE.md is optional but recommended for ASIMOV MODE
-        return None;
+    if claude_md_path.exists() {
+        match std::fs::remove_file(&claude_md_path) {
+            Ok(_) => {
+                eprintln!(
+                    "  {} Deleted deprecated CLAUDE.md (replaced by SessionStart hooks)",
+                    "CLEANUP".yellow()
+                );
+            }
+            Err(e) => {
+                eprintln!("  {} Failed to delete CLAUDE.md: {}", "WARN".yellow(), e);
+            }
+        }
     }
-
-    let content = match std::fs::read_to_string(&claude_md_path) {
-        Ok(c) => c,
-        Err(_) => return None,
-    };
-
-    let line_count = content.lines().count();
-    let limits = FileSizeLimits::CLAUDE_MD;
-
-    let mut result = ValidationResult::success(
-        claude_md_path.display().to_string(),
-        "claude-md".to_string(),
-    );
-
-    if line_count > limits.hard_lines {
-        result = result.with_warning(format!(
-            "CLAUDE.md has {} lines, exceeds hard limit of {} lines. Must be ultra-short to survive compaction.",
-            line_count, limits.hard_lines
-        ));
-    } else if line_count > limits.soft_lines {
-        result = result.with_warning(format!(
-            "CLAUDE.md has {} lines, exceeds recommended {} lines. Keep it ultra-short for self-healing.",
-            line_count, limits.soft_lines
-        ));
-    }
-
-    Some(result)
 }
 
 #[cfg(test)]
