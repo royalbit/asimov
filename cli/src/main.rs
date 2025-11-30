@@ -571,6 +571,23 @@ fn cmd_init(
             ".claude_checkpoint.yaml.example",
             checkpoint_template("Initial milestone"),
         ));
+
+        // Delete deprecated CLAUDE.md if it exists
+        let claude_md_path = output.join("CLAUDE.md");
+        if claude_md_path.exists() {
+            if let Err(e) = std::fs::remove_file(&claude_md_path) {
+                eprintln!(
+                    "  {} Failed to delete deprecated CLAUDE.md: {}",
+                    "WARN".yellow(),
+                    e
+                );
+            } else {
+                println!(
+                    "  {} Deleted deprecated CLAUDE.md (replaced by SessionStart hooks)",
+                    "CLEANUP".yellow()
+                );
+            }
+        }
     }
 
     // Create .asimov directory for protocol files
