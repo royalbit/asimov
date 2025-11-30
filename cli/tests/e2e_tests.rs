@@ -273,7 +273,7 @@ fn e2e_validate_directory() {
     .unwrap();
     fs::write(
         temp_dir.path().join("roadmap.yaml"),
-        "metadata:\n  current_version: '1.0.0'",
+        "current:\n  version: '1.0.0'\n  status: planned\n  summary: Test milestone",
     )
     .unwrap();
 

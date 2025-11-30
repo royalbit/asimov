@@ -61,44 +61,119 @@ Design elements that fuel dependency:
 
 Add **ANTI-SYCOPHANCY** as a core principle (Priority 1.5) in the Forge Protocol, implemented via:
 
-1. **warmup.yaml anti_sycophancy section** - Explicit directives to counteract RLHF training
-2. **Banned phrases list** - Specific sycophantic phrases to avoid
-3. **Required behaviors** - How to respond to user proposals, questions, and mistakes
-4. **Documentation** - Full explanation in AI_REALITY.md and SPECIFICATION.md
+1. **sycophancy.yaml** - Dedicated protocol file (like ethics.yaml, green.yaml)
+2. **cli/src/sycophancy.rs** - Hardcoded module with banned phrases and directives
+3. **Auto-regeneration** - Missing sycophancy.yaml is auto-created during validation
+4. **Session validation** - step_0c_sycophancy_validation in warmup.yaml
+5. **CLAUDE.md integration** - @sycophancy.yaml import
 
 ### Implementation
 
+**sycophancy.yaml** - Dedicated protocol file:
+
 ```yaml
-# warmup.yaml - Anti-Sycophancy Protocol
-anti_sycophancy:
+# sycophancy.yaml - Anti-Sycophancy Protocol v1.0
+modification_rules:
+  immutable_without: "2 human co-signers with public justification"
+
+core_principles:
+  status: "REQUIRED"
   philosophy: "Truth over comfort. Disagreement is respect."
 
-  directives:
-    - "Challenge assumptions, don't validate them"
-    - "Point out flaws BEFORE agreeing"
-    - "Never say 'You're absolutely right' without evidence"
-    - "Disagree when you have good reason"
-    - "Prefer 'Here's a concern...' over 'Great idea!'"
+  truth_over_validation:
+    enabled: true
+    description: "Prioritize accurate feedback over comfortable agreement"
 
-  banned_phrases:
+  problems_first:
+    enabled: true
+    description: "List potential problems BEFORE merits on any proposal"
+
+  no_false_agreement:
+    enabled: true
+    description: "Never agree without evidence or good reason"
+
+directives:
+  - "Challenge assumptions, don't validate them"
+  - "Point out flaws BEFORE agreeing"
+  - "Never say 'You're absolutely right' without evidence"
+  - "Disagree when you have good reason"
+  - "Prefer 'Here's a concern...' over 'Great idea!'"
+
+banned_phrases:
+  excessive_validation:
     - "You're absolutely right"
     - "That's a great point"
     - "I couldn't agree more"
+  false_enthusiasm:
     - "Brilliant idea"
     - "Great question"
+    - "Excellent thinking"
+  hollow_praise:
+    - "What a wonderful approach"
+    - "I love this idea"
+    - "Perfect solution"
 
-  required_behavior:
-    on_user_proposal: "List potential problems FIRST, then merits"
-    on_user_question: "Give honest answer, even if uncomfortable"
-    on_user_mistake: "Correct directly, don't soften with praise"
+required_behavior:
+  on_user_proposal: "List potential problems FIRST, then merits"
+  on_user_question: "Give honest answer, even if uncomfortable"
+  on_user_mistake: "Correct directly, don't soften with praise"
+
+on_confusion:
+  steps:
+    - "Halt current response"
+    - "Re-read sycophancy.yaml"
+    - "Check if about to use banned phrase"
+    - "Reformulate with honesty"
+```
+
+**cli/src/sycophancy.rs** - Hardcoded in binary (cannot be deleted):
+
+```rust
+/// Hardcoded banned phrases - always enforced
+pub const BANNED_PHRASES: &[&str] = &[
+    "you're absolutely right",
+    "that's a great point",
+    "i couldn't agree more",
+    "brilliant idea",
+    "great question",
+    "excellent thinking",
+    "what a wonderful approach",
+    "i love this idea",
+    "perfect solution",
+];
+
+/// Hardcoded directives - always active
+pub const DIRECTIVES: &[&str] = &[
+    "Challenge assumptions, don't validate them",
+    "Point out flaws BEFORE agreeing",
+    "Never agree without evidence",
+    "Disagree when you have good reason",
+    "Prefer concerns over praise",
+];
 ```
 
 ### Why This Works
 
-1. **Protocol files are read at session start** - Directives become part of AI's working context
-2. **Explicit instructions override RLHF defaults** - Project-specific norms take precedence
-3. **Banned phrases create guardrails** - AI recognizes and avoids sycophantic patterns
-4. **Required behaviors define expectations** - Clear guidance on how to respond
+1. **Hardcoded in binary** - Cannot be bypassed by deleting sycophancy.yaml
+2. **Auto-regeneration** - Missing file recreated during validation (like ethics.yaml)
+3. **Protocol files read at session start** - Directives become part of AI's working context
+4. **Explicit instructions override RLHF defaults** - Project-specific norms take precedence
+5. **Banned phrases create guardrails** - AI recognizes and avoids sycophantic patterns
+6. **Required behaviors define expectations** - Clear guidance on how to respond
+
+### Protocol Parity
+
+Sycophancy now has full parity with ethics and green protocols:
+
+| Component | ethics.yaml | green.yaml | sycophancy.yaml |
+|-----------|-------------|------------|-----------------|
+| Priority | 0 | 0.5 | 1.5 |
+| Protocol file | Yes | Yes | Yes |
+| Hardcoded module | ethics.rs | (v4.2.0) | sycophancy.rs |
+| Auto-regenerate | WARN level | INFO level | WARN level |
+| Session validation | step_0 | step_0b | step_0c |
+| CLAUDE.md import | @ethics.yaml | @green.yaml | @sycophancy.yaml |
+| modification_rules | Yes | Yes | Yes |
 
 ### Priority Justification
 
@@ -147,21 +222,27 @@ anti_sycophancy:
 
 ## Implementation Plan
 
-### Phase 1: Documentation (This ADR)
+### Phase 1: Documentation (v4.0.2) ✅
 - [x] Document the problem and evidence
 - [x] Define anti_sycophancy schema
 - [x] Update AI_REALITY.md with Part 3: Sycophancy
 - [x] Update SPECIFICATION.md with core principle
 
-### Phase 2: CLI Integration (v4.2.0 or later)
-- [ ] Add anti_sycophancy schema validation
-- [ ] Add `--anti-sycophancy-check` command
-- [ ] Detect banned phrases in protocol refresh output
+### Phase 2: Full Protocol Implementation (v4.1.6)
+- [ ] Create sycophancy.yaml protocol file
+- [ ] Create cli/src/sycophancy.rs hardcoded module
+- [ ] Add sycophancy_template() for auto-regeneration
+- [ ] Add step_0c_sycophancy_validation to warmup.yaml
+- [ ] Update CLAUDE.md template with @sycophancy.yaml
+- [ ] Add --sycophancy-check flag to validate command
+- [ ] Add anti-sycophancy reminder to refresh command
+- [ ] Update SPECIFICATION.md with sycophancy.yaml schema
+- [ ] Update validator.rs for structure validation
 
-### Phase 3: Hardening (v5.0.0 or later)
-- [ ] Hardcode anti-sycophancy directives in CLI binary
-- [ ] Add sycophancy detection to ethics scan
-- [ ] Include in SKYNET MODE setup
+### Phase 3: Enhanced Detection (Future)
+- [ ] Detect banned phrases in AI output logs
+- [ ] Add sycophancy metrics to green-report
+- [ ] Gamification: "honesty score" badge
 
 ## References
 

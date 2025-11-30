@@ -7,6 +7,7 @@ mod ethics;
 mod green;
 mod roadmap;
 mod sprint;
+mod sycophancy;
 mod warmup;
 
 pub use checkpoint::CHECKPOINT_SCHEMA;
@@ -14,6 +15,7 @@ pub use ethics::ETHICS_SCHEMA;
 pub use green::GREEN_SCHEMA;
 pub use roadmap::ROADMAP_SCHEMA;
 pub use sprint::SPRINT_SCHEMA;
+pub use sycophancy::SYCOPHANCY_SCHEMA;
 pub use warmup::WARMUP_SCHEMA;
 
 /// Determine which schema to use based on filename
@@ -29,6 +31,8 @@ pub fn schema_for_file(filename: &str) -> Option<&'static str> {
         Some(ETHICS_SCHEMA)
     } else if name.contains("green") {
         Some(GREEN_SCHEMA)
+    } else if name.contains("sycophancy") {
+        Some(SYCOPHANCY_SCHEMA)
     } else if name.contains("checkpoint") {
         Some(CHECKPOINT_SCHEMA)
     } else {
@@ -49,6 +53,8 @@ pub fn schema_type_for_file(filename: &str) -> Option<&'static str> {
         Some("ethics")
     } else if name.contains("green") {
         Some("green")
+    } else if name.contains("sycophancy") {
+        Some("sycophancy")
     } else if name.contains("checkpoint") {
         Some("checkpoint")
     } else {
