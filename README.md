@@ -83,6 +83,7 @@ The Asimov Protocol exists to solve six specific problems. **Features that don't
 |----------|-----------|-------------------|
 | **0** | **ETHICAL AUTONOMY** | AI can build harmful tools → The Three Laws (asimov.yaml) |
 | **1** | **ANTI-HALLUCINATION** | AI invents facts → Ground in file-based truth |
+| **1.25** | **FRESHNESS** | Stale data misattributed as hallucination → Date-aware search (freshness.yaml) |
 | **2** | **SELF-HEALING** | Rules lost after compaction → Re-read `warmup.yaml` mid-session |
 | **3** | **SESSION CONTINUITY** | Context lost between sessions → Native `--continue`/`--resume` |
 | **4** | **AUTONOMOUS DEVELOPMENT** | Unbounded sessions never ship → 4hr max, quality gates |
@@ -149,7 +150,7 @@ session:
 |---------------|----------------|-------------------|
 | Forgets your rules | Auto-compact compresses context | Re-read `warmup.yaml` from disk |
 | Invents conventions | Generates "probable" text, not facts | Structured rules in files |
-| Wrong after cutoff | Training data ends (mine: Jan 2025) | Project-specific truth in YAML |
+| **Stale data** | Training cutoff (Jan 2025) + no search | Date-aware search (`freshness.yaml`) |
 | Lost in the middle | Attention degrades mid-context | Key info in scannable format |
 | Confident mistakes | Trained for plausibility, not accuracy | Deterministic validation |
 
@@ -164,8 +165,51 @@ File truth (stable, deterministic) → Reliability
 
 - Don't let AI *imagine* your project context → **read it from warmup.yaml**
 - Don't let AI *imagine* your financial calculations → **execute them locally with [Forge](https://github.com/royalbit/forge)**
+- Don't let AI give *stale data confidently* → **search with freshness.yaml**
 
 📖 **[Read the full analysis: AI_REALITY.md](https://github.com/royalbit/asimov-protocol/blob/main/docs/AI_REALITY.md)** — vendor limits, research citations, what's really happening.
+
+### The Freshness Protocol (freshness.yaml)
+
+**Stale data ≠ Hallucination. Different problem, different solution.**
+
+Users discover outdated info and conclude "AI hallucinated." But the AI gave correct information *as of its training cutoff*. The info changed in the 10+ months since then.
+
+| What Users Think | What Actually Happens |
+|------------------|----------------------|
+| "AI made up fake info" | AI gave correct info *as of January 2025* |
+| "AI hallucinated" | Info changed since cutoff |
+| "AI is unreliable" | Can't train away staleness—need to search |
+
+**Why vendors don't fix this by default:**
+
+| Evidence | Source |
+|----------|--------|
+| Search costs $0.01 + thousands of tokens | [Anthropic Pricing](https://websearchapi.ai/blog/anthropic-claude-web-search-api) |
+| Anthropic 2024 gross margin: **negative 94-109%** | [The Information](https://www.theinformation.com/articles/anthropics-gross-margin-flags-long-term-ai-profit-questions) |
+| Claude docs: "disable search to conserve usage" | [Claude Help](https://support.claude.com/en/articles/10684626-enabling-and-using-web-search) |
+
+**The protocol solution:**
+
+```yaml
+# freshness.yaml
+always_search:
+  - "current version"
+  - "latest release"
+  - "pricing"
+  - "2025"  # Any year after cutoff
+
+volatile_domains:
+  - "cryptocurrency"
+  - "AI/ML libraries"
+  - "cloud provider APIs"
+
+behavior:
+  when_search_available: "Search BEFORE answering from training data"
+  when_search_unavailable: "Disclose staleness risk to user"
+```
+
+See [ADR-022: Date-Aware Search Protocol](docs/adr/022-date-aware-search-protocol.md) for the full rationale and verified sources.
 
 ## CLI Validator
 
@@ -342,6 +386,7 @@ See [Green Coding Economics](https://github.com/royalbit/asimov-protocol/blob/ma
 | ---------------- | ----------------------------- | -------- |
 | `asimov.yaml`    | The Three Laws of Robotics    | Yes (ASIMOV MODE) |
 | `warmup.yaml`    | Session bootstrap             | Yes      |
+| `freshness.yaml` | Date-aware search rules       | Yes (v6.1.0+) |
 | `sprint.yaml`    | Active work tracking          | Optional |
 | `roadmap.yaml`   | Milestones & planning         | Optional |
 
@@ -596,10 +641,11 @@ See [Component 4: Self-Healing](https://github.com/royalbit/asimov-protocol/blob
 - [Presentation](https://github.com/royalbit/asimov-protocol/blob/main/docs/PRESENTATION.md) - Marp slide deck
 
 ### Architecture Decisions
+- [ADR-022: Freshness Protocol (Date-Aware Search)](https://github.com/royalbit/asimov-protocol/blob/main/docs/adr/022-date-aware-search-protocol.md) - **v6.1.0** - Stale data ≠ Hallucination
+- [ADR-020: The Open Foundation](https://github.com/royalbit/asimov-protocol/blob/main/docs/adr/020-asimov-mode-open-foundation.md) - **v4.2.0** - The Three Laws
 - [ADR-008: Ethics Protocol and Humanist Mode](https://github.com/royalbit/asimov-protocol/blob/main/docs/adr/008-ethics-protocol-humanist-mode.md) - **v3.0**
-- [ADR-001: Green Coding By Default](https://github.com/royalbit/asimov-protocol/blob/main/docs/adr/001-green-coding-by-default.md)
-- [ADR-002: Self-Healing Protocol](https://github.com/royalbit/asimov-protocol/blob/main/docs/adr/002-self-healing-protocol.md)
 - [ADR-003: Self-Healing Based on Real Compaction Data](https://github.com/royalbit/asimov-protocol/blob/main/docs/adr/003-self-healing-real-compaction-data.md) - **v2.0**
+- [ADR-001: Green Coding By Default](https://github.com/royalbit/asimov-protocol/blob/main/docs/adr/001-green-coding-by-default.md)
 
 ## Case Study: Protocol v2.0 (This Session)
 
