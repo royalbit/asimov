@@ -1,6 +1,6 @@
 # Forge Protocol Specification
 
-Version 4.1.5
+Version 4.1.6
 
 ## Overview
 
@@ -867,6 +867,120 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
 
+## Claude Code Hooks (v4.1.6+)
+
+Claude Code lifecycle hooks enable true autonomous operation by auto-initializing the protocol on session start and recovering context after compaction.
+
+### Why Hooks Are Required
+
+| Problem | Solution |
+|---------|----------|
+| `@import` loads content but doesn't trigger execution | SessionStart hook auto-initializes |
+| Compaction loses protocol rules mid-session | PostCompact hook re-injects rules |
+| User must manually say "run warmup" | Hooks make it automatic |
+
+### Hook Files
+
+```
+.claude/
+├── hooks.json           # Hook configuration
+└── hooks/
+    ├── session-start.sh # Triggers: startup, resume, clear
+    └── post-compact.sh  # Triggers: compact
+```
+
+### hooks.json Schema
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }]
+      },
+      {
+        "matcher": "resume",
+        "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }]
+      },
+      {
+        "matcher": "clear",
+        "hooks": [{ "type": "command", "command": ".claude/hooks/session-start.sh" }]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [{ "type": "command", "command": ".claude/hooks/post-compact.sh" }]
+      }
+    ]
+  }
+}
+```
+
+### SessionStart Hook
+
+**Triggers**: `startup`, `resume`, `clear`
+
+**Behavior**:
+- Outputs protocol initialization message
+- Instructs AI to read roadmap.yaml, sprint.yaml
+- Presents next milestone
+- Waits for user "go" confirmation
+
+**Output** (injected into Claude's context when exit 0):
+```
+🔥 FORGE PROTOCOL ACTIVE
+
+IMMEDIATE ACTIONS REQUIRED:
+1. Read roadmap.yaml for current version and next milestone
+2. Read sprint.yaml for session boundaries
+3. Run: forge-protocol validate
+4. Present next milestone to user
+5. Wait for "go" to start autonomous execution
+
+CORE RULES (non-negotiable):
+- 4 hour MAX session duration
+- 1 milestone per session
+- Tests MUST pass before release
+- ZERO warnings policy
+```
+
+### PostCompact Hook
+
+**Triggers**: `compact` (via SessionStart matcher)
+
+**Behavior**:
+- Outputs protocol refresh message
+- Re-injects core rules lost during compaction
+- Instructs AI to re-read warmup.yaml, sprint.yaml
+- Reminds to check TodoWrite for in-progress tasks
+- Includes ethics reminder
+
+**Why this is critical**: Compaction happens every ~15 minutes with MAX_THINKING_TOKENS=200000. Without this hook, protocol rules are lost mid-session and the AI operates without ethical constraints or sprint boundaries.
+
+### Vendor Exclusivity
+
+**These hooks only work with Claude Code.** No other AI coding assistant provides lifecycle hooks:
+
+| AI | Session Init | Post-Compact |
+|----|-------------|--------------|
+| **Claude Code** | ✅ SessionStart | ✅ PostCompact |
+| Cursor | .cursorrules (static) | /summarize (manual) |
+| Copilot | .github/copilot-instructions.md | None |
+| Windsurf | .windsurfrules + Memories | None |
+| Gemini | Context Drawer + MCP | None |
+
+SKYNET MODE autonomous operation requires Claude Code. File-based protocols work anywhere as static context.
+
+### User Activation
+
+After cloning/updating a repo with hooks:
+
+1. Run `/hooks` in Claude Code to review
+2. Accept the hooks configuration
+3. Restart session for hooks to take effect
+
+See [ADR-018](adr/018-claude-code-hooks-integration.md) for full rationale.
+
 ## CLI Support
 
 ### Installation
@@ -950,6 +1064,7 @@ See [ADR-010: Context Window Optimization](adr/010-velocity-constraints-tier-ana
 
 ## Architecture Decisions
 
+- [ADR-018: Claude Code Hooks Integration](adr/018-claude-code-hooks-integration.md) - **v4.1.6** SessionStart + PostCompact
 - [ADR-017: Protocol Self-Healing](adr/017-protocol-self-healing.md) - **v4.1.5** Auto-regeneration
 - [ADR-016: Green Coding Protocol](adr/016-green-coding-protocol.md) - **v4.1.2** Dedicated green.yaml
 - [ADR-010: Context Window Optimization](adr/010-velocity-constraints-tier-analysis.md) - **v4.0.0** 50-150x proven
