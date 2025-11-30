@@ -1,32 +1,15 @@
 # Asimov Protocol Roadmap
 #
 # WHAT to build - milestones only
-#
-# See: docs/PROTOCOL_GOALS.md for core values (0-5)
-# See: docs/SPECIFICATION.md for feature status (deprecated/active)
 # See: CHANGELOG.md for release history
-# See: docs/adr/ for detailed rationale
 
 current:
-  version: "5.1.1"
-  status: released
-  summary: "Hardcoded Green Coding Metrics"
-  goal: GREEN_CODING
-  adr: "docs/adr/012-hardcoded-green-coding.md"
-  deliverables:
-    - "[x] cli/src/green.rs - Hardcoded green coding module"
-    - "[x] GreenPrinciples struct (local_first, token_efficiency, binary_efficiency, carbon_awareness)"
-    - "[x] Anti-patterns module (AI_FOR_ROUTINE, BLOATED_DEPS, UNOPTIMIZED_BUILDS, TOKEN_WASTE)"
-    - "[x] Green status in validate command output"
-    - "[x] Green principles in refresh command output"
-    - "[x] 12 unit tests for green module"
-    - "[x] Rebrand refresh command labels (FORGE → ASIMOV)"
+  version: "5.2.0"
+  status: planned
+  summary: "MCP Server Mode"
+  goal: VENDOR_NEUTRALITY
 
 next:
-  - version: "5.2.0"
-    summary: "MCP Server Mode"
-    goal: VENDOR_NEUTRALITY
-
   - version: "5.3.0"
     summary: "Schema Standardization"
     goal: ANTI-HALLUCINATION
