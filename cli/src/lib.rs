@@ -53,7 +53,7 @@ pub use sycophancy::{
     CORE_PRINCIPLES as SYCOPHANCY_PRINCIPLES, MOTTO as SYCOPHANCY_MOTTO,
 };
 pub use templates::{
-    checkpoint_template, claude_md_template, ethics_template, green_template,
+    asimov_template, checkpoint_template, claude_md_template, ethics_template, green_template,
     hook_installer_template, precommit_hook_template, roadmap_template, sprint_template,
     sycophancy_template, uses_cargo_husky, warmup_template, ProjectType,
 };

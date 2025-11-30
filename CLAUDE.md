@@ -1,7 +1,7 @@
 # Forge Protocol
 
 @warmup.yaml
-@ethics.yaml
+@asimov.yaml
 @green.yaml
 
 Rules: 4hr max, 1 milestone, tests pass, ship it.

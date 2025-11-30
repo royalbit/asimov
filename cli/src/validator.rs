@@ -420,7 +420,7 @@ pub fn validate_claude_md(dir: &Path) -> Option<ValidationResult> {
     let claude_md_path = dir.join("CLAUDE.md");
 
     if !claude_md_path.exists() {
-        // CLAUDE.md is optional but recommended for SKYNET MODE
+        // CLAUDE.md is optional but recommended for ASIMOV MODE
         return None;
     }
 

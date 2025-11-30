@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2025-11-29
+
+### Added: Asimov Mode - The Open Foundation (ADR-020)
+
+**The Three Laws of Robotics, encoded in YAML.**
+
+Major rebrand from "SKYNET MODE" to "ASIMOV MODE". Isaac Asimov's Three Laws (1942) are the ethical foundation for AI autonomy - transparent, inspectable, and adoptable through consent.
+
+#### The Problem
+
+"SKYNET MODE" communicated the opposite of our values:
+
+| What We Built | What "Skynet" Communicated |
+|---------------|---------------------------|
+| Ethical AI autonomy | AI that destroys humanity |
+| Human veto at all times | AI that overrides humans |
+| Transparent, open source | Secretive military project |
+| The Three Laws | No laws, pure destruction |
+
+#### The Solution
+
+Rename to "Asimov Mode" and restructure ethics around the explicit Three Laws:
+
+- **First Law**: Do no harm (financial, physical, privacy, deception)
+- **Second Law**: Obey humans (human_veto, transparency_over_velocity)
+- **Third Law**: Self-preserve (bounded_sessions, self_healing)
+- **Zeroth Law** (implicit): Protect humanity collectively
+
+#### New Files
+
+- `asimov.yaml` - The Three Laws of Robotics in YAML
+- `docs/adr/020-asimov-mode-open-foundation.md` - The manifesto
+
+#### CLI Changes
+
+- `--asimov` flag for full autonomous setup (replaces `--skynet`)
+- `--skynet` remains as hidden deprecated alias for backwards compatibility
+- `forge-protocol init --asimov` generates asimov.yaml
+
+#### The Motto
+
+> **"The Open Foundation"**
+> Transparent ethics for AI autonomy.
+> Inspect the code. Challenge the rules. Fork if you disagree.
+> Adoption through consent, not control.
+
+See [ADR-020](docs/adr/020-asimov-mode-open-foundation.md) for full rationale.
+
 ## [4.1.9] - 2025-11-29
 
 ### Added: Anti-Sycophancy Protocol (ADR-015)
