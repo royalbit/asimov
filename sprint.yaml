@@ -11,50 +11,56 @@ rules:
   mantra: "Done is better than perfect. Ship it."
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CURRENT: v4.1.6 - CLAUDE CODE HOOKS INTEGRATION (ADR-018)
+# CURRENT: v4.1.7 - CLAUDE CODE HOOKS SCHEMA FIX (ADR-018 Revision)
 # ═══════════════════════════════════════════════════════════════════════════════
 sprint:
-  current: "v4.1.6 - Claude Code Hooks Integration"
+  current: "v4.1.7 - Claude Code Hooks Schema Fix"
   started: "2025-11-29"
   status: done
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # CLAUDE CODE HOOKS INTEGRATION (ADR-018)
+  # HOOKS SCHEMA FIX (ADR-018 Revision)
   # ─────────────────────────────────────────────────────────────────────────────
-  # True autonomous operation via Claude Code lifecycle hooks.
-  # SessionStart hook auto-initializes on startup/resume/clear.
-  # PostCompact hook re-injects rules after context compaction.
+  # v4.1.6 used incorrect hooks schema (wrong file, wrong events).
+  # v4.1.7 fixes the configuration to use correct Claude Code hooks API.
   # ─────────────────────────────────────────────────────────────────────────────
 
   tasks:
-    - "[x] Create .claude/hooks/ directory structure"
-    - "[x] Create .claude/hooks/session-start.sh"
-    - "[x] Create .claude/hooks/post-compact.sh"
-    - "[x] Create .claude/hooks.json configuration"
-    - "[x] Write ADR-018 for Claude Code Hooks Integration"
-    - "[x] Update SPECIFICATION.md with hooks schema"
-    - "[x] Update CHANGELOG.md"
-    - "[x] Bump version to 4.1.6"
+    - "[x] Move hooks config from .claude/hooks.json to .claude/settings.json"
+    - "[x] Rename post-compact.sh to pre-compact.sh (PreCompact event)"
+    - "[x] Fix SessionStart hook format (remove incorrect matchers)"
+    - "[x] Update ADR-018 with correct schema"
+    - "[x] Update SPECIFICATION.md with correct hooks documentation"
+    - "[x] Update CHANGELOG.md with migration steps"
+    - "[x] Bump version to 4.1.7"
 
   deliverables:
-    - ".claude/hooks/session-start.sh - Auto-initialize protocol"
-    - ".claude/hooks/post-compact.sh - Re-inject rules post-compaction"
-    - ".claude/hooks.json - Hook configuration"
-    - "ADR-018: Claude Code Hooks Integration - Accepted"
+    - ".claude/settings.json - Correct hook configuration"
+    - ".claude/hooks/session-start.sh - SessionStart hook"
+    - ".claude/hooks/pre-compact.sh - PreCompact hook"
+    - "ADR-018: Revised with correct schema"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# PREVIOUS SPRINT (completed)
+# PREVIOUS SPRINTS (completed)
 # ═══════════════════════════════════════════════════════════════════════════════
 previous:
-  sprint: "v4.1.5 - Protocol Self-Healing"
+  sprint: "v4.1.6 - Claude Code Hooks Integration (SCHEMA ERROR)"
   status: done
   date: "2025-11-29"
   highlights:
-    - "Auto-regenerate missing protocol files during validation"
-    - "--no-regenerate flag to skip auto-creation"
-    - "Sprint reclassified as protocol (not optional data)"
+    - "Initial hooks implementation with INCORRECT schema"
+    - "Used .claude/hooks.json (wrong - should be settings.json)"
+    - "Used PostCompact event (wrong - should be PreCompact)"
+    - "Superseded by v4.1.7"
 
 older_sprints:
+  - sprint: "v4.1.5 - Protocol Self-Healing (ADR-017)"
+    date: "2025-11-29"
+    highlights:
+      - "Auto-regenerate missing protocol files during validation"
+      - "--no-regenerate flag to skip auto-creation"
+      - "Sprint reclassified as protocol (not optional data)"
+
   - sprint: "v4.1.0 - Hardcoded Ethics (ADR-011)"
     date: "2025-11-29"
     highlights:
