@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.5] - 2025-11-30
+
+### Fixed: Prevent accidental init in git subdirectories
+
+- **ADDED**: `asimov init` now detects if run from a git subdirectory
+- **ADDED**: Refuses to create `.asimov/` if one already exists at git root
+- **ADDED**: Clear error message with git root path and instructions
+
+**Why?** Running `asimov init` from a subdirectory (e.g., `cli/`) would create a duplicate `.asimov/` directory with generic template files, causing confusion.
+
+---
+
 ## [7.0.4] - 2025-11-30
 
 ### Fixed: CLAUDE.md deprecated - auto-cleanup on validate/init

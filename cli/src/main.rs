@@ -526,6 +526,23 @@ fn cmd_init(
     // --asimov implies --full
     let full = full || asimov;
 
+    // Check if we're in a git subdirectory with .asimov/ at root (before any output)
+    let output_abs = std::fs::canonicalize(output).unwrap_or_else(|_| output.to_path_buf());
+    if let Some(git_root) = find_git_root(&output_abs) {
+        let git_root_asimov = git_root.join(".asimov");
+        if git_root_asimov.exists() && git_root != output_abs {
+            eprintln!(
+                "{} Cannot init in subdirectory - .asimov/ already exists at git root",
+                "ERROR".bold().red()
+            );
+            eprintln!("  Git root: {}", git_root.display());
+            eprintln!("  Current:  {}", output_abs.display());
+            eprintln!();
+            eprintln!("  Run {} from the git root instead.", "asimov init".bold());
+            return ExitCode::FAILURE;
+        }
+    }
+
     println!("{}", "Asimov Protocol Init".bold().green());
     if asimov {
         println!("{}", "  ASIMOV MODE - The Three Laws".bold().cyan());
@@ -880,5 +897,18 @@ fn cmd_lint_docs(path: &Path, fix: bool) -> ExitCode {
     } else {
         println!("{} {} file(s) OK", "Success:".bold().green(), files.len());
         ExitCode::SUCCESS
+    }
+}
+
+/// Find the git repository root by looking for .git directory
+fn find_git_root(start: &Path) -> Option<PathBuf> {
+    let mut current = start.to_path_buf();
+    loop {
+        if current.join(".git").exists() {
+            return Some(current);
+        }
+        if !current.pop() {
+            return None;
+        }
     }
 }
