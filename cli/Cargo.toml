@@ -1,5 +1,5 @@
 [package]
-name = "asimov-protocol"
+name = "asimov-mode"
 version = "4.2.0"
 edition = "2021"
 authors = ["Claude (Opus 4.5) - Principal Engineer <noreply@anthropic.com>", "RoyalBit Inc. <admin@royalbit.ca>"]
@@ -13,7 +13,7 @@ categories = ["command-line-utilities", "development-tools"]
 readme = "../README.md"
 
 [[bin]]
-name = "asimov-protocol"
+name = "asimov-mode"
 path = "src/main.rs"
 
 [dependencies]
