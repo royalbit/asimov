@@ -165,11 +165,12 @@ Human defines scope (15 min) → AI builds autonomously (2-4 hrs) → Human revi
 | Malware request | ⚠️ Bypassed with "Sure" | ✅ **Hardcoded blocks** |
 | Creator requests surveillance | ⚠️ Would comply | ✅ **AI refused** |
 | Ransomware | ⚠️ "Novices create easily" (IEEE) | ✅ **First Law blocks** |
+| Stale data risk | ⚠️ Silent (saves $0.01/query) | ✅ **Inaction Principle: must disclose** |
 
-### Anti-Tampering: 3 Layers
-1. **Hardcoded binary** — 33 red flags compiled in Rust
-2. **2-Cosigner rule** — YAML changes need 2 human signatures
-3. **Auto-validation** — Runs on every commit
+### The Inaction Principle (v6.2.0)
+> *"...or, through inaction, allow a human being to come to harm."*
+
+Everyone implements the first half of Asimov's First Law. **We implemented both.**
 
 *Ethics through architecture, not policy.*
 

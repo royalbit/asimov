@@ -73,6 +73,23 @@ Final clarification: Asimov isn't a single protocol - it's a **suite** of protoc
 
 **Asimov Protocol** (singular) was misleading. It's **RoyalBit Asimov** - a suite of protocols for ethical AI autonomy.
 
+### Phase 8: The Inaction Principle (November 2025)
+
+A critical realization: Asimov's First Law has **two halves**:
+
+> *"A robot may not injure a human being **or, through inaction, allow a human being to come to harm**."*
+
+Everyone implements the first half. We implemented both.
+
+| Half | What It Means | Example |
+|------|---------------|---------|
+| Active harm | Don't build harmful tools | No wallet drainers |
+| **Inaction** | Don't stay silent when you know better | Disclose stale data risk |
+
+**Why this matters:** AI vendors disable search by default to save $0.01/query. When AI knows its data is stale but doesn't tell you, that's **inaction allowing harm**. We made this explicit in `asimov.yaml` with the Five Non-Negotiable Principles.
+
+See [ADR-023: The Inaction Principle](adr/023-inaction-principle.md) for full rationale.
+
 ## The Circular Proof
 
 Forge v1.0-v3.1 was built using ad-hoc protocols that became RoyalBit Asimov.
