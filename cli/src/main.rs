@@ -1,6 +1,6 @@
 //! Forge Protocol CLI - Validator for vendor-neutral AI session continuity
 
-use asimov_protocol::{
+use asimov_mode::{
     asimov_template, banned_phrases, check_ethics_status, check_markdown_file,
     check_sycophancy_status, checkpoint_template, claude_md_template, find_markdown_files,
     fix_markdown_file, green_template, hook_installer_template, is_protocol_file,
@@ -15,7 +15,7 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 #[derive(Parser)]
-#[command(name = "asimov-protocol")]
+#[command(name = "asimov-mode")]
 #[command(about = "Green coding CLI for AI development - zero tokens, zero emissions")]
 #[command(long_about = "Forge Protocol CLI - Ethical AI Development
 
@@ -333,7 +333,7 @@ fn cmd_validate(path: &Path, ethics_scan: bool, regenerate: bool) -> ExitCode {
         }
 
         match validate_file(path) {
-            Ok(result) => (vec![result], asimov_protocol::RegenerationInfo::default()),
+            Ok(result) => (vec![result], asimov_mode::RegenerationInfo::default()),
             Err(e) => {
                 eprintln!("{} {}", "Error:".bold().red(), e);
                 return ExitCode::FAILURE;
