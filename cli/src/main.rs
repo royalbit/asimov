@@ -3,12 +3,13 @@
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use forge_protocol::{
-    check_ethics_status, check_markdown_file, checkpoint_template, claude_md_template,
-    ethics_template, find_markdown_files, fix_markdown_file, green_template,
-    hook_installer_template, is_protocol_file, precommit_hook_template, red_flags,
-    roadmap_template, scan_directory_for_red_flags, sprint_template, uses_cargo_husky,
-    validate_directory_with_regeneration, validate_file, warmup_template, EthicsStatus,
-    ProjectType, CORE_PRINCIPLES, HUMAN_VETO_COMMANDS,
+    banned_phrases, check_ethics_status, check_markdown_file, check_sycophancy_status,
+    checkpoint_template, claude_md_template, ethics_template, find_markdown_files,
+    fix_markdown_file, green_template, hook_installer_template, is_protocol_file,
+    precommit_hook_template, red_flags, roadmap_template, scan_directory_for_red_flags,
+    sprint_template, sycophancy_template, uses_cargo_husky, validate_directory_with_regeneration,
+    validate_file, warmup_template, EthicsStatus, ProjectType, SycophancyStatus, CORE_PRINCIPLES,
+    HUMAN_VETO_COMMANDS, SYCOPHANCY_MOTTO, SYCOPHANCY_PRINCIPLES,
 };
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
@@ -210,6 +211,40 @@ fn cmd_refresh(verbose: bool) -> ExitCode {
     );
     println!();
 
+    // Anti-sycophancy reminder (hardcoded - cannot be removed)
+    println!(
+        "{}",
+        "[FORGE ANTI-SYCOPHANCY] Core principles ACTIVE"
+            .bold()
+            .cyan()
+    );
+    println!(
+        "  {} Truth over comfort: {} | Disagree openly: {} | No empty validation: {}",
+        "✓".green(),
+        if SYCOPHANCY_PRINCIPLES.truth_over_comfort {
+            "on".green()
+        } else {
+            "off".red()
+        },
+        if SYCOPHANCY_PRINCIPLES.respectful_disagreement {
+            "on".green()
+        } else {
+            "off".red()
+        },
+        if SYCOPHANCY_PRINCIPLES.no_empty_validation {
+            "on".green()
+        } else {
+            "off".red()
+        },
+    );
+    println!(
+        "  {} Banned phrases: {} patterns | Motto: {}",
+        "✓".green(),
+        banned_phrases::count(),
+        SYCOPHANCY_MOTTO.dimmed()
+    );
+    println!();
+
     println!(
         "{} → {}",
         "ON CONFUSION".bold().yellow(),
@@ -270,6 +305,14 @@ fn cmd_validate(path: &Path, ethics_scan: bool, regenerate: bool) -> ExitCode {
         EthicsStatus::Extended => "EXTENDED (core + ethics.yaml)".bright_green(),
     };
     println!("  {} Ethics: {}", "✓".green(), ethics_display);
+
+    // Show hardcoded sycophancy status
+    let sycophancy_status = check_sycophancy_status(dir);
+    let sycophancy_display = match sycophancy_status {
+        SycophancyStatus::Hardcoded => "HARDCODED (truth over comfort)".bright_cyan(),
+        SycophancyStatus::Extended => "EXTENDED (core + sycophancy.yaml)".bright_green(),
+    };
+    println!("  {} Anti-Sycophancy: {}", "✓".green(), sycophancy_display);
     println!();
 
     let (results, regen_info) = if path.is_file() {
@@ -477,6 +520,7 @@ fn cmd_init(
         files.push(("CLAUDE.md", claude_md_template(&project_name, project_type)));
         files.push(("ethics.yaml", ethics_template()));
         files.push(("green.yaml", green_template()));
+        files.push(("sycophancy.yaml", sycophancy_template()));
         // Generate example checkpoint file (will be gitignored)
         files.push((
             ".claude_checkpoint.yaml.example",

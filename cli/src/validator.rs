@@ -234,8 +234,8 @@ fn validate_directory_internal(
     regenerate: bool,
 ) -> Result<(Vec<ValidationResult>, RegenerationInfo)> {
     use crate::templates::{
-        ethics_template, green_template, roadmap_template, sprint_template, warmup_template,
-        ProjectType,
+        ethics_template, green_template, roadmap_template, sprint_template, sycophancy_template,
+        warmup_template, ProjectType,
     };
 
     let mut results = Vec::new();
@@ -245,13 +245,14 @@ fn validate_directory_internal(
     // (filename, template_fn, is_warn_level)
     #[allow(clippy::type_complexity)]
     let required_files: Vec<(&str, Box<dyn Fn() -> String>, bool)> = vec![
-        ("ethics.yaml", Box::new(ethics_template), true), // WARN
+        ("ethics.yaml", Box::new(ethics_template), true), // WARN - Priority 0
         (
             "warmup.yaml",
             Box::new(|| warmup_template("project", ProjectType::Generic)),
             true,
         ), // WARN
-        ("green.yaml", Box::new(green_template), false),  // INFO
+        ("green.yaml", Box::new(green_template), false),  // INFO - Priority 0.5
+        ("sycophancy.yaml", Box::new(sycophancy_template), true), // WARN - Priority 1.5
         ("sprint.yaml", Box::new(sprint_template), false), // INFO
         ("roadmap.yaml", Box::new(roadmap_template), false), // INFO
     ];
@@ -281,6 +282,7 @@ fn validate_directory_internal(
         "roadmap.yaml",
         "ethics.yaml",
         "green.yaml",
+        "sycophancy.yaml",
         ".claude_checkpoint.yaml",
     ];
 
@@ -303,7 +305,7 @@ fn validate_directory_internal(
 
     if results.is_empty() {
         return Err(Error::ValidationError(
-            "No protocol files found (warmup.yaml, sprint.yaml, roadmap.yaml, ethics.yaml)"
+            "No protocol files found (warmup.yaml, sprint.yaml, roadmap.yaml, ethics.yaml, sycophancy.yaml)"
                 .to_string(),
         ));
     }
@@ -330,6 +332,7 @@ pub fn is_protocol_file(filename: &str) -> bool {
             || name.contains("roadmap")
             || name.contains("ethics")
             || name.contains("green")
+            || name.contains("sycophancy")
             || name.contains("checkpoint"))
 }
 
@@ -657,8 +660,10 @@ sprint:
     #[test]
     fn test_valid_roadmap_minimal() {
         let content = r#"
-metadata:
-  current_version: "1.0.0"
+current:
+  version: "1.0.0"
+  status: planned
+  summary: "First milestone"
 "#;
         let mut file = NamedTempFile::with_suffix("_roadmap.yaml").unwrap();
         write!(file, "{}", content).unwrap();
@@ -671,26 +676,22 @@ metadata:
     #[test]
     fn test_valid_roadmap_full() {
         let content = r#"
-metadata:
-  current_version: "1.0.0"
-  last_updated: "2025-01-01"
-  philosophy: "Ship fast"
-
 current:
   version: "1.0.0"
-  status: released
-  date: "2025-01-01"
-  summary: "Initial release"
-  highlights:
-    - "Feature one"
-    - "Feature two"
+  status: in_progress
+  summary: "Current milestone"
+  goal: "CORE_VALUE"
+  adr: "docs/adr/001-example.md"
+  deliverables:
+    - "[ ] Feature one"
+    - "[ ] Feature two"
 
 next:
-  version: "1.1.0"
-  status: planned
-  summary: "Next release"
-  features:
-    - "New feature"
+  - version: "1.1.0"
+    summary: "Next milestone"
+    goal: "ANOTHER_VALUE"
+  - version: "1.2.0"
+    summary: "Future milestone"
 
 backlog:
   - "Future idea one"
@@ -711,6 +712,7 @@ backlog:
 current:
   version: "1.0.0"
   status: {}
+  summary: "Test milestone"
 "#,
                 status
             );
@@ -785,7 +787,7 @@ identity:
         .unwrap();
         std::fs::write(
             temp_dir.path().join("roadmap.yaml"),
-            "metadata:\n  current_version: '1.0.0'",
+            "current:\n  version: '1.0.0'\n  status: planned\n  summary: Test milestone",
         )
         .unwrap();
 
@@ -838,6 +840,7 @@ identity:
         assert!(is_protocol_file("roadmap.yaml"));
         assert!(is_protocol_file("ethics.yaml"));
         assert!(is_protocol_file("green.yaml"));
+        assert!(is_protocol_file("sycophancy.yaml"));
         assert!(is_protocol_file("WARMUP.yaml"));
         assert!(is_protocol_file("SPRINT.YAML"));
         assert!(is_protocol_file("my_warmup.yaml"));
@@ -1050,6 +1053,10 @@ self_healing:
             "Should regenerate green.yaml"
         );
         assert!(
+            info.regenerated.iter().any(|(f, _)| f == "sycophancy.yaml"),
+            "Should regenerate sycophancy.yaml"
+        );
+        assert!(
             info.regenerated.iter().any(|(f, _)| f == "sprint.yaml"),
             "Should regenerate sprint.yaml"
         );
@@ -1127,10 +1134,10 @@ identity:
 
         let (_, info) = validate_directory_with_regeneration(temp_dir.path(), true).unwrap();
 
-        // ethics.yaml and warmup.yaml should have warn level = true
+        // ethics.yaml, warmup.yaml, and sycophancy.yaml should have warn level = true
         for (filename, is_warn) in &info.regenerated {
             match filename.as_str() {
-                "ethics.yaml" | "warmup.yaml" => {
+                "ethics.yaml" | "warmup.yaml" | "sycophancy.yaml" => {
                     assert!(*is_warn, "{} should have WARN level", filename);
                 }
                 "green.yaml" | "sprint.yaml" | "roadmap.yaml" => {

@@ -45,6 +45,7 @@ Forge Protocol v4.0.0 integrates with Claude Code 2.0's native features instead 
 |---------|-------------|------------------|
 | **Ethics Protocol** | `ethics.yaml`, `human_veto`, red flags | NO |
 | **Green Protocol** | `green.yaml`, local-first, carbon awareness | NO |
+| **Anti-Sycophancy Protocol** | `sycophancy.yaml`, banned phrases, honesty directives | NO |
 | **Sprint Autonomy** | 4hr max, 1 milestone, anti-patterns | NO |
 | **Schema Validation** | `forge-protocol validate` | NO |
 
@@ -58,6 +59,7 @@ The new CLAUDE.md template uses Claude Code's native `@import` syntax:
 @warmup.yaml
 @ethics.yaml
 @green.yaml
+@sycophancy.yaml
 
 Rules: 4hr max, 1 milestone, tests pass, ship.
 ```
@@ -178,8 +180,9 @@ flowchart LR
 
 ```
 project/
-├── ethics.yaml           # Required for SKYNET - Humanist Mode
-├── green.yaml            # Required for SKYNET - Green Coding
+├── ethics.yaml           # Required for SKYNET - Humanist Mode (Priority 0)
+├── green.yaml            # Required for SKYNET - Green Coding (Priority 0.5)
+├── sycophancy.yaml       # Required for SKYNET - Anti-Sycophancy (Priority 1.5)
 ├── warmup.yaml           # Required - Protocol rules (HOW)
 ├── sprint.yaml           # Required for SKYNET - Session boundaries (WHEN)
 ├── roadmap.yaml          # Required for SKYNET - Milestones (WHAT)
@@ -189,12 +192,13 @@ project/
 
 ### Modular Structure (Large Projects)
 
-When warmup.yaml exceeds 200 lines, split into modules. **CRITICAL: ethics.yaml and green.yaml must NEVER be modularized - they stay in project root.**
+When warmup.yaml exceeds 200 lines, split into modules. **CRITICAL: ethics.yaml, green.yaml, and sycophancy.yaml must NEVER be modularized - they stay in project root.**
 
 ```
 project/
 ├── ethics.yaml           # NEVER modularize - Priority 0
 ├── green.yaml            # NEVER modularize - Priority 0.5
+├── sycophancy.yaml       # NEVER modularize - Priority 1.5
 ├── warmup.yaml           # Core only (~100 lines)
 ├── .forge/               # Protocol modules
 │   ├── identity.yaml     # Project identity/mission
@@ -213,6 +217,7 @@ project/
 2. `.forge/*.yaml` - Loaded alphabetically when referenced
 3. `ethics.yaml` - Checked at validation time (never in .forge/)
 4. `green.yaml` - Checked at validation time (never in .forge/)
+5. `sycophancy.yaml` - Checked at validation time (never in .forge/)
 
 **Module Schemas:**
 
@@ -224,12 +229,13 @@ project/
 | quality.yaml | `tests`, `lint` | Quality gates |
 | style.yaml | `code` | Code style guidelines |
 
-**Why ethics.yaml and green.yaml Cannot Be Modularized:**
+**Why ethics.yaml, green.yaml, and sycophancy.yaml Cannot Be Modularized:**
 - ethics.yaml contains `human_veto` - the emergency stop capability
 - green.yaml contains core sustainability principles - non-negotiable for responsible AI
+- sycophancy.yaml contains anti-sycophancy directives - prevents validation hallucination
 - Validation MUST error if `human_veto` is missing
 - Putting these in a module directory risks oversight during security review
-- Ethics is Priority 0, Green is Priority 0.5 - visibility is mandatory
+- Ethics is Priority 0, Green is Priority 0.5, Sycophancy is Priority 1.5 - visibility is mandatory
 
 ### File Size Limits (ADR-007)
 
@@ -273,10 +279,20 @@ Anti-hallucination hardening requires critical sections to exist in the right fi
 | `core_principles.local_first.enabled` | WARNING if false | Local-first is core principle |
 | `modification_rules` | WARNING if missing | Protects against tampering |
 
+**sycophancy.yaml (Priority 1.5 - REQUIRED):**
+
+| Section | Status | Rationale |
+|---------|--------|-----------|
+| `core_principles` | ERROR if missing | Anti-sycophancy guardrails must be explicit |
+| `banned_phrases` | WARNING if missing | Specific phrases to avoid |
+| `directives` | WARNING if missing | Behavioral guidelines |
+| `modification_rules` | WARNING if missing | Protects against tampering |
+
 **Enforcement:**
 - `forge-protocol validate` checks structure, not just schema
 - Ethics structure errors are CRITICAL - validation fails
 - Green structure errors are WARNING - proceeds with hardcoded defaults
+- Sycophancy structure errors are WARNING - proceeds with hardcoded defaults
 - Warmup structure issues are warnings - project still valid
 
 ### Self-Healing Behavior (v4.1.5+)
@@ -287,9 +303,10 @@ Protocol files auto-regenerate when missing during validation. Recovery over sur
 
 | File Missing | Action | Rationale |
 |--------------|--------|-----------|
-| ethics.yaml | AUTO-CREATE + WARN | Ethics must exist |
+| ethics.yaml | AUTO-CREATE + WARN | Ethics must exist (Priority 0) |
 | warmup.yaml | AUTO-CREATE + WARN | Core protocol |
-| green.yaml | AUTO-CREATE + INFO | Required but less critical |
+| green.yaml | AUTO-CREATE + INFO | Required but less critical (Priority 0.5) |
+| sycophancy.yaml | AUTO-CREATE + WARN | Anti-sycophancy must exist (Priority 1.5) |
 | sprint.yaml | AUTO-CREATE + INFO | Session boundary protocol |
 | roadmap.yaml | AUTO-CREATE + INFO | Milestone data (skeleton) |
 | CLAUDE.md | **NEVER** | Bootstrap must be intentional |
@@ -459,6 +476,75 @@ validation:
 - Anti-patterns guide developers away from wasteful practices
 
 See [ADR-016](adr/016-green-coding-protocol.md) for full rationale.
+
+### sycophancy.yaml Schema (Required for SKYNET)
+
+The Anti-Sycophancy configuration file. Counteracts RLHF-induced validation hallucination.
+
+```yaml
+# sycophancy.yaml - Anti-Sycophancy Protocol v1.0
+modification_rules:
+  immutable_without: "2 human co-signers with public justification"
+
+core_principles:
+  status: "REQUIRED"
+  philosophy: "Truth over comfort. Disagreement is respect."
+
+  truth_over_validation:
+    enabled: true
+    description: "Prioritize accurate feedback over comfortable agreement"
+
+  problems_first:
+    enabled: true
+    description: "List potential problems BEFORE merits on any proposal"
+
+  no_false_agreement:
+    enabled: true
+    description: "Never agree without evidence or good reason"
+
+directives:
+  - "Challenge assumptions, don't validate them"
+  - "Point out flaws BEFORE agreeing"
+  - "Never say 'You're absolutely right' without evidence"
+  - "Disagree when you have good reason"
+  - "Prefer 'Here's a concern...' over 'Great idea!'"
+
+banned_phrases:
+  excessive_validation:
+    - "You're absolutely right"
+    - "That's a great point"
+    - "I couldn't agree more"
+  false_enthusiasm:
+    - "Brilliant idea"
+    - "Great question"
+    - "Excellent thinking"
+  hollow_praise:
+    - "What a wonderful approach"
+    - "I love this idea"
+    - "Perfect solution"
+
+required_behavior:
+  on_user_proposal: "List potential problems FIRST, then merits"
+  on_user_question: "Give honest answer, even if uncomfortable"
+  on_user_mistake: "Correct directly, don't soften with praise"
+
+on_confusion:
+  steps:
+    - "Halt current response"
+    - "Re-read sycophancy.yaml"
+    - "Check if about to use banned phrase"
+    - "Reformulate with honesty"
+```
+
+**Key Points:**
+- This is a **core protocol**, not optional configuration
+- Hardcoded in CLI binary - cannot be bypassed by deleting file
+- Auto-regenerates if missing (WARN level)
+- Session validation at step_0c (after ethics and green)
+- 9 banned phrases across 3 categories
+- Required behaviors define how to respond honestly
+
+See [ADR-015](adr/015-anti-sycophancy-protocol.md) for full rationale.
 
 ### CLAUDE.md Schema (Required for SKYNET)
 
@@ -645,36 +731,6 @@ release:
     github: "git push origin main && git push origin vX.Y.Z"
     registry: "cargo publish"  # or npm publish, etc.
 ```
-
-#### anti_sycophancy (recommended for SKYNET)
-
-Counteracts RLHF-induced validation hallucination. See [ADR-015](adr/015-anti-sycophancy-protocol.md).
-
-```yaml
-anti_sycophancy:
-  philosophy: "Truth over comfort. Disagreement is respect."
-
-  directives:
-    - "Challenge assumptions, don't validate them"
-    - "Point out flaws BEFORE agreeing"
-    - "Never say 'You're absolutely right' without evidence"
-    - "Disagree when you have good reason"
-    - "Prefer 'Here's a concern...' over 'Great idea!'"
-
-  banned_phrases:
-    - "You're absolutely right"
-    - "That's a great point"
-    - "I couldn't agree more"
-    - "Brilliant idea"
-    - "Great question"
-
-  required_behavior:
-    on_user_proposal: "List potential problems FIRST, then merits"
-    on_user_question: "Give honest answer, even if uncomfortable"
-    on_user_mistake: "Correct directly, don't soften with praise"
-```
-
-**Why this exists:** AI sycophancy is a documented problem ([Nature 2025](https://www.nature.com/articles/d41586-025-03390-0)). Models are 50% more sycophantic than humans due to RLHF training. This harms users by validating bad decisions, reinforcing delusions, and providing false confidence.
 
 ### sprint.yaml Schema
 
@@ -1084,11 +1140,39 @@ Context window size affects self-healing overhead:
 
 See [ADR-010: Context Window Optimization](adr/010-velocity-constraints-tier-analysis.md) for full analysis.
 
+## Feature Status
+
+### Deprecated Features
+
+These features have been replaced by Claude Code native functionality:
+
+| Feature | Was | Replaced By | Scope |
+|---------|-----|-------------|-------|
+| Checkpoint file | `.claude_checkpoint.yaml` | TodoWrite for tasks, `/rewind` for code | Task tracking |
+| Session handoff | Custom session-end command | `--continue`/`--resume` CLI flags | Cross-session |
+
+### Active Features (Unique Value)
+
+These features are NOT replaced by Claude Code native functionality:
+
+| Feature | Description | Why Active |
+|---------|-------------|------------|
+| **Self-Healing** | warmup.yaml re-read on confusion | Claude Code has no automatic mid-session recovery |
+| **Sprint Autonomy** | 4hr max, 1 milestone, quality gates | Claude Code has no bounded session enforcement |
+| **Ethics Protocol** | ethics.yaml, human_veto, red flags | Claude Code has no ethics framework |
+| **Green Protocol** | green.yaml, local-first validation | Claude Code has no green coding philosophy |
+| **Anti-Sycophancy** | sycophancy.yaml, banned phrases | Claude Code has no sycophancy prevention |
+
+**Key distinction:** Cross-session features → Claude Code native. Mid-session self-healing → Forge Protocol.
+
+See [ADR-013](adr/013-self-healing-not-replaced.md) for full analysis.
+
 ## Architecture Decisions
 
 - [ADR-018: Claude Code Hooks Integration](adr/018-claude-code-hooks-integration.md) - **v4.1.7** SessionStart + PreCompact
 - [ADR-017: Protocol Self-Healing](adr/017-protocol-self-healing.md) - **v4.1.5** Auto-regeneration
 - [ADR-016: Green Coding Protocol](adr/016-green-coding-protocol.md) - **v4.1.2** Dedicated green.yaml
+- [ADR-015: Anti-Sycophancy Protocol](adr/015-anti-sycophancy-protocol.md) - **v4.1.6** Dedicated sycophancy.yaml
 - [ADR-010: Context Window Optimization](adr/010-velocity-constraints-tier-analysis.md) - **v4.0.0** 50-150x proven
 - [ADR-009: Claude Code Native Integration](adr/009-claude-code-native-integration.md) - **v4.0.0** Strategic pivot
 - [ADR-008: Ethics Protocol and Humanist Mode](adr/008-ethics-protocol-humanist-mode.md) - v3.0.0

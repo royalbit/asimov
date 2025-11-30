@@ -32,6 +32,7 @@ pub mod error;
 pub mod ethics;
 pub mod markdown;
 pub mod schemas;
+pub mod sycophancy;
 pub mod templates;
 pub mod validator;
 
@@ -46,10 +47,15 @@ pub use markdown::{
     check_file as check_markdown_file, find_markdown_files, fix_file as fix_markdown_file,
     LintError, LintResult,
 };
+pub use sycophancy::{
+    banned_phrases, check_sycophancy_status, directives, BannedPhraseCategory,
+    CorePrinciples as SycophancyPrinciples, SycophancyStatus,
+    CORE_PRINCIPLES as SYCOPHANCY_PRINCIPLES, MOTTO as SYCOPHANCY_MOTTO,
+};
 pub use templates::{
     checkpoint_template, claude_md_template, ethics_template, green_template,
     hook_installer_template, precommit_hook_template, roadmap_template, sprint_template,
-    uses_cargo_husky, warmup_template, ProjectType,
+    sycophancy_template, uses_cargo_husky, warmup_template, ProjectType,
 };
 pub use validator::{
     check_ethics_structure, check_warmup_structure, is_protocol_file, validate_claude_md,

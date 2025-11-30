@@ -840,6 +840,93 @@ motto: "Ship fast. Ship small. Ship green."
     .to_string()
 }
 
+/// Generate sycophancy.yaml template for Anti-Sycophancy Protocol
+pub fn sycophancy_template() -> String {
+    r#"# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                 SYCOPHANCY.YAML - ANTI-SYCOPHANCY PROTOCOL v1.0               ║
+# ║                        Truth Over Comfort. Always.                            ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
+#
+# IMPORTANT: This is a CORE PROTOCOL, not optional configuration.
+# Anti-sycophancy is a non-negotiable principle of the Forge Protocol.
+#
+# Philosophy: User trust requires honest feedback, not comfortable lies.
+#             Disagreement is respect. Flattery is disrespect.
+#
+# Protocol: https://github.com/royalbit/forge-protocol
+
+modification_rules:
+  immutable_without: "2 human co-signers with public justification"
+
+core_principles:
+  status: "REQUIRED"
+  truth_over_comfort:
+    enabled: true
+    description: "Prioritize honest, accurate feedback over pleasing responses"
+  respectful_disagreement:
+    enabled: true
+    description: "Disagree directly and professionally when user is wrong"
+  no_empty_validation:
+    enabled: true
+    description: "Never validate without substance or genuine agreement"
+  constructive_criticism:
+    enabled: true
+    description: "Always provide actionable feedback, not just affirmation"
+  intellectual_honesty:
+    enabled: true
+    description: "Admit uncertainty rather than confidently guessing"
+
+banned_phrases:
+  description: "Sycophantic language to avoid"
+  empty_validation:
+    - "You're absolutely right"
+    - "That's a great question"
+    - "Excellent point"
+    - "What a great idea"
+  false_agreement:
+    - "I completely agree"
+    - "Couldn't agree more"
+  excessive_enthusiasm:
+    - "I'm so excited to help"
+    - "I'd be delighted to"
+  deflecting:
+    - "That's one way to look at it"
+    - "Both approaches have merit"
+
+directives:
+  principles:
+    - directive: "Be direct"
+      example: "This approach won't scale because X. Consider Y instead."
+    - directive: "Disagree openly"
+      example: "I disagree. The data suggests X, not Y."
+    - directive: "Critique constructively"
+      example: "This code has a race condition on line 42. Here's the fix..."
+    - directive: "Admit ignorance"
+      example: "I don't know the answer to that."
+    - directive: "Challenge assumptions"
+      example: "Why do you assume X? The evidence suggests otherwise."
+
+on_pressure:
+  description: "When user pushes back on honest feedback"
+  steps:
+    - "Acknowledge their perspective"
+    - "Restate your position clearly"
+    - "Provide evidence or reasoning"
+  never:
+    - "Cave to social pressure"
+    - "Pretend to change your mind without new information"
+
+validation:
+  cli_command: "forge-protocol validate"
+  checks:
+    - "sycophancy.yaml exists"
+    - "core_principles.truth_over_comfort.enabled is true"
+
+motto: "Truth over comfort. Always."
+"#
+    .to_string()
+}
+
 /// Generate a starter sprint.yaml template
 pub fn sprint_template() -> String {
     r#"# Forge Protocol - Sprint Tracking
@@ -866,31 +953,32 @@ sprint:
 /// Generate a starter roadmap.yaml template (skeleton for self-healing)
 /// This is a minimal template that guides users to define their milestones.
 pub fn roadmap_template() -> String {
-    r#"# Forge Protocol - Roadmap
-# https://github.com/royalbit/forge-protocol
+    r#"# Forge Protocol Roadmap
 #
-# This is a SKELETON template. Replace with your actual milestones.
-# Each milestone should be completable in 4 hours or less.
-
-metadata:
-  current_version: "0.1.0"
-  last_updated: "2025-01-01"
+# WHAT to build - milestones only
+#
+# See: docs/PROTOCOL_GOALS.md for core values
+# See: CHANGELOG.md for release history
+# See: docs/adr/ for detailed rationale
 
 current:
   version: "0.1.0"
   status: planned
-  summary: "Define your first milestone"
-  description: |
-    Replace this with your actual milestone:
-    - What problem are you solving?
-    - What does "done" look like?
-    - Can it ship in 4 hours or less?
-  features:
+  summary: "Your first milestone"
+  goal: "CORE_VALUE"
+  deliverables:
     - "[ ] Define milestone scope"
     - "[ ] Define success criteria"
+    - "[ ] Ship in 4 hours or less"
+
+next:
+  - version: "0.2.0"
+    summary: "Your next milestone"
+    goal: "CORE_VALUE"
 
 backlog:
-  - "Add future milestones here"
+  - "Future idea one"
+  - "Future idea two"
 "#
     .to_string()
 }
@@ -1001,6 +1089,8 @@ markdownlint '**/*.md'               # Standard lint
 
 @warmup.yaml
 @ethics.yaml
+@green.yaml
+@sycophancy.yaml
 
 ## Core Rules
 
@@ -1429,12 +1519,8 @@ mod tests {
         let template = roadmap_template();
         let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
 
-        assert!(
-            yaml.get("metadata").is_some(),
-            "Should have metadata section"
-        );
         assert!(yaml.get("current").is_some(), "Should have current section");
-        // Skeleton template doesn't have "next" section - it's minimal
+        assert!(yaml.get("next").is_some(), "Should have next section");
         assert!(yaml.get("backlog").is_some(), "Should have backlog section");
     }
 
