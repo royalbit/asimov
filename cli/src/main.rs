@@ -3,8 +3,8 @@
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use forge_protocol::{
-    banned_phrases, check_ethics_status, check_markdown_file, check_sycophancy_status,
-    checkpoint_template, claude_md_template, ethics_template, find_markdown_files,
+    asimov_template, banned_phrases, check_ethics_status, check_markdown_file,
+    check_sycophancy_status, checkpoint_template, claude_md_template, find_markdown_files,
     fix_markdown_file, green_template, hook_installer_template, is_protocol_file,
     precommit_hook_template, red_flags, roadmap_template, scan_directory_for_red_flags,
     sprint_template, sycophancy_template, uses_cargo_husky, validate_directory_with_regeneration,
@@ -20,7 +20,7 @@ use std::process::ExitCode;
 #[command(long_about = "Forge Protocol CLI - Ethical AI Development
 
 Validates protocol files against the Forge Protocol specification:
-  - ethics.yaml  - Humanist Mode safeguards (required in SKYNET)
+  - asimov.yaml  - The Three Laws (required in ASIMOV MODE)
   - warmup.yaml  - Session bootstrap (required)
   - sprint.yaml  - Active work tracking (optional)
   - roadmap.yaml - Milestone planning (optional)
@@ -36,16 +36,20 @@ EXAMPLES:
   forge-protocol init --type flutter         # Generate Flutter-specific warmup.yaml
   forge-protocol init --type docs            # Generate docs/architecture warmup.yaml
   forge-protocol init --full                 # Generate all protocol files
-  forge-protocol init --skynet               # Full SKYNET MODE setup
+  forge-protocol init --asimov               # Full ASIMOV MODE setup
 
 TYPES: generic, rust, python (py), node (js), go (golang), flutter (dart), docs (arch)
 
-SKYNET MODE (--skynet): Full autonomous session setup
-  - ethics.yaml (Humanist Mode - required, cannot opt out)
+ASIMOV MODE (--asimov): Full autonomous session setup with The Three Laws
+  - asimov.yaml (The Three Laws - required, cannot opt out)
   - All protocol files (warmup.yaml, sprint.yaml, roadmap.yaml)
   - CLAUDE.md (auto-loaded by Claude Code)
   - Pre-commit hooks (.hooks/ or cargo-husky for Rust)
   - .gitignore update (exclude checkpoint file)
+
+The Open Foundation: Transparent ethics for AI autonomy.
+Inspect the code. Challenge the rules. Fork if you disagree.
+Adoption through consent, not control.
 
 GREEN CODING - Why This Matters:
   - Local validation: $0/file, ~0.002g CO2, <100ms
@@ -95,8 +99,12 @@ enum Commands {
         #[arg(long)]
         full: bool,
 
-        /// Full SKYNET MODE setup (protocol files + CLAUDE.md + hooks + .gitignore)
+        /// Full ASIMOV MODE setup (protocol files + CLAUDE.md + hooks + .gitignore)
         #[arg(long)]
+        asimov: bool,
+
+        /// [DEPRECATED] Use --asimov instead. Alias for --asimov for backwards compatibility.
+        #[arg(long, hide = true)]
         skynet: bool,
 
         /// Output directory (defaults to current directory)
@@ -147,10 +155,11 @@ fn main() -> ExitCode {
             name,
             project_type,
             full,
+            asimov,
             skynet,
             output,
             force,
-        } => cmd_init(name, &project_type, full, skynet, &output, force),
+        } => cmd_init(name, &project_type, full, asimov || skynet, &output, force),
         Commands::Check { file } => cmd_validate(&file, false, true),
         Commands::LintDocs { path, fix } => cmd_lint_docs(&path, fix),
         Commands::Refresh { verbose } => cmd_refresh(verbose),
@@ -163,10 +172,7 @@ fn cmd_refresh(verbose: bool) -> ExitCode {
         "{}",
         "═══════════════════════════════════════════════════════════════════════".bright_cyan()
     );
-    println!(
-        "{}",
-        "🤖 SKYNET MODE - PROTOCOL REFRESH".bold().bright_cyan()
-    );
+    println!("{}", "🤖 ASIMOV MODE - THE THREE LAWS".bold().bright_cyan());
     println!(
         "{}",
         "═══════════════════════════════════════════════════════════════════════".bright_cyan()
@@ -473,16 +479,16 @@ fn cmd_init(
     name: Option<String>,
     project_type_str: &str,
     full: bool,
-    skynet: bool,
+    asimov: bool,
     output: &Path,
     force: bool,
 ) -> ExitCode {
-    // --skynet implies --full
-    let full = full || skynet;
+    // --asimov implies --full
+    let full = full || asimov;
 
     println!("{}", "Forge Protocol Init".bold().green());
-    if skynet {
-        println!("{}", "  SKYNET MODE enabled".bold().cyan());
+    if asimov {
+        println!("{}", "  ASIMOV MODE - The Three Laws".bold().cyan());
     }
     println!();
 
@@ -516,9 +522,9 @@ fn cmd_init(
         files.push(("roadmap.yaml", roadmap_template()));
     }
 
-    if skynet {
+    if asimov {
         files.push(("CLAUDE.md", claude_md_template(&project_name, project_type)));
-        files.push(("ethics.yaml", ethics_template()));
+        files.push(("asimov.yaml", asimov_template()));
         files.push(("green.yaml", green_template()));
         files.push(("sycophancy.yaml", sycophancy_template()));
         // Generate example checkpoint file (will be gitignored)
@@ -552,8 +558,8 @@ fn cmd_init(
         }
     }
 
-    // SKYNET MODE: Generate hooks and update .gitignore
-    if skynet {
+    // ASIMOV MODE: Generate hooks and update .gitignore
+    if asimov {
         println!();
 
         // For Rust projects, show cargo-husky instructions instead of creating hooks
@@ -665,7 +671,7 @@ fn cmd_init(
             if !content.is_empty() && !content.ends_with('\n') {
                 content.push('\n');
             }
-            content.push_str("\n# SKYNET MODE checkpoint (session-specific)\n");
+            content.push_str("\n# ASIMOV MODE checkpoint (session-specific)\n");
             content.push_str(checkpoint_entry);
             content.push('\n');
 
@@ -693,7 +699,7 @@ fn cmd_init(
     println!();
     println!("{}", "Next steps:".bold());
     println!("  1. Edit warmup.yaml with your project details");
-    if skynet {
+    if asimov {
         if !uses_cargo_husky(project_type) {
             println!("  2. Install hooks: ./.hooks/install.sh");
             println!("  3. Launch: claude --dangerously-skip-permissions");

@@ -2,6 +2,7 @@
 //!
 //! Schemas are embedded as string constants and compiled at runtime.
 
+mod asimov;
 mod checkpoint;
 mod ethics;
 mod green;
@@ -10,6 +11,7 @@ mod sprint;
 mod sycophancy;
 mod warmup;
 
+pub use asimov::ASIMOV_SCHEMA;
 pub use checkpoint::CHECKPOINT_SCHEMA;
 pub use ethics::ETHICS_SCHEMA;
 pub use green::GREEN_SCHEMA;
@@ -27,6 +29,8 @@ pub fn schema_for_file(filename: &str) -> Option<&'static str> {
         Some(SPRINT_SCHEMA)
     } else if name.contains("roadmap") {
         Some(ROADMAP_SCHEMA)
+    } else if name.contains("asimov") {
+        Some(ASIMOV_SCHEMA)
     } else if name.contains("ethics") {
         Some(ETHICS_SCHEMA)
     } else if name.contains("green") {
@@ -49,6 +53,8 @@ pub fn schema_type_for_file(filename: &str) -> Option<&'static str> {
         Some("sprint")
     } else if name.contains("roadmap") {
         Some("roadmap")
+    } else if name.contains("asimov") {
+        Some("asimov")
     } else if name.contains("ethics") {
         Some("ethics")
     } else if name.contains("green") {

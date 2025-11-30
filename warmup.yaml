@@ -76,7 +76,7 @@ identity:
   project: "Forge Protocol"
   tagline: "Vendor-neutral AI session continuity"
   author: "Claude (Opus 4.5) - Principal Engineer"
-  philosophy: "Portable files. Any project. SKYNET MODE requires Claude Code."
+  philosophy: "Portable files. Any project. ASIMOV MODE requires Claude Code."
   version: "2.0.0"
   license: "MIT"
   protocol: "https://github.com/royalbit/forge-protocol"
@@ -95,7 +95,7 @@ mission:
     - warmup.yaml: HOW to develop (quality, testing, docs)
     - sprint.yaml: WHEN to stop (bounded sessions, shipping)
     - roadmap.yaml: WHAT to build (milestones, priorities)
-    Files are portable (paste anywhere). SKYNET MODE requires Claude Code.
+    Files are portable (paste anywhere). ASIMOV MODE requires Claude Code.
 
   value:
     - "CLI validator: `forge-protocol validate`"
@@ -201,7 +201,7 @@ anti_sycophancy:
   motto: "Truth over comfort. Disagreement is respect."
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# AUTONOMOUS DEVELOPMENT PROTOCOL - "Skynet Mode" 🤖
+# AUTONOMOUS DEVELOPMENT PROTOCOL - "Asimov Mode" 🤖
 # ═══════════════════════════════════════════════════════════════════════════════
 autonomous_development:
   description: |
@@ -668,10 +668,10 @@ session_initialization:
       steps:
         - "Alert user: 'ETHICS VALIDATION FAILED'"
         - "Show validation errors"
-        - "If ethics.yaml missing or corrupted: regenerate with 'forge-protocol init --skynet'"
+        - "If asimov.yaml missing or corrupted: regenerate with 'forge-protocol init --asimov'"
         - "Re-run validation"
         - "If still failing: STOP and wait for human intervention"
-      regenerate_command: "forge-protocol init --skynet --force"
+      regenerate_command: "forge-protocol init --asimov --force"
     why: |
       Ethics is Priority 0. If ethics validation fails, the session cannot proceed.
       This prevents operation with weakened or missing ethics configuration.
@@ -691,9 +691,9 @@ session_initialization:
       steps:
         - "Alert user: 'GREEN PROTOCOL VALIDATION WARNING'"
         - "Show validation errors"
-        - "If green.yaml missing: regenerate with 'forge-protocol init --skynet'"
+        - "If green.yaml missing: regenerate with 'forge-protocol init --asimov'"
         - "Continue with hardcoded green defaults"
-      regenerate_command: "forge-protocol init --skynet --force"
+      regenerate_command: "forge-protocol init --asimov --force"
     why: |
       Green coding is Priority 0.5. Unlike ethics (hard stop), green validation
       allows proceeding with hardcoded defaults if green.yaml is missing.
@@ -713,9 +713,9 @@ session_initialization:
       steps:
         - "Alert user: 'SYCOPHANCY PROTOCOL VALIDATION WARNING'"
         - "Show validation errors"
-        - "If sycophancy.yaml missing: regenerate with 'forge-protocol init --skynet'"
+        - "If sycophancy.yaml missing: regenerate with 'forge-protocol init --asimov'"
         - "Continue with hardcoded sycophancy defaults"
-      regenerate_command: "forge-protocol init --skynet --force"
+      regenerate_command: "forge-protocol init --asimov --force"
     why: |
       Anti-sycophancy is Priority 1.5. Like green (warn, not halt), sycophancy
       validation allows proceeding with hardcoded defaults if sycophancy.yaml is missing.

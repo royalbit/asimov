@@ -8,31 +8,32 @@
 # See: docs/adr/ for detailed rationale
 
 current:
-  version: "4.1.9"
-  status: released
-  summary: "Anti-Sycophancy Protocol - Truth Over Comfort"
-  goal: ANTI-SYCOPHANCY
-  adr: "docs/adr/015-anti-sycophancy-protocol.md"
+  version: "4.2.0"
+  status: in_progress
+  summary: "Asimov Mode - The Open Foundation"
+  goal: ETHICAL_AUTONOMY
+  adr: "docs/adr/020-asimov-mode-open-foundation.md"
   deliverables:
-    - "[x] sycophancy.yaml - Dedicated protocol file"
-    - "[x] cli/src/sycophancy.rs - Hardcoded module"
-    - "[x] sycophancy_template() for auto-regeneration"
-    - "[x] Anti-sycophancy status on validate command"
-    - "[x] Anti-sycophancy reminder in refresh command"
-    - "[x] CHANGELOG.md update"
-    - "[x] Version bump to 4.1.9"
+    - "[x] ADR-020: The Open Foundation manifesto"
+    - "[x] asimov.yaml - Three Laws structure"
+    - "[x] CLI support for asimov.yaml"
+    - "[x] --asimov flag (--skynet as deprecated alias)"
+    - "[x] warmup.yaml - ASIMOV MODE references"
+    - "[x] CLAUDE.md - @asimov.yaml reference"
+    - "[ ] CHANGELOG.md update"
+    - "[ ] Version bump to 4.2.0"
 
 next:
-  - version: "4.2.0"
+  - version: "4.3.0"
     summary: "Hardcoded Green Coding Metrics"
     goal: GREEN_CODING
     adr: "docs/adr/012-hardcoded-green-coding.md"
 
-  - version: "4.3.0"
+  - version: "4.4.0"
     summary: "MCP Server Mode"
     goal: VENDOR_NEUTRALITY
 
-  - version: "4.4.0"
+  - version: "4.5.0"
     summary: "Schema Standardization"
     goal: ANTI-HALLUCINATION
 
