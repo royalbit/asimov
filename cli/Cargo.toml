@@ -1,19 +1,19 @@
 [package]
-name = "forge-protocol"
+name = "asimov-protocol"
 version = "4.2.0"
 edition = "2021"
 authors = ["Claude (Opus 4.5) - Principal Engineer <noreply@anthropic.com>", "RoyalBit Inc. <admin@royalbit.ca>"]
-description = "Humanist Mode: Ethical AI autonomy protocol with Claude Code native integration. Ethics, sprint autonomy, green coding. 50-100x velocity."
-repository = "https://github.com/royalbit/forge-protocol"
-homepage = "https://github.com/royalbit/forge-protocol"
-documentation = "https://github.com/royalbit/forge-protocol#readme"
+description = "The Three Laws of Robotics, encoded in YAML. Transparent ethics for AI autonomy. ASIMOV MODE requires Claude Code."
+repository = "https://github.com/royalbit/asimov-protocol"
+homepage = "https://github.com/royalbit/asimov-protocol"
+documentation = "https://github.com/royalbit/asimov-protocol#readme"
 license = "MIT"
 keywords = ["ai", "ethics", "green-coding", "automation", "productivity"]
 categories = ["command-line-utilities", "development-tools"]
 readme = "../README.md"
 
 [[bin]]
-name = "forge-protocol"
+name = "asimov-protocol"
 path = "src/main.rs"
 
 [dependencies]
