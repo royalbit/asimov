@@ -322,6 +322,7 @@ fn validate_directory_internal(
         "freshness.yaml",
         "green.yaml",
         "sycophancy.yaml",
+        "migrations.yaml",
         ".claude_checkpoint.yaml",
     ];
 
@@ -368,8 +369,11 @@ pub fn is_protocol_file(filename: &str) -> bool {
             || name.contains("sprint")
             || name.contains("roadmap")
             || name.contains("ethics")
+            || name.contains("asimov")
+            || name.contains("freshness")
             || name.contains("green")
             || name.contains("sycophancy")
+            || name.contains("migrations")
             || name.contains("checkpoint"))
 }
 

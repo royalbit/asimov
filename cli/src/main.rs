@@ -38,6 +38,7 @@ use royalbit_asimov::{
     GREEN_PRINCIPLES,
     GREEN_SCHEMA,
     HUMAN_VETO_COMMANDS,
+    MIGRATIONS_SCHEMA,
     ROADMAP_SCHEMA,
     SPRINT_SCHEMA,
     SYCOPHANCY_MOTTO,
@@ -172,7 +173,7 @@ enum Commands {
 
     /// Export JSON schemas for editor integration (VS Code, etc.)
     Schema {
-        /// Schema to export (all, warmup, sprint, roadmap, asimov, freshness, green, sycophancy)
+        /// Schema to export (all, warmup, sprint, roadmap, asimov, freshness, green, sycophancy, migrations)
         #[arg(default_value = "all")]
         name: String,
 
@@ -970,6 +971,7 @@ fn cmd_schema(name: &str, output: Option<PathBuf>) -> ExitCode {
         ("freshness", FRESHNESS_SCHEMA),
         ("green", GREEN_SCHEMA),
         ("sycophancy", SYCOPHANCY_SCHEMA),
+        ("migrations", MIGRATIONS_SCHEMA),
     ];
 
     let name_lower = name.to_lowercase();
@@ -1068,7 +1070,7 @@ fn cmd_schema(name: &str, output: Option<PathBuf>) -> ExitCode {
             None => {
                 eprintln!("{} Unknown schema: {}", "Error:".bold().red(), name);
                 eprintln!();
-                eprintln!("Available schemas: all, warmup, sprint, roadmap, asimov, freshness, green, sycophancy");
+                eprintln!("Available schemas: all, warmup, sprint, roadmap, asimov, freshness, green, sycophancy, migrations");
                 ExitCode::FAILURE
             }
         }
