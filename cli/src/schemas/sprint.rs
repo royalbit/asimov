@@ -5,61 +5,76 @@ pub const SPRINT_SCHEMA: &str = r#"
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/royalbit/asimov/schemas/sprint.json",
   "title": "RoyalBit Asimov - sprint.yaml",
-  "description": "Active work tracking for the RoyalBit Asimov",
+  "description": "Sprint Autonomy Protocol - WHEN to stop (bounded sessions)",
   "type": "object",
-  "required": ["sprint"],
+  "required": ["rules"],
   "properties": {
-    "sprint": {
+    "rules": {
       "type": "object",
-      "description": "Current sprint information",
-      "required": ["current"],
+      "description": "Core session rules",
+      "required": ["max_hours", "must_ship"],
       "properties": {
-        "current": {
+        "max_hours": {
+          "type": "integer",
+          "description": "Maximum session duration in hours",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "max_milestones": {
+          "type": ["integer", "string"],
+          "description": "Maximum milestones per session (or 'unlimited')"
+        },
+        "must_ship": {
+          "type": "boolean",
+          "description": "Require shipping before session end"
+        },
+        "mantra": {
           "type": "string",
-          "description": "Current sprint name or task",
-          "minLength": 1
-        },
-        "started": {
-          "type": "string",
-          "description": "Sprint start date (YYYY-MM-DD)"
-        },
-        "status": {
-          "type": "string",
-          "description": "Sprint status",
-          "enum": ["planned", "in_progress", "blocked", "done"]
-        },
-        "tasks": {
-          "type": "array",
-          "description": "Task list with checkboxes",
-          "items": {
-            "type": "string"
-          }
-        },
-        "completed": {
-          "type": "array",
-          "description": "Completed tasks",
-          "items": {
-            "type": "string"
-          }
-        },
-        "blockers": {
-          "type": "array",
-          "description": "Current blockers",
-          "items": {
-            "type": "string"
-          }
-        },
-        "next_up": {
-          "type": "array",
-          "description": "Next tasks to work on",
-          "items": {
-            "type": "string"
-          }
-        },
-        "notes": {
-          "type": "string",
-          "description": "Additional context or notes"
+          "description": "Session mantra"
         }
+      }
+    },
+    "phases": {
+      "type": "object",
+      "description": "Session phases",
+      "properties": {
+        "1_warmup": {
+          "type": "object",
+          "properties": {
+            "duration": { "type": "string" },
+            "actions": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "2_execute": {
+          "type": "object",
+          "properties": {
+            "duration": { "type": "string" },
+            "loop": { "type": "array", "items": { "type": "string" } },
+            "stop_when": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "3_end": {
+          "type": "object",
+          "properties": {
+            "checklist": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "anti_patterns": {
+      "type": "object",
+      "description": "Anti-patterns to avoid",
+      "additionalProperties": { "type": "string" }
+    },
+    "authority": {
+      "type": "object",
+      "description": "AI authority boundaries",
+      "properties": {
+        "principle": { "type": "string" },
+        "can_release_when": { "type": "array", "items": { "type": "string" } },
+        "stop_when": { "type": "array", "items": { "type": "string" } },
+        "never_stop_for": { "type": "array", "items": { "type": "string" } },
+        "ask_human_only": { "type": "array", "items": { "type": "string" } }
       }
     }
   }
