@@ -19,7 +19,10 @@ current:
     - "[x] GitHub release: v8.7.0"
     - "[x] Installed to ~/bin"
 
-next: []
+next:
+  - version: "8.8.0"
+    summary: "asimov (no args) launches Claude Code with warmup"
+    goal: DevEx
 
 backlog:
   - "v9.0.0: Zig port (post Zig 1.0 release)"
