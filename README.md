@@ -339,6 +339,22 @@ asimov lint-docs             # Check all markdown files
 asimov lint-docs --fix       # Auto-fix code block issues
 ```
 
+Session warmup (start of session):
+
+```bash
+asimov warmup                # Show milestone, validate, ensure hooks
+```
+
+Shows current milestone from roadmap.yaml, validates protocol files, and auto-repairs Claude/Git hooks.
+
+Session statistics (v8.5.0+):
+
+```bash
+asimov stats                 # Show session metrics (commits, lines, milestone)
+```
+
+Shows: session date, git commits today, lines changed, current milestone status.
+
 Refresh protocol context (for git hooks):
 
 ```bash
