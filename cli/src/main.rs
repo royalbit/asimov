@@ -592,17 +592,20 @@ fn cmd_warmup() -> ExitCode {
 /// v8.8.0: Launch Claude Code with opus settings (ADR-033)
 /// When `asimov` is run with no arguments, this launches Claude Code
 fn cmd_launch() -> ExitCode {
-    use std::os::unix::process::CommandExt;
+    // Check if claude is in PATH (cross-platform)
+    #[cfg(unix)]
+    let find_cmd = "which";
+    #[cfg(windows)]
+    let find_cmd = "where";
 
-    // Check if claude is in PATH
-    let claude_path = std::process::Command::new("which")
+    let claude_found = std::process::Command::new(find_cmd)
         .arg("claude")
         .output()
         .ok()
-        .filter(|o| o.status.success())
-        .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string());
+        .map(|o| o.status.success())
+        .unwrap_or(false);
 
-    if claude_path.is_none() {
+    if !claude_found {
         println!();
         println!("{} Claude Code not found in PATH", "✗".red());
         println!();
@@ -658,17 +661,40 @@ fn cmd_launch() -> ExitCode {
 
     // Build the command
     // Equivalent to: MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus "run asimov warmup"
-    let err = std::process::Command::new("claude")
-        .env("MAX_THINKING_TOKENS", "200000")
+    let mut cmd = std::process::Command::new("claude");
+    cmd.env("MAX_THINKING_TOKENS", "200000")
         .arg("--dangerously-skip-permissions")
         .arg("--model")
         .arg("opus")
-        .arg("run asimov warmup")
-        .exec(); // exec replaces current process (Unix only)
+        .arg("run asimov warmup");
 
-    // If we get here, exec failed
-    println!("{} Failed to launch Claude Code: {}", "✗".red(), err);
-    ExitCode::FAILURE
+    // Unix: use exec() to replace current process
+    // Windows: use status() to wait for child process
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        let err = cmd.exec();
+        // If we get here, exec failed
+        println!("{} Failed to launch Claude Code: {}", "✗".red(), err);
+        ExitCode::FAILURE
+    }
+
+    #[cfg(windows)]
+    {
+        match cmd.status() {
+            Ok(status) => {
+                if status.success() {
+                    ExitCode::SUCCESS
+                } else {
+                    ExitCode::FAILURE
+                }
+            }
+            Err(e) => {
+                println!("{} Failed to launch Claude Code: {}", "✗".red(), e);
+                ExitCode::FAILURE
+            }
+        }
+    }
 }
 
 /// v8.5.0: Show session statistics
