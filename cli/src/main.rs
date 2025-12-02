@@ -194,6 +194,9 @@ enum Commands {
 
     /// Show session statistics (v8.5.0)
     Stats,
+
+    /// Diagnose autonomous mode issues (v8.6.0)
+    Doctor,
 }
 
 fn main() -> ExitCode {
@@ -222,6 +225,7 @@ fn main() -> ExitCode {
         Commands::Update { check } => cmd_update(check),
         Commands::Warmup => cmd_warmup(),
         Commands::Stats => cmd_stats(),
+        Commands::Doctor => cmd_doctor(),
     }
 }
 
@@ -672,6 +676,189 @@ fn cmd_stats() -> ExitCode {
     println!();
 
     ExitCode::SUCCESS
+}
+
+/// v8.6.0: Diagnose autonomous mode issues
+fn cmd_doctor() -> ExitCode {
+    println!();
+    println!(
+        "{}",
+        "══════════════════════════════════════════════════════════════════════════════"
+            .bright_cyan()
+    );
+    println!("{}", "🩺 ROYALBIT ASIMOV - DOCTOR".bold().bright_cyan());
+    println!(
+        "{}",
+        "══════════════════════════════════════════════════════════════════════════════"
+            .bright_cyan()
+    );
+    println!();
+
+    let mut issues: Vec<String> = Vec::new();
+    let mut warnings: Vec<String> = Vec::new();
+
+    // Check 1: .asimov directory exists
+    println!("{}", "CHECKING PROJECT SETUP".bold());
+    let asimov_dir = Path::new(".asimov");
+    if asimov_dir.exists() {
+        println!("  {} .asimov/ directory exists", "✓".green());
+    } else {
+        println!("  {} .asimov/ directory missing", "✗".red());
+        issues.push("Run 'asimov init' to create project structure".to_string());
+    }
+
+    // Check 2: roadmap.yaml exists and is valid
+    let roadmap_path = asimov_dir.join("roadmap.yaml");
+    if roadmap_path.exists() {
+        println!("  {} roadmap.yaml exists", "✓".green());
+        // Validate it
+        match validate_file(&roadmap_path) {
+            Ok(result) if result.is_valid => {
+                println!("  {} roadmap.yaml is valid", "✓".green());
+            }
+            Ok(result) => {
+                println!("  {} roadmap.yaml has errors", "✗".red());
+                for error in result.errors {
+                    issues.push(format!("roadmap.yaml: {}", error));
+                }
+            }
+            Err(e) => {
+                println!("  {} roadmap.yaml validation failed: {}", "✗".red(), e);
+                issues.push(format!("roadmap.yaml: {}", e));
+            }
+        }
+    } else {
+        println!("  {} roadmap.yaml missing", "✗".red());
+        issues.push("Run 'asimov init' to create roadmap.yaml".to_string());
+    }
+    println!();
+
+    // Check 3: Claude Code hooks
+    println!("{}", "CHECKING CLAUDE CODE HOOKS".bold());
+    let claude_dir = Path::new(".claude");
+    let settings_path = claude_dir.join("settings.json");
+    let session_start_path = claude_dir.join("hooks/session-start.sh");
+    let pre_compact_path = claude_dir.join("hooks/pre-compact.sh");
+
+    if settings_path.exists() {
+        println!("  {} .claude/settings.json exists", "✓".green());
+    } else {
+        println!("  {} .claude/settings.json missing", "✗".red());
+        issues.push("Claude Code hooks not configured - run 'asimov init'".to_string());
+    }
+
+    if session_start_path.exists() {
+        println!("  {} .claude/hooks/session-start.sh exists", "✓".green());
+        // Check if executable
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            if let Ok(meta) = std::fs::metadata(&session_start_path) {
+                if meta.permissions().mode() & 0o111 == 0 {
+                    println!("    {} not executable", "⚠".yellow());
+                    warnings.push("session-start.sh is not executable".to_string());
+                }
+            }
+        }
+    } else {
+        println!("  {} .claude/hooks/session-start.sh missing", "✗".red());
+        issues.push("Session start hook missing - run 'asimov warmup' to repair".to_string());
+    }
+
+    if pre_compact_path.exists() {
+        println!("  {} .claude/hooks/pre-compact.sh exists", "✓".green());
+    } else {
+        println!("  {} .claude/hooks/pre-compact.sh missing", "✗".red());
+        issues.push("Pre-compact hook missing - run 'asimov warmup' to repair".to_string());
+    }
+    println!();
+
+    // Check 4: Git hooks
+    println!("{}", "CHECKING GIT HOOKS".bold());
+    let git_dir = Path::new(".git");
+    if git_dir.exists() {
+        let precommit_path = git_dir.join("hooks/pre-commit");
+        if precommit_path.exists() {
+            println!("  {} .git/hooks/pre-commit exists", "✓".green());
+        } else {
+            println!("  {} .git/hooks/pre-commit missing", "⚠".yellow());
+            warnings
+                .push("Git pre-commit hook missing - run 'asimov warmup' to repair".to_string());
+        }
+    } else {
+        println!("  {} Not a git repository", "⚠".yellow());
+        warnings.push("Not a git repository - some features won't work".to_string());
+    }
+    println!();
+
+    // Check 5: Binary version
+    println!("{}", "CHECKING VERSION".bold());
+    println!(
+        "  {} Current version: {}",
+        "ℹ".bright_blue(),
+        env!("CARGO_PKG_VERSION").bright_blue()
+    );
+    // Check for updates
+    match check_for_update() {
+        Ok(info) if info.update_available => {
+            println!(
+                "  {} Update available: {} → {}",
+                "⚠".yellow(),
+                info.current,
+                info.latest.bright_green()
+            );
+            warnings.push("Update available: run 'asimov update'".to_string());
+        }
+        Ok(_) => {
+            println!("  {} Running latest version", "✓".green());
+        }
+        Err(_) => {
+            println!("  {} Could not check for updates", "⚠".yellow());
+        }
+    }
+    println!();
+
+    // Summary
+    println!(
+        "{}",
+        "══════════════════════════════════════════════════════════════════════════════"
+            .bright_cyan()
+    );
+
+    if issues.is_empty() && warnings.is_empty() {
+        println!(
+            "{}",
+            "✓ All checks passed! Autonomous mode should work correctly."
+                .bold()
+                .green()
+        );
+    } else {
+        if !issues.is_empty() {
+            println!("{}", "ISSUES (must fix):".bold().red());
+            for issue in &issues {
+                println!("  {} {}", "•".red(), issue);
+            }
+        }
+        if !warnings.is_empty() {
+            println!("{}", "WARNINGS (recommended):".bold().yellow());
+            for warning in &warnings {
+                println!("  {} {}", "•".yellow(), warning);
+            }
+        }
+    }
+
+    println!(
+        "{}",
+        "══════════════════════════════════════════════════════════════════════════════"
+            .bright_cyan()
+    );
+    println!();
+
+    if issues.is_empty() {
+        ExitCode::SUCCESS
+    } else {
+        ExitCode::FAILURE
+    }
 }
 
 fn cmd_refresh(verbose: bool) -> ExitCode {
