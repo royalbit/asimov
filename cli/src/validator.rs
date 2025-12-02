@@ -262,10 +262,7 @@ fn validate_directory_internal(
     base_dir: &Path,
     regenerate: bool,
 ) -> Result<(Vec<ValidationResult>, RegenerationInfo)> {
-    use crate::templates::{
-        green_template, roadmap_template, sprint_template, sycophancy_template, warmup_template,
-        ProjectType,
-    };
+    use crate::templates::roadmap_template;
 
     // Resolve protocol directory (.asimov/ or root for backwards compatibility)
     let protocol_dir = resolve_protocol_dir(base_dir);
@@ -273,20 +270,13 @@ fn validate_directory_internal(
     let mut results = Vec::new();
     let mut regen_info = RegenerationInfo::default();
 
-    // Required protocol files with their templates and warn level
+    // Required files with their templates and warn level
     // (filename, template_fn, is_warn_level)
-    // NOTE: ethics.yaml removed - asimov.yaml is now the canonical ethics source
+    // NOTE: v8.0.0 - Protocol YAMLs no longer regenerated (hardcoded in binary)
+    // Only roadmap.yaml is regenerated (project data, not protocol)
     #[allow(clippy::type_complexity)]
     let required_files: Vec<(&str, Box<dyn Fn() -> String>, bool)> = vec![
-        (
-            "warmup.yaml",
-            Box::new(|| warmup_template("project", ProjectType::Generic)),
-            true,
-        ), // WARN
-        ("green.yaml", Box::new(green_template), false), // INFO - Priority 0.5
-        ("sycophancy.yaml", Box::new(sycophancy_template), true), // WARN - Priority 1.5
-        ("sprint.yaml", Box::new(sprint_template), false), // INFO
-        ("roadmap.yaml", Box::new(roadmap_template), false), // INFO
+        ("roadmap.yaml", Box::new(roadmap_template), false), // INFO - project data
     ];
 
     // Check and regenerate missing required files
@@ -313,18 +303,11 @@ fn validate_directory_internal(
     // Re-resolve protocol dir in case we just created .asimov/
     let protocol_dir = resolve_protocol_dir(base_dir);
 
-    // Look for protocol files (including optional ones)
-    // NOTE: asimov.yaml is the canonical ethics source (replaces ethics.yaml)
+    // Look for data files (v8.0.0: protocol YAMLs are deprecated, hardcoded in binary)
+    // Only validate files that exist - roadmap.yaml is the main project data file
     let protocol_files = [
-        "warmup.yaml",
-        "sprint.yaml",
-        "roadmap.yaml",
-        "asimov.yaml",
-        "freshness.yaml",
-        "green.yaml",
-        "sycophancy.yaml",
-        "migrations.yaml",
-        ".claude_checkpoint.yaml",
+        "roadmap.yaml",            // Project data (required)
+        ".claude_checkpoint.yaml", // Session state
     ];
 
     for filename in &protocol_files {
@@ -344,7 +327,7 @@ fn validate_directory_internal(
 
     if results.is_empty() {
         return Err(Error::ValidationError(
-            "No protocol files found in .asimov/ or root (warmup.yaml, sprint.yaml, roadmap.yaml, asimov.yaml, freshness.yaml, sycophancy.yaml)"
+            "No data files found in .asimov/ (roadmap.yaml required). Run: asimov init --full"
                 .to_string(),
         ));
     }
@@ -773,17 +756,7 @@ identity:
     fn test_validate_directory_with_all_files() {
         let temp_dir = TempDir::new().unwrap();
 
-        // Create all protocol files (without regeneration)
-        std::fs::write(
-            temp_dir.path().join("warmup.yaml"),
-            "identity:\n  project: Test",
-        )
-        .unwrap();
-        std::fs::write(
-            temp_dir.path().join("sprint.yaml"),
-            "rules:\n  max_hours: 4\n  must_ship: true",
-        )
-        .unwrap();
+        // v8.0.0: Only roadmap.yaml is validated (protocols are hardcoded in binary)
         std::fs::write(
             temp_dir.path().join("roadmap.yaml"),
             "current:\n  version: '1.0.0'\n  status: planned\n  summary: Test milestone",
@@ -792,24 +765,24 @@ identity:
 
         // Use no-regenerate to only validate existing files
         let results = validate_directory_with_options(temp_dir.path(), false).unwrap();
-        assert_eq!(results.len(), 3);
+        assert_eq!(results.len(), 1);
         assert!(results.iter().all(|r| r.is_valid));
     }
 
     #[test]
-    fn test_validate_directory_warmup_only() {
+    fn test_validate_directory_roadmap_only() {
         let temp_dir = TempDir::new().unwrap();
 
+        // v8.0.0: Only roadmap.yaml is validated
         std::fs::write(
-            temp_dir.path().join("warmup.yaml"),
-            "identity:\n  project: Test",
+            temp_dir.path().join("roadmap.yaml"),
+            "current:\n  version: '1.0.0'\n  status: planned\n  summary: Test",
         )
         .unwrap();
 
-        // Use no-regenerate to only validate existing warmup.yaml
         let results = validate_directory_with_options(temp_dir.path(), false).unwrap();
         assert_eq!(results.len(), 1);
-        assert_eq!(results[0].schema_type, "warmup");
+        assert_eq!(results[0].schema_type, "roadmap");
     }
 
     #[test]
@@ -818,12 +791,12 @@ identity:
 
         std::fs::write(temp_dir.path().join("config.yaml"), "key: value").unwrap();
 
-        // Use no-regenerate - should fail because no protocol files exist
+        // Use no-regenerate - should fail because no data files exist
         let result = validate_directory_with_options(temp_dir.path(), false);
         assert!(result.is_err());
         match result {
             Err(Error::ValidationError(msg)) => {
-                assert!(msg.contains("No protocol files"));
+                assert!(msg.contains("No data files"));
             }
             _ => panic!("Expected ValidationError"),
         }
@@ -1011,25 +984,8 @@ mission:
         // Start with empty directory
         let (results, info) = validate_directory_with_regeneration(temp_dir.path(), true).unwrap();
 
-        // Should have regenerated all required files
-        // NOTE: ethics.yaml is no longer regenerated - asimov.yaml is the canonical source
+        // v8.0.0: Only roadmap.yaml is regenerated (protocols are hardcoded in binary)
         assert!(!info.is_empty(), "Should have regenerated files");
-        assert!(
-            info.regenerated.iter().any(|(f, _)| f == "warmup.yaml"),
-            "Should regenerate warmup.yaml"
-        );
-        assert!(
-            info.regenerated.iter().any(|(f, _)| f == "green.yaml"),
-            "Should regenerate green.yaml"
-        );
-        assert!(
-            info.regenerated.iter().any(|(f, _)| f == "sycophancy.yaml"),
-            "Should regenerate sycophancy.yaml"
-        );
-        assert!(
-            info.regenerated.iter().any(|(f, _)| f == "sprint.yaml"),
-            "Should regenerate sprint.yaml"
-        );
         assert!(
             info.regenerated.iter().any(|(f, _)| f == "roadmap.yaml"),
             "Should regenerate roadmap.yaml"
@@ -1060,7 +1016,7 @@ mission:
 
         let (results, _) = validate_directory_with_regeneration(temp_dir.path(), true).unwrap();
 
-        // All results should be marked as regenerated
+        // v8.0.0: Only roadmap.yaml is regenerated
         assert!(
             results.iter().all(|r| r.regenerated),
             "All results should be marked as regenerated"
@@ -1071,31 +1027,33 @@ mission:
     fn test_validate_directory_existing_files_not_regenerated() {
         let temp_dir = tempfile::tempdir().unwrap();
 
-        // Create .asimov directory and warmup.yaml file manually
+        // Create .asimov directory and roadmap.yaml file manually
         let asimov_dir = temp_dir.path().join(".asimov");
         std::fs::create_dir_all(&asimov_dir).unwrap();
-        let warmup_content = r#"
-identity:
-  project: "Test"
+        let roadmap_content = r#"
+current:
+  version: "1.0.0"
+  status: planned
+  summary: "Test"
 "#;
-        std::fs::write(asimov_dir.join("warmup.yaml"), warmup_content).unwrap();
+        std::fs::write(asimov_dir.join("roadmap.yaml"), roadmap_content).unwrap();
 
         let (results, info) = validate_directory_with_regeneration(temp_dir.path(), true).unwrap();
 
-        // warmup.yaml should NOT be in regenerated list
+        // roadmap.yaml should NOT be in regenerated list
         assert!(
-            !info.regenerated.iter().any(|(f, _)| f == "warmup.yaml"),
-            "Existing warmup.yaml should not be regenerated"
+            !info.regenerated.iter().any(|(f, _)| f == "roadmap.yaml"),
+            "Existing roadmap.yaml should not be regenerated"
         );
 
-        // warmup.yaml result should NOT be marked as regenerated
-        let warmup_result = results.iter().find(|r| r.file.contains("warmup.yaml"));
+        // roadmap.yaml result should NOT be marked as regenerated
+        let roadmap_result = results.iter().find(|r| r.file.contains("roadmap.yaml"));
         assert!(
-            warmup_result.is_some(),
-            "Should have warmup.yaml in results"
+            roadmap_result.is_some(),
+            "Should have roadmap.yaml in results"
         );
         assert!(
-            !warmup_result.unwrap().regenerated,
+            !roadmap_result.unwrap().regenerated,
             "Existing file should not be marked as regenerated"
         );
     }
@@ -1106,14 +1064,10 @@ identity:
 
         let (_, info) = validate_directory_with_regeneration(temp_dir.path(), true).unwrap();
 
-        // warmup.yaml and sycophancy.yaml should have warn level = true
-        // NOTE: ethics.yaml removed - asimov.yaml is canonical (ADR-031)
+        // v8.0.0: Only roadmap.yaml is regenerated (protocols are hardcoded in binary)
         for (filename, is_warn) in &info.regenerated {
             match filename.as_str() {
-                "warmup.yaml" | "sycophancy.yaml" => {
-                    assert!(*is_warn, "{} should have WARN level", filename);
-                }
-                "green.yaml" | "sprint.yaml" | "roadmap.yaml" => {
+                "roadmap.yaml" => {
                     assert!(!*is_warn, "{} should have INFO level", filename);
                 }
                 _ => {}
