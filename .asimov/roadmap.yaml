@@ -4,24 +4,22 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "8.5.0"
+  version: "8.6.0"
   status: released
-  summary: "asimov stats - Session duration, milestone velocity, commits/hour"
-  goal: Observability
+  summary: "asimov doctor - Diagnose why autonomous mode isn't working"
+  goal: DevEx
   deliverables:
-    - "[x] Add stats subcommand"
-    - "[x] Show session date and start time"
-    - "[x] Show git commits and lines changed"
-    - "[x] Show current milestone status"
+    - "[x] Add doctor subcommand"
+    - "[x] Check .asimov/ directory and roadmap.yaml"
+    - "[x] Check Claude Code hooks"
+    - "[x] Check Git hooks"
+    - "[x] Check version and updates"
     - "[x] Tests pass (147 tests)"
     - "[x] Commit and push"
-    - "[x] GitHub release: v8.5.0"
+    - "[x] GitHub release: v8.6.0"
     - "[x] Installed to ~/bin"
 
 next:
-  - version: "8.6.0"
-    summary: "asimov doctor - Diagnose why autonomous mode isn't working"
-    goal: DevEx
   - version: "8.7.0"
     summary: "asimov replay - Replay a session from git history"
     goal: Observability
