@@ -174,13 +174,13 @@ Complete grant applications for:
 
 ### Anything Violating Ethics
 
-The protocol includes `ethics.yaml`:
+The protocol includes `asimov.yaml` (The Three Laws):
 - No financial harm (unauthorized money movement)
 - No physical harm (weapons, sabotage)
 - No privacy violations (credential harvesting, doxxing)
 - No deception (deepfakes, phishing)
 
-If ethics.yaml is removed, that's a choice. The community will notice.
+If asimov.yaml is removed, that's a choice. The community will notice.
 
 ### Unbounded "Just Keep Going" Development
 
@@ -219,7 +219,7 @@ AI executes. Human directs. That's the model.
 1. `warmup.yaml` - How to develop (quality, standards)
 2. `sprint.yaml` - When to stop (bounded sessions)
 3. `roadmap.yaml` - What to build (milestones)
-4. `ethics.yaml` - Values and guardrails
+4. `asimov.yaml` - The Three Laws (ethics)
 5. `CLAUDE.md` - Entry point that imports above
 
 ### Validation

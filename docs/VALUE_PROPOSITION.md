@@ -228,7 +228,7 @@ asimov init --type rust
 - `warmup.yaml` - How to develop
 - `sprint.yaml` - When to stop
 - `roadmap.yaml` - What to build
-- `ethics.yaml` - Values and guardrails
+- `asimov.yaml` - The Three Laws (ethics)
 
 ### The CLI (Free)
 

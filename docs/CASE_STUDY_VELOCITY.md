@@ -600,7 +600,7 @@ EQUIVALENT TO: 2.5 developer-years compressed into 6 weeks
 ### Conditions for Replication
 
 - Claude Code with `--dangerously-skip-permissions` flag
-- Full protocol file suite (`warmup.yaml`, `ethics.yaml`, `sprint.yaml`, `asimov.yaml`)
+- Full protocol file suite (`warmup.yaml`, `sprint.yaml`, `asimov.yaml`)
 - Greenfield or well-documented existing codebase
 - Clear milestone definitions in `roadmap.yaml`
 
@@ -673,8 +673,7 @@ For teams building **complete products** (not just code), the RoyalBit Asimov pr
 
 - **GitHub Repository**: [https://github.com/royalbit/asimov](https://github.com/royalbit/asimov)
 - **crates.io**: [https://crates.io/crates/royalbit-asimov](https://crates.io/crates/royalbit-asimov)
-- **Three Laws (asimov.yaml)**: [https://github.com/royalbit/asimov/blob/main/.asimov/asimov.yaml](https://github.com/royalbit/asimov/blob/main/.asimov/asimov.yaml)
-- **Ethics Protocol**: [https://github.com/royalbit/asimov/blob/main/.asimov/ethics.yaml](https://github.com/royalbit/asimov/blob/main/.asimov/ethics.yaml)
+- **The Three Laws (asimov.yaml)**: [https://github.com/royalbit/asimov/blob/main/.asimov/asimov.yaml](https://github.com/royalbit/asimov/blob/main/.asimov/asimov.yaml)
 - **Green Coding**: [https://github.com/royalbit/asimov/blob/main/.asimov/green.yaml](https://github.com/royalbit/asimov/blob/main/.asimov/green.yaml)
 - **Anti-Sycophancy**: [https://github.com/royalbit/asimov/blob/main/.asimov/sycophancy.yaml](https://github.com/royalbit/asimov/blob/main/.asimov/sycophancy.yaml)
 

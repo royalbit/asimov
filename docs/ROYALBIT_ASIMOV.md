@@ -8,8 +8,7 @@
 **RoyalBit Asimov creates Self-Evolving Autonomous AI projects with ethics built in.**
 
 Each project initialized with `asimov init --asimov` becomes an **independent** Self-Evolving Autonomous AI with:
-- The Three Laws (asimov.yaml)
-- Ethics hardcoded (ethics.yaml)
+- The Three Laws (asimov.yaml) - ethics hardcoded
 - Green coding (green.yaml)
 - Sprint autonomy (4hr max, quality gates)
 - Self-healing (survives context compaction)
