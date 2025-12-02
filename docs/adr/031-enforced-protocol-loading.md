@@ -1,6 +1,6 @@
 # ADR-031: Enforced Protocol Loading + Dynamic Date Injection
 
-**Status:** Accepted
+**Status:** Implemented (v8.0.0)
 **Date:** 2025-12-02
 **Deciders:** Human + Claude (Principal Autonomous AI)
 **Priority:** CRITICAL
