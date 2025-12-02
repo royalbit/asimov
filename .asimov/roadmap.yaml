@@ -4,14 +4,13 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "7.6.0"
+  version: "7.7.0"
   status: released
-  summary: "Improved Git Hooks - Clear messaging when asimov not installed"
+  summary: "Multi-Platform Binary Releases (GitHub Actions)"
   goal: GREEN_CODING
 
+# No immediate next milestone - shipping what's ready
 next: []
-# Roadmap empty - Asimov is feature-complete
-# New features driven by real user needs
 
 backlog:
   - "VS Code Extension: Syntax highlighting, validation (separate repo, TypeScript)"
