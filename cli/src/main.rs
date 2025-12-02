@@ -237,6 +237,41 @@ fn main() -> ExitCode {
     }
 }
 
+/// Migrate v8.0.0: Delete deprecated protocol YAMLs (now hardcoded in binary)
+fn migrate_v8() {
+    let protocol_dir = resolve_protocol_dir(Path::new("."));
+    let deprecated_files = [
+        "asimov.yaml",
+        "freshness.yaml",
+        "sycophancy.yaml",
+        "green.yaml",
+        "sprint.yaml",
+        "warmup.yaml",
+        "migrations.yaml",
+        "ethics.yaml", // Already deprecated, but clean up if exists
+    ];
+
+    let mut deleted = Vec::new();
+    for filename in &deprecated_files {
+        let path = protocol_dir.join(filename);
+        if path.exists() {
+            if let Ok(()) = std::fs::remove_file(&path) {
+                deleted.push(*filename);
+            }
+        }
+    }
+
+    if !deleted.is_empty() {
+        println!();
+        println!("{}", "v8.0.0 Migration".bold().cyan());
+        println!("  Protocols are now hardcoded in binary. Deleted deprecated YAMLs:");
+        for f in &deleted {
+            println!("    {} {}", "✗".red(), f);
+        }
+        println!("  {} roadmap.yaml (project data, kept)", "✓".green());
+    }
+}
+
 fn cmd_update(check_only: bool) -> ExitCode {
     println!("{}", "RoyalBit Asimov Update".bold().green());
     println!();
@@ -268,6 +303,8 @@ fn cmd_update(check_only: bool) -> ExitCode {
                                 "Success:".bold().green(),
                                 version_info.latest
                             );
+                            // Run v8.0.0 migration
+                            migrate_v8();
                             println!();
                             println!("  Run {} to verify.", "asimov --version".bold());
                             ExitCode::SUCCESS
@@ -296,6 +333,8 @@ fn cmd_update(check_only: bool) -> ExitCode {
                     "  {} You're running the latest version!",
                     "OK".bold().green()
                 );
+                // Run v8.0.0 migration even if already on latest
+                migrate_v8();
                 ExitCode::SUCCESS
             }
         }

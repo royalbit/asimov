@@ -254,17 +254,7 @@ fn e2e_validate_non_protocol_file() {
 fn e2e_validate_directory() {
     let temp_dir = TempDir::new().unwrap();
 
-    // Create all protocol files
-    fs::write(
-        temp_dir.path().join("warmup.yaml"),
-        "identity:\n  project: Test",
-    )
-    .unwrap();
-    fs::write(
-        temp_dir.path().join("sprint.yaml"),
-        "rules:\n  max_hours: 4\n  must_ship: true",
-    )
-    .unwrap();
+    // v8.0.0: Only roadmap.yaml is validated (protocols are hardcoded in binary)
     fs::write(
         temp_dir.path().join("roadmap.yaml"),
         "current:\n  version: '1.0.0'\n  status: planned\n  summary: Test milestone",
@@ -287,11 +277,9 @@ fn e2e_validate_directory() {
         "Directory validation should pass, stdout: {stdout}, stderr: {stderr}"
     );
 
-    // Should validate all 3 files
-    assert!(stdout.contains("warmup"), "Should validate warmup");
-    assert!(stdout.contains("sprint"), "Should validate sprint");
+    // Should validate roadmap.yaml
     assert!(stdout.contains("roadmap"), "Should validate roadmap");
-    assert!(stdout.contains("3 file"), "Should report 3 files");
+    assert!(stdout.contains("1 file"), "Should report 1 file");
 }
 
 #[test]
@@ -316,9 +304,10 @@ fn e2e_validate_directory_no_protocol_files() {
     let stderr = String::from_utf8_lossy(&output.stderr);
     let combined = format!("{stdout}{stderr}");
 
+    // v8.0.0: Error message changed to "No data files"
     assert!(
-        combined.contains("No protocol files"),
-        "Should report no protocol files, got: {combined}"
+        combined.contains("No data files"),
+        "Should report no data files, got: {combined}"
     );
 }
 

@@ -23,6 +23,9 @@ const SPRINT_PROTOCOL: &str = include_str!("sprint.tpl");
 /// Warmup protocol - Session bootstrap (Priority 0)
 const WARMUP_PROTOCOL: &str = include_str!("warmup.tpl");
 
+/// Migrations protocol - Functional equivalence (Priority 2)
+const MIGRATIONS_PROTOCOL: &str = include_str!("migrations.tpl");
+
 /// Compiled protocol context for minimal token usage
 #[derive(Debug, Clone, Serialize)]
 pub struct CompiledProtocols {
@@ -32,6 +35,7 @@ pub struct CompiledProtocols {
     pub green: GreenProtocol,
     pub sprint: SprintProtocol,
     pub warmup: WarmupProtocol,
+    pub migrations: MigrationsProtocol,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -69,6 +73,13 @@ pub struct SprintProtocol {
 #[derive(Debug, Clone, Serialize)]
 pub struct WarmupProtocol {
     pub on_start: Vec<&'static str>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct MigrationsProtocol {
+    pub principle: &'static str,
+    pub strategies: Vec<&'static str>,
+    pub red_flags: Vec<&'static str>,
 }
 
 /// Get today's date in YYYY-MM-DD format
@@ -111,6 +122,10 @@ pub fn get_sprint_protocol() -> String {
 
 pub fn get_warmup_protocol() -> String {
     inject_dates(WARMUP_PROTOCOL)
+}
+
+pub fn get_migrations_protocol() -> String {
+    inject_dates(MIGRATIONS_PROTOCOL)
 }
 
 /// Compile all protocols into a minimal JSON blob for context injection
@@ -169,6 +184,20 @@ pub fn compile_protocols() -> CompiledProtocols {
                 "present_milestone",
             ],
         },
+        migrations: MigrationsProtocol {
+            principle: "Migration complete = functionally equivalent, not just compiles",
+            strategies: vec![
+                "test_parity",
+                "contract_testing",
+                "behavioral_snapshots",
+                "shadow_mode",
+            ],
+            red_flags: vec![
+                "Skipping tests for speed",
+                "Assuming compilation = correctness",
+                "Silent behavior changes",
+            ],
+        },
     }
 }
 
@@ -218,6 +247,7 @@ mod tests {
         assert!(json.contains("\"green\""));
         assert!(json.contains("\"sprint\""));
         assert!(json.contains("\"warmup\""));
+        assert!(json.contains("\"migrations\""));
     }
 
     #[test]
@@ -229,5 +259,6 @@ mod tests {
         assert!(!GREEN_PROTOCOL.is_empty());
         assert!(!SPRINT_PROTOCOL.is_empty());
         assert!(!WARMUP_PROTOCOL.is_empty());
+        assert!(!MIGRATIONS_PROTOCOL.is_empty());
     }
 }
