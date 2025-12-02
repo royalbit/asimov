@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.8.1] - 2025-12-02
+
+### Fix: Windows Build for Launcher Mode
+
+**Cross-platform compatibility fix.**
+
+The v8.8.0 launcher mode used Unix-only APIs that broke Windows builds:
+- `std::os::unix::process::CommandExt` - Unix only
+- `.exec()` - Unix only (replaces current process)
+- `which` command - Unix only
+
+Fixed with `#[cfg(unix)]` / `#[cfg(windows)]` conditional compilation:
+- Unix: Uses `exec()` to replace current process
+- Windows: Uses `status()` to wait for child process
+- Cross-platform: Uses `which` (Unix) / `where` (Windows) for PATH lookup
+
+---
+
+## [8.8.0] - 2025-12-02
+
+### Launcher Mode + Project-Type Deliverables (ADR-033, ADR-034)
+
+**DevEx improvements for session startup.**
+
+#### Launcher Mode (ADR-033)
+- `asimov` (no args) now launches Claude Code with opus settings
+- Auto-sets: `MAX_THINKING_TOKENS=200000`, `--dangerously-skip-permissions`, `--model opus`
+- Auto-prompt: "run asimov warmup"
+- Detects if already inside Claude Code (runs warmup directly)
+- Error message if `claude` not in PATH
+
+#### Project-Type Deliverables (ADR-034)
+- Coding templates (rust, python, node, go, flutter) include test/build gates
+- Non-coding templates (docs, generic) get simpler checklists
+
+---
+
 ## [8.2.0] - 2025-12-02
 
 ### Simplified Init: Full Setup by Default
