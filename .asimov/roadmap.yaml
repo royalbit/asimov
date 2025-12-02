@@ -4,16 +4,14 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "7.3.0"
+  version: "7.4.0"
   status: released
-  summary: "Schema Standardization (audit + align)"
-  goal: ANTI_HALLUCINATION
+  summary: "migrations.yaml - Functional Equivalence Protocol"
+  goal: CORE_PRINCIPLE
 
-next:
-
-  - version: "7.4.0"
-    summary: "migrations.yaml - Functional Equivalence Protocol"
-    goal: CORE_PRINCIPLE
+next: []
+# Roadmap empty - Asimov is feature-complete
+# New features driven by real user needs
 
 backlog:
   - "VS Code Extension: Syntax highlighting, validation (separate repo, TypeScript)"

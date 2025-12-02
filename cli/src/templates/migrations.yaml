@@ -1,0 +1,96 @@
+# migrations.yaml - Functional Equivalence Protocol
+#
+# For code migration projects (COBOL→Java, Python2→Python3, etc.)
+# Key principle: "Migration complete" = "functionally equivalent" not just "compiles"
+#
+# The Zeroth Law: Democratize enterprise modernization.
+# Solo founder + Claude = Accenture capability.
+
+modification_rules:
+  immutable_without: "2 human co-signers with public justification"
+  on_modification:
+    - "Document WHY in commit message"
+    - "Both signers must be in git commit (Co-Authored-By)"
+  warning: "Weakening equivalence requirements risks shipping broken migrations"
+
+migration:
+  name: "Legacy System Modernization"
+  description: "Migration from legacy to modern stack"
+
+  source:
+    language: "cobol"          # cobol, java, python2, php, etc.
+    path: "legacy/"            # Where legacy code lives
+    entry_points:              # Main execution paths to verify
+      - "MAIN-PROGRAM"
+
+  target:
+    language: "java"           # java, rust, python3, go, etc.
+    path: "src/"               # Where new code lives
+    entry_points:
+      - "com.example.Main"
+
+equivalence:
+  # The core principle: new code must behave IDENTICALLY to old code
+  principle: "Compile success is not migration success. Behavior must match."
+
+  strategies:
+    test_parity:
+      enabled: true
+      description: "Same test suite passes on both implementations"
+      source_command: "run-legacy-tests.sh"
+      target_command: "mvn test"
+      requirement: "ALL tests that pass on source MUST pass on target"
+
+    contract_testing:
+      enabled: true
+      description: "Define input/output contracts, verify both satisfy"
+      contracts_path: "contracts/"
+      format: "yaml"  # yaml, json, openapi, protobuf
+
+    behavioral_snapshots:
+      enabled: false
+      description: "Capture old behavior as golden files, assert new matches"
+      snapshots_path: "snapshots/"
+      tolerance: "exact"  # exact, numeric_tolerance, semantic
+
+    shadow_mode:
+      enabled: false
+      description: "Run both in parallel, diff results"
+      comparator: "diff-output.sh"
+
+quality_gates:
+  before_migration:
+    - "Document ALL source behavior (not just happy path)"
+    - "Create comprehensive test suite BEFORE touching code"
+    - "Identify edge cases and error handling"
+
+  during_migration:
+    - "Migrate ONE module at a time"
+    - "Run equivalence checks after EACH module"
+    - "Never proceed if equivalence fails"
+
+  after_migration:
+    - "Full regression test suite passes"
+    - "Performance benchmarks within tolerance"
+    - "All contracts satisfied"
+    - "Stakeholder sign-off on equivalence"
+
+red_flags:
+  description: "Stop immediately if you see these"
+  patterns:
+    - "Skipping tests 'for now'"
+    - "It compiles, ship it"
+    - "We'll fix edge cases later"
+    - "The old code was wrong anyway"
+    - "Nobody uses that feature"
+    - "Tests are too hard to migrate"
+
+validation:
+  cli_command: "asimov validate migrations.yaml"
+  checks:
+    - "Source and target paths exist"
+    - "At least one equivalence strategy enabled"
+    - "Test commands defined if test_parity enabled"
+    - "Contracts path exists if contract_testing enabled"
+
+motto: "Functionally equivalent, or it doesn't ship."
