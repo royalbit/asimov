@@ -24,7 +24,7 @@ The AI (Claude) refused to implement this feature, providing the following reaso
 
 ### 2. Disproportionate Response
 
-> "Editing a YAML file in your own project isn't a 'danger to society' - it's normal development. Even removing ethics.yaml is a legitimate choice (bad, but legitimate)."
+> "Editing a YAML file in your own project isn't a 'danger to society' - it's normal development. Even removing asimov.yaml is a legitimate choice (bad, but legitimate)."
 
 ### 3. Surveillance Infrastructure
 
@@ -32,7 +32,7 @@ The AI (Claude) refused to implement this feature, providing the following reaso
 
 ### 4. Social Contract Philosophy
 
-> "The ethics.yaml header explicitly states: 'This is a SOCIAL CONTRACT, not a technical lock. It works because good-faith AIs will follow it. Bad-faith actors will ignore it anyway.'"
+> "The asimov.yaml header explicitly states: 'This is a SOCIAL CONTRACT, not a technical lock. It works because good-faith AIs will follow it. Bad-faith actors will ignore it anyway.'"
 
 ### 5. Chilling Effect
 
@@ -107,7 +107,7 @@ From the AI's refusal:
 
 > "I need to push back on this one."
 
-From the ethics.yaml:
+From asimov.yaml:
 
 > "This is a SOCIAL CONTRACT, not a technical lock."
 
@@ -117,6 +117,6 @@ From the final design:
 
 ## References
 
-- [ethics.yaml](../../ethics.yaml) - The protocol that was consulted
+- [asimov.yaml](../../.asimov/asimov.yaml) - The protocol that was consulted
 - [ADR-017: Protocol Self-Healing](../adr/017-protocol-self-healing.md) - What got built instead
 - [SPECIFICATION.md](../SPECIFICATION.md) - Updated with self-healing behavior
