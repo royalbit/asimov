@@ -4,36 +4,21 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "8.2.0"
+  version: "8.3.0"
   status: released
-  summary: "Simplify init: remove --asimov flag, full setup by default"
-  goal: UX
+  summary: "Warmup: show all protocols, auto-repair hooks"
+  goal: Reliability
   deliverables:
-    - "[x] Remove --asimov flag (deprecated)"
-    - "[x] asimov init = full setup (files + hooks + cleanup)"
-    - "[x] No --skip-hooks (hooks required for autonomous mode)"
-    - "[x] Update --help text"
+    - "[x] Show all 7 hardcoded protocols in validation"
+    - "[x] Check git hooks - auto-repair if missing"
+    - "[x] Check .claude hooks - auto-repair if missing"
+    - "[x] Display hook status (✓ installed or ✓ repaired)"
     - "[x] Update docs/SPECIFICATION.md"
-    - "[x] Update README.md"
     - "[x] Tests pass (147 tests)"
     - "[x] Commit and push"
-    - "[x] GitHub release: v8.2.0"
+    - "[x] GitHub release: v8.3.0"
     - "[x] Installed to ~/bin"
 
-next:
-  - version: "8.3.0"
-    status: in_progress
-    summary: "Warmup: show all protocols, auto-repair hooks"
-    goal: Reliability
-    deliverables:
-      - "[x] Show all 7 hardcoded protocols in validation"
-      - "[x] Check git hooks - auto-repair if missing"
-      - "[x] Check .claude hooks - auto-repair if missing"
-      - "[x] Display hook status (✓ installed or ✓ repaired)"
-      - "[x] Update docs/SPECIFICATION.md"
-      - "[x] Tests pass"
-      - "[ ] Commit and push"
-      - "[ ] GitHub release: v8.3.0"
-      - "[ ] Installed to ~/bin"
+next: []
 
 backlog: []
