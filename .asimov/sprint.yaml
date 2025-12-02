@@ -4,78 +4,22 @@
 # CORE RULES (ADR-028)
 rules:
   max_hours: 4
-  max_milestones: unlimited  # ADR-028: Keep shipping until done or stopped
+  max_milestones: unlimited
   must_ship: true
   mantra: "Keep shipping until done or stopped."
-
-# CURRENT SPRINT
-sprint:
-  current: "v7.0.0 - RoyalBit Namespace (royalbit-asimov)"
-  started: "2025-11-30"
-  status: done
-  tasks:
-    - "[x] Rename crate to royalbit-asimov in Cargo.toml"
-    - "[x] Rename binary to asimov in Cargo.toml"
-    - "[x] Update all documentation references"
-    - "[x] Update all protocol file references"
-    - "[x] Update CI workflow"
-    - "[x] Update pre-commit hooks"
-    - "[x] Update Rust source code"
-    - "[x] Run tests and validate"
-    - "[x] Update CHANGELOG.md"
-    - "[x] Update roadmap.yaml"
-
-  deliverables:
-    - "Crate: royalbit-asimov (was asimov-mode)"
-    - "Binary: asimov (was asimov-mode)"
-    - "All docs, hooks, CI updated"
-
-# PREVIOUS (for CHANGELOG migration)
-previous:
-  sprint: "v6.2.0 - Inaction Principle (First Law Completeness)"
-  status: done
-  date: "2025-11-30"
-  highlights:
-    - "ADR-023: The Inaction Principle"
-    - "Five Non-Negotiable Principles"
-    - "allow_no_harm_through_inaction in asimov.yaml"
-
-older_sprints:
-  - sprint: "v4.1.5 - Protocol Self-Healing (ADR-017)"
-    date: "2025-11-29"
-    highlights:
-      - "Auto-regenerate missing protocol files during validation"
-      - "--no-regenerate flag to skip auto-creation"
-      - "Sprint reclassified as protocol (not optional data)"
-
-  - sprint: "v4.1.0 - Hardcoded Ethics (ADR-011)"
-    date: "2025-11-29"
-    highlights:
-      - "cli/src/ethics.rs with CORE_PRINCIPLES"
-      - "RED_FLAGS - 27+ patterns"
-      - "--ethics-scan flag"
-
-  - sprint: "v4.0.0 - Claude Code Native Integration"
-    date: "2025-11-28"
-    highlights:
-      - "Strategic pivot to integrate with Claude Code 2.0"
-      - "CLAUDE.md @import syntax"
-      - "Deprecated cross-session features for native alternatives"
 
 # SESSION PHASES
 phases:
   1_warmup:
     duration: "2-5 min"
     actions:
-      - "Read roadmap.yaml"
-      - "Run asimov validate"
-      - "Present next milestone(s)"
+      - "Run asimov warmup"
       - "User says 'go'"
 
-  2_continuous_execute:
+  2_execute:
     duration: "until done or 4h"
     loop:
-      - "Execute milestone"
+      - "Execute milestone from roadmap.yaml"
       - "Tests pass, zero warnings"
       - "Commit and push"
       - "Update roadmap.yaml"
@@ -86,13 +30,11 @@ phases:
       - "Blocked by external dependency"
       - "Human says stop"
 
-  3_session_end:
-    duration: "2-5 min"
+  3_end:
     checklist:
       - "All milestones committed"
       - "CHANGELOG.md updated"
       - "roadmap.yaml current"
-      - "Final validation passes"
 
 # ANTI-PATTERNS
 anti_patterns:
@@ -113,7 +55,7 @@ authority:
     - "Blocked by external dependency"
     - "Human says stop"
   never_stop_for:
-    - "Completed a milestone"  # Keep going!
+    - "Completed a milestone"
     - "Arbitrary time checkpoints"
   ask_human_only:
     - "Blocked by external dependency"

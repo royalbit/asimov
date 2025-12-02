@@ -561,8 +561,9 @@ identity:
     #[test]
     fn test_valid_sprint_minimal() {
         let content = r#"
-sprint:
-  current: "Feature work"
+rules:
+  max_hours: 4
+  must_ship: true
 "#;
         let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
         write!(file, "{}", content).unwrap();
@@ -575,20 +576,25 @@ sprint:
     #[test]
     fn test_valid_sprint_full() {
         let content = r#"
-sprint:
-  current: "Feature work"
-  started: "2025-01-01"
-  status: in_progress
-  tasks:
-    - "[ ] Task one"
-    - "[x] Task two"
-  completed:
-    - "[x] Done task"
-  blockers:
-    - "Waiting for review"
-  next_up:
-    - "Next task"
-  notes: "Some notes here"
+rules:
+  max_hours: 4
+  max_milestones: unlimited
+  must_ship: true
+  mantra: "Keep shipping"
+
+phases:
+  1_warmup:
+    duration: "2-5 min"
+    actions:
+      - "Run asimov warmup"
+
+anti_patterns:
+  scope_creep: "Note it for NEXT session"
+
+authority:
+  principle: "Make decisions. Don't ask."
+  can_release_when:
+    - "All tests pass"
 "#;
         let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
         write!(file, "{}", content).unwrap();
@@ -598,30 +604,30 @@ sprint:
     }
 
     #[test]
-    fn test_valid_sprint_all_statuses() {
-        for status in ["planned", "in_progress", "blocked", "done"] {
+    fn test_valid_sprint_various_max_hours() {
+        for hours in [1, 2, 4, 8] {
             let content = format!(
                 r#"
-sprint:
-  current: "Test"
-  status: {}
+rules:
+  max_hours: {}
+  must_ship: true
 "#,
-                status
+                hours
             );
             let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
             write!(file, "{}", content).unwrap();
 
             let result = validate_file(file.path()).unwrap();
-            assert!(result.is_valid, "Status '{}' should be valid", status);
+            assert!(result.is_valid, "max_hours '{}' should be valid", hours);
         }
     }
 
     #[test]
-    fn test_invalid_sprint_bad_status() {
+    fn test_invalid_sprint_missing_rules() {
         let content = r#"
-sprint:
-  current: "Test"
-  status: invalid_status
+phases:
+  1_warmup:
+    duration: "2-5 min"
 "#;
         let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
         write!(file, "{}", content).unwrap();
@@ -631,10 +637,10 @@ sprint:
     }
 
     #[test]
-    fn test_invalid_sprint_missing_current() {
+    fn test_invalid_sprint_missing_must_ship() {
         let content = r#"
-sprint:
-  status: in_progress
+rules:
+  max_hours: 4
 "#;
         let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
         write!(file, "{}", content).unwrap();
@@ -770,7 +776,7 @@ identity:
         .unwrap();
         std::fs::write(
             temp_dir.path().join("sprint.yaml"),
-            "sprint:\n  current: Work",
+            "rules:\n  max_hours: 4\n  must_ship: true",
         )
         .unwrap();
         std::fs::write(

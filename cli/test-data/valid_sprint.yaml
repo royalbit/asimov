@@ -1,10 +1,17 @@
 # Valid sprint.yaml for testing
-sprint:
-  current: "Test sprint"
-  started: "2025-01-01"
-  status: in_progress
-  tasks:
-    - "[ ] Task one"
-    - "[x] Task two"
-  blockers: []
-  notes: "Test notes"
+rules:
+  max_hours: 4
+  must_ship: true
+  mantra: "Keep shipping"
+
+phases:
+  1_warmup:
+    duration: "2-5 min"
+    actions:
+      - "Run asimov warmup"
+
+anti_patterns:
+  scope_creep: "Note it for NEXT session"
+
+authority:
+  principle: "Make decisions. Don't ask."

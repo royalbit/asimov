@@ -1,4 +1,3 @@
-# Invalid sprint.yaml - bad status enum value
-sprint:
-  current: "Test sprint"
-  status: invalid_status_value
+# Invalid sprint.yaml - missing required must_ship field
+rules:
+  max_hours: 4

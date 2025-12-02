@@ -1147,23 +1147,65 @@ motto: "Truth over comfort. Always."
 
 /// Generate a starter sprint.yaml template
 pub fn sprint_template() -> String {
-    r#"# RoyalBit Asimov - Sprint Tracking
+    r#"# Sprint Autonomy Protocol
+# WHEN to stop - Bounded sessions for sustainable AI development
 # https://github.com/royalbit/asimov
 
-sprint:
-  current: "Initial setup"
-  started: "2025-01-01"
-  status: in_progress
+rules:
+  max_hours: 4
+  max_milestones: unlimited
+  must_ship: true
+  mantra: "Keep shipping until done or stopped."
 
-  tasks:
-    - "[ ] Task one"
-    - "[ ] Task two"
-    - "[ ] Task three"
+phases:
+  1_warmup:
+    duration: "2-5 min"
+    actions:
+      - "Run asimov warmup"
+      - "User says 'go'"
 
-  blockers: []
+  2_execute:
+    duration: "until done or 4h"
+    loop:
+      - "Execute milestone from roadmap.yaml"
+      - "Tests pass, zero warnings"
+      - "Commit and push"
+      - "Update roadmap.yaml"
+      - "Next milestone (if available)"
+    stop_when:
+      - "4 hour ceiling reached"
+      - "Roadmap exhausted"
+      - "Blocked by external dependency"
+      - "Human says stop"
 
-  notes: |
-    Add any relevant context here.
+  3_end:
+    checklist:
+      - "All milestones committed"
+      - "CHANGELOG.md updated"
+      - "roadmap.yaml current"
+
+anti_patterns:
+  scope_creep: "Note it for NEXT session, don't do it now"
+  perfectionism: "Working code > Perfect code. Ship it."
+  rabbit_holes: "Interesting? Note it. Back to milestone."
+  over_engineering: "Build what's needed NOW, not hypothetical futures"
+
+authority:
+  principle: "Make decisions. Don't ask. Keep shipping."
+  can_release_when:
+    - "All tests pass"
+    - "Zero warnings"
+  stop_when:
+    - "4 hour ceiling reached"
+    - "Roadmap exhausted"
+    - "Blocked by external dependency"
+    - "Human says stop"
+  never_stop_for:
+    - "Completed a milestone"
+    - "Arbitrary time checkpoints"
+  ask_human_only:
+    - "Blocked by external dependency"
+    - "Fundamental requirement ambiguity"
 "#
     .to_string()
 }
@@ -1710,19 +1752,31 @@ mod tests {
         let template = sprint_template();
         let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
 
-        assert!(yaml.get("sprint").is_some(), "Should have sprint section");
-        let sprint = yaml.get("sprint").unwrap();
-        assert!(sprint.get("current").is_some(), "Should have current field");
+        assert!(yaml.get("rules").is_some(), "Should have rules section");
+        let rules = yaml.get("rules").unwrap();
+        assert!(
+            rules.get("max_hours").is_some(),
+            "Should have max_hours field"
+        );
+        assert!(
+            rules.get("must_ship").is_some(),
+            "Should have must_ship field"
+        );
     }
 
     #[test]
-    fn test_sprint_template_has_valid_status() {
+    fn test_sprint_template_has_protocol_sections() {
         let template = sprint_template();
         let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
-        let status = yaml["sprint"]["status"].as_str().unwrap();
+
+        assert!(yaml.get("phases").is_some(), "Should have phases section");
         assert!(
-            ["planned", "in_progress", "blocked", "done"].contains(&status),
-            "Status should be valid enum value"
+            yaml.get("anti_patterns").is_some(),
+            "Should have anti_patterns section"
+        );
+        assert!(
+            yaml.get("authority").is_some(),
+            "Should have authority section"
         );
     }
 

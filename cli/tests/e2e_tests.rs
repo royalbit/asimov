@@ -262,7 +262,7 @@ fn e2e_validate_directory() {
     .unwrap();
     fs::write(
         temp_dir.path().join("sprint.yaml"),
-        "sprint:\n  current: Work",
+        "rules:\n  max_hours: 4\n  must_ship: true",
     )
     .unwrap();
     fs::write(
