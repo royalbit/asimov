@@ -276,13 +276,38 @@ See [ADR-022: Date-Aware Search Protocol](https://github.com/royalbit/asimov/blo
 
 ## CLI Validator
 
+### Option 1: Download Binary (No Rust Required)
+
+Download pre-built binaries from [GitHub Releases](https://github.com/royalbit/asimov/releases/latest):
+
+```bash
+# macOS (Apple Silicon - M1/M2/M3)
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-aarch64-apple-darwin.tar.gz | tar xz
+sudo mv asimov /usr/local/bin/
+
+# macOS (Intel)
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-apple-darwin.tar.gz | tar xz
+sudo mv asimov /usr/local/bin/
+
+# Linux (x86_64)
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
+sudo mv asimov /usr/local/bin/
+
+# Windows (PowerShell)
+Invoke-WebRequest -Uri https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-pc-windows-msvc.zip -OutFile asimov.zip
+Expand-Archive asimov.zip -DestinationPath .
+# Add to PATH or move to a directory in PATH
+```
+
+### Option 2: Install via Cargo
+
 Install from [crates.io](https://crates.io/crates/royalbit-asimov):
 
 ```bash
 cargo install royalbit-asimov
 ```
 
-Or build from source (smaller binary with UPX compression):
+### Option 3: Build from Source
 
 ```bash
 git clone https://github.com/royalbit/asimov

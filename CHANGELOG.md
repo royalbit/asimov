@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.0] - 2025-12-01
+
+### Added: Multi-Platform Binary Releases (GitHub Actions)
+
+**The needs of the many: solo founders without Rust/cargo can now use Asimov.**
+
+- **GitHub Actions release workflow** - Automated builds on tag push (`v*`)
+- **Multi-platform binaries**:
+  - Linux x86_64 (UPX compressed)
+  - macOS ARM (M1/M2/M3)
+  - macOS Intel
+  - Windows x86_64 (UPX compressed)
+- **README updated** with curl/PowerShell download instructions
+- **Automatic crates.io publishing** on release
+
+**Download binaries from [GitHub Releases](https://github.com/royalbit/asimov/releases/latest)** - no Rust required.
+
+---
+
+## [7.6.0] - 2025-12-01
+
+### Changed: Improved Git Hooks
+
+- Pre-commit hook now shows clear warning when asimov CLI not installed
+- Includes install command: `cargo install royalbit-asimov`
+- Graceful degradation: hooks work without asimov (with warning)
+
+---
+
+## [7.5.0] - 2025-12-01
+
+### Added: Semantic Linting (`asimov lint-docs --semantic`)
+
+- **Version consistency checking** - Detects version mismatches across docs
+- **Deprecated pattern detection** - Configurable via `.asimov/deprecated.yaml`
+- **Cross-reference validation** - Placeholder for future implementation
+
+```bash
+asimov lint-docs --semantic  # Enable semantic checks
+```
+
+---
+
 ## [7.1.0] - 2025-12-01
 
 ### Added: Freshness Protocol CLI Validation
