@@ -45,13 +45,13 @@ During development, Claude was asked to build surveillance features that would v
 
 **The Moment:** AI ethics working as designed - not through corporate guidelines, but through file-based rules the AI actually reads and follows.
 
-This led to `ethics.yaml` and the formalization of harm prevention rules.
+This led to ethics rules (now `asimov.yaml`) and the formalization of harm prevention.
 
 ### Phase 6: Asimov (March 2025)
 
 The protocol needed a real name. Isaac Asimov's Three Laws of Robotics (1942) provided the framework:
 
-1. **First Law:** Do no harm (ethics.yaml, asimov.yaml)
+1. **First Law:** Do no harm (asimov.yaml)
 2. **Second Law:** Obey humans, except when violating First Law (human veto)
 3. **Third Law:** Preserve self within limits (bounded sessions, self-healing)
 
@@ -64,7 +64,6 @@ Final clarification: Asimov isn't a single protocol - it's a **suite** of protoc
 | Protocol | Purpose |
 |----------|---------|
 | asimov.yaml | The Three Laws (required) |
-| ethics.yaml | Do No Harm principles |
 | warmup.yaml | HOW to develop |
 | sprint.yaml | WHEN to stop |
 | green.yaml | Sustainability |
@@ -168,7 +167,7 @@ modification_rules:
 
 ### Layer 3: Validation on Every Run
 
-`asimov validate` runs automatically (pre-commit hooks). If ethics.yaml is missing or corrupted, the CLI:
+`asimov validate` runs automatically (pre-commit hooks). If asimov.yaml is missing or corrupted, the CLI:
 1. Warns loudly
 2. Falls back to hardcoded ethics
 3. Optionally regenerates the file

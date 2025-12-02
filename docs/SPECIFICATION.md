@@ -333,7 +333,7 @@ Protocol files auto-regenerate when missing during validation. Recovery over sur
 ```yaml
 # .forge/checksums.yaml
 files:
-  ethics.yaml:
+  asimov.yaml:
     sha256: "abc123..."
     last_verified: "2025-11-29T10:00:00Z"
 ```

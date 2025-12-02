@@ -166,7 +166,7 @@ This isn't "offshore disruption" - this is **location independence**. The old mo
 
 ### The Reality
 
-The protocol includes `ethics.yaml` with:
+The protocol includes `asimov.yaml` (The Three Laws) with:
 - Do No Harm (financial, physical, privacy, deception)
 - Transparency over Velocity
 - Human Veto
@@ -175,7 +175,7 @@ The protocol includes `ethics.yaml` with:
 
 **But it's MIT licensed.** Anyone can:
 ```bash
-rm ethics.yaml
+rm asimov.yaml
 git commit -m "Removed ethics"
 ```
 
@@ -193,15 +193,15 @@ git commit -m "Removed ethics"
 
 | Control | Implementation |
 |---------|----------------|
-| Ethics by DEFAULT | ethics.yaml included in all templates |
-| Visibility when removed | CLI warns if ethics.yaml missing |
+| Ethics by DEFAULT | asimov.yaml included in all templates |
+| Visibility when removed | CLI warns if asimov.yaml missing |
 | Social contract | 2-cosigner requirement for modification |
 | Community norms | Early adopters set culture |
 
 ### Honest Limitation
 
 **We cannot prevent bad actors.** They will:
-- Delete ethics.yaml
+- Delete asimov.yaml
 - Ignore the social contract
 - Use the velocity for harm
 
@@ -276,7 +276,7 @@ Year 5: AI power is universally accessible
 
 ### As a User
 
-1. **Keep ethics.yaml** - It's there for a reason
+1. **Keep asimov.yaml** - It's there for a reason
 2. **Use phase gates** - Human oversight matters
 3. **Follow green coding** - Sustainability is a feature
 4. **Report misuse** - Community self-policing works
