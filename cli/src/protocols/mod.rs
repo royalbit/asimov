@@ -243,6 +243,12 @@ pub fn to_pretty_json() -> String {
     serde_json::to_string_pretty(&protocols).expect("Protocol serialization should never fail")
 }
 
+/// Output compiled protocols as YAML
+pub fn to_yaml() -> String {
+    let protocols = compile_protocols();
+    serde_yaml::to_string(&protocols).expect("Protocol serialization should never fail")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

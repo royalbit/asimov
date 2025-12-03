@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.11.0] - 2025-12-02
+
+### Protocol Viewer Slash Command
+
+**See what's loaded.**
+
+New `/protocols` slash command displays the protocols active in the current session. Provides visibility into the rules governing autonomous behavior.
+
+**Usage:** Type `/protocols` in Claude Code to see:
+- All 8 hardcoded protocols (asimov, freshness, sycophancy, green, sprint, warmup, migrations, exhaustive)
+- Current values (including dynamic date injection)
+- Key rules and triggers
+
+**Files added:**
+- `.claude/commands/protocols.md` - Slash command definition
+
+---
+
 ## [8.10.0] - 2025-12-02
 
 ### Exhaustive Execution Protocol (ADR-036)
