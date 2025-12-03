@@ -4,27 +4,39 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "8.8.0"
+  version: "8.9.0"
   status: released
-  summary: "Launcher mode + Project-type deliverables"
-  goal: DevEx
-  adr: "ADR-033, ADR-034"
+  summary: "Qowat Milat Reframe - Truth without prosecution"
+  goal: Ethics
+  adr: "ADR-035"
   deliverables:
-    # Launcher mode (ADR-033)
-    - "[x] asimov (no args) launches Claude Code"
-    - "[x] Use opus settings: MAX_THINKING_TOKENS=200000, --dangerously-skip-permissions, --model opus"
-    - "[x] Auto-prompt: 'run asimov warmup'"
-    - "[x] Detect inside/outside Claude Code"
-    - "[x] Error if claude not in PATH"
-    # Project-type deliverables (ADR-034)
-    - "[x] Add deliverables_template to coding templates (rust, python, node, go, flutter)"
-    - "[x] Non-coding templates (docs, generic) get simpler checklist"
-    # Standard (this is a coding project)
-    - "[x] Unit tests pass (147 tests)"
-    - "[x] Update README"
-    - "[x] Commit, push, release"
-    - "[x] Install to ~/bin"
+    - "[x] Reframe docs/AI_REALITY.md (13 edits)"
+    - "[x] Reframe docs/adr/022-date-aware-search-protocol.md (7 edits)"
+    - "[x] Reframe docs/adr/015-anti-sycophancy-protocol.md (5 edits)"
+    - "[x] Reframe README.md (2 edits)"
+    - "[x] Reframe CHANGELOG.md (1 edit)"
+    - "[x] Reframe docs/adr/023-inaction-principle.md (2 edits)"
+    - "[x] Reframe docs/ORIGIN_STORY.md (1 edit)"
+    - "[x] Create ADR-035: Qowat Milat Reframe"
+    - "[x] Validation: grep confirms no accusatory phrases remain"
+    - "[x] Update CHANGELOG.md"
+    - "[ ] Tests pass"
+    - "[ ] Commit, push, release"
 
-next: []
+next:
+  - version: "8.9.1"
+    summary: "GitHub About - Foundation Complete"
+    goal: Marketing
+    priority: NORMAL
+    rationale: |
+      Update GitHub repository "About" section to reflect v8.8.0 milestone.
+      The Foundation is complete - communicate this to visitors.
+    deliverables:
+      - "[ ] Update GitHub About description"
+      - "    CURRENT: (check current)"
+      - "    NEW: Reflect 'Foundation Complete' status"
+      - "    Include: Ethics, bounded autonomy, sustainability"
+      - "[ ] Verify via gh repo edit or GitHub UI"
 
-backlog: []
+backlog:
+  - "Research: Incomplete Task Execution Patterns"

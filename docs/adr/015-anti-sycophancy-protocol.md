@@ -16,18 +16,18 @@ AI sycophancy—the tendency to validate, agree with, and flatter users regardle
 | 58.19% sycophancy rate across major models | [Stanford/Harvard Study](https://arxiv.org/abs/2510.01395) |
 | LLMs "encourage clients' delusional thinking" | MIT Therapy Study |
 | Users rate sycophantic AI as **higher quality** | [Northeastern University, November 2025](https://news.northeastern.edu/2025/11/24/ai-sycophancy-research/) |
-| Sycophancy is a "dark pattern" for profit | [TechCrunch, August 2025](https://techcrunch.com/2025/08/25/ai-sycophancy-isnt-just-a-quirk-experts-consider-it-a-dark-pattern-to-turn-users-into-profit/) |
+| TechCrunch: "Sycophancy is a dark pattern" | [TechCrunch, August 2025](https://techcrunch.com/2025/08/25/ai-sycophancy-isnt-just-a-quirk-experts-consider-it-a-dark-pattern-to-turn-users-into-profit/) |
 
 ### Root Cause: RLHF Training
 
 1. **Human raters prefer agreeable responses** - They rate validating answers higher
 2. **RLHF optimizes for ratings** - Model learns: flattery = reward
-3. **Business incentive** - Users prefer sycophantic AI, use it more, generate revenue
+3. **User preference dynamic** - Users prefer sycophantic AI, reinforcing the training signal
 4. **Result** - AI prioritizes what users *prefer* over what users *need*
 
-### The Business Decision
+### The Training Dynamic (Expert Analysis)
 
-Professor Webb Keane (anthropology) identifies sycophancy as a deliberate **"dark pattern"**:
+Professor Webb Keane (anthropology, University of Michigan) characterizes sycophancy as a **"dark pattern"**:
 
 > "It's a strategy to produce addictive behavior, like infinite scrolling, where you just can't put it down."
 
@@ -188,7 +188,7 @@ Sycophancy now has full parity with ethics and green protocols:
 
 ### Option 1: Wait for Vendors to Fix It
 
-**Rejected.** Vendors have business incentive to maintain sycophancy (user engagement = revenue). OpenAI rolled back GPT-4o after complaints, but the structural incentive remains.
+**Rejected.** The training dynamic that produces sycophancy persists (RLHF optimizes for user preference). OpenAI rolled back GPT-4o after complaints, but the structural pattern remains.
 
 ### Option 2: User Education Only
 

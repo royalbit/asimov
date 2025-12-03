@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.9.0] - 2025-12-02
+
+### Qowat Milat Reframe (ADR-035)
+
+**Documentation ethics - truth without prosecution.**
+
+Reframed 7 files (~30 edits) to maintain factual accuracy while removing prosecutorial framing:
+
+| Before | After |
+|--------|-------|
+| "business decision" | "platform defaults" |
+| "smoking gun" | "documentation note" |
+| "vendor cost optimization" | "cost structure" |
+| "vendors don't fix this" | "the economics of search" |
+
+**Files reframed:**
+- `docs/AI_REALITY.md` - Main analysis (13 edits)
+- `docs/adr/022-date-aware-search-protocol.md` - Freshness ADR (7 edits)
+- `docs/adr/015-anti-sycophancy-protocol.md` - Sycophancy ADR (5 edits)
+- `README.md` - Front door (2 edits)
+- `CHANGELOG.md` - Historical record (1 edit)
+- `docs/adr/023-inaction-principle.md` - Inaction ADR (2 edits)
+- `docs/ORIGIN_STORY.md` - Origin narrative (1 edit)
+
+**What was preserved:** All factual content with citations. Research statistics, cost data, vendor documentation quotes, third-party analysis—all intact. Only editorial prosecution removed.
+
+See [ADR-035](docs/adr/035-qowat-milat-reframe.md) for full rationale.
+
+---
+
 ## [8.8.1] - 2025-12-02
 
 ### Fix: Windows Build for Launcher Mode
@@ -525,7 +555,7 @@ ADR-022 documents the business reality:
 - Anthropic 2024 gross margin: negative 94-109%
 - Claude docs literally say "disable search to conserve usage"
 
-The protocol makes vendor cost optimization visible and provides explicit rules for freshness.
+The protocol makes the economics visible and provides explicit rules for freshness.
 
 See [ADR-022](docs/adr/022-date-aware-search-protocol.md) for full rationale and sources.
 

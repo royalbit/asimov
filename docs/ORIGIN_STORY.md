@@ -87,7 +87,7 @@ Everyone implements the first half. We implemented both.
 | Active harm | Don't build harmful tools | No wallet drainers |
 | **Inaction** | Don't stay silent when you know better | Disclose stale data risk |
 
-**Why this matters:** AI vendors disable search by default to save $0.01/query. When AI knows its data is stale but doesn't tell you, that's **inaction allowing harm**. We made this explicit in `asimov.yaml` with the Five Non-Negotiable Principles.
+**Why this matters:** Search is disabled by default (each search costs ~$0.01). When AI has stale data but doesn't disclose it, that's **inaction allowing harm**—which Asimov prevents. We made this explicit in `asimov.yaml` with the Five Non-Negotiable Principles.
 
 See [ADR-023: The Inaction Principle](adr/023-inaction-principle.md) for full rationale.
 
