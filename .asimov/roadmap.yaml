@@ -4,28 +4,96 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "8.15.0"
+  version: "8.15.1"
   status: in_progress
-  summary: "Review ALL Command Behaviors"
-  goal: Bugfix
-  priority: HIGHLY-CRITICAL
+  summary: "User Validation of ALL Command Behaviors"
+  goal: Validation
+  priority: CRITICAL
   deliverables:
-    - "[x] FIX: bare 'asimov' (no args) - detect CLAUDECODE env var correctly"
-    - "[x] Audit: validate command - fixed nonexistent file path handling"
-    - "[x] Audit: init command - works correctly with all options"
-    - "[x] Audit: check command - works as validate alias"
-    - "[x] Audit: lint-docs command - catches closer bug, fix and semantic work"
-    - "[x] Audit: refresh command - shows principles, --verbose shows milestone"
-    - "[x] Audit: schema command - fixed VS Code comma bug"
-    - "[x] Audit: update command - version check works"
-    - "[x] Audit: warmup command - all features work"
-    - "[x] Audit: stats command - shows session activity"
-    - "[x] Audit: doctor command - all diagnostics work"
-    - "[x] Audit: replay command - shows commit history"
-    - "[x] Fix: validate nonexistent file path handling"
-    - "[x] Fix: schema VS Code integration comma"
-    - "[x] Fix: launcher CLAUDECODE env var detection"
-    - "[x] Document: Complete Command Reference in SPECIFICATION.md"
+    # === NO SUBCOMMAND ===
+    - "[ ] asimov (no args) - should launch Claude Code from terminal"
+    - "[ ] asimov (no args) - inside Claude should run warmup instead"
+    - "[ ] asimov --help - show all commands"
+    - "[ ] asimov --version - show version number"
+
+    # === INIT ===
+    - "[ ] asimov init - default behavior (auto-detect type)"
+    - "[ ] asimov init --name <NAME> - set project name"
+    - "[ ] asimov init --type generic - generic template"
+    - "[ ] asimov init --type rust - rust template"
+    - "[ ] asimov init --type python - python template"
+    - "[ ] asimov init --type node - node template"
+    - "[ ] asimov init --type go - go template"
+    - "[ ] asimov init --type flutter - flutter template"
+    - "[ ] asimov init --type docs - docs template"
+    - "[ ] asimov init --output <DIR> - target directory"
+    - "[ ] asimov init --force - overwrite existing files"
+    - "[ ] asimov init in subdirectory with .asimov at root - should error"
+
+    # === VALIDATE ===
+    - "[ ] asimov validate - validate current directory"
+    - "[ ] asimov validate <PATH> - validate specific path"
+    - "[ ] asimov validate <FILE.yaml> - validate single file"
+    - "[ ] asimov validate --ethics-scan - scan for red flags"
+    - "[ ] asimov validate --no-regenerate - skip auto-regeneration"
+    - "[ ] asimov validate nonexistent.yaml - should error"
+    - "[ ] asimov validate nonexistent-dir - behavior?"
+
+    # === CHECK ===
+    - "[ ] asimov check <FILE> - validate single file"
+    - "[ ] asimov check nonexistent.yaml - should error"
+    - "[ ] asimov check non-protocol.txt - should error"
+
+    # === LINT-DOCS ===
+    - "[ ] asimov lint-docs - lint current directory"
+    - "[ ] asimov lint-docs <PATH> - lint specific path"
+    - "[ ] asimov lint-docs --fix - auto-fix issues"
+    - "[ ] asimov lint-docs --semantic - version consistency checks"
+    - "[ ] asimov lint-docs on empty dir - behavior?"
+
+    # === REFRESH ===
+    - "[ ] asimov refresh - show protocol reminder"
+    - "[ ] asimov refresh --verbose - show current milestone"
+
+    # === SCHEMA ===
+    - "[ ] asimov schema - export all schemas (default)"
+    - "[ ] asimov schema all - export all to ./schemas/"
+    - "[ ] asimov schema warmup - export warmup schema to stdout"
+    - "[ ] asimov schema sprint - export sprint schema"
+    - "[ ] asimov schema roadmap - export roadmap schema"
+    - "[ ] asimov schema asimov - export asimov schema"
+    - "[ ] asimov schema freshness - export freshness schema"
+    - "[ ] asimov schema green - export green schema"
+    - "[ ] asimov schema sycophancy - export sycophancy schema"
+    - "[ ] asimov schema migrations - export migrations schema"
+    - "[ ] asimov schema --output <DIR> - export to directory"
+    - "[ ] asimov schema invalid - should error with available list"
+
+    # === UPDATE ===
+    - "[ ] asimov update - check and install updates"
+    - "[ ] asimov update --check - only check, don't install"
+
+    # === WARMUP ===
+    - "[ ] asimov warmup - show milestone + validate + output protocols"
+    - "[ ] asimov warmup --path <DIR> - warmup in different directory"
+    - "[ ] asimov warmup without roadmap.yaml - should error"
+
+    # === STATS ===
+    - "[ ] asimov stats - show session statistics"
+    - "[ ] asimov stats outside git repo - behavior?"
+
+    # === DOCTOR ===
+    - "[ ] asimov doctor - run diagnostics"
+    - "[ ] asimov doctor with missing hooks - should show warnings"
+    - "[ ] asimov doctor with missing roadmap - should show errors"
+
+    # === REPLAY ===
+    - "[ ] asimov replay - show today's commits"
+    - "[ ] asimov replay --commits <N> - limit to N commits"
+    - "[ ] asimov replay --yesterday - show yesterday's commits"
+    - "[ ] asimov replay --since <TIME> - show commits since time"
+    - "[ ] asimov replay --verbose - show full diffs"
+    - "[ ] asimov replay outside git repo - should error"
 
 next:
   - version: "8.16.0"
@@ -33,23 +101,12 @@ next:
     goal: Quality
     priority: HIGH
     deliverables:
-      - "[ ] E2E: validate - all flags and scenarios"
-      - "[ ] E2E: init - all project types and flags"
-      - "[ ] E2E: check - file validation scenarios"
-      - "[ ] E2E: lint-docs - fix mode, semantic mode"
-      - "[ ] E2E: refresh - protocol output"
-      - "[ ] E2E: schema - all schemas, output modes"
-      - "[ ] E2E: update - check mode, update mode"
-      - "[ ] E2E: warmup - path arg, protocol files"
-      - "[ ] E2E: stats - git history scenarios"
-      - "[ ] E2E: doctor - diagnostic checks"
-      - "[ ] E2E: replay - commit replay scenarios"
-      - "[ ] E2E: Error handling and edge cases"
+      - "[ ] E2E tests for all validated behaviors"
 
 previous:
-  version: "8.14.0"
+  version: "8.15.0"
   status: released
-  summary: "CLI Commands Audit & Protocol File Output"
+  summary: "Review ALL Command Behaviors"
   goal: Bugfix
 
 backlog: []
