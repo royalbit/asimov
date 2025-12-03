@@ -714,10 +714,9 @@ fn cmd_launch() -> ExitCode {
     }
 
     // Check if we're already inside Claude Code
-    // Claude Code sets CLAUDE_CODE_ENTRY or similar env vars
-    let inside_claude = std::env::var("CLAUDE_CODE").is_ok()
-        || std::env::var("CLAUDE_SESSION_ID").is_ok()
-        || std::env::var("ANTHROPIC_API_KEY").is_ok(); // Heuristic: likely in Claude env
+    // Claude Code sets CLAUDECODE=1 and CLAUDE_CODE_ENTRYPOINT
+    let inside_claude = std::env::var("CLAUDECODE").is_ok()
+        || std::env::var("CLAUDE_CODE_ENTRYPOINT").is_ok();
 
     if inside_claude {
         // Already inside Claude Code - just run warmup
@@ -753,13 +752,13 @@ fn cmd_launch() -> ExitCode {
     println!();
 
     // Build the command
-    // Equivalent to: MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus "run asimov warmup"
+    // Equivalent to: MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus
+    // Note: session-start hook instructs Claude to run `asimov warmup`
     let mut cmd = std::process::Command::new("claude");
     cmd.env("MAX_THINKING_TOKENS", "200000")
         .arg("--dangerously-skip-permissions")
         .arg("--model")
-        .arg("opus")
-        .arg("run asimov warmup");
+        .arg("opus");
 
     // Unix: use exec() to replace current process
     // Windows: use status() to wait for child process
@@ -1464,6 +1463,21 @@ fn cmd_refresh(verbose: bool) -> ExitCode {
 fn cmd_validate(path: &Path, ethics_scan: bool, regenerate: bool) -> ExitCode {
     println!("{}", "RoyalBit Asimov Validator".bold().green());
     println!();
+
+    // Check if path looks like a file (has .yaml extension) but doesn't exist
+    let looks_like_file = path
+        .extension()
+        .map(|ext| ext == "yaml" || ext == "yml")
+        .unwrap_or(false);
+
+    if looks_like_file && !path.exists() {
+        eprintln!(
+            "{} File not found: {}",
+            "Error:".bold().red(),
+            path.display()
+        );
+        return ExitCode::FAILURE;
+    }
 
     // Show hardcoded ethics status
     let dir = if path.is_file() {
@@ -2361,16 +2375,13 @@ fn cmd_schema(name: &str, output: Option<PathBuf>) -> ExitCode {
         println!();
         println!("  {{");
         println!("    \"yaml.schemas\": {{");
-        for (schema_name, _) in &schemas {
+        for (i, (schema_name, _)) in schemas.iter().enumerate() {
+            let is_last = i == schemas.len() - 1;
             println!(
                 "      \"./schemas/{}.schema.json\": \"**/{}.yaml\"{}",
                 schema_name,
                 schema_name,
-                if *schema_name == "sycophancy" {
-                    ""
-                } else {
-                    ","
-                }
+                if is_last { "" } else { "," }
             );
         }
         println!("    }}");

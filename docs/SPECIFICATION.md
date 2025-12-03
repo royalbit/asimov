@@ -1143,6 +1143,23 @@ HOOKS
 
 Note: `roadmap.yaml` is project data and is preserved unless `--force` is used.
 
+### Complete Command Reference (v8.15.0)
+
+| Command | Description | Key Behavior |
+|---------|-------------|--------------|
+| `asimov` | Launch Claude Code | Detects if inside Claude (CLAUDECODE env), runs warmup instead of launching |
+| `asimov init` | Initialize project | Auto-detects project type, creates .asimov/ + hooks, preserves roadmap.yaml |
+| `asimov validate [path]` | Validate protocol files | Auto-regenerates missing files, --ethics-scan for red flag detection |
+| `asimov check <file>` | Validate single file | Alias for validate, returns error for nonexistent files |
+| `asimov warmup [--path]` | Session startup | Shows milestone, validates protocols, auto-repairs missing hooks |
+| `asimov refresh [-v]` | Protocol reminder | For git hooks, --verbose shows current milestone |
+| `asimov lint-docs` | Lint markdown | --fix auto-repairs, --semantic checks version consistency |
+| `asimov schema [name]` | Export JSON schemas | For VS Code integration, "all" exports to directory |
+| `asimov update [--check]` | Self-update | --check only reports, without flag performs update |
+| `asimov stats` | Session statistics | Git activity, milestone status, velocity |
+| `asimov doctor` | Diagnostic check | Validates hooks, files, version - shows issues/warnings |
+| `asimov replay` | Commit history | Shows today's commits, --yesterday, --since, -v for details |
+
 ## Activation
 
 ### Claude Code (CLAUDE.md)
