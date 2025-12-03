@@ -1147,7 +1147,7 @@ Note: `roadmap.yaml` is project data and is preserved unless `--force` is used.
 
 | Command | Description | Key Behavior |
 |---------|-------------|--------------|
-| `asimov` | Launch Claude Code | Detects if inside Claude (CLAUDECODE env), runs warmup instead of launching |
+| `asimov` | Launch Claude Code | From terminal: launches Claude + auto-prompts "run asimov warmup". Inside Claude (CLAUDECODE env): runs warmup directly |
 | `asimov init` | Initialize project | Auto-detects project type, creates .asimov/ + hooks, preserves roadmap.yaml |
 | `asimov validate [path]` | Validate protocol files | Auto-regenerates missing files, --ethics-scan for red flag detection |
 | `asimov check <file>` | Validate single file | Alias for validate, returns error for nonexistent files |

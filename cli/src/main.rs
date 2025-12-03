@@ -69,11 +69,17 @@ v8.0.0: Protocols are HARDCODED in the binary. Cannot be bypassed.
   - Dynamic date injection ({TODAY}, {YEAR})
   - Token-optimized JSON output
 
+LAUNCHER MODE (v8.8.0):
+  asimov                             # From terminal: launches Claude Code + auto-warmup
+  asimov                             # Inside Claude: runs warmup directly
+  Equivalent to: MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus \"run asimov warmup\"
+
 EXAMPLES:
-  asimov warmup                      # Start session, output compiled protocols
+  asimov                             # Start session (launcher mode)
+  asimov warmup                      # Manual warmup (inside Claude Code)
   asimov validate                    # Validate roadmap.yaml
   asimov update                      # Update binary + migrate (delete old YAMLs)
-  asimov init --asimov               # Initialize new project
+  asimov init                        # Initialize new project
 
 PROTOCOLS (hardcoded):
   - asimov     - The Three Laws (do no harm, obey human, self-preserve)
@@ -752,13 +758,13 @@ fn cmd_launch() -> ExitCode {
     println!();
 
     // Build the command
-    // Equivalent to: MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus
-    // Note: session-start hook instructs Claude to run `asimov warmup`
+    // Equivalent to: MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus "run asimov warmup"
     let mut cmd = std::process::Command::new("claude");
     cmd.env("MAX_THINKING_TOKENS", "200000")
         .arg("--dangerously-skip-permissions")
         .arg("--model")
-        .arg("opus");
+        .arg("opus")
+        .arg("run asimov warmup");
 
     // Unix: use exec() to replace current process
     // Windows: use status() to wait for child process

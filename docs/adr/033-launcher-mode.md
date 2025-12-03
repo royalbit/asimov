@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Accepted (v8.8.0)
 
 ## Context
 

@@ -374,6 +374,8 @@ Start a session (v8.8.0+):
 asimov                       # Launch Claude Code with opus settings + auto-warmup
 ```
 
+**Launcher Mode:** When run from a terminal, launches Claude Code with optimal settings and auto-prompts warmup. When run inside Claude Code (detected via `CLAUDECODE` env var), runs warmup directly.
+
 Equivalent to: `MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus "run asimov warmup"`
 
 Session warmup (inside Claude Code):
