@@ -721,8 +721,8 @@ fn cmd_launch() -> ExitCode {
 
     // Check if we're already inside Claude Code
     // Claude Code sets CLAUDECODE=1 and CLAUDE_CODE_ENTRYPOINT
-    let inside_claude = std::env::var("CLAUDECODE").is_ok()
-        || std::env::var("CLAUDE_CODE_ENTRYPOINT").is_ok();
+    let inside_claude =
+        std::env::var("CLAUDECODE").is_ok() || std::env::var("CLAUDE_CODE_ENTRYPOINT").is_ok();
 
     if inside_claude {
         // Already inside Claude Code - just run warmup
