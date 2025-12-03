@@ -29,13 +29,13 @@ Missing: **inaction that allows harm**.
 
 ### Real-World Example: The Freshness Problem
 
-ADR-022 documented how vendors optimize for cost over accuracy:
+ADR-022 documented the economics of search vs inference:
 
-| Vendor Behavior | Type | Harm |
-|-----------------|------|------|
-| Know data is stale | Awareness | — |
-| Have search capability | Means to prevent | — |
-| Don't enable search by default | **Inaction** | — |
+| Platform Default | Type | Harm |
+|------------------|------|------|
+| Data has cutoff date | Awareness | — |
+| Search capability exists | Means to prevent | — |
+| Search disabled by default | **Inaction** | — |
 | Users make decisions on stale data | — | **Financial, professional** |
 | Users blame "AI hallucination" | — | **Reputational (for AI)** |
 

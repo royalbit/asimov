@@ -236,7 +236,7 @@ session:
 
 ## The Anti-Hallucination Foundation
 
-"Hallucination" is a misnomer. **AI is working exactly as designed**—the limitations are architectural (by design) or vendor-imposed (business decisions).
+"Hallucination" is a misnomer. **AI is working exactly as designed**—the limitations are architectural (by design) or platform defaults.
 
 | AI Limitation | Why It Happens | RoyalBit Asimov Fix |
 |---------------|----------------|-------------------|
@@ -273,7 +273,7 @@ Users discover outdated info and conclude "AI hallucinated." But the AI gave cor
 | "AI hallucinated" | Info changed since cutoff |
 | "AI is unreliable" | Can't train away staleness—need to search |
 
-**Why vendors don't fix this by default:**
+**The economics of search:**
 
 | Evidence | Source |
 |----------|--------|

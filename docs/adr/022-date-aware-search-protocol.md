@@ -17,9 +17,9 @@ AI models have training data cutoffs. Claude Opus 4.5 and Sonnet 4.5 have a know
 
 **The AI didn't hallucinate. It gave you January 2025's truth.**
 
-### The Business Problem (Confirmed)
+### The Economics of Search
 
-Vendors could fix this by enabling web search by default, but **it's a deliberate cost optimization decision**:
+Web search is not enabled by default. The economics explain why:
 
 | Cost Factor | Evidence |
 |-------------|----------|
@@ -29,20 +29,16 @@ Vendors could fix this by enabling web search by default, but **it's a deliberat
 | **Anthropic projected loss 2025** | ~$3 billion ([Where's Your Ed At](https://www.wheresyoured.at/howmuchmoney/)) |
 | **OpenAI projected loss 2025** | ~$8 billion ([Where's Your Ed At](https://www.wheresyoured.at/howmuchmoney/)) |
 
-**The Smoking Gun** - From [Claude's official help docs](https://support.claude.com/en/articles/10684626-enabling-and-using-web-search):
+**Documentation Note** - From [Claude's official help docs](https://support.claude.com/en/articles/10684626-enabling-and-using-web-search):
 
 > "Toggle web search off when not needed: If you're having a conversation that doesn't require current information, **disable web search to conserve your usage**."
 
-They literally tell users to disable search to save money.
-
 **Claude Code specifically** - Web search was a [feature request (Issue #600)](https://github.com/anthropics/claude-code/issues/600) from March 2025. It wasn't included by default because inference-only is cheaper.
 
-**The business incentive:**
+**The cost structure:**
 - Every search = $0.01 + thousands of extra tokens
-- Companies are losing billions annually
-- Inference-only preserves margins
-- Users blame "AI hallucination" not "vendor cost optimization"
-- No accountability for stale data
+- AI companies operate at significant losses (see table above)
+- Inference-only is more cost-efficient
 
 ### Real-World Examples
 
@@ -152,7 +148,7 @@ FRESHNESS: My cutoff is Jan 2025. Today is in <env>. For time-sensitive topics, 
 
 1. **Reduces perceived hallucination** - Users get current info
 2. **Builds trust** - AI acknowledges its limitations
-3. **Explicit protocol** - Not hidden vendor decision
+3. **Explicit protocol** - Makes behavior transparent
 4. **User education** - Explains why search matters
 
 ### Negative
