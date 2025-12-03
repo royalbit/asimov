@@ -109,4 +109,5 @@ previous:
   summary: "Review ALL Command Behaviors"
   goal: Bugfix
 
-backlog: []
+backlog:
+  - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"
