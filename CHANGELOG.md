@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.12.0] - 2025-12-02
+
+### Qowat Milat Commit History
+
+**Neutral framing. Evidence speaks for itself.**
+
+Applied ADR-035 (Qowat Milat) editorial standards to 43 commit messages in repository history. Removed editorial language ("brutal honesty", "the truth about", "PROVEN", "comprehensive", etc.) in favor of neutral, factual descriptions.
+
+**Method:** `git-filter-repo` with commit callback to rewrite messages while preserving commit bodies.
+
+**Impact:** All commit SHAs changed. Existing clones require:
+```bash
+git fetch --all && git reset --hard origin/main
+```
+
+See [ADR-035](docs/adr/035-qowat-milat-reframe.md) for editorial guidelines.
+
+---
+
 ## [8.11.0] - 2025-12-02
 
 ### Protocol Viewer Slash Command
