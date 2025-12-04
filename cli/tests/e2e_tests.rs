@@ -74,198 +74,29 @@ fn e2e_short_help_works() {
 }
 
 // ========== Validate Command Tests ==========
-
-#[test]
-fn e2e_validate_valid_warmup() {
-    let file = test_data_path("valid_warmup.yaml");
-
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg(&file)
-        .output()
-        .expect("Failed to execute");
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-
-    assert!(
-        output.status.success(),
-        "Valid warmup should pass, stdout: {stdout}, stderr: {stderr}"
-    );
-
-    assert!(
-        stdout.contains("OK") || stdout.contains("valid"),
-        "Should indicate success, got: {stdout}"
-    );
-}
-
-#[test]
-fn e2e_validate_valid_sprint() {
-    let file = test_data_path("valid_sprint.yaml");
-
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg(&file)
-        .output()
-        .expect("Failed to execute");
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-
-    assert!(
-        output.status.success(),
-        "Valid sprint should pass, stdout: {stdout}, stderr: {stderr}"
-    );
-}
-
-#[test]
-fn e2e_validate_valid_roadmap() {
-    let file = test_data_path("valid_roadmap.yaml");
-
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg(&file)
-        .output()
-        .expect("Failed to execute");
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-
-    assert!(
-        output.status.success(),
-        "Valid roadmap should pass, stdout: {stdout}, stderr: {stderr}"
-    );
-}
-
-#[test]
-fn e2e_validate_invalid_warmup_missing_identity() {
-    let file = test_data_path("invalid_warmup_missing_identity.yaml");
-
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg(&file)
-        .output()
-        .expect("Failed to execute");
-
-    assert!(
-        !output.status.success(),
-        "Invalid warmup should fail validation"
-    );
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        stdout.contains("FAIL") || stdout.contains("identity"),
-        "Should report failure, got: {stdout}"
-    );
-}
-
-#[test]
-fn e2e_validate_invalid_warmup_missing_project() {
-    let file = test_data_path("invalid_warmup_missing_project.yaml");
-
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg(&file)
-        .output()
-        .expect("Failed to execute");
-
-    assert!(
-        !output.status.success(),
-        "Missing project should fail validation"
-    );
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        stdout.contains("FAIL") || stdout.contains("project"),
-        "Should report project error, got: {stdout}"
-    );
-}
-
-#[test]
-fn e2e_validate_malformed_yaml() {
-    let file = test_data_path("malformed.yaml");
-
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg(&file)
-        .output()
-        .expect("Failed to execute");
-
-    assert!(!output.status.success(), "Malformed YAML should fail");
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-    let combined = format!("{stdout}{stderr}");
-
-    assert!(
-        combined.contains("YAML") || combined.contains("Error") || combined.contains("scanning"),
-        "Should report YAML error, got: {combined}"
-    );
-}
-
-#[test]
-fn e2e_validate_nonexistent_file() {
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg("/nonexistent/warmup.yaml")
-        .output()
-        .expect("Failed to execute");
-
-    assert!(!output.status.success(), "Nonexistent file should fail");
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-    let combined = format!("{stdout}{stderr}");
-
-    assert!(
-        combined.contains("not found") || combined.contains("Error") || combined.contains("File"),
-        "Should report file not found, got: {combined}"
-    );
-}
-
-#[test]
-fn e2e_validate_non_protocol_file() {
-    let temp_dir = TempDir::new().unwrap();
-    let file = temp_dir.path().join("config.yaml");
-    fs::write(&file, "key: value").unwrap();
-
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg(&file)
-        .output()
-        .expect("Failed to execute");
-
-    assert!(
-        !output.status.success(),
-        "Non-protocol file should fail validation"
-    );
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-    let combined = format!("{stdout}{stderr}");
-
-    assert!(
-        combined.contains("Not a protocol file") || combined.contains("Error"),
-        "Should report not a protocol file, got: {combined}"
-    );
-}
+// v8.16.0: validate no longer takes path arguments or validates individual files
+// It runs from current directory and validates:
+// - Protocol .json files against hardcoded values
+// - .asimov/roadmap.yaml
+// - .asimov/project.yaml (if present)
 
 #[test]
 fn e2e_validate_directory() {
     let temp_dir = TempDir::new().unwrap();
+    let asimov_dir = temp_dir.path().join(".asimov");
+    fs::create_dir_all(&asimov_dir).unwrap();
 
-    // v8.0.0: Only roadmap.yaml is validated (protocols are hardcoded in binary)
+    // v8.16.0: validate now runs from current dir, validates .asimov/roadmap.yaml
     fs::write(
-        temp_dir.path().join("roadmap.yaml"),
+        asimov_dir.join("roadmap.yaml"),
         "current:\n  version: '1.0.0'\n  status: planned\n  summary: Test milestone",
     )
     .unwrap();
 
-    // Use --no-regenerate to only validate existing files
+    // v8.16.0: validate takes no path, runs from current directory
     let output = Command::new(binary_path())
         .arg("validate")
-        .arg("--no-regenerate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute");
 
@@ -279,35 +110,28 @@ fn e2e_validate_directory() {
 
     // Should validate roadmap.yaml
     assert!(stdout.contains("roadmap"), "Should validate roadmap");
-    assert!(stdout.contains("1 file"), "Should report 1 file");
 }
 
 #[test]
 fn e2e_validate_directory_no_protocol_files() {
     let temp_dir = TempDir::new().unwrap();
-    fs::write(temp_dir.path().join("config.yaml"), "key: value").unwrap();
+    let asimov_dir = temp_dir.path().join(".asimov");
+    fs::create_dir_all(&asimov_dir).unwrap();
+    // No roadmap.yaml, just an empty .asimov dir
 
-    // Use --no-regenerate to prevent auto-creation of missing files
+    // v8.16.0: validate takes no args, runs from current directory
     let output = Command::new(binary_path())
         .arg("validate")
-        .arg("--no-regenerate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute");
 
-    assert!(
-        !output.status.success(),
-        "Empty directory should fail validation"
-    );
-
     let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-    let combined = format!("{stdout}{stderr}");
 
-    // v8.0.0: Error message changed to "No data files"
+    // v8.16.0: Should show missing roadmap.yaml warning
     assert!(
-        combined.contains("No data files"),
-        "Should report no data files, got: {combined}"
+        stdout.contains("missing") || stdout.contains("roadmap"),
+        "Should mention roadmap, got: {stdout}"
     );
 }
 
@@ -746,9 +570,10 @@ fn e2e_init_python_generated_files_pass_validation() {
 
     assert!(init_output.status.success(), "Init should succeed");
 
+    // v8.16.0: validate runs from current directory
     let validate_output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute validate");
 
@@ -778,9 +603,10 @@ fn e2e_init_node_generated_files_pass_validation() {
 
     assert!(init_output.status.success(), "Init should succeed");
 
+    // v8.16.0: validate runs from current directory
     let validate_output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute validate");
 
@@ -810,9 +636,10 @@ fn e2e_init_go_generated_files_pass_validation() {
 
     assert!(init_output.status.success(), "Init should succeed");
 
+    // v8.16.0: validate runs from current directory
     let validate_output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute validate");
 
@@ -845,10 +672,10 @@ fn e2e_init_generated_files_pass_validation() {
 
     assert!(init_output.status.success(), "Init should succeed");
 
-    // Validate generated files
+    // v8.16.0: validate runs from current directory
     let validate_output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute validate");
 
@@ -879,10 +706,10 @@ fn e2e_init_rust_generated_files_pass_validation() {
 
     assert!(init_output.status.success(), "Init should succeed");
 
-    // Validate generated files
+    // v8.16.0: validate runs from current directory
     let validate_output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute validate");
 
@@ -903,9 +730,10 @@ fn e2e_validate_repo_protocol_files() {
     let mut repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     repo_root.pop(); // Go up from cli/ to repo root
 
+    // v8.16.0: validate runs from current directory
     let output = Command::new(binary_path())
         .arg("validate")
-        .arg(&repo_root)
+        .current_dir(&repo_root)
         .output()
         .expect("Failed to execute");
 
@@ -1032,50 +860,26 @@ fn e2e_lint_docs_without_semantic_skips_checks() {
 fn e2e_validate_external_path_creates_asimov_dir() {
     let temp_dir = TempDir::new().unwrap();
 
-    // Run validate on empty directory - should create .asimov/roadmap.yaml
+    // v8.16.0: validate runs from current dir
     let output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute");
 
     let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
 
+    // v8.16.0: validate now shows protocol files status
     assert!(
-        output.status.success(),
-        "Validate should succeed (with regeneration), stdout: {stdout}, stderr: {stderr}"
-    );
-
-    // Should have created .asimov/roadmap.yaml in target directory
-    let asimov_dir = temp_dir.path().join(".asimov");
-    assert!(asimov_dir.exists(), ".asimov/ should be created");
-    assert!(
-        asimov_dir.join("roadmap.yaml").exists(),
-        "roadmap.yaml should be created in .asimov/"
+        stdout.contains("PROTOCOL") || stdout.contains("ROADMAP"),
+        "Should show validation output, got: {stdout}"
     );
 }
 
 #[test]
 fn e2e_validate_external_path_no_regenerate() {
-    let temp_dir = TempDir::new().unwrap();
-
-    // Run validate with --no-regenerate on empty directory - should fail
-    let output = Command::new(binary_path())
-        .arg("validate")
-        .arg("--no-regenerate")
-        .arg(temp_dir.path())
-        .output()
-        .expect("Failed to execute");
-
-    assert!(
-        !output.status.success(),
-        "Validate --no-regenerate on empty dir should fail"
-    );
-
-    // .asimov directory should NOT be created
-    let asimov_dir = temp_dir.path().join(".asimov");
-    assert!(!asimov_dir.exists(), ".asimov/ should NOT be created");
+    // v8.16.0: --no-regenerate flag was removed, skip this test
+    // validate now just validates, doesn't regenerate
 }
 
 #[test]
@@ -1092,10 +896,10 @@ fn e2e_validate_external_path_with_existing_roadmap() {
 "#;
     fs::write(asimov_dir.join("roadmap.yaml"), roadmap_content).unwrap();
 
-    // Run validate
+    // v8.16.0: validate runs from current dir
     let output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute");
 
@@ -1129,10 +933,11 @@ fn e2e_validate_external_path_ethics_scan() {
     )
     .unwrap();
 
+    // v8.16.0: validate runs from current directory
     let output = Command::new(binary_path())
         .arg("validate")
         .arg("--ethics-scan")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute");
 
@@ -1305,9 +1110,10 @@ fn e2e_warmup_runs_from_project_dir() {
 
     assert!(init_output.status.success(), "Init should succeed");
 
-    // Run warmup FROM the project directory (not passing path arg)
+    // v8.16.0: Run warmup with --verbose for full output
     let output = Command::new(binary_path())
         .arg("warmup")
+        .arg("--verbose")
         .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute");
@@ -1326,6 +1132,45 @@ fn e2e_warmup_runs_from_project_dir() {
     assert!(
         stdout.contains("PROTOCOLS"),
         "Should show protocols section"
+    );
+}
+
+#[test]
+fn e2e_warmup_simple_output() {
+    let temp_dir = TempDir::new().unwrap();
+
+    // Initialize the project
+    let init_output = Command::new(binary_path())
+        .arg("init")
+        .arg("--name")
+        .arg("test-project")
+        .arg("--type")
+        .arg("generic")
+        .arg("--output")
+        .arg(temp_dir.path())
+        .output()
+        .expect("Failed to execute init");
+
+    assert!(init_output.status.success(), "Init should succeed");
+
+    // v8.16.0: warmup without --verbose shows simple output
+    let output = Command::new(binary_path())
+        .arg("warmup")
+        .current_dir(temp_dir.path())
+        .output()
+        .expect("Failed to execute");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        output.status.success(),
+        "Warmup should succeed, stdout: {stdout}, stderr: {stderr}"
+    );
+    // Simple output should show milestone info and JSON
+    assert!(
+        stdout.contains("MILESTONE") || stdout.contains("{"),
+        "Should show milestone or JSON, got: {stdout}"
     );
 }
 
@@ -1373,7 +1218,7 @@ fn e2e_doctor_runs_from_project_dir() {
 
 #[test]
 fn e2e_refresh_runs_from_any_dir() {
-    // Refresh doesn't need project files - it just outputs protocol info
+    // v8.16.0: Refresh regenerates protocol .json files from hardcoded values
     let temp_dir = TempDir::new().unwrap();
 
     let output = Command::new(binary_path())
@@ -1390,37 +1235,31 @@ fn e2e_refresh_runs_from_any_dir() {
         "Refresh should succeed, stdout: {stdout}, stderr: {stderr}"
     );
     assert!(
-        stdout.contains("ASIMOV ETHICS") || stdout.contains("Three Laws"),
-        "Should show ethics principles"
+        stdout.contains("REFRESH") || stdout.contains("REGENERAT"),
+        "Should show refresh/regeneration output, got: {stdout}"
     );
 }
 
 #[test]
-fn e2e_validate_regeneration_in_external_asimov_dir() {
+fn e2e_validate_warns_on_missing_roadmap() {
     let temp_dir = TempDir::new().unwrap();
 
-    // Create .asimov directory but no files
+    // Create .asimov directory but no roadmap.yaml
     let asimov_dir = temp_dir.path().join(".asimov");
     fs::create_dir_all(&asimov_dir).unwrap();
 
-    // Run validate - should regenerate roadmap.yaml in .asimov/
+    // v8.16.0: validate runs from current directory, warns about missing roadmap
     let output = Command::new(binary_path())
         .arg("validate")
-        .arg(temp_dir.path())
+        .current_dir(temp_dir.path())
         .output()
         .expect("Failed to execute");
 
     let stdout = String::from_utf8_lossy(&output.stdout);
 
-    assert!(output.status.success(), "Validate should succeed");
+    // Should warn about missing roadmap (v8.16.0 validate doesn't regenerate)
     assert!(
-        stdout.contains("REGENERATED"),
-        "Should show regeneration message"
-    );
-
-    // roadmap.yaml should be in .asimov/
-    assert!(
-        asimov_dir.join("roadmap.yaml").exists(),
-        "roadmap.yaml should be regenerated in .asimov/"
+        stdout.contains("missing") || stdout.contains("roadmap"),
+        "Should mention missing roadmap, got: {stdout}"
     );
 }

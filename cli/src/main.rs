@@ -792,19 +792,36 @@ fn cmd_stats() -> ExitCode {
 
     // Try to find asimov init point: look for tag or first commit with .asimov
     let project_start = std::process::Command::new("git")
-        .args(["log", "--oneline", "--diff-filter=A", "--", ".asimov/", "-1", "--format=%ci"])
+        .args([
+            "log",
+            "--oneline",
+            "--diff-filter=A",
+            "--",
+            ".asimov/",
+            "-1",
+            "--format=%ci",
+        ])
         .output()
         .ok()
         .and_then(|o| {
             let output = String::from_utf8_lossy(&o.stdout).trim().to_string();
-            if output.is_empty() { None } else { Some(output) }
+            if output.is_empty() {
+                None
+            } else {
+                Some(output)
+            }
         });
 
     // Total commits in project (all time)
     let total_commits = std::process::Command::new("git")
         .args(["rev-list", "--count", "HEAD"])
         .output()
-        .map(|o| String::from_utf8_lossy(&o.stdout).trim().parse::<usize>().unwrap_or(0))
+        .map(|o| {
+            String::from_utf8_lossy(&o.stdout)
+                .trim()
+                .parse::<usize>()
+                .unwrap_or(0)
+        })
         .unwrap_or(0);
 
     // Commits since .asimov was added
@@ -822,7 +839,12 @@ fn cmd_stats() -> ExitCode {
         .map(|o| {
             let files: Vec<_> = String::from_utf8_lossy(&o.stdout)
                 .lines()
-                .filter(|f| f.ends_with(".rs") || f.ends_with(".ts") || f.ends_with(".py") || f.ends_with(".go"))
+                .filter(|f| {
+                    f.ends_with(".rs")
+                        || f.ends_with(".ts")
+                        || f.ends_with(".py")
+                        || f.ends_with(".go")
+                })
                 .map(|s| s.to_string())
                 .collect();
 
@@ -837,12 +859,28 @@ fn cmd_stats() -> ExitCode {
         .unwrap_or(0);
 
     if let Some(start) = &project_start {
-        println!("  Asimov since: {}", start.split_whitespace().next().unwrap_or(start).bright_blue());
+        println!(
+            "  Asimov since: {}",
+            start
+                .split_whitespace()
+                .next()
+                .unwrap_or(start)
+                .bright_blue()
+        );
     }
-    println!("  Total commits: {}", total_commits.to_string().bright_green());
-    println!("  Asimov commits: {}", asimov_commits.to_string().bright_green());
+    println!(
+        "  Total commits: {}",
+        total_commits.to_string().bright_green()
+    );
+    println!(
+        "  Asimov commits: {}",
+        asimov_commits.to_string().bright_green()
+    );
     if lines_of_code > 0 {
-        println!("  Lines of code: {}", lines_of_code.to_string().bright_yellow());
+        println!(
+            "  Lines of code: {}",
+            lines_of_code.to_string().bright_yellow()
+        );
     }
     println!();
 
@@ -884,7 +922,10 @@ fn cmd_stats() -> ExitCode {
     if let Some(start) = session_start {
         println!("  Started: {}", start.bright_blue());
     }
-    println!("  Commits today: {}", commits_today.to_string().bright_green());
+    println!(
+        "  Commits today: {}",
+        commits_today.to_string().bright_green()
+    );
     if !lines_changed.is_empty() {
         println!("  Changes: {}", lines_changed.bright_yellow());
     }
@@ -958,7 +999,11 @@ fn cmd_doctor() -> ExitCode {
                 println!("  {} .asimov/ directory created", "✓".green());
             }
             Err(e) => {
-                println!("  {} .asimov/ directory missing - failed to create: {}", "✗".red(), e);
+                println!(
+                    "  {} .asimov/ directory missing - failed to create: {}",
+                    "✗".red(),
+                    e
+                );
                 issues.push(format!("Cannot create .asimov/ directory: {}", e));
             }
         }
@@ -1006,10 +1051,17 @@ backlog: []
         match std::fs::write(&roadmap_path, empty_roadmap) {
             Ok(_) => {
                 println!("  {} roadmap.yaml created (empty template)", "✓".green());
-                println!("    {} Run 'asimov init --name <NAME> --type <TYPE>' for full setup", "→".bright_cyan());
+                println!(
+                    "    {} Run 'asimov init --name <NAME> --type <TYPE>' for full setup",
+                    "→".bright_cyan()
+                );
             }
             Err(e) => {
-                println!("  {} roadmap.yaml missing - failed to create: {}", "✗".red(), e);
+                println!(
+                    "  {} roadmap.yaml missing - failed to create: {}",
+                    "✗".red(),
+                    e
+                );
                 issues.push(format!("Cannot create roadmap.yaml: {}", e));
             }
         }
@@ -1439,14 +1491,13 @@ fn cmd_refresh(verbose: bool) -> ExitCode {
     if all_written {
         println!(
             "{}",
-            "✓ Protocol files refreshed from hardcoded values".bold().green()
+            "✓ Protocol files refreshed from hardcoded values"
+                .bold()
+                .green()
         );
         ExitCode::SUCCESS
     } else {
-        println!(
-            "{}",
-            "✗ Some files failed to refresh".bold().red()
-        );
+        println!("{}", "✗ Some files failed to refresh".bold().red());
         ExitCode::FAILURE
     }
 }
@@ -1484,7 +1535,11 @@ fn cmd_validate(ethics_scan: bool) -> ExitCode {
                     if actual_content.trim() == expected_content.trim() {
                         println!("  {} {} (matches hardcoded)", "✓".green(), filename);
                     } else {
-                        println!("  {} {} (TAMPERED - differs from hardcoded)", "✗".red(), filename);
+                        println!(
+                            "  {} {} (TAMPERED - differs from hardcoded)",
+                            "✗".red(),
+                            filename
+                        );
                         has_errors = true;
                     }
                 }
@@ -1494,7 +1549,11 @@ fn cmd_validate(ethics_scan: bool) -> ExitCode {
                 }
             }
         } else {
-            println!("  {} {} (missing - run 'asimov warmup')", "⚠".yellow(), filename);
+            println!(
+                "  {} {} (missing - run 'asimov warmup')",
+                "⚠".yellow(),
+                filename
+            );
         }
     }
     println!();
@@ -1520,7 +1579,10 @@ fn cmd_validate(ethics_scan: bool) -> ExitCode {
             }
         }
     } else {
-        println!("  {} roadmap.yaml (missing - run 'asimov doctor')", "⚠".yellow());
+        println!(
+            "  {} roadmap.yaml (missing - run 'asimov doctor')",
+            "⚠".yellow()
+        );
     }
     println!();
 
@@ -1530,24 +1592,25 @@ fn cmd_validate(ethics_scan: bool) -> ExitCode {
     if project_path.exists() {
         // Basic YAML validation
         match std::fs::read_to_string(&project_path) {
-            Ok(content) => {
-                match serde_yaml::from_str::<serde_yaml::Value>(&content) {
-                    Ok(_) => {
-                        println!("  {} project.yaml (valid YAML)", "✓".green());
-                    }
-                    Err(e) => {
-                        println!("  {} project.yaml (invalid YAML: {})", "✗".red(), e);
-                        has_errors = true;
-                    }
+            Ok(content) => match serde_yaml::from_str::<serde_yaml::Value>(&content) {
+                Ok(_) => {
+                    println!("  {} project.yaml (valid YAML)", "✓".green());
                 }
-            }
+                Err(e) => {
+                    println!("  {} project.yaml (invalid YAML: {})", "✗".red(), e);
+                    has_errors = true;
+                }
+            },
             Err(e) => {
                 println!("  {} project.yaml (read error: {})", "✗".red(), e);
                 has_errors = true;
             }
         }
     } else {
-        println!("  {} project.yaml (not present - optional)", "ℹ".bright_blue());
+        println!(
+            "  {} project.yaml (not present - optional)",
+            "ℹ".bright_blue()
+        );
     }
     println!();
 
@@ -1625,10 +1688,7 @@ fn cmd_validate(ethics_scan: bool) -> ExitCode {
     );
 
     if has_errors {
-        println!(
-            "{}",
-            "✗ Validation failed - fix errors above".bold().red()
-        );
+        println!("{}", "✗ Validation failed - fix errors above".bold().red());
         ExitCode::FAILURE
     } else {
         println!("{}", "✓ All validations passed".bold().green());
@@ -2268,4 +2328,3 @@ fn find_git_root(start: &Path) -> Option<PathBuf> {
         }
     }
 }
-

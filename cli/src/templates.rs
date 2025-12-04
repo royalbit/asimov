@@ -1619,10 +1619,10 @@ exit 0
 pub fn git_precommit_hook() -> String {
     r#"#!/bin/bash
 # ═══════════════════════════════════════════════════════════════════════════════
-# ROYALBIT ASIMOV - Git Pre-commit Hook (v8.0.0)
+# ROYALBIT ASIMOV - Git Pre-commit Hook (v8.16.1)
 # ═══════════════════════════════════════════════════════════════════════════════
 #
-# Auto-installed by `asimov init` or `asimov update`
+# Auto-installed by `asimov init` or `asimov warmup`
 # Hardcoded in binary - restored on tampering
 #
 # Protocol: https://github.com/royalbit/asimov
@@ -1632,6 +1632,29 @@ set -e
 
 echo "Running pre-commit checks..."
 
+# v8.16.1: Rust formatting check (if Cargo.toml exists)
+if [ -f "Cargo.toml" ] || [ -f "cli/Cargo.toml" ]; then
+    echo "Checking Rust formatting..."
+    if [ -f "cli/Cargo.toml" ]; then
+        cd cli && cargo fmt --all -- --check || {
+            echo ""
+            echo "❌ Rust formatting check failed!"
+            echo "   Run: cd cli && cargo fmt --all"
+            echo ""
+            exit 1
+        }
+        cd ..
+    else
+        cargo fmt --all -- --check || {
+            echo ""
+            echo "❌ Rust formatting check failed!"
+            echo "   Run: cargo fmt --all"
+            echo ""
+            exit 1
+        }
+    fi
+fi
+
 # Protocol refresh - injects rules into fresh context (survives compaction)
 if command -v asimov &> /dev/null; then
     asimov refresh
@@ -1640,7 +1663,7 @@ fi
 # Validate protocol files
 if command -v asimov &> /dev/null; then
     echo "Validating protocol files..."
-    asimov validate . || exit 1
+    asimov validate || exit 1
 
     echo "Linting documentation..."
     asimov lint-docs . || exit 1
