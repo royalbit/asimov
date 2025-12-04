@@ -24,6 +24,20 @@ current:
     - "[x] Fix: asimov stats - show ENTIRE project stats + current session"
 
 next:
+  - version: "8.16.2"
+    summary: "Protocol Content Review"
+    goal: Quality
+    priority: CRITICAL
+    deliverables:
+      - "[ ] Show user: asimov.json - user reviews and fixes"
+      - "[ ] Show user: freshness.json - user reviews and fixes"
+      - "[ ] Show user: sycophancy.json - user reviews and fixes"
+      - "[ ] Show user: green.json - user reviews and fixes"
+      - "[ ] Show user: sprint.json - user reviews and fixes"
+      - "[ ] Show user: warmup.json - user reviews and fixes"
+      - "[ ] Show user: migrations.json - user reviews and fixes"
+      - "[ ] Show user: exhaustive.json - user reviews and fixes"
+
   - version: "8.17.0"
     summary: "Comprehensive E2E Test Suite"
     goal: Quality
