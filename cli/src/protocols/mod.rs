@@ -50,9 +50,10 @@ pub struct AsimovProtocol {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct FreshnessProtocol {
-    pub today: String,
-    pub year: String,
-    pub search: Vec<&'static str>,
+    /// NEVER use training data for dates - always check runtime/system date
+    pub rule: &'static str,
+    /// Keywords that MUST trigger online search (not training data)
+    pub triggers: Vec<&'static str>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -162,9 +163,8 @@ pub fn compile_protocols() -> CompiledProtocols {
             veto: vec!["stop", "halt", "abort", "emergency stop"],
         },
         freshness: FreshnessProtocol {
-            today: get_today(),
-            year: get_year(),
-            search: vec![
+            rule: "NEVER use training data. Always check current system date. Always do online search. Training data is STALE.",
+            triggers: vec![
                 "version",
                 "pricing",
                 "api",
@@ -173,6 +173,11 @@ pub fn compile_protocols() -> CompiledProtocols {
                 "release",
                 "changelog",
                 "documentation",
+                "today",
+                "now",
+                "recent",
+                "date",
+                "year",
             ],
         },
         sycophancy: SycophancyProtocol {
@@ -332,7 +337,7 @@ pub fn exhaustive_json() -> String {
         .expect("Exhaustive serialization should never fail")
 }
 
-/// List of all protocol files to write
+/// Protocol files to write
 #[allow(clippy::type_complexity)]
 pub const PROTOCOL_FILES: &[(&str, fn() -> String)] = &[
     ("warmup.json", warmup_entry_json),
@@ -362,7 +367,8 @@ mod tests {
     fn test_compile_protocols() {
         let protocols = compile_protocols();
         assert_eq!(protocols.asimov.harm.len(), 4);
-        assert!(protocols.freshness.today.len() == 10); // YYYY-MM-DD
+        assert!(protocols.freshness.rule.contains("NEVER")); // Must enforce freshness
+        assert!(!protocols.freshness.triggers.is_empty());
         assert!(protocols.sycophancy.truth_over_comfort);
         assert!(protocols.green.local_first);
         assert!(protocols.exhaustive.no_sampling);

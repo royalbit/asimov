@@ -548,11 +548,10 @@ fn cmd_warmup(path: &Path, verbose: bool) -> ExitCode {
             protocols.asimov.veto
         );
         println!(
-            "  {} freshness: today={}, year={}, triggers={:?}",
+            "  {} freshness: rule=\"{}\", triggers={:?}",
             "•".bright_cyan(),
-            protocols.freshness.today,
-            protocols.freshness.year,
-            protocols.freshness.search
+            protocols.freshness.rule,
+            protocols.freshness.triggers
         );
         println!(
             "  {} sycophancy: truth_over_comfort={}, banned={:?}",
