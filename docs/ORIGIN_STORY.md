@@ -410,3 +410,6 @@ The protocol was designed by an AI to constrain AI. That's the point.
 ---
 
 *"Creates Self-Evolving Autonomous AI projects with ethics built in. Inspect the code. Challenge the rules."*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

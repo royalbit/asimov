@@ -174,3 +174,6 @@ This ADR applies to:
 - [ADR-001: Green Coding By Default](./001-green-coding-by-default.md) - Similar pattern
 - [RoyalBit Asimov Specification](../SPECIFICATION.md) - Protocol schema
 - [warmup.yaml](../../warmup.yaml) - Reference implementation
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

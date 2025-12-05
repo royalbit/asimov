@@ -185,3 +185,6 @@ asimov init --asimov
 - [Cursor Token Limits](https://github.com/rinadelph/CursorPlus/blob/main/claude_token_limits.md)
 - [ADR-025: Claude Attribution Principle](025-claude-attribution-principle.md)
 - [ADR-018: Claude Code Hooks Integration](018-claude-code-hooks-integration.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -291,3 +291,6 @@ Keep green coding as pure documentation.
 - [ADR-001: Green Coding By Default](001-green-coding-by-default.md)
 - [docs/GREEN_CODING.md](../GREEN_CODING.md) - Full green coding analysis
 - [warmup.yaml green_coding section](../../warmup.yaml)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

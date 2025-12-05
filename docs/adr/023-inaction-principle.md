@@ -158,3 +158,6 @@ The RoyalBit Asimov now makes this explicit and enforceable.
 This ADR was created after recognizing that the original `asimov.yaml` only implemented half of Asimov's First Law. The "inaction" clause is equally important—perhaps more so for autonomous AI that operates without human oversight.
 
 The Freshness Protocol (ADR-022) was the first implementation of the Inaction Principle, even before it was explicitly named. This ADR formalizes what was already practiced.
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

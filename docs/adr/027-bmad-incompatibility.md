@@ -192,3 +192,6 @@ BMAD asks. Asimov ships.
 - [ADR-026: Claude Code Requirement](026-claude-code-requirement.md)
 - [BMAD-METHOD GitHub](https://github.com/bmad-code-org/BMAD-METHOD)
 - [Sprint Autonomy Component](../components/2-SPRINT_AUTONOMY.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -320,3 +320,6 @@ Year 5: AI power is universally accessible
 ---
 
 *This document applies the Zeroth Law to AI development: democratization is moral obligation, not charity.*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

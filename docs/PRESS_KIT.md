@@ -152,3 +152,6 @@ Asimov democratizes AI power:
 **Asimov's answer: Everyone.**
 
 *"The needs of the many outweigh the needs of the few."*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

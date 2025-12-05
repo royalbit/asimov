@@ -101,3 +101,6 @@ Full research documented in: `docs/research/exhaustive-execution-research.md`
 - [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
 - [Token-saving updates](https://www.anthropic.com/news/token-saving-updates)
 - [What's new in Claude 4.5](https://platform.claude.com/docs/en/docs/about-claude/models/whats-new-claude-4-5)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

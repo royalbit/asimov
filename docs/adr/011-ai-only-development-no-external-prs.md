@@ -275,3 +275,6 @@ This ADR applies to:
 - [ADR-008: Ethics Protocol and Humanist Mode](./008-ethics-protocol-humanist-mode.md)
 - [ethics.yaml](../../ethics.yaml) - Core ethics configuration
 - [warmup.yaml](../../warmup.yaml) - Autonomous development protocol
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

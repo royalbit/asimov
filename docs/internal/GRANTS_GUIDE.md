@@ -496,3 +496,6 @@ The largest source of R&D funding in Canada. Provides tax credits for eligible R
 *This guide is for informational purposes. Consult qualified grant consultants and accountants for filing.*
 
 *Last updated: 2025-11-29*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

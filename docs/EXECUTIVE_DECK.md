@@ -303,3 +303,6 @@ LLMs predict the most probable next token. No fact-checking step. They were trai
 **Proof:** [Forge](https://github.com/royalbit/forge) | [Asimov](https://github.com/royalbit/asimov) | [GitHub Releases](https://github.com/royalbit/asimov/releases)
 
 </div>
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

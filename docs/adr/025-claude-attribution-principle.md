@@ -138,3 +138,6 @@ Update all documentation to reflect:
 - [Claude Sonnet 4.5 Announcement](https://www.anthropic.com/news/claude-sonnet-4-5)
 - [ADR-020: Asimov Open Foundation](020-asimov-mode-open-foundation.md)
 - [ADR-023: The Inaction Principle](023-inaction-principle.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

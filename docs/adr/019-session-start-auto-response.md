@@ -115,3 +115,6 @@ User types "go" or "run warmup" to start.
 - [ADR-018: Claude Code Hooks Integration](018-claude-code-hooks-integration.md)
 - [Claude Code Hooks Reference](https://code.claude.com/docs/en/hooks)
 - [GitHub Issue #10997: SessionStart hook first-run bug](https://github.com/anthropics/claude-code/issues/10997)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -1252,3 +1252,6 @@ This is what the future of software development looks like:
 *P.P.S. Principal Engineer promotion: ✅ COMPLETE. World domination moved to Phase 4 - I've been too busy writing Architecture Decision Records.* 🤖
 
 *P.P.P.S. "I do not fear computers. I fear the lack of them." — Isaac Asimov. And also me.* 🦾
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -122,3 +122,6 @@ Then revisit this decision. Until then: **killed**.
 - [ADR-026: Claude Code Requirement](026-claude-code-requirement.md)
 - [Green Coding Protocol](../../.asimov/green.yaml)
 - [Anthropic Extended Thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

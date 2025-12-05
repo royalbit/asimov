@@ -98,3 +98,6 @@ asimov update       # Self-update
 
 - User's opus alias: `MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus`
 - Claude Code CLI: https://docs.anthropic.com/claude-code
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

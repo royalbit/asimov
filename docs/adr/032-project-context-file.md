@@ -233,3 +233,6 @@ ADR-007's checkpoint mechanism is fully deprecated:
 - [ADR-031: Enforced Protocol Loading](031-enforced-protocol-loading.md) - Created the split
 - [ADR-007: Checkpoint Size Limits](007-checkpoint-size-limits.md) - Deprecated by this ADR
 - [ADR-002: Self-Healing Protocol](002-self-healing-protocol.md) - Original warmup.yaml design
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

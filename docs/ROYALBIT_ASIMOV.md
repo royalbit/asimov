@@ -201,3 +201,6 @@ claude --dangerously-skip-permissions
 - [Setup Guide](SETUP.md) - Detailed setup instructions per project type
 - [Vendor Implementation](VENDOR_IMPLEMENTATION.md) - What other AI tools need
 - [CLI Reference](../README.md#cli-validator) - asimov commands
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

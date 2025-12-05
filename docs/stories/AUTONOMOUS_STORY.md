@@ -567,3 +567,6 @@ And the RoyalBit Asimov is how we get there. 🚀
 *November 23-24, 2025*
 *Overnight + morning*
 *Zero regrets.*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

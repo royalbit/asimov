@@ -224,3 +224,6 @@ Say: "Re-read .asimov/warmup.yaml"
 - [Component 1: Protocol Files](components/1-PROTOCOL_FILES.md)
 - [Component 4: Self-Healing](components/4-SELF_HEALING.md)
 - [Vendor Implementation](VENDOR_IMPLEMENTATION.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

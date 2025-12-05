@@ -213,3 +213,6 @@ The Foundation parallel works, but only if inverted:
 > Creates Self-Evolving Autonomous AI projects with ethics built in.
 > Inspect the code. Challenge the rules. Fork if you disagree.
 > Adoption through consent, not control.
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

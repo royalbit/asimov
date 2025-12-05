@@ -207,3 +207,6 @@ Functions in `cli/src/protocols/mod.rs`:
 - [ADR-011: Hardcoded Ethics](011-hardcoded-ethics.md) - Partial solution, this completes it
 - [ADR-012: Hardcoded Green Coding](012-hardcoded-green-coding.md) - Partial solution
 - [ADR-022: Freshness Protocol](022-date-aware-search-protocol.md) - The protocol being enforced
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

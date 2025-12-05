@@ -161,3 +161,6 @@ Not "ship one thing." Ship everything.
 - [ADR-027: BMAD Incompatibility](027-bmad-incompatibility.md)
 - [ADR-025: Claude Attribution Principle](025-claude-attribution-principle.md)
 - [Sprint Autonomy Component](../components/2-SPRINT_AUTONOMY.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

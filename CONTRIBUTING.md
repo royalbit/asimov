@@ -51,3 +51,6 @@ Forks are **encouraged**! The social contract:
 Open a [Discussion](https://github.com/royalbit/asimov/discussions) or [Issue](https://github.com/royalbit/asimov/issues).
 
 Thank you for understanding!
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

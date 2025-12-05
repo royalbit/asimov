@@ -237,3 +237,6 @@ If all six steps work, you have ROYALBIT ASIMOV compatibility.
 *Last updated: 2025-11-27*
 
 *This document is intentionally blunt. The RoyalBit Asimov's value is in honest assessment of what's possible, not in marketing fiction about vendor-neutral futures that aren't coming.*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

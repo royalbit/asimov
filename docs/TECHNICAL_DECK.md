@@ -600,3 +600,6 @@ forge calculate model.yaml
 **Ethics:** [IEEE: Copilot Malware](https://ieeexplore.ieee.org/document/10284976/) | [Case Study: Surveillance Blocked](https://github.com/royalbit/asimov/blob/main/docs/case-studies/001-ethics-protocol-blocks-surveillance.md)
 
 </div>
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

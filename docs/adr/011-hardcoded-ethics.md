@@ -221,3 +221,6 @@ Cryptographically sign "ethical" binaries.
 - [ADR-008: Ethics Protocol and Humanist Mode](008-ethics-protocol-humanist-mode.md)
 - [docs/IMPLICATIONS.md](../IMPLICATIONS.md) - Qowat Milat analysis
 - [ethics.yaml](../../ethics.yaml) - Current implementation
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

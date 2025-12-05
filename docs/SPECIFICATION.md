@@ -1243,3 +1243,6 @@ See [ADR-013](adr/013-self-healing-not-replaced.md) for full analysis.
 - [ADR-003: Self-Healing Based on Real Compaction Data](adr/003-self-healing-real-compaction-data.md) - Confirmed by Claude Code 2.0
 - [ADR-002: Self-Healing Protocol](adr/002-self-healing-protocol.md) - Superseded by ADR-003
 - [ADR-001: Green Coding By Default](adr/001-green-coding-by-default.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

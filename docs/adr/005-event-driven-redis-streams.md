@@ -128,3 +128,6 @@ quality:
 - [Redis Streams Documentation](https://redis.io/docs/data-types/streams/)
 - [redis-rs crate](https://crates.io/crates/redis) - Rust async client
 - [Consumer Groups Tutorial](https://redis.io/docs/data-types/streams-tutorial/)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

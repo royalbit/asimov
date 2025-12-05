@@ -87,3 +87,6 @@ User feedback: "FUCK vscode... this is CLI, autonomous mode -- NO IDE integratio
 - [ADR-012: Hardcoded Green Coding](012-hardcoded-green-coding.md) - Don't build what provides no value
 - [ADR-030: asimov-zed Extension Killed](030-asimov-zed-extension-killed.md) - Similar "no IDE integration" decision
 - [ADR-018: Claude Code Hooks Integration](018-claude-code-hooks-integration.md) - The actual integration layer
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

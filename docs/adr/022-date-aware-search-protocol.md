@@ -203,3 +203,6 @@ This ADR was created after observing that users consistently misattribute "stale
 **Stale data:** AI needs to search
 
 The Freshness Protocol makes AI's temporal limitations explicit and provides a systematic solution.
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

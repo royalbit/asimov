@@ -146,3 +146,6 @@ Update template to include:
 - [ADR-011: Hardcoded Ethics](011-hardcoded-ethics.md)
 - [ADR-012: Hardcoded Green Coding](012-hardcoded-green-coding.md) (Future)
 - [RoyalBit Asimov Specification](../SPECIFICATION.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

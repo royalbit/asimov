@@ -1,7 +1,8 @@
 # RoyalBit Asimov
 
 [![CI](https://github.com/royalbit/asimov/actions/workflows/ci.yml/badge.svg)](https://github.com/royalbit/asimov/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](https://github.com/royalbit/asimov/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/code-Proprietary-red.svg)](https://github.com/royalbit/asimov/blob/main/LICENSE)
+[![Docs License](https://img.shields.io/badge/docs-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 > 🤖 **RoyalBit Asimov** | The Ethical Operating System for Claude's Autonomous Power
 >
@@ -877,7 +878,8 @@ For commercial use, contact us via [GitHub Issues](https://github.com/royalbit/a
 
 ## License
 
-**Proprietary** - See [LICENSE](LICENSE)
+- **Code:** Proprietary - See [LICENSE](LICENSE)
+- **Documentation:** [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - See [DOCS-LICENSE](DOCS-LICENSE)
 
 ### What This Means
 
@@ -893,3 +895,6 @@ For commercial use, contact us via [GitHub Issues](https://github.com/royalbit/a
 | **Create derivative works** | ❌ Not permitted |
 
 **Commercial licensing:** [Open an issue](https://github.com/royalbit/asimov/issues)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

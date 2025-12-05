@@ -83,3 +83,6 @@ Different authorship model = different tooling needs.
 - [ADR-012: Hardcoded Green Coding](012-hardcoded-green-coding.md) - Don't build what provides no value
 - [ADR-029: MCP Server Mode Killed](029-mcp-server-mode-killed.md) - Similar "don't build what won't work" decision
 - [ADR-018: Claude Code Hooks Integration](018-claude-code-hooks-integration.md) - The actual integration layer
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

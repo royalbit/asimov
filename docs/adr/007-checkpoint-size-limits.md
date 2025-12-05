@@ -259,3 +259,6 @@ This is a larger change - defer to separate milestone.
 - [ADR-003: Self-Healing Based on Real Compaction Data](003-self-healing-real-compaction-data.md)
 - [ADR-006: Git Hook Protocol Refresh](006-git-hook-protocol-refresh.md)
 - [Claude Opus 4.5 Specifications](https://www.anthropic.com/claude/opus)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

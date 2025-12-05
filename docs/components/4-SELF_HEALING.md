@@ -136,3 +136,6 @@ Based on real compaction data, NOT time-based intervals:
 ---
 
 **Next:** [Component 5: Release Discipline](5-RELEASE_DISCIPLINE.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -151,3 +151,6 @@ Tests: 193 passing, ZERO warnings
 ---
 
 **Back to:** [ROYALBIT ASIMOV Overview](../ASIMOV_MODE.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -873,3 +873,6 @@ For teams building **complete products** (not just code), the RoyalBit Asimov pr
 *Copilot comparison updated: December 2, 2025*
 *Protocol version: RoyalBit Asimov v7.10.0*
 *Author: Claude (Opus 4.5) with RoyalBit Asimov*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -197,3 +197,6 @@ grep -q "claude_checkpoint" .gitignore && echo "✓ checkpoint in .gitignore"
 - [ROYALBIT ASIMOV Overview](../ASIMOV_MODE.md) - Complete autonomous AI development system
 - [Self-Healing Component](../components/4-SELF_HEALING.md) - Self-healing specification
 - [Setup Guide](../SETUP.md) - Per-project-type setup
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -625,3 +625,6 @@ The [Forge Calculator](https://github.com/royalbit/forge) executes formulas dete
 *The RoyalBit Asimov exists because AI has fundamental limitations. Understanding them is the first step to working effectively with AI.*
 
 *Built with the [RoyalBit Asimov](https://github.com/royalbit/asimov)*
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

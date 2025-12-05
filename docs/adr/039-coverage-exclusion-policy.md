@@ -169,3 +169,6 @@ match perform_update(&url, ...) { ... }
 ---
 
 **Previous:** [ADR-038](038-100-percent-test-coverage.md)
+
+---
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*
