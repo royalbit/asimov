@@ -105,7 +105,7 @@ jobs:
         shell: pwsh
         run: |
           cd cli/target/${{ matrix.target }}/release
-          Compress-Archive -Path asimov.exe -DestinationPath asimov-${{ matrix.target }}.zip
+          Compress-Archive -Path asimov.exe -DestinationPath asimov-${{ matrix.target }}.zip -Force
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

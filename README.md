@@ -56,22 +56,22 @@ third_law:   # Self-preserve (bounded_sessions, self_healing)
 > *"The needs of the many outweigh the needs of the few."*
 > — Spock (1982) / The Zeroth Law (1985)
 
-**v8.8.0 marks feature-complete.** The FOSS core is done. Ready for the many.
+**v9.0.0: Protocol Integrity.** The foundation is complete. Ready for the many.
 
 ```
-Nov 23 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Dec 1, 2025
+Nov 23 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Dec 4, 2025
    │                                      │
-   warmup.yaml                    The Foundation
-   (a hack)                         (complete)
+   warmup.yaml                    Protocol Integrity
+   (a hack)                         (v9.0.0)
 
-   8 days  •  10 phases  •  47 hours  •  51 releases
+   12 days  •  10 phases  •  50+ hours  •  62 releases
 ```
 
 | Built | Count |
 |-------|-------|
-| Protocols hardcoded | 7 |
+| Protocols hardcoded | 8 |
 | ADRs documented | 34 |
-| Unit tests | 147 |
+| Unit tests | 429 |
 | Ethics compromises | 0 |
 
 **Credits:** Rex (human) + Claude Opus 4.5 (AI)
@@ -656,10 +656,10 @@ The ultimate proof: asimov was built using asimov.
 | Project | LOC | Releases | Hours | Verified |
 |---------|-----|----------|-------|----------|
 | [forge](https://github.com/royalbit/forge) | 18,338 | 41 | ~38 | [GitHub](https://github.com/royalbit/forge/releases) |
-| [asimov](https://github.com/royalbit/asimov) | 17,118 | 10 | ~9 | [GitHub](https://github.com/royalbit/asimov/releases) |
-| **Total** | **35,456** | **51** | **~47** | Git history |
+| [asimov](https://github.com/royalbit/asimov) | 19,000+ | 62 | ~50+ | [GitHub](https://github.com/royalbit/asimov/releases) |
+| **Total** | **37,000+** | **103** | **~90** | Git history |
 
-**1 human. 1 AI. 47 hours. 51 releases. Verify it yourself.**
+**1 human. 1 AI. 90 hours. 103 releases. Verify it yourself.**
 
 This is bootstrapping — the methodology improved itself through v1.0 → v4.0, each version built with the previous version's protocol.
 
