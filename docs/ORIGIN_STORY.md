@@ -4,7 +4,7 @@
 
 ## Timeline
 
-**The entire journey: 8 days.** From first commit to production protocol suite - November 23 to December 1, 2025.
+**The entire journey: 12 days.** From first commit to production protocol suite - November 23 to December 4, 2025.
 
 ### Phase 1: Forge (November 23, 2025)
 
@@ -274,7 +274,7 @@ Asimov's answer: **Everyone.**
 
 See [IMPLICATIONS.md](IMPLICATIONS.md) for the full analysis.
 
-## Phase 10: The Zeroth Law - Democratization (November 30 - December 1, 2025)
+## Phase 10: The Zeroth Law - Democratization (November 30 - December 4, 2025)
 
 The deepest realization came last.
 
