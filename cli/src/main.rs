@@ -1,3 +1,4 @@
+#![feature(coverage_attribute)]
 //! RoyalBit Asimov CLI - The Three Laws of Robotics, encoded in YAML
 //!
 //! This is a thin wrapper around the commands module. All business logic
@@ -142,7 +143,7 @@ enum Commands {
     },
 }
 
-// LCOV_EXCL_START - CLI entry point only executes in binary, not unit tests (ADR-039)
+#[coverage(off)]
 fn main() -> ExitCode {
     let cli = Cli::parse();
 
@@ -173,13 +174,13 @@ fn main() -> ExitCode {
         }) => cmd_replay(commits, yesterday, since),
     }
 }
-// LCOV_EXCL_STOP
 
 // ============================================================================
 // THIN WRAPPERS - Call commands.rs and format output
+// These are CLI output formatters, tested via e2e tests (ADR-039)
 // ============================================================================
 
-// LCOV_EXCL_START - Spawns external claude process, requires claude installed (ADR-039)
+#[coverage(off)]
 fn cmd_launch() -> ExitCode {
     match check_launch_conditions() {
         LaunchResult::InsideClaude => {
@@ -205,14 +206,15 @@ fn cmd_launch() -> ExitCode {
         }
     }
 }
-// LCOV_EXCL_STOP
 
+#[coverage(off)]
 fn cmd_update(check_only: bool) -> ExitCode {
     println!("{}", "RoyalBit Asimov Update".bold().green());
     println!();
     format_update_result(run_update(check_only))
 }
 
+#[coverage(off)]
 fn format_update_result(result: UpdateResult) -> ExitCode {
     match result {
         UpdateResult::AlreadyLatest { current, .. } => {
@@ -258,6 +260,7 @@ fn format_update_result(result: UpdateResult) -> ExitCode {
     }
 }
 
+#[coverage(off)]
 fn cmd_warmup(path: &std::path::Path, verbose: bool) -> ExitCode {
     let result = run_warmup(path, verbose);
 
@@ -334,6 +337,7 @@ fn cmd_warmup(path: &std::path::Path, verbose: bool) -> ExitCode {
     ExitCode::SUCCESS
 }
 
+#[coverage(off)]
 fn cmd_validate(ethics_scan: bool) -> ExitCode {
     let result = run_validate(std::path::Path::new("."), ethics_scan);
 
@@ -392,6 +396,7 @@ fn cmd_validate(ethics_scan: bool) -> ExitCode {
     }
 }
 
+#[coverage(off)]
 fn cmd_init(name: &str, project_type: &str, output: &std::path::Path, force: bool) -> ExitCode {
     let result = run_init(output, name, project_type, force);
 
@@ -429,6 +434,7 @@ fn cmd_init(name: &str, project_type: &str, output: &std::path::Path, force: boo
     }
 }
 
+#[coverage(off)]
 fn cmd_lint_docs(path: &std::path::Path, fix: bool, semantic: bool) -> ExitCode {
     let result = run_lint_docs(path, fix, semantic);
 
@@ -470,6 +476,7 @@ fn cmd_lint_docs(path: &std::path::Path, fix: bool, semantic: bool) -> ExitCode 
     }
 }
 
+#[coverage(off)]
 fn cmd_refresh() -> ExitCode {
     let result = run_refresh(std::path::Path::new("."));
 
@@ -524,6 +531,7 @@ fn cmd_refresh() -> ExitCode {
     }
 }
 
+#[coverage(off)]
 fn cmd_stats() -> ExitCode {
     let result = run_stats(std::path::Path::new("."));
 
@@ -545,6 +553,7 @@ fn cmd_stats() -> ExitCode {
     ExitCode::SUCCESS
 }
 
+#[coverage(off)]
 fn cmd_doctor() -> ExitCode {
     let result = run_doctor(std::path::Path::new("."));
 
@@ -604,6 +613,7 @@ fn cmd_doctor() -> ExitCode {
     }
 }
 
+#[coverage(off)]
 fn cmd_replay(commits: Option<usize>, yesterday: bool, since: Option<String>) -> ExitCode {
     let result = run_replay(std::path::Path::new("."), commits, yesterday, since);
 

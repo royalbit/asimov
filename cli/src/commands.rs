@@ -57,7 +57,6 @@ pub fn run_update(check_only: bool) -> UpdateResult {
                     };
                 }
                 if let Some(url) = info.download_url {
-                    // LCOV_EXCL_START - perform_update downloads/replaces binary (ADR-039)
                     match perform_update(&url, info.checksums_url.as_deref()) {
                         Ok(()) => UpdateResult::Updated {
                             from: info.current,
@@ -70,7 +69,6 @@ pub fn run_update(check_only: bool) -> UpdateResult {
                             download_url: url,
                         },
                     }
-                    // LCOV_EXCL_STOP
                 } else {
                     UpdateResult::NoBinaryAvailable {
                         current: info.current,
