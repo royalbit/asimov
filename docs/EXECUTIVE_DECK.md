@@ -198,7 +198,7 @@ LLMs predict the most probable next token. No fact-checking step. They were trai
 
 | Investment | Return |
 |------------|--------|
-| Protocol license | **Commercial license** |
+| Protocol license | **R&D (not available)** |
 | Training | **2 hours** to proficiency |
 | Rework rate | **30-50% → ~0%** |
 | Velocity | **56x** proven (git logs) |

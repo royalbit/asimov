@@ -307,7 +307,6 @@ The `sprint.json` protocol bounds autonomous sessions to 4 hours max.
 ### Start Here
 - **[Value Proposition](https://github.com/royalbit/asimov/blob/main/docs/VALUE_PROPOSITION.md)** - Why 50-150x velocity matters
 - **[Use Cases](https://github.com/royalbit/asimov/blob/main/docs/USE_CASES.md)** - What you can build
-- **[Implications](https://github.com/royalbit/asimov/blob/main/docs/IMPLICATIONS.md)** - Honest analysis of adoption (Qowat Milat)
 
 ### RoyalBit Asimov
 - **[RoyalBit Asimov Overview](https://github.com/royalbit/asimov/blob/main/docs/ROYALBIT_ASIMOV.md)** - The complete autonomous AI development system
@@ -368,14 +367,12 @@ PRs require human code review, but humans reviewing AI-generated code is not the
 
 When AI implements your idea from an Issue, you'll be credited in the commit message.
 
-### Commercial Licensing
-
-For commercial use, contact us via [GitHub Issues](https://github.com/royalbit/asimov/issues) with subject "Commercial License Request".
-
 ## License
 
+**This is an R&D project. Not available for commercial use or distribution.**
+
 - **Code:** Proprietary - See [LICENSE](LICENSE)
-- **Documentation:** [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - See [DOCS-LICENSE](DOCS-LICENSE)
+- **Documentation:** [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - See [LICENSE-DOCS](LICENSE-DOCS)
 
 ### What This Means
 
@@ -384,13 +381,12 @@ For commercial use, contact us via [GitHub Issues](https://github.com/royalbit/a
 | View and study source code | ✅ Yes |
 | Clone for local viewing | ✅ Yes |
 | Personal, non-commercial educational use | ✅ Yes |
-| **Any commercial use** | ❌ Requires license |
-| **Use by/for employers, clients, organizations** | ❌ Requires license |
-| **Compensation, funding, or commercial benefit** | ❌ Requires license |
-| **Modify, distribute, sublicense** | ❌ Not permitted |
-| **Create derivative works** | ❌ Not permitted |
+| **Any commercial use** | ❌ No |
+| **Use by/for employers, clients, organizations** | ❌ No |
+| **Modify, distribute, sublicense** | ❌ No |
+| **Create derivative works** | ❌ No |
 
-**Commercial licensing:** [Open an issue](https://github.com/royalbit/asimov/issues)
+**Questions:** [Open an issue](https://github.com/royalbit/asimov/issues)
 
 ---
 *Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

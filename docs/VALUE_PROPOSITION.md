@@ -129,7 +129,7 @@ Every company using Claude gets the velocity. The question is:
 | Mode | Autocomplete | **Autonomous sessions** |
 | Scope | Line/function | **Full milestones** |
 | Self-hosting | No | **Yes** |
-| Cost | $19-39/user/mo | **Commercial license** |
+| Cost | $19-39/user/mo | **R&D (not available)** |
 
 ### vs Devin / SWE-Agent
 
@@ -137,7 +137,7 @@ Every company using Claude gets the velocity. The question is:
 |--------|--------------|----------------|
 | Benchmark success | 13.86% | **51 releases shipped** |
 | Maturity | "Still maturing" | **Production proven** |
-| Cost | $500/mo+ | **Commercial license** |
+| Cost | $500/mo+ | **R&D (not available)** |
 | Ethics built-in | No | **Yes** |
 | Human oversight | Varies | **Structured (gates)** |
 
@@ -289,7 +289,7 @@ AI: [reports completion at gate]
 
 **The math**: 50-150x velocity, verified, published, free.
 
-**The catch**: Commercial license required. Contact us to get started.
+**Status**: R&D project. Not available for commercial use.
 
 ---
 

@@ -478,7 +478,7 @@ forge calculate model.yaml
 
 <div class="small">
 
-**License:** Proprietary — Commercial licenses available
+**License:** Proprietary — R&D project, not available for commercial use
 
 **Qowat Milat:** This deck tells the truth — the power AND the responsibility.
 

@@ -238,7 +238,7 @@ The protocol built itself. Both projects use the same methodology:
 | Productivity | 1.1-1.6x | **50-150x** | [arXiv:2302.06590](https://arxiv.org/abs/2302.06590), git logs |
 | Autonomy | Autocomplete | Ships releases | Verified |
 | Self-hosting | No | **Yes** | This repo |
-| Cost | $39/user/mo | **Commercial license** | [GitHub pricing](https://github.com/features/copilot/plans) |
+| Cost | $39/user/mo | **R&D (not available)** | [GitHub pricing](https://github.com/features/copilot/plans) |
 
 ## Green Coding
 

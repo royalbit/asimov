@@ -41,7 +41,7 @@ The same 50-150x velocity that builds production software can build malware, exp
 
 ### Research Findings
 
-From our Qowat Milat analysis (docs/IMPLICATIONS.md):
+From our Qowat Milat analysis:
 
 | Risk | Current Mitigation | Effectiveness |
 |------|-------------------|---------------|
@@ -186,8 +186,7 @@ extensions:
 ### Phase 3: Documentation
 
 1. Update README with hardcoded ethics info
-2. Update IMPLICATIONS.md with new mitigation
-3. Create migration guide from ethics.yaml-only
+2. Create migration guide from ethics.yaml-only
 
 ## Alternatives Considered
 
@@ -219,7 +218,6 @@ Cryptographically sign "ethical" binaries.
 ## References
 
 - [ADR-008: Ethics Protocol and Humanist Mode](008-ethics-protocol-humanist-mode.md)
-- [docs/IMPLICATIONS.md](../IMPLICATIONS.md) - Qowat Milat analysis
 - [ethics.yaml](../../ethics.yaml) - Current implementation
 
 ---

@@ -27,7 +27,6 @@ Claude Opus 4.5 and Claude Sonnet 4.5 are purpose-built for autonomous developme
 | Document | Incorrect Claim |
 |----------|-----------------|
 | VALUE_PROPOSITION.md | "Asimov = 50-150x velocity" |
-| IMPLICATIONS.md | "Protocol accelerates what's already happening" |
 | README.md | "50-100x velocity" as Asimov benefit |
 | PRESS_KIT.md | Velocity attributed to protocol |
 

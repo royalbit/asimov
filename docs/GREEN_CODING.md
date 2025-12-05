@@ -405,7 +405,7 @@ AI inference consumes:
 
 ### Small Team Example
 
-**Annual cost of Forge:** Commercial license available
+**Annual cost of Forge:** R&D project (not available)
 
 **Annual savings:**
 
