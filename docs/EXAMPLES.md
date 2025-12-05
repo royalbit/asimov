@@ -282,21 +282,18 @@ style:
 
 ## Business Documentation Project
 
-Non-code projects with financial models, grant applications, or validated YAML:
+Non-code projects with financial models or validated YAML:
 
 ```yaml
 # warmup.yaml
 identity:
   project: "acme-business"
-  tagline: "Grant applications and financial planning"
+  tagline: "Financial planning and business documentation"
 
 files:
   models:
     - "models/assumptions.yaml - Financial assumptions"
     - "models/projections.yaml - Revenue projections"
-  grants:
-    - "grants/grant-application.md - Main application"
-    - "grants/budget.yaml - Grant budget"
   references:
     - "references/data-sources.yaml - Dynamic data with dates"
 
@@ -312,7 +309,7 @@ session:
     - "Validate markdown (markdownlint)"
 
 quality:
-  yaml: "yamllint models/ grants/"
+  yaml: "yamllint models/"
   markdown: "markdownlint-cli2 '**/*.md'"
   formulas: "All calculations must be verifiable"
 
@@ -322,7 +319,6 @@ dynamic_data:
   stale_threshold: "90 days"
   categories:
     - "Market data (refresh quarterly)"
-    - "Grant programs (refresh monthly)"
     - "Competitor pricing (refresh quarterly)"
 ```
 

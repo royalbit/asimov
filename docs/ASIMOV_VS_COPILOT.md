@@ -547,7 +547,7 @@ xychart-beta
 
 All work was performed on a **10-year-old Mac Mini (Late 2014)** repurposed with Ubuntu 24.04:
 
-| Component | Kveldulf (Mac Mini Late 2014) | Corporate Dev Machine (2024) |
+| Component | Kveldulf (Mac Mini Late 2014) | Corporate Dev Machine (2025) |
 |-----------|-------------------|------------------------------|
 | CPU | Intel i5-4278U (2014) | Intel i9-13950HX (Dell Precision) |
 | Cores | 2 physical | 24 cores (8P + 16E) |

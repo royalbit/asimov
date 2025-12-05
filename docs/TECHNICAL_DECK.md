@@ -301,7 +301,6 @@ third_law:   # Self-preserve (within limits)
 | Repositories | 6 |
 | Total lines | 136K+ |
 | Financial formulas | 850+ (Forge-validated) |
-| Grant pipeline | $650K - $1.35M |
 | MVP estimate | 4-8 weekends (vs 2.5 years) |
 
 ```yaml

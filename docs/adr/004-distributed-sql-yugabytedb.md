@@ -42,7 +42,7 @@ Production stack templates need a distributed SQL database recommendation. The o
 
 ### Why NOT PlanetScale
 
-1. **Free Tier Removed**: April 2024
+1. **Free Tier Removed**: April 2025
 2. **Scaling Limitations**: Manual scaling on non-enterprise plans
 3. **Cost**: $3,000/month minimum for multi-region
 4. **MySQL Only**: Doesn't match PostgreSQL-centric Rust ecosystem

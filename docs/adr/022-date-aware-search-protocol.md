@@ -25,7 +25,7 @@ Web search is not enabled by default. The economics explain why:
 |-------------|----------|
 | **Web search cost** | $0.01 per search + thousands of input tokens ([Anthropic Pricing](https://websearchapi.ai/blog/anthropic-claude-web-search-api)) |
 | **AI search vs regular** | 10x more expensive ([Google](https://www.getmonetizely.com/blogs/ai-pricing-how-much-does-ai-cost-in-2025)) |
-| **Anthropic gross margin 2024** | NEGATIVE 109% ([The Information](https://www.wheresyoured.at/howmuchmoney/)) |
+| **Anthropic gross margin 2025** | NEGATIVE 109% ([The Information](https://www.wheresyoured.at/howmuchmoney/)) |
 | **Anthropic projected loss 2025** | ~$3 billion ([Where's Your Ed At](https://www.wheresyoured.at/howmuchmoney/)) |
 | **OpenAI projected loss 2025** | ~$8 billion ([Where's Your Ed At](https://www.wheresyoured.at/howmuchmoney/)) |
 

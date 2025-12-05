@@ -377,11 +377,11 @@ AI inference consumes:
 - Loss: $10K-$1M+ (depending on position size)
 - Cost: Direct financial loss
 
-**Grant application rejection:**
+**Business proposal rejection:**
 
-- $200K grant proposal
+- $200K proposal
 - Formula error in budget
-- Application rejected
+- Proposal rejected
 - Cost: $200K opportunity
 
 ### Forge's Value: Zero Tolerance

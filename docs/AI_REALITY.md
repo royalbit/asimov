@@ -25,7 +25,7 @@ Output: "Paris"
 This works great for "Paris." But the same mechanism applies to everything:
 
 ```
-Input: "The revenue formula for Q3 2024 is"
+Input: "The revenue formula for Q3 2025 is"
 Model: P(=SUM(B2:B4)) = 0.31, P(=B2+B3+B4) = 0.28, P(=TOTAL(Q3)) = 0.15...
 Output: [whatever is most probable, not necessarily correct]
 ```
@@ -43,7 +43,7 @@ This means:
 
 **Research finding:** Studies suggest hallucination rates range from 1.3% to 29% depending on task complexity, with specialized professional questions showing the highest rates.
 
-**Source:** [ACM - Survey on Hallucination in Large Language Models](https://dl.acm.org/doi/10.1145/3703155) (2024)
+**Source:** [ACM - Survey on Hallucination in Large Language Models](https://dl.acm.org/doi/10.1145/3703155) (2025)
 
 ### 1.3 No Built-in Grounding Mechanism
 
@@ -69,7 +69,7 @@ Even with large context windows, LLMs have a documented failure mode: they atten
 
 This means even if you provide correct information, the model might ignore it if it's buried in the middle of a long prompt.
 
-**Source:** [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) (Liu et al., 2024, MIT Press)
+**Source:** [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) (Liu et al., 2025, MIT Press)
 
 ### 1.5 Training Data Cutoff
 
@@ -77,10 +77,10 @@ Every model has a knowledge cutoff date. After that date, the model has **zero i
 
 | Model | Knowledge Cutoff | Released |
 |-------|-----------------|----------|
-| GPT-5 | September 2024 | November 2025 |
+| GPT-5 | September 2025 | November 2025 |
 | Claude Opus 4.5 | January 2025 | November 2025 |
 | Gemini 2.5 Pro | January 2025 | November 2025 |
-| Grok 3 | ~2024 | February 2025 |
+| Grok 3 | ~2025 | February 2025 |
 
 Ask any of these models about events after their cutoff, and they will either refuse or **confidently make things up** based on patterns.
 
@@ -590,8 +590,8 @@ The [Forge Calculator](https://github.com/royalbit/forge) executes formulas dete
 
 ### Research Papers
 - [Why Language Models Hallucinate](https://openai.com/index/why-language-models-hallucinate/) - OpenAI, 2025
-- [Survey on Hallucination in Large Language Models](https://dl.acm.org/doi/10.1145/3703155) - ACM TOIS, 2024
-- [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) - Liu et al., MIT Press, 2024
+- [Survey on Hallucination in Large Language Models](https://dl.acm.org/doi/10.1145/3703155) - ACM TOIS, 2025
+- [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) - Liu et al., MIT Press, 2025
 - [Comprehensive Review of AI Hallucinations](https://www.preprints.org/manuscript/202505.1405/v1) - Preprints.org, 2025
 
 ### Sycophancy Research (2025)

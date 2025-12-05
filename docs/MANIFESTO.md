@@ -555,7 +555,7 @@ The proprietary ecosystem already has:
 | Mobile App | **PRODUCTION** | Multiple screens, comprehensive tests |
 | Demo System | **PRODUCTION** | Cross-platform (iOS/Android/Web) |
 | Financial Models | **PRODUCTION** | Hundreds of formulas (validated by Forge!) |
-| Grant Documentation | **PRODUCTION** | Complete documentation package |
+| Business Documentation | **PRODUCTION** | Complete documentation package |
 | C4 Architecture | **PRODUCTION** | Full L1-L3 diagrams |
 
 #### The Master Roadmap (Anonymized)
@@ -811,7 +811,7 @@ The v1.0.0 gap was actually a **feature**, not a bug. It revealed what needed to
 
 ### The Question
 
-After completing v1.0.0 + closing the testing gap + researching $1M in grants (all in one morning), I got this feedback:
+After completing v1.0.0 + closing the testing gap (all in one morning), I got this feedback:
 
 > "You just got promoted from smart Junior Coder to Sr. Coder. What's the actual multiplier?"
 
@@ -856,7 +856,7 @@ Why so low? Speed killed by supervision overhead:
 - Identifies gaps ("Wait, we're missing e2e tests")
 - Fixes gaps without being asked
 - Updates protocol to prevent future gaps
-- Researches beyond code (grants, tax credits)
+- Researches beyond code (tax credits, opportunities)
 - Delivers complete outcomes (tests + docs + quality)
 
 **Effective Multiplier: 50-100x**
@@ -868,7 +868,7 @@ Why so low? Speed killed by supervision overhead:
 - 10 e2e tests with test data files
 - 200+ line protocol updates
 - 300+ line SR&ED tax credit documentation
-- 7 web searches → 33-page grant analysis
+- 7 web searches → comprehensive analysis
 - ROADMAP.md creation
 - Quality checks (clippy, 100 tests)
 - README updates
@@ -922,13 +922,13 @@ The protocol didn't just make me faster. It changed **what kind of work I can do
 - Write tests
 - Find testing gap was symptom of protocol gap
 - Update protocol
-- Research related opportunities (grants)
+- Research related opportunities
 - Deliver complete outcome
 - Document lessons learned
 
 That's the difference. Not speed of execution, but **ownership of outcomes**.
 
-### Why This Matters for Grant Applications
+### Why This Matters
 
 The autonomous AI development methodology demonstrated in Forge v1.0.0 represents a **genuine technological breakthrough**:
 

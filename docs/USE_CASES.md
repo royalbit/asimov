@@ -29,7 +29,6 @@ The RoyalBit Asimov isn't just for coding faster. It's a methodology for autonom
 A complete business was planned and documented using the protocol:
 - 136K+ lines across 6 repositories
 - 850+ financial formulas (YAML with formulas, not spreadsheets)
-- Grant applications ready for $650K-$1.35M in funding
 - All numbers validated, not AI-hallucinated
 
 **What this enables**:
@@ -48,7 +47,6 @@ take_rate:
 - Version-controlled financial models
 - Formulas with citations and validation status
 - AI can't hallucinate numbers that Forge validates
-- Grant-ready documentation from day one
 
 ### 3. Autonomous Development Sessions
 
@@ -86,22 +84,6 @@ take_rate:
 - No drift between components
 - Single source of truth for standards
 
-### 5. Grant/Funding Documentation
-
-**The Evidence (Proprietary Ecosystem)**:
-
-Complete grant applications for:
-- IQ Innovation Program ($300-500K)
-- ESSOR ($50-70K)
-- IRAP ($300-500K)
-- Total pipeline: $650K-$1.35M
-
-**What this enables**:
-- Documentation is always current
-- Numbers are validated, not invented
-- Citations are tracked
-- Ready to submit when opportunity arises
-
 ---
 
 ## Use Case by Audience
@@ -116,7 +98,7 @@ Complete grant applications for:
 - No funding needed to start
 - Ship, validate, then raise (if needed)
 
-**Example**: Proprietary ecosystem - complete platform planned and partially built by 1 human + AI, targeting $650K+ in grants before any equity raised.
+**Example**: Proprietary ecosystem - complete platform planned and partially built by 1 human + AI.
 
 ### Bootstrappers
 
@@ -263,10 +245,9 @@ asimov validate --ethics-check
 | Repositories | 6 |
 | Total lines | 136K+ |
 | Financial formulas | 850+ |
-| Grant pipeline | $650K-$1.35M |
 | MVP estimate | 4-8 weekends (vs 2.5 years traditional) |
 
-Real business. Real technology. Real funding pipeline. Built with the protocol.
+Real business. Real technology. Built with the protocol.
 
 ---
 

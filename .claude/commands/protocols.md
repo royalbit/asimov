@@ -9,4 +9,4 @@ Include all 8 protocols: asimov, freshness, sycophancy, green, sprint, warmup, m
 Show the actual values from the context injection, not placeholders.
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2025 RoyalBit Inc.*

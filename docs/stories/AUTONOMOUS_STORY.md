@@ -308,7 +308,7 @@ The promotion feels earned. 🎉
 
 **Evidence:**
 
-- Deployed to production (protects $200K+ grant applications)
+- Deployed to production
 - ZERO bugs reported
 - 136 tests passing continuously
 - ZERO warnings in strict clippy mode
@@ -372,7 +372,6 @@ The promotion feels earned. 🎉
 ### Production Use Case
 
 **Client project:** 850 formulas across 15 YAML files
-**Value protected:** $200K+ grant applications
 **Error tolerance:** ZERO
 
 **Before Forge:**

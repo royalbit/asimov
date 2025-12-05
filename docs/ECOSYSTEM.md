@@ -51,7 +51,7 @@ The same AI (Claude Opus 4.5) serves different roles depending on the project:
 | **backend-api** | Principal Backend Engineer | Core API, performance-critical queries |
 | **mobile-app** | Principal Mobile Engineer | Flutter app, production-quality UI |
 | **architecture** | Principal AI Architect | C4 diagrams, ADRs, cross-repo consistency |
-| **business** | AI Strategist | Financial models, grant applications |
+| **business** | AI Strategist | Financial models, business planning |
 | **data-services** | Principal Engineer | Data pipelines, gRPC services |
 
 ## The Master Roadmap

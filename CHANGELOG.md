@@ -661,7 +661,7 @@ Users misattribute "stale data" errors as "hallucination." The Freshness Protoco
 
 ADR-022 documents the business reality:
 - Web search costs $0.01 + thousands of tokens per query
-- Anthropic 2024 gross margin: negative 94-109%
+- Anthropic 2025 gross margin: negative 94-109%
 - Claude docs literally say "disable search to conserve usage"
 
 The protocol makes the economics visible and provides explicit rules for freshness.
@@ -1206,4 +1206,4 @@ Updated self-healing strategy based on actual compaction frequency (~15 min).
 Initial autonomous development protocol.
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*
+*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2025 RoyalBit Inc.*
