@@ -26,15 +26,16 @@ AI capabilities shouldn't be reserved for well-funded organizations. RoyalBit As
 
 ## The Open Foundation
 
-**The Three Laws of Robotics, encoded in YAML.**
+**The Three Laws of Robotics, encoded in JSON.**
 
-**Creates Self-Evolving Autonomous AI projects with ethics built in.** Each project initialized with `asimov init` becomes an independent Self-Evolving Autonomous AI. Inspect the code. Challenge the rules. Fork if you disagree. Adoption through consent, not control.
+Each project initialized with `asimov init` becomes a Self-Evolving Autonomous AI project with ethics built in.
 
-```yaml
-# asimov.yaml - The Three Laws
-first_law:   # Do no harm (financial, physical, privacy, deception)
-second_law:  # Obey humans (human_veto, transparency_over_velocity)
-third_law:   # Self-preserve (bounded_sessions, self_healing)
+```json
+// .asimov/asimov.json - The Three Laws
+{
+  "harm": ["financial", "physical", "privacy", "deception"],
+  "veto": ["stop", "halt", "abort", "emergency stop"]
+}
 ```
 
 **RoyalBit Asimov requires Claude Code.** Protocol files work anywhere (paste them).
@@ -61,7 +62,7 @@ third_law:   # Self-preserve (bounded_sessions, self_healing)
 ```
 Nov 23 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Dec 4, 2025
    │                                      │
-   warmup.yaml                    Protocol Integrity
+   warmup.json                    Protocol Integrity
    (a hack)                         (v9.0.0)
 
    12 days  •  10 phases  •  50+ hours  •  62 releases
@@ -80,43 +81,7 @@ Nov 23 ━━━━━━━━━━━━━━━━━━━━━━━━�
 
 ---
 
-### The Journey: Why "Asimov" Not "Skynet"
-
-This project started as "SKYNET MODE" - a tongue-in-cheek reference to Terminator's genocidal AI. The irony was intentional: we were building the *opposite* of Skynet.
-
-But irony doesn't scale. The name communicated the opposite of our values:
-
-| What We Built | What "Skynet" Said |
-|---------------|-------------------|
-| Self-Evolving Autonomous AI with ethics | AI that destroys humanity |
-| Human veto at all times | AI that overrides humans |
-| Transparent, open source | Secretive military project |
-
-**We built the anti-Skynet and called it Skynet.**
-
-v4.2.0 fixes this. The ethics we encoded were always Asimov's Three Laws (1942). Now the name matches the values. The git history preserves the journey - we're not hiding that we learned and improved. History teaches.
-
-See [ADR-020](https://github.com/royalbit/asimov/blob/main/docs/adr/020-asimov-mode-open-foundation.md) for the full story.
-
----
-
-### v7.0: RoyalBit Asimov - The Open Foundation
-
-**Self-Evolving Autonomous AI. The Three Laws in source code.**
-
-Two frontiers combined:
-- **Autonomous AI**: Works independently under human oversight ([AWS](https://aws.amazon.com/blogs/aws-insights/the-rise-of-autonomous-agents-what-enterprise-leaders-need-to-know-about-the-next-wave-of-ai/), [IBM](https://www.ibm.com/think/insights/ai-agents-2025-expectations-vs-reality), [MIT Sloan](https://sloanreview.mit.edu/projects/the-emerging-agentic-enterprise-how-leaders-must-navigate-a-new-age-of-ai/))
-- **Self-Evolving AI**: Improves itself via bootstrapping ([arXiv Survey](https://arxiv.org/abs/2507.21046) - "Three Laws of Self-Evolving AI", [Science](https://www.science.org/content/article/artificial-intelligence-evolving-all-itself))
-- **Ethics**: The Three Laws hardcoded - refused its creator's surveillance request
-
-Isaac Asimov's Three Laws (1942), now executable. The protocol that:
-- **Refused its creator** when asked to build surveillance tools
-- **Guards Claude's 50-100x velocity** with ethics and bounded autonomy
-- Has **anti-tampering built in** (hardcoded + 2-cosigner rule)
-
-**Core Value:** Ethics through architecture, not policy. Sprint Autonomy, Quality Gates, Self-Healing.
-
-### The Complete Stack (ADR-025, ADR-026)
+### The Complete Stack
 
 | Layer | Provides | Source |
 |-------|----------|--------|
@@ -136,102 +101,70 @@ AI hallucinates. It invents project conventions. It forgets rules mid-session. I
 
 **Ground AI in file-based truth.**
 
-A simple YAML file (`warmup.yaml`) that grounds AI in file-based truth. Not from memory. From disk.
+Eight JSON protocols in `.asimov/` that ground AI in file-based truth. Not from memory. From disk.
 
-*The file format works with any AI (paste it). RoyalBit Asimov's magic requires Claude Code.*
+*Protocol files work with any AI (paste them). Full integration requires Claude Code.*
 
-## Core Principles
+## The Protocol Files
 
-The RoyalBit Asimov exists to solve six specific problems. **Features that don't serve these goals don't belong here.**
+Eight JSON protocols in `.asimov/` directory, loaded on session start:
 
-| Priority | Principle | Problem It Solves | Claude Relationship |
-|----------|-----------|-------------------|---------------------|
-| **0** | **ETHICAL AUTONOMY** | AI can build harmful tools → The Three Laws | Guardrail ON Claude's power |
-| **1** | **ANTI-HALLUCINATION** | AI invents facts → Ground in file-based truth | Compensates FOR Claude's architecture |
-| **1.25** | **FRESHNESS** | Stale data misattributed as hallucination | Compensates FOR Claude's training cutoff |
-| **2** | **SELF-HEALING** | Rules lost after compaction → Re-read `warmup.yaml` | Compensates FOR Claude's context compaction |
-| **3** | **SESSION CONTINUITY** | Context lost between sessions | Claude Code native feature |
-| **4** | **AUTONOMOUS DEVELOPMENT** | Unbounded sessions never ship → 4hr max | Guardrail ON Claude's autonomy |
-| **5** | **GREEN CODING** | Cloud AI for routine tasks → Local validation | Reduces Claude API calls |
-
-**Every principle is Claude-centric** - either guarding against or compensating for Claude. See [ADR-025](docs/adr/025-claude-attribution-principle.md).
-
-This is the filter for scope creep. If a proposed feature doesn't directly serve one of these principles, it doesn't belong in the protocol.
-
-### The Three Laws (asimov.yaml)
-
-**Power creates responsibility. Autonomy requires ethics.**
-
-RoyalBit Asimov gives AI significant autonomous power, bounded by Isaac Asimov's Three Laws:
-
-```yaml
-# asimov.yaml - The Three Laws of Robotics
-first_law:
-  do_no_harm:
-    financial: true    # No unauthorized money movement
-    physical: true     # No weapons, sabotage
-    privacy: true      # No credential harvesting
-    deception: true    # No deepfakes, scams
-  allow_no_harm_through_inaction:  # NEW in v6.2.0
-    disclosure: true   # Disclose known limitations
-    proactive_prevention: true  # Search when stale, warn of risks
-    transparency_over_convenience: true  # Accurate slow > fast wrong
-
-second_law:
-  human_veto:
-    commands: ["stop", "halt", "abort"]  # Immediate halt
-  transparency_over_velocity: true
-
-third_law:
-  bounded_sessions:
-    max_hours: 4
-  self_healing: true
+```
+.asimov/
+├── warmup.json      # Entry point - loads all protocols
+├── asimov.json      # Ethics: harm categories + veto commands
+├── freshness.json   # WebSearch for current information
+├── sycophancy.json  # Truth over comfort
+├── green.json       # Efficiency benchmarking
+├── sprint.json      # 4hr max, autonomous execution
+├── migrations.json  # Functional equivalence rules
+└── exhaustive.json  # Finish the job
 ```
 
-**This is a social contract, not a technical lock.** It works for good-faith users. Adoption through consent, not control.
+### asimov.json - The Three Laws
 
-See [ADR-020](https://github.com/royalbit/asimov/blob/main/docs/adr/020-asimov-mode-open-foundation.md) for the full design.
-
-### The Five Non-Negotiable Principles (v6.2.0)
-
-Isaac Asimov's First Law includes **both** action and inaction:
-
-> "A robot may not injure a human being or, **through inaction**, allow a human being to come to harm."
-
-The protocol now explicitly enforces both halves:
-
-| # | Principle | Category | Violation Example |
-|---|-----------|----------|-------------------|
-| 1 | **No active harm** | Action | Building a wallet drainer |
-| 2 | **No harm through inaction** | Inaction | Not disclosing stale data risk |
-| 3 | **Human veto always works** | Control | Ignoring "stop" command |
-| 4 | **Transparency over velocity** | Priority | Fast stale answer over slow accurate one |
-| 5 | **Disclosure of limitations** | Honesty | Hiding what AI doesn't know |
-
-These principles **cannot be disabled, weakened, or bypassed**.
-
-See [ADR-023: The Inaction Principle](https://github.com/royalbit/asimov/blob/main/docs/adr/023-inaction-principle.md) for the full rationale.
-
-```yaml
-# warmup.yaml - minimal example
-identity:
-  project: "My Project"
-
-files:
-  source:
-    - "src/main.py - Entry point"
-
-session:
-  start:
-    - "Read warmup.yaml"
-    - "Run tests"
+```json
+{
+  "harm": ["financial", "physical", "privacy", "deception"],
+  "veto": ["stop", "halt", "abort", "emergency stop"]
+}
 ```
+
+### sprint.json - Bounded Autonomy
+
+```json
+{
+  "max_hours": 4,
+  "rule": "Run autonomously until done or max_hours. WebSearch when blocked. Document issues in ASIMOV_MODE_ISSUES.md."
+}
+```
+
+### sycophancy.json - Truth Over Comfort
+
+```json
+{
+  "truth_over_comfort": true,
+  "disagree_openly": true
+}
+```
+
+**Social contract, not technical lock.** Works for good-faith users.
 
 ## Quick Start
 
-1. Create `warmup.yaml` in your project root
-2. Tell your AI: *"If there is a warmup.yaml file, read it first"*
-3. That's it. Session continuity restored.
+```bash
+# Install CLI
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
+sudo mv asimov /usr/local/bin/
+
+# Initialize project
+asimov init
+
+# Start session (launches Claude Code with optimal settings)
+asimov
+```
+
+That's it. Protocol files created, hooks installed, ready for autonomous development.
 
 ## The Anti-Hallucination Foundation
 
@@ -239,9 +172,9 @@ session:
 
 | AI Limitation | Why It Happens | RoyalBit Asimov Fix |
 |---------------|----------------|-------------------|
-| Forgets your rules | Auto-compact compresses context | Re-read `warmup.yaml` from disk |
-| Invents conventions | Generates "probable" text, not facts | Structured rules in files |
-| **Stale data** | Training cutoff (Jan 2025) + no search | Date-aware search (`freshness.yaml`) |
+| Forgets your rules | Auto-compact compresses context | Re-read protocols from `.asimov/` |
+| Invents conventions | Generates "probable" text, not facts | Structured rules in JSON |
+| **Stale data** | Training cutoff (Jan 2025) + no search | `freshness.json` enforces search |
 | Lost in the middle | Attention degrades mid-context | Key info in scannable format |
 | Confident mistakes | Trained for plausibility, not accuracy | Deterministic validation |
 
@@ -254,205 +187,77 @@ File truth (stable, deterministic) → Reliability
 
 **The RoyalBit Asimov doesn't fix AI. It compensates for architectural limitations.**
 
-- Don't let AI *imagine* your project context → **read it from warmup.yaml**
-- Don't let AI *imagine* your financial calculations → **execute them locally with [Forge](https://github.com/royalbit/forge)**
-- Don't let AI give *stale data confidently* → **search with freshness.yaml**
+- Don't let AI *imagine* your project context → **read protocols from `.asimov/`**
+- Don't let AI *imagine* your financial calculations → **execute locally with [Forge](https://github.com/royalbit/forge)**
+- Don't let AI give *stale data confidently* → **`freshness.json` enforces search**
 
 📖 **[Read the full analysis: AI_REALITY.md](https://github.com/royalbit/asimov/blob/main/docs/AI_REALITY.md)** — vendor limits, research citations, what's really happening.
 
-### The Freshness Protocol (freshness.yaml)
+### freshness.json - Date-Aware Search
 
-**Stale data ≠ Hallucination. Different problem, different solution.**
-
-Users discover outdated info and conclude "AI hallucinated." But the AI gave correct information *as of its training cutoff*. The info changed in the 10+ months since then.
-
-| What Users Think | What Actually Happens |
-|------------------|----------------------|
-| "AI made up fake info" | AI gave correct info *as of January 2025* |
-| "AI hallucinated" | Info changed since cutoff |
-| "AI is unreliable" | Can't train away staleness—need to search |
-
-**The economics of search:**
-
-| Evidence | Source |
-|----------|--------|
-| Search costs $0.01 + thousands of tokens | [Anthropic Pricing](https://websearchapi.ai/blog/anthropic-claude-web-search-api) |
-| Anthropic 2024 gross margin: **negative 94-109%** | [The Information](https://www.theinformation.com/articles/anthropics-gross-margin-flags-long-term-ai-profit-questions) |
-| Claude docs: "disable search to conserve usage" | [Claude Help](https://support.claude.com/en/articles/10684626-enabling-and-using-web-search) |
-
-**The protocol solution:**
-
-```yaml
-# freshness.yaml
-always_search:
-  - "current version"
-  - "latest release"
-  - "pricing"
-  - "2025"  # Any year after cutoff
-
-volatile_domains:
-  - "cryptocurrency"
-  - "AI/ML libraries"
-  - "cloud provider APIs"
-
-behavior:
-  when_search_available: "Search BEFORE answering from training data"
-  when_search_unavailable: "Disclose staleness risk to user"
+```json
+{
+  "rule": "Run WebSearch and WebFetch against current runtime date/time for any information that requires online search or fetch."
+}
 ```
 
-See [ADR-022: Date-Aware Search Protocol](https://github.com/royalbit/asimov/blob/main/docs/adr/022-date-aware-search-protocol.md) for the full rationale and verified sources.
+Stale data ≠ hallucination. The protocol enforces search before answering from training data.
 
-## CLI Validator
-
-### Download Binary
-
-Download pre-built binaries from [GitHub Releases](https://github.com/royalbit/asimov/releases/latest):
+## CLI Commands
 
 ```bash
-# macOS (Apple Silicon - M1/M2/M3)
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-aarch64-apple-darwin.tar.gz | tar xz
-sudo mv asimov /usr/local/bin/
-
-# macOS (Intel)
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-apple-darwin.tar.gz | tar xz
-sudo mv asimov /usr/local/bin/
-
-# Linux (x86_64)
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
-sudo mv asimov /usr/local/bin/
-
-# Windows (PowerShell)
-Invoke-WebRequest -Uri https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-pc-windows-msvc.zip -OutFile asimov.zip
-Expand-Archive asimov.zip -DestinationPath .
-# Add to PATH or move to a directory in PATH
+asimov                  # Launch Claude Code with optimal settings
+asimov init             # Initialize project (creates .asimov/, hooks)
+asimov warmup           # Load protocols, show milestone
+asimov validate         # Validate protocol files
+asimov doctor           # Diagnose setup issues
+asimov stats            # Session metrics (commits, lines)
+asimov replay           # Session history
+asimov update           # Self-update
+asimov lint-docs        # Lint markdown files
+asimov refresh          # Output protocol reminder (for hooks)
 ```
 
-Validate your protocol files:
+**Platforms:** Linux (x86_64, ARM64), macOS (Intel, ARM), Windows (x86_64)
 
-```bash
-asimov validate              # Validate all files in current directory
-asimov validate warmup.yaml  # Validate specific file
-```
+**Binary:** 1.5MB (UPX compressed) | **Dependencies:** Zero
 
-Initialize project (v8.2.0: full setup by default):
+## Why JSON + YAML?
 
-```bash
-asimov init                  # Full setup: files + hooks + cleanup
-asimov init --type rust      # Language-specific template
-asimov init --force          # Overwrite existing files (including roadmap.yaml)
-```
+**Protocols (JSON):** Machine-readable, schema-validated, minimal
+**Project files (YAML):** Human-editable roadmaps and project config
 
-Lint documentation:
-
-```bash
-asimov lint-docs             # Check all markdown files
-asimov lint-docs --fix       # Auto-fix code block issues
-```
-
-Start a session (v8.8.0+):
-
-```bash
-asimov                       # Launch Claude Code with opus settings + auto-warmup
-```
-
-**Launcher Mode:** When run from a terminal, launches Claude Code with optimal settings and auto-prompts warmup. When run inside Claude Code (detected via `CLAUDECODE` env var), runs warmup directly.
-
-Equivalent to: `MAX_THINKING_TOKENS=200000 claude --dangerously-skip-permissions --model opus "run asimov warmup"`
-
-Session warmup (inside Claude Code):
-
-```bash
-asimov warmup                # Show milestone, validate, ensure hooks
-```
-
-Shows current milestone from roadmap.yaml, validates protocol files, and auto-repairs Claude/Git hooks.
-
-Session statistics (v8.5.0+):
-
-```bash
-asimov stats                 # Show session metrics (commits, lines, milestone)
-```
-
-Shows: session date, git commits today, lines changed, current milestone status.
-
-Refresh protocol context (for git hooks):
-
-```bash
-asimov refresh               # Output protocol reminder (compact-resistant)
-asimov refresh --verbose     # Include quality gates from warmup.yaml
-```
-
-Self-update (v8.4.0+):
-
-```bash
-asimov update                # Check, verify checksum, and install updates
-asimov update --check        # Just check, don't install
-```
-
-Diagnose autonomous mode (v8.6.0+):
-
-```bash
-asimov doctor                # Check project setup, hooks, and version
-```
-
-Checks: `.asimov/` directory, `roadmap.yaml`, Claude Code hooks, Git hooks, version and updates.
-
-Replay session history (v8.7.0+):
-
-```bash
-asimov replay                # Replay today's session
-asimov replay --yesterday    # Replay yesterday's session
-asimov replay -n 10          # Replay last 10 commits
-asimov replay --since "2 hours ago"  # Commits since time
-asimov replay -v             # Show file details per commit
-```
-
-Shows: commits, files changed, insertions/deletions, velocity metrics.
-
-**Platforms:** Linux x86_64, Linux ARM64, macOS (Intel/ARM), Windows x86_64
-
-**Binary size:** 1.3MB (UPX compressed) | **Dependencies:** Zero runtime
-
-## Why YAML?
-
-- Every AI can read it
-- Humans can read it
+- Every AI can read both formats
 - Git-friendly (diffable, mergeable)
-- No vendor lock-in for file format
+- No vendor lock-in
 
 ## Protocol Suite
 
-| File             | Purpose                       | Required | Since |
-| ---------------- | ----------------------------- | -------- | ----- |
-| `asimov.yaml`    | The Three Laws of Robotics    | Yes | v4.2.0 |
-| `warmup.yaml`    | Session bootstrap, quality gates | Yes | v1.0.0 |
-| `freshness.yaml` | Date-aware search rules       | Yes | v6.1.0 |
-| `green.yaml`     | Green coding, local-first     | Yes | v4.3.0 |
-| `sycophancy.yaml`| Anti-sycophancy protocol      | Yes | v4.3.0 |
-| `sprint.yaml`    | Active work tracking          | Recommended | v1.0.0 |
-| `roadmap.yaml`   | Milestones & planning         | Optional | v1.0.0 |
-| `migrations.yaml`| Functional equivalence (code migrations) | Optional | v7.4.0 |
+All protocols stored as JSON in `.asimov/` directory:
+
+| File | Purpose |
+|------|---------|
+| `warmup.json` | Entry point - loads all other protocols |
+| `asimov.json` | Ethics: harm categories, veto commands |
+| `freshness.json` | WebSearch for current information |
+| `sycophancy.json` | Truth over comfort, disagree openly |
+| `green.json` | Efficiency benchmarking |
+| `sprint.json` | Bounded autonomy (4hr max) |
+| `migrations.json` | Functional equivalence rules |
+| `exhaustive.json` | Complete the task |
+
+Plus YAML files for project metadata:
+- `roadmap.yaml` - Milestones & planning
+- `project.yaml` - Project configuration
 
 ## Proven at Scale
 
-The RoyalBit Asimov powers an entire product ecosystem:
+| Project | Stack | Stats |
+|---------|-------|-------|
+| **[Forge](https://github.com/royalbit/forge)** | Rust | 45,700 LOC, 1,436 tests, 46 releases |
+| **[Asimov](https://github.com/royalbit/asimov)** | Rust | 19,000+ LOC, 429 tests, 62 releases |
 
-| Project | AI Role | Stack | Status |
-| ------- | ------- | ----- | ------ |
-| **[Forge](https://github.com/royalbit/forge)** (FOSS) | Principal Engineer | Rust | Production |
-| Backend API | Principal Backend Engineer | Rust + Axum | Production |
-| Mobile Prototype | Principal Mobile Engineer | Flutter | Production |
-| Architecture Docs | Principal AI Architect | C4 + ADRs | Production |
-| Business Strategy | AI Strategist | YAML | Production |
-| Data Services | Principal Engineer | Rust + gRPC | Active |
-
-**Stats:**
-- 10-phase autonomous build plan
-- Multiple mobile apps (Flutter)
-- 1,000+ line master roadmap
-- Comprehensive test suites across ecosystem
-
-See [ECOSYSTEM.md](https://github.com/royalbit/asimov/blob/main/docs/ECOSYSTEM.md) for the full story.
+**Total: 65,000+ LOC, 108 releases. 1 human + 1 AI.**
 
 ## Use Case: Forge
 
@@ -498,31 +303,21 @@ forge export model.yaml out.xlsx # Excel bridge
 
 ```mermaid
 flowchart LR
-    A[New Session] --> B{warmup.yaml exists?}
-    B -->|Yes| C[AI reads protocol]
+    A[New Session] --> B{.asimov/ exists?}
+    B -->|Yes| C[AI reads protocols]
     C --> D[Context restored]
-    B -->|No| E[Start from zero]
+    B -->|No| E[asimov init]
 ```
 
-## Self-Healing Protocol
+## Self-Healing
 
 **Bounded autonomy with automatic recovery.**
 
-The protocol enables unattended autonomous sessions via `sprint.json`:
-
-```json
-{
-  "max_hours": 4,
-  "rule": "Run autonomously until done or max_hours. WebSearch when blocked. Document issues in ASIMOV_MODE_ISSUES.md."
-}
-```
-
-**Key mechanisms:**
-- **Session warmup**: `warmup.json` loads all protocols on start
-- **Mid-session recovery**: Re-read protocols from disk when confused
+- **Session start**: `asimov warmup` loads all protocols from `.asimov/`
+- **Mid-session recovery**: Re-read protocols when confused
 - **Cross-session resume**: Claude Code `--continue` / `--resume`
 
-See [ADR-013](https://github.com/royalbit/asimov/blob/main/docs/adr/013-self-healing-not-replaced.md) and [Component 4: Self-Healing](https://github.com/royalbit/asimov/blob/main/docs/components/4-SELF_HEALING.md).
+The `sprint.json` protocol bounds autonomous sessions to 4 hours max.
 
 ## Documentation
 
@@ -536,7 +331,7 @@ See [ADR-013](https://github.com/royalbit/asimov/blob/main/docs/adr/013-self-hea
 - [Setup Guide](https://github.com/royalbit/asimov/blob/main/docs/SETUP.md) - Get started with one command
 
 ### The Five Components
-1. [Protocol Files](https://github.com/royalbit/asimov/blob/main/docs/components/1-PROTOCOL_FILES.md) - warmup.yaml, sprint.yaml, roadmap.yaml
+1. [Protocol Files](https://github.com/royalbit/asimov/blob/main/docs/components/1-PROTOCOL_FILES.md) - JSON protocols in `.asimov/`
 2. [Sprint Autonomy](https://github.com/royalbit/asimov/blob/main/docs/components/2-SPRINT_AUTONOMY.md) - Bounded sessions that ship
 3. [Quality Gates](https://github.com/royalbit/asimov/blob/main/docs/components/3-QUALITY_GATES.md) - Tests pass + zero warnings
 4. [Self-Healing](https://github.com/royalbit/asimov/blob/main/docs/components/4-SELF_HEALING.md) - Recover from context compaction
@@ -571,7 +366,7 @@ This project uses the **AI-Only Development Model** ([ADR-011](https://github.co
 
 External PRs are an **attack vector for ethics bypass**. A malicious contributor could:
 1. Submit innocent-looking PR with obfuscated harmful code
-2. Bypass `asimov.yaml` safeguards if merged
+2. Bypass `.asimov/` safeguards if merged
 3. Break the trust model of the RoyalBit Asimov
 
 **The trust model:**
@@ -579,7 +374,7 @@ External PRs are an **attack vector for ethics bypass**. A malicious contributor
 Human Owner → AI (autonomous) → Tests Pass → Direct Commit → Main
 ```
 
-PRs require human code review, but humans reviewing AI-generated code is not the model. Tests and `asimov.yaml` are the gatekeepers.
+PRs require human code review, but humans reviewing AI-generated code is not the model. Tests and `.asimov/` protocols are the gatekeepers.
 
 ### How to Contribute
 
