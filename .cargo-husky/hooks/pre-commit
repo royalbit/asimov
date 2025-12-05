@@ -17,7 +17,7 @@ if [ -d "$CLI_DIR" ]; then
     cargo fmt --all -- --check
 
     echo "Running clippy..."
-    cargo clippy -- -D warnings
+    cargo clippy --all-targets -- -D warnings
 
     echo "Running tests (unit, integration, e2e)..."
     cargo test

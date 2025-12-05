@@ -2101,6 +2101,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn test_ethics_template_valid_yaml() {
         let template = ethics_template();
         let yaml: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);

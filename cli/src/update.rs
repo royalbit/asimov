@@ -851,7 +851,7 @@ mod tests {
 
     #[test]
     fn test_check_for_update_with_mock_server() {
-        use mockito::{Matcher, Server};
+        use mockito::Server;
 
         let mut server = Server::new();
         let mock = server

@@ -615,8 +615,8 @@ mod tests {
             ..Default::default()
         };
         let result = check_semantic(temp.path(), &config);
-        // Just verify it runs without error
-        assert!(result.files_checked >= 0);
+        // Just verify it runs without error and returns valid result
+        assert!(result.is_ok());
     }
 
     #[test]

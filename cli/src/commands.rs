@@ -1760,8 +1760,8 @@ mod tests {
             .output();
 
         let result = run_stats(temp.path());
-        // Verify we got stats - may have 0 or more commits depending on timing
-        assert!(result.total_commits >= 0);
+        // Verify we got stats - session_date is always set
+        assert!(!result.session_date.is_empty());
     }
 
     #[test]
@@ -2024,9 +2024,9 @@ mod tests {
     fn test_run_validate_no_asimov_dir() {
         let temp = TempDir::new().unwrap();
         let result = run_validate(temp.path(), false);
-        // No .asimov dir - validation runs but no specific file validations
-        // Just check success is set appropriately
-        assert!(result.success || !result.success); // Always passes - just exercising code
+        // No .asimov dir - validation still runs
+        // Empty dir without .asimov is considered success (no files to validate)
+        assert!(result.success);
     }
 
     #[test]
@@ -2043,8 +2043,8 @@ mod tests {
         std::fs::write(asimov_dir.join("project.yaml"), "invalid: yaml: [[[").unwrap();
 
         let result = run_validate(temp.path(), false);
-        // Just exercise the code path, don't assert specific results
-        assert!(result.success || !result.success); // Always passes
+        // Invalid project.yaml should cause validation failure
+        assert!(!result.success);
     }
 
     #[test]
