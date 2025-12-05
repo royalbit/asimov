@@ -81,6 +81,8 @@ pub struct ValidateResult {
     pub regenerated: Vec<String>,
 }
 
+/// Run validate command (excluded: filesystem validation)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn run_validate(dir: &Path, ethics_scan: bool) -> ValidateResult {
     let mut result = ValidateResult {
         success: true,

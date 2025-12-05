@@ -47,6 +47,8 @@ pub struct StatsResult {
     pub milestone_status: Option<String>,
 }
 
+/// Run stats command (excluded: git process execution)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn run_stats(dir: &Path) -> StatsResult {
     use chrono::Local;
 

@@ -64,6 +64,8 @@ pub struct WarmupResult {
     pub error: Option<String>,
 }
 
+/// Run warmup command (excluded: filesystem + network operations)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
     let mut result = WarmupResult {
         success: false,

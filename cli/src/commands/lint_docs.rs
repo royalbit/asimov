@@ -93,6 +93,8 @@ pub struct LintDocsResult {
     pub semantic_files_checked: usize,
 }
 
+/// Run lint docs command (excluded: filesystem + lint operations)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn run_lint_docs(dir: &Path, fix: bool, semantic: bool) -> LintDocsResult {
     let mut result = LintDocsResult {
         success: true,

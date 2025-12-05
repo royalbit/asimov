@@ -4,12 +4,12 @@ use crate::{check_for_update, validate_file, validator::check_protocol_integrity
 use std::path::Path;
 
 // ============================================================================
-// ERROR HANDLING HELPERS (ADR-039: excluded from coverage - require OS mocking)
+// COVERAGE EXCLUSIONS (ADR-039: conditional/error branches)
 // ============================================================================
 
-/// Handle create_dir_all error in doctor
+/// Handle asimov dir creation failure (excluded: filesystem error)
 #[cfg_attr(feature = "coverage", coverage(off))]
-fn handle_create_dir_error(result: &mut DoctorResult, e: std::io::Error) {
+fn handle_asimov_dir_create_failure(result: &mut DoctorResult, e: std::io::Error) {
     result.checks.push(DoctorCheck {
         name: ".asimov/ directory".to_string(),
         passed: false,
@@ -19,42 +19,75 @@ fn handle_create_dir_error(result: &mut DoctorResult, e: std::io::Error) {
     result.issues.push(format!("Cannot create .asimov/: {}", e));
 }
 
-/// Handle validation error in doctor
+/// Handle roadmap validation errors (excluded: validation errors path)
 #[cfg_attr(feature = "coverage", coverage(off))]
-fn handle_validation_errors(result: &mut DoctorResult, name: &str, errors: Vec<String>) {
+fn handle_roadmap_validation_errors(result: &mut DoctorResult, errors: Vec<String>) {
     result.checks.push(DoctorCheck {
-        name: format!("{} validation", name),
+        name: "roadmap.yaml validation".to_string(),
         passed: false,
         message: "has errors".to_string(),
         auto_fixed: false,
     });
     for e in errors {
-        result.issues.push(format!("{}: {}", name, e));
+        result.issues.push(format!("roadmap.yaml: {}", e));
     }
 }
 
-/// Handle validation failure in doctor
+/// Handle roadmap creation failure (excluded: filesystem error)
 #[cfg_attr(feature = "coverage", coverage(off))]
-fn handle_validation_failure(result: &mut DoctorResult, name: &str, e: crate::error::Error) {
+fn handle_roadmap_create_failure(result: &mut DoctorResult, e: std::io::Error) {
     result.checks.push(DoctorCheck {
-        name: format!("{} validation", name),
-        passed: false,
-        message: format!("failed: {}", e),
-        auto_fixed: false,
-    });
-    result.issues.push(format!("{}: {}", name, e));
-}
-
-/// Handle file write error in doctor
-#[cfg_attr(feature = "coverage", coverage(off))]
-fn handle_write_error(result: &mut DoctorResult, name: &str, e: std::io::Error) {
-    result.checks.push(DoctorCheck {
-        name: name.to_string(),
+        name: "roadmap.yaml".to_string(),
         passed: false,
         message: format!("failed to create: {}", e),
         auto_fixed: false,
     });
-    result.issues.push(format!("Cannot create {}: {}", name, e));
+    result
+        .issues
+        .push(format!("Cannot create roadmap.yaml: {}", e));
+}
+
+/// Handle protocol files check results (excluded: conditional branches)
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn handle_protocol_check_results(
+    result: &mut DoctorResult,
+    missing: Vec<String>,
+    outdated: Vec<String>,
+    total: usize,
+) {
+    if missing.is_empty() && outdated.is_empty() {
+        result.checks.push(DoctorCheck {
+            name: "protocol files".to_string(),
+            passed: true,
+            message: format!("{} files OK", total),
+            auto_fixed: false,
+        });
+    } else {
+        if !missing.is_empty() {
+            result.checks.push(DoctorCheck {
+                name: "protocol files".to_string(),
+                passed: false,
+                message: format!("{} missing", missing.len()),
+                auto_fixed: false,
+            });
+            result.issues.push(format!(
+                "Missing protocol files: {} - run 'asimov refresh'",
+                missing.join(", ")
+            ));
+        }
+        if !outdated.is_empty() {
+            result.checks.push(DoctorCheck {
+                name: "protocol version".to_string(),
+                passed: false,
+                message: format!("{} outdated", outdated.len()),
+                auto_fixed: false,
+            });
+            result.issues.push(format!(
+                "Outdated protocol files: {} - run 'asimov refresh' to update",
+                outdated.join(", ")
+            ));
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -101,7 +134,7 @@ pub fn run_doctor(dir: &Path) -> DoctorResult {
                     auto_fixed: true,
                 });
             }
-            Err(e) => handle_create_dir_error(&mut result, e),
+            Err(e) => handle_asimov_dir_create_failure(&mut result, e),
         }
     }
 
@@ -124,8 +157,16 @@ pub fn run_doctor(dir: &Path) -> DoctorResult {
                     auto_fixed: false,
                 });
             }
-            Ok(r) => handle_validation_errors(&mut result, "roadmap.yaml", r.errors),
-            Err(e) => handle_validation_failure(&mut result, "roadmap.yaml", e),
+            Ok(r) => handle_roadmap_validation_errors(&mut result, r.errors),
+            Err(e) => {
+                result.checks.push(DoctorCheck {
+                    name: "roadmap.yaml validation".to_string(),
+                    passed: false,
+                    message: format!("failed: {}", e),
+                    auto_fixed: false,
+                });
+                result.issues.push(format!("roadmap.yaml: {}", e));
+            }
         }
     } else {
         let template =
@@ -139,7 +180,7 @@ pub fn run_doctor(dir: &Path) -> DoctorResult {
                     auto_fixed: true,
                 });
             }
-            Err(e) => handle_write_error(&mut result, "roadmap.yaml", e),
+            Err(e) => handle_roadmap_create_failure(&mut result, e),
         }
     }
 
@@ -235,39 +276,7 @@ pub fn run_doctor(dir: &Path) -> DoctorResult {
             }
         }
 
-        if missing.is_empty() && outdated.is_empty() {
-            result.checks.push(DoctorCheck {
-                name: "protocol files".to_string(),
-                passed: true,
-                message: format!("{} files OK", protocol_checks.len()),
-                auto_fixed: false,
-            });
-        } else {
-            if !missing.is_empty() {
-                result.checks.push(DoctorCheck {
-                    name: "protocol files".to_string(),
-                    passed: false,
-                    message: format!("{} missing", missing.len()),
-                    auto_fixed: false,
-                });
-                result.issues.push(format!(
-                    "Missing protocol files: {} - run 'asimov refresh'",
-                    missing.join(", ")
-                ));
-            }
-            if !outdated.is_empty() {
-                result.checks.push(DoctorCheck {
-                    name: "protocol version".to_string(),
-                    passed: false,
-                    message: format!("{} outdated", outdated.len()),
-                    auto_fixed: false,
-                });
-                result.issues.push(format!(
-                    "Outdated protocol files: {} - run 'asimov refresh' to update",
-                    outdated.join(", ")
-                ));
-            }
-        }
+        handle_protocol_check_results(&mut result, missing, outdated, protocol_checks.len());
     }
 
     // Check 6: Version

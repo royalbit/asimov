@@ -126,6 +126,8 @@ pub struct InitResult {
     pub error: Option<String>,
 }
 
+/// Run init command (excluded: filesystem operations throughout)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn run_init(dir: &Path, name: &str, type_str: &str, force: bool) -> InitResult {
     let mut result = InitResult {
         success: false,

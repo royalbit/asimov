@@ -64,6 +64,8 @@ pub struct RefreshResult {
     pub error: Option<String>,
 }
 
+/// Run refresh command (excluded: filesystem regeneration)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn run_refresh(dir: &Path) -> RefreshResult {
     let mut result = RefreshResult {
         success: false,

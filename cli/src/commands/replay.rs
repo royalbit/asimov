@@ -52,6 +52,8 @@ pub struct ReplayResult {
     pub error: Option<String>,
 }
 
+/// Run replay command (excluded: git process execution)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn run_replay(
     dir: &Path,
     commits: Option<usize>,

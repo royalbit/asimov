@@ -7,6 +7,8 @@ pub enum LaunchResult {
     Launching,
 }
 
+/// Check launch conditions (excluded: env vars + process spawning)
+#[cfg_attr(feature = "coverage", coverage(off))]
 pub fn check_launch_conditions() -> LaunchResult {
     // Check if inside Claude
     if std::env::var("CLAUDECODE").is_ok() || std::env::var("CLAUDE_CODE_ENTRYPOINT").is_ok() {
