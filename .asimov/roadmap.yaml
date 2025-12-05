@@ -5,7 +5,7 @@
 
 current:
   version: "9.0.0"
-  status: in_progress
+  status: released
   summary: "Proprietary License, Protocol Review, Protocol Integrity"
   goal: Quality
   priority: CRITICAL
