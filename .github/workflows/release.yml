@@ -7,6 +7,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  RUSTUP_TOOLCHAIN: stable  # Override rust-toolchain.toml for release builds
 
 jobs:
   build:
