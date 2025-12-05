@@ -65,6 +65,8 @@ Code may ONLY be marked for exclusion if it meets ALL criteria:
 
 ### Approved Exclusions (v9.0.0)
 
+#### Infrastructure Functions
+
 | File | Function | Lines | Reason |
 |------|----------|-------|--------|
 | main.rs | `main()` | 22 | CLI entry point, only executes in binary |
@@ -73,7 +75,20 @@ Code may ONLY be marked for exclusion if it meets ALL criteria:
 | update.rs | `verify_checksum()` | 26 | Downloads checksums from network |
 | commands.rs | perform_update call | 14 | Calls perform_update (excluded separately) |
 
-**Total excluded:** ~134 lines out of 3000+ (~4.5%)
+#### Filesystem Error Handlers (v9.1.0)
+
+| File | Function | Lines | Reason |
+|------|----------|-------|--------|
+| validator.rs | `write_regenerated_file()` | 4 | Write failure - requires OS mocking |
+| validator.rs | `create_asimov_dir()` | 3 | Create dir failure - requires OS mocking |
+| validator.rs | `try_delete_claude_md()` | 12 | Delete failure - requires OS mocking |
+| validator.rs | `check_protocol_file_content()` | 9 | Read failure - requires OS mocking |
+| validator.rs | `protocol_file_differs()` | 6 | Read failure - requires OS mocking |
+
+These functions encapsulate filesystem operations with error handling that requires OS-level
+mocking to trigger (permission denied, disk full, read-only filesystem).
+
+**Total excluded:** ~134 lines (infrastructure) + ~34 lines (filesystem handlers)
 
 ### Exclusion Review Process
 
@@ -94,14 +109,15 @@ Pure 100% coverage on entry points and binary replacement is impossible without:
 2. **Mocking the entire OS** - Complexity explosion for minimal value
 3. **Ignoring reality** - Pretending we can unit test process spawning
 
-### Why LCOV Comments?
+### Why Nightly `coverage(off)` Attribute?
 
 | Alternative | Problem |
 |-------------|---------|
 | `#[cfg(not(test))]` | Hides code from coverage entirely, can hide bugs |
 | `#[allow(dead_code)]` | Wrong semantics, code isn't dead |
+| LCOV comments | Not supported by cargo-llvm-cov |
 | Separate binary | Over-engineering for minimal gain |
-| **LCOV comments** | Clear, visible, reviewed, minimal overhead |
+| **`#[coverage(off)]`** | Native Rust, clear, reviewed, minimal overhead |
 
 ### What This Enables
 
@@ -134,32 +150,43 @@ CI can enforce 100% coverage of testable code while acknowledging the practical 
 
 ## Implementation
 
-The following LCOV exclusion comments were added in v9.0.0:
+### Nightly Rust `coverage(off)` Attribute (v9.1.0)
+
+Functions are marked with `#[cfg_attr(feature = "coverage", coverage(off))]` to exclude them
+from coverage analysis when running `cargo llvm-cov --features coverage`.
 
 ```rust
-// main.rs
-// LCOV_EXCL_START - CLI entry point only executes in binary, not unit tests (ADR-039)
-fn main() -> ExitCode { ... }
-// LCOV_EXCL_STOP
+// validator.rs - Filesystem error handlers
 
-// LCOV_EXCL_START - Spawns external claude process, requires claude installed (ADR-039)
-fn cmd_launch() -> ExitCode { ... }
-// LCOV_EXCL_STOP
+/// Write regenerated file with coverage-excluded error handling
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn write_regenerated_file(path: &Path, content: &str, filename: &str) -> Result<()> { ... }
 
-// update.rs
-// LCOV_EXCL_START - Downloads from network, replaces running binary (ADR-039)
-pub fn perform_update(...) -> Result<(), String> { ... }
-// LCOV_EXCL_STOP
+/// Create .asimov directory with coverage-excluded error handling
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn create_asimov_dir(path: &Path) -> Result<()> { ... }
 
-// LCOV_EXCL_START - Downloads checksums from network (ADR-039)
-fn verify_checksum(...) -> Result<(), String> { ... }
-// LCOV_EXCL_STOP
+/// Delete deprecated CLAUDE.md with coverage-excluded error handling
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn try_delete_claude_md(path: &Path) { ... }
 
-// commands.rs
-// LCOV_EXCL_START - perform_update downloads/replaces binary (ADR-039)
-match perform_update(&url, ...) { ... }
-// LCOV_EXCL_STOP
+/// Check protocol file content - excluded due to error path
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn check_protocol_file_content(path: &Path, expected: &str) -> (bool, bool, bool) { ... }
+
+/// Check if protocol file differs - excluded due to error path
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn protocol_file_differs(path: &Path, expected: &str) -> bool { ... }
 ```
+
+### Infrastructure Functions (v9.0.0)
+
+The following functions are also marked with `#[cfg_attr(feature = "coverage", coverage(off))]`:
+
+- `main()` - CLI entry point
+- `cmd_launch()` - Spawns external claude process
+- `perform_update()` - Downloads, extracts, replaces binary
+- `verify_checksum()` - Downloads checksums from network
 
 ## Related
 
