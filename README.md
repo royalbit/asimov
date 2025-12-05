@@ -420,119 +420,6 @@ Shows: commits, files changed, insertions/deletions, velocity metrics.
 - Git-friendly (diffable, mergeable)
 - No vendor lock-in for file format
 
-## Compatibility (The Hard Truth)
-
-**RoyalBit Asimov works with Claude Code. It will probably never work with other AI tools.**
-
-| AI Tool | Protocol Files | RoyalBit Asimov | Verdict |
-|---------|---------------|-------------|---------|
-| **Claude Code** | ✓ Auto-read | ✓ Full support | **Use this** |
-| **ChatGPT** | ✓ Manual paste | ✗ Never | Different architecture |
-| **GitHub Copilot** | ✗ N/A | ✗ Never | It's autocomplete, not conversation |
-| **Cursor** | ✓ .cursorrules | ✗ Unlikely | Missing hook visibility |
-| **Gemini** | ✓ Manual paste | ✗ Never | Cloud-sandboxed |
-
-### Why "Never"?
-
-RoyalBit Asimov requires **four architectural features**:
-
-1. **Persistent context that compacts** (the problem we solve)
-2. **Terminal visibility** (how hooks reach the AI)
-3. **File re-read mid-session** (how warmup.yaml gets reloaded)
-4. **Auto-loaded config** (bootstrap instruction)
-
-**ChatGPT/Gemini**: Cloud-sandboxed, no filesystem, context resets (doesn't compact)
-**Copilot**: Not a conversation—it's autocomplete. No context to compact.
-**Cursor**: Has config files, but hook output probably doesn't flow into AI context
-
-These aren't missing features. They're **different products for different use cases**.
-
-### What Other AIs CAN Use
-
-| Layer | What | Compatibility |
-|-------|------|---------------|
-| **Protocol Files** | warmup.yaml, sprint.yaml, roadmap.yaml | Universal (paste manually) |
-| **CLI Tools** | validate, lint-docs, init | Universal (it's just Rust) |
-| **RoyalBit Asimov** | Self-healing, hooks, autonomy | **Claude Code only** |
-
-**Is this vendor lock-in?** Yes, for RoyalBit Asimov. The files are portable. The magic isn't.
-
-See [VENDOR_IMPLEMENTATION.md](https://github.com/royalbit/asimov/blob/main/docs/VENDOR_IMPLEMENTATION.md) for the full uncomfortable truth.
-
-## Green Coding & ESG Impact
-
-**Local validation = less compute = less CO₂ = ESG compliance**
-
-| Approach | Cost per File | Carbon | Speed |
-| -------- | ------------- | ------ | ----- |
-| AI validation | $0.02+ | ~0.5g CO₂ | 1-3s |
-| Local CLI | **$0** | **~0.002g CO₂** | **<100ms** |
-| **Savings** | **100%** | **99.6%** | **20x faster** |
-
-### Why This Matters
-
-**For Developers:**
-- Instant validation (<100ms vs 1-3s cloud latency)
-- Works offline - no API keys, no rate limits
-- 1.3MB binary - installs in seconds
-
-**For Teams:**
-- $1,000-$7,300/year savings (10-person team)
-- No cloud AI costs for routine validation
-- Consistent, reproducible results
-
-**For Enterprise & Government:**
-- **ESG Compliance**: Measurable carbon reduction (99.6%)
-- **Scope 3 Emissions**: Reduce supply chain software carbon
-- **Sustainability Reports**: Quantifiable green coding metrics
-- **Cost Control**: Predictable $0 validation costs at scale
-
-**For the Planet:**
-- 99.6% carbon reduction per validation
-- No data center compute for routine tasks
-- Efficient Rust binary - minimal energy footprint
-
-### Green Impact at Scale
-
-When organizations adopt the RoyalBit Asimov:
-
-| Adoption | Annual Carbon Saved | Equivalent |
-| -------- | ------------------- | ---------- |
-| 100 teams | 6.2 tonnes CO₂ | 1.4 cars off road |
-| 1,000 teams | 62 tonnes CO₂ | 14 cars off road |
-| 10,000 teams | 620 tonnes CO₂ | 140 cars off road |
-| 100,000 teams | 6,200 tonnes CO₂ | 1,400 cars off road |
-
-**Plus velocity gains:**
-- Each team gets **50-100x velocity** (proven by Forge)
-- 100 teams = 100 × 50x = **5,000x cumulative productivity gain**
-- Faster shipping = less compute time = even more carbon saved
-
-**For Governments:**
-- Mandate green coding standards with measurable metrics
-- Reduce public sector IT carbon footprint
-- Quantifiable ESG reporting for taxpayers
-
-**For Corporations:**
-- Meet Scope 3 emissions targets (supply chain software)
-- Reduce cloud AI costs at scale
-- Competitive advantage through velocity + sustainability
-
-### Implementation
-
-```bash
-# Install once (1.3MB) - see GitHub Releases
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
-sudo mv asimov /usr/local/bin/
-
-# Validate forever ($0, ~0.002g CO₂ per run)
-asimov validate
-```
-
-*Ship fast. Ship small. Ship green.*
-
-See [Green Coding Economics](https://github.com/royalbit/asimov/blob/main/docs/GREEN_CODING.md) for the full analysis.
-
 ## Protocol Suite
 
 | File             | Purpose                       | Required | Since |
@@ -567,101 +454,35 @@ The RoyalBit Asimov powers an entire product ecosystem:
 
 See [ECOSYSTEM.md](https://github.com/royalbit/asimov/blob/main/docs/ECOSYSTEM.md) for the full story.
 
-## Use Case: The Forge Tool
+## Use Case: Forge
 
-**[Forge](https://github.com/royalbit/forge)** is a YAML formula calculator built entirely with the RoyalBit Asimov. It's the proof that the protocol works.
+**[Forge](https://github.com/royalbit/forge)** - deterministic YAML formula calculator. AI hallucinates numbers; Forge doesn't.
 
-### What Forge Does
+| Stat | Value |
+|------|-------|
+| Version | v5.0.0 |
+| LOC | 45,700 |
+| Tests | 1,436 |
+| Releases | 46 |
+| Throughput | 96K rows/sec |
 
 ```bash
-# Validate financial models locally (no AI tokens)
-forge validate model.yaml
-
-# Calculate formulas
-forge calculate model.yaml
-
-# Sensitivity analysis, goal seek, break-even
-forge sensitivity model.yaml -v price -r 80,120,10 -o profit
+forge calculate model.yaml       # Evaluate formulas
+forge sensitivity model.yaml ... # Analysis tools
+forge export model.yaml out.xlsx # Excel bridge
 ```
 
-### How It Was Built
-
-The entire Forge project was built by 1 human + Claude using the RoyalBit Asimov:
-
-| Phase | Time | What Shipped |
-| ----- | ---- | ------------ |
-| v1.0-v1.2 | ~23.5h | Core engine, 50+ Excel functions |
-| v1.4-v2.0 | ~12h | Watch mode, LSP, MCP server, HTTP API |
-| v2.1-v3.1 | ~9h | XNPV/XIRR, Scenarios, Sensitivity, Zed extension |
-| v4.0-v4.1 | ~4h | Rich metadata, UNIQUE/COUNTUNIQUE |
-| **Total** | **~38h** | **41 releases, 226 tests, 18,338 LOC** |
-
-### Features Shipped in ~38 Hours
-
-**60+ Excel Functions:**
-- Financial: NPV, IRR, XNPV, XIRR, PMT, FV, PV, RATE, NPER
-- Lookup: MATCH, INDEX, XLOOKUP, VLOOKUP
-- Conditional: SUMIF, COUNTIF, AVERAGEIF, SUMIFS, COUNTIFS
-- Date: TODAY, YEAR, MONTH, DAY, DATEDIF, EDATE, EOMONTH
-- Math, Text, Logic, Aggregation
-
-**Analysis Tools:**
-- Sensitivity analysis (1D and 2D data tables)
-- Goal seek with bisection solver
-- Break-even analysis
-- Budget vs actual variance
-- Multi-scenario comparison
-
-**Enterprise Infrastructure:**
-- HTTP REST API server (`forge-server`)
-- MCP server with 10 AI tools (`forge-mcp`)
-- LSP server for editors (`forge-lsp`)
-- Watch mode for live updates
-- 96K rows/sec throughput
-
-**Editor Extensions:**
-- VSCode: syntax highlighting, LSP, commands
-- Zed: native Rust/WASM, LSP, 60+ function highlighting
-
-**Excel Bridge:**
-- `forge export` → Excel (.xlsx)
-- `forge import` ← Excel (.xlsx)
-
-### The Protocol in Action
-
-```
-Human: "run warmup"
-Claude: [reads warmup.yaml, sprint.yaml, roadmap.yaml]
-Claude: "Ready. Current milestone: MCP Server with financial tools."
-Human: "punch it"
-Claude: [works autonomously, ships v3.0.0 with 10 MCP tools]
-```
-
-### The Velocity Result
-
-| Metric | Traditional | With Protocol | Multiplier |
-| ------ | ----------- | ------------- | ---------- |
-| Dev time | 2-3 weeks | **<8 hours** | **50-100x** |
-| Rework | 30-50% | **~0%** | **∞** |
-| Releases | 3-5 total | **41** | **10x** |
-
-**Bottom line:** 1 human + AI with RoyalBit Asimov = **50-150x velocity** (verified via git logs).
-
-**vs GitHub Copilot:** Both offer Claude Opus/Sonnet 4.5, but Copilot caps thinking tokens and autonomy. Asimov gives you **200k thinking tokens**, **unlimited autonomy**, and **8 protocol files** ([full comparison](docs/ASIMOV_VS_COPILOT.md)). RoyalBit Asimov ethics [refused the creator's surveillance request](docs/case-studies/001-ethics-protocol-blocks-surveillance.md). Copilot's safety is [trivially bypassed](https://www.darkreading.com/vulnerabilities-threats/new-jailbreaks-manipulate-github-copilot) and [generates malware on request](https://ieeexplore.ieee.org/document/10284976/).
+**62 Excel functions**, sensitivity analysis, goal seek, break-even, scenarios, LSP server, MCP server, HTTP API, VSCode/Zed extensions.
 
 ### The Protocol Built Itself
 
-The ultimate proof: asimov was built using asimov.
+| Project | LOC | Releases | Verified |
+|---------|-----|----------|----------|
+| [forge](https://github.com/royalbit/forge) | 45,700 | 46 | [GitHub](https://github.com/royalbit/forge/releases) |
+| [asimov](https://github.com/royalbit/asimov) | 19,000+ | 62 | [GitHub](https://github.com/royalbit/asimov/releases) |
+| **Total** | **65,000+** | **108** | Git history |
 
-| Project | LOC | Releases | Hours | Verified |
-|---------|-----|----------|-------|----------|
-| [forge](https://github.com/royalbit/forge) | 18,338 | 41 | ~38 | [GitHub](https://github.com/royalbit/forge/releases) |
-| [asimov](https://github.com/royalbit/asimov) | 19,000+ | 62 | ~50+ | [GitHub](https://github.com/royalbit/asimov/releases) |
-| **Total** | **37,000+** | **103** | **~90** | Git history |
-
-**1 human. 1 AI. 90 hours. 103 releases. Verify it yourself.**
-
-This is bootstrapping — the methodology improved itself through v1.0 → v4.0, each version built with the previous version's protocol.
+**1 human. 1 AI. Verify it yourself.**
 
 **Context Window Impact** (see [ADR-010](https://github.com/royalbit/asimov/blob/main/docs/adr/010-velocity-constraints-tier-analysis.md)):
 
@@ -683,94 +504,25 @@ flowchart LR
     B -->|No| E[Start from zero]
 ```
 
-## Self-Healing Protocol (Unattended Autonomy)
+## Self-Healing Protocol
 
-> **Note:** This feature requires **Claude Code**. See [Compatibility](#compatibility) for details.
+**Bounded autonomy with automatic recovery.**
 
-**The key enabler for autonomous sessions.**
+The protocol enables unattended autonomous sessions via `sprint.json`:
 
-### Critical Distinction: Mid-Session vs Cross-Session
-
-| Scope | Solution | How It Works | Requires |
-|-------|----------|--------------|----------|
-| **Mid-session** (before compaction) | `warmup.yaml` re-read | AI detects confusion → reads from disk | **RoyalBit Asimov** |
-| **Cross-session** (between sessions) | `--continue`, `--resume` | Human starts new CLI session | Claude Code native |
-| **Manual restore** (any time) | `/rewind`, `Esc+Esc` | Human issues command | Claude Code native |
-
-**IMPORTANT (ADR-013):** Claude Code native features (`--continue`, `--resume`, `/rewind`) require **manual human intervention**. They do NOT work automatically during a live unattended session before compaction.
-
-The `warmup.yaml` re-read pattern is the **only mechanism** for mid-session automatic recovery.
-
-### Mid-Session Self-Healing (RoyalBit Asimov)
-
-When compaction happens during an autonomous session:
-
-```yaml
-# warmup.yaml
-self_healing:
-  on_confusion: "STOP → re-read warmup.yaml → re-read sprint.yaml"
-  confusion_signals:
-    - "Unsure about project rules"
-    - "Forgot what milestone we're working on"
-    - "Making decisions that contradict protocol"
+```json
+{
+  "max_hours": 4,
+  "rule": "Run autonomously until done or max_hours. WebSearch when blocked. Document issues in ASIMOV_MODE_ISSUES.md."
+}
 ```
 
-The AI must:
-1. Recognize confusion signals
-2. STOP what it's doing
-3. Re-read `warmup.yaml` from disk
-4. Re-read `sprint.yaml` from disk
-5. Resume with restored context
+**Key mechanisms:**
+- **Session warmup**: `warmup.json` loads all protocols on start
+- **Mid-session recovery**: Re-read protocols from disk when confused
+- **Cross-session resume**: Claude Code `--continue` / `--resume`
 
-**This is NOT replaced by Claude Code native features.**
-
-### Cross-Session Resume (Claude Code Native)
-
-For resuming **between separate sessions** (manual):
-
-```bash
-# Human starts new session
-claude --continue        # Resume most recent session
-claude --resume <id>     # Resume specific session
-```
-
-### Memory Hierarchy (Claude Code Native)
-
-**CLAUDE.md** (project instructions, auto-loaded by Claude Code):
-```markdown
-# Project Name
-
-Rules: 4hr max, keep shipping, tests pass.
-
-ON SESSION START: Read warmup.yaml and asimov.yaml.
-```
-
-Note: The `@import` syntax is a work in progress. For now, use explicit "ON SESSION START" directives.
-
-### What's Replaced vs What's NOT
-
-| Feature | Status | Replacement |
-|---------|--------|-------------|
-| `.claude_checkpoint.yaml` | **Deprecated** | TodoWrite for tasks, native `/rewind` for code |
-| Session handoff files | **Deprecated** | `--continue`, `--resume` |
-| Mid-session `warmup.yaml` re-read | **ACTIVE** | Nothing (no replacement exists) |
-| Sprint autonomy rules | **ACTIVE** | Nothing (unique value) |
-| Ethics protocol | **ACTIVE** | Nothing (unique value) |
-
-See [ADR-009](https://github.com/royalbit/asimov/blob/main/docs/adr/009-claude-code-native-integration.md) and [ADR-013](https://github.com/royalbit/asimov/blob/main/docs/adr/013-self-healing-not-replaced.md) for the full analysis.
-
-### What RoyalBit Asimov Adds
-
-Unique value that Claude Code doesn't have:
-
-| Feature | Description |
-|---------|-------------|
-| **The Three Laws** | `asimov.yaml`, `human_veto`, red flags |
-| **Sprint Autonomy** | 4hr max, keep shipping, anti-patterns |
-| **Green Coding** | Zero tokens, ESG metrics |
-| **Schema Validation** | `asimov validate` |
-
-See [Component 4: Self-Healing](https://github.com/royalbit/asimov/blob/main/docs/components/4-SELF_HEALING.md) for details.
+See [ADR-013](https://github.com/royalbit/asimov/blob/main/docs/adr/013-self-healing-not-replaced.md) and [Component 4: Self-Healing](https://github.com/royalbit/asimov/blob/main/docs/components/4-SELF_HEALING.md).
 
 ## Documentation
 
@@ -802,40 +554,6 @@ See [Component 4: Self-Healing](https://github.com/royalbit/asimov/blob/main/doc
 - [ADR-020: The Open Foundation](https://github.com/royalbit/asimov/blob/main/docs/adr/020-asimov-open-foundation.md) - **v4.2.0** - The Three Laws
 - [ADR-008: Ethics Protocol and Humanist Mode](https://github.com/royalbit/asimov/blob/main/docs/adr/008-ethics-protocol-humanist-mode.md) - **v3.0**
 - [ADR-003: Self-Healing Based on Real Compaction Data](https://github.com/royalbit/asimov/blob/main/docs/adr/003-self-healing-real-compaction-data.md) - **v2.0**
-
-## Case Study: Protocol v2.0 (This Session)
-
-The v2.0 specification was written using RoyalBit Asimov - proving the protocol works on itself.
-
-### The Problem
-
-v1.x assumed "checkpoint every 2 hours". Research showed this was fiction:
-- With `MAX_THINKING_TOKENS=200000`, compaction happens every **10-20 minutes**
-- The "2hr checkpoint" never triggered
-- Self-healing was broken in production
-
-### The Session
-
-| Phase | What Happened |
-|-------|---------------|
-| **Research** | Analyzed asimov git log: 32 commits, ~4-5 hours, estimated 5-10 compactions |
-| **Spec Rewrite** | v2.0 based on empirical data, not assumptions |
-| **Multi-Project Update** | 9 repositories updated with v2.0 CLAUDE.md format |
-| **Ship** | Committed, tagged v2.0.0, pushed to GitHub |
-
-### The Proof
-
-```
-Human: "look at the forge's git log... estimate how many compaction cycles really happened"
-Claude: [analyzes git history, token math, user settings]
-Claude: "Compaction happens every 10-20 minutes, not 2 hours"
-Human: "yes, and let's document the research... start the new specification"
-Claude: [rewrites spec, updates 9 projects, ships v2.0.0]
-```
-
-**One session. One human. One milestone. Shipped.**
-
-See [ADR-003](https://github.com/royalbit/asimov/blob/main/docs/adr/003-self-healing-real-compaction-data.md) for the research findings.
 
 ## Origin
 
