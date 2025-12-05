@@ -332,4 +332,3 @@ It's protocols all the way down.
 *Built with the [RoyalBit Asimov](https://github.com/royalbit/asimov) - enabling AI autonomy in software development.*
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

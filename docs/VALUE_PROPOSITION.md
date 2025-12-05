@@ -216,7 +216,6 @@ asimov init --type rust
 
 > "What if every developer could ship like a 50-person team?"
 
-- Democratized software creation
 - Global accessibility
 - Sustainable by design
 - Ethics as foundation
@@ -297,4 +296,3 @@ AI: [reports completion at gate]
 *Built with the [RoyalBit Asimov](https://github.com/royalbit/asimov) - 50-150x developer velocity with ethics built in.*
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

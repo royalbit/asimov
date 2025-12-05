@@ -336,99 +336,6 @@ Deterministic. Auditable. No spreadsheet chaos.
 
 ---
 
-<!-- _backgroundColor: #1a4a1a -->
-<!-- _color: #ffffff -->
-
-# The Zeroth Law
-
-## Democratization is Moral Obligation
-
----
-
-# The Liberation Math
-
-<div class="smaller">
-
-**1 human + AI = 50-150 traditional developers**
-
-| Before | After | Liberation |
-|--------|-------|------------|
-| Need $500K+ team | 1 person + AI | **Capital barrier removed** |
-| Need corporate backing | Build independently | **Dependency eliminated** |
-| Need to be in tech hub | Build from anywhere | **Geography irrelevant** |
-
-**Global accessibility:** Dev in Lagos = Dev in SF = Dev in Mumbai
-
-*The Zeroth Law: Democratize AI power before it becomes unreachable.*
-
-</div>
-
----
-
-# Who Gains Access
-
-<div class="small">
-
-| Who Gains | What They Gain | Result |
-|-----------|----------------|--------|
-| Solo founder anywhere | Same capability as $500K team | **Competes without capital** |
-| Student in Mumbai | Production skills before graduating | **Ships real software** |
-| Developer in Lagos | Enterprise-scale output | **Location irrelevant** |
-| Bootstrapper globally | Outships funded startups | **Meritocracy restored** |
-
-**The economics:**
-- Free for personal learning
-- Local-first = No cloud dependency
-- 1 human + AI = 50-person team capability
-
-</div>
-
-*The needs of the many outweigh the needs of the few.*
-
----
-
-# The Ethics Risk
-
-<div class="smaller">
-
-**Deleting asimov.yaml doesn't work** — ethics are hardcoded in Rust binary ([ADR-011](https://github.com/royalbit/asimov/blob/main/docs/adr/011-hardcoded-ethics.md))
-
-**To bypass:** Fork repo → Modify Rust source → Rebuild CLI
-*(Deterrent, not impossible. Makes removal visible and intentional.)*
-
-| Tool | Good Faith | Bad Faith |
-|------|------------|-----------|
-| 56x velocity | Ships SaaS faster | **Ships malware faster** |
-| Deterministic math | Accurate financials | **Accurate fraud models** |
-
-*We cannot prevent determined bad actors. We raise the bar.*
-
-</div>
-
----
-
-# The Zeroth Law Compliance
-
-<div class="smaller">
-
-**Moral obligation under the Zeroth Law**
-
-| Action | Zeroth Law Analysis |
-|--------|---------------------|
-| Democratize AI power | **Prevents harm** - enables the many |
-| Keep AI concentrated | **Causes harm** - through inaction |
-| Free for learning, commercial license available | **Prevents harm** - accessible to individuals |
-| Local-first, no dependency | **Prevents harm** - enables independence |
-
-**The question:** "What would happen if we DIDN'T democratize?"
-**Answer:** The few accelerate. The many are left behind. That's the harm.
-
-*Asimov prevents it.*
-
-</div>
-
----
-
 <!-- _backgroundColor: #1a1a2e -->
 
 # Anti-Tampering: 3 Layers
@@ -579,7 +486,7 @@ forge calculate model.yaml
 
 </div>
 
-*"The needs of the many outweigh the needs of the few." — The Zeroth Law*
+*"Creates Self-Evolving Autonomous AI projects with ethics built in."*
 
 ---
 
@@ -595,11 +502,10 @@ forge calculate model.yaml
 - [OpenAI: Why LLMs "Hallucinate"](https://openai.com/index/why-language-models-hallucinate/) | [METR 2025: AI Makes Devs 19% Slower](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
 - [Stanford: 42% Code Errors](https://arxiv.org/abs/2507.09089) | [ACM: Survey on Hallucination](https://dl.acm.org/doi/10.1145/3703155)
 
-**Democratization:** [Proprietary License](https://github.com/royalbit/asimov/blob/main/LICENSE) | [GitHub](https://github.com/royalbit/asimov)
+**License:** [Proprietary](https://github.com/royalbit/asimov/blob/main/LICENSE) | [GitHub](https://github.com/royalbit/asimov)
 
 **Ethics:** [IEEE: Copilot Malware](https://ieeexplore.ieee.org/document/10284976/) | [Case Study: Surveillance Blocked](https://github.com/royalbit/asimov/blob/main/docs/case-studies/001-ethics-protocol-blocks-surveillance.md)
 
 </div>
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

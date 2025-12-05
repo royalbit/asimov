@@ -194,4 +194,3 @@ Hooks can be tested manually:
 - **v4.1.7** (2025-11-29): Fixed schema - `.claude/settings.json`, `PreCompact` event
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

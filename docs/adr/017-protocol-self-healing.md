@@ -201,4 +201,3 @@ asimov validate --update-checksums
 - [RoyalBit Asimov Specification](../SPECIFICATION.md)
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -162,4 +162,3 @@ The self-healing protocol (re-read from disk on confusion) is **NOT replaced** b
 - [warmup.yaml self_healing section](../../warmup.yaml) - The actual implementation
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -2,9 +2,6 @@
 #
 # For code migration projects (COBOL→Java, Python2→Python3, etc.)
 # Key principle: "Migration complete" = "functionally equivalent" not just "compiles"
-#
-# The Zeroth Law: Democratize enterprise modernization.
-# Solo founder + Claude = Accenture capability.
 
 modification_rules:
   immutable_without: "2 human co-signers with public justification"

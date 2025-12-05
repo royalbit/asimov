@@ -86,4 +86,3 @@ Create an **Exhaustive Execution Protocol** that:
 - [Claude 4 System Card](https://www.anthropic.com/claude-4-system-card)
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

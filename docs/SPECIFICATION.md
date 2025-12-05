@@ -1245,4 +1245,3 @@ See [ADR-013](adr/013-self-healing-not-replaced.md) for full analysis.
 - [ADR-001: Green Coding By Default](adr/001-green-coding-by-default.md)
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

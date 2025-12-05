@@ -82,31 +82,6 @@ Deterrent, not lock. Makes tampering visible and intentional.
 
 ---
 
-## The Zeroth Law (Qowat Milat — Absolute Candor)
-
-> *"A robot may not harm humanity, or, by inaction, allow humanity to come to harm."*
-> — Isaac Asimov, The Zeroth Law (1985)
-
-**The democratization:**
-- 50-100x velocity accessible to everyone, not just well-funded organizations
-- Developer in Lagos = Developer in San Francisco
-- Solo founders compete with funded teams
-- Student ships production code before graduating
-
-**Who gains access:**
-- Solo founder anywhere → Same capability as $500K team
-- Student in Mumbai → Production skills before graduating
-- Bootstrapper globally → Competes without capital
-
-**Asimov's role:**
-- Democratize AI power (commercial licenses available)
-- Ethics guardrails (Three Laws hardcoded)
-- Sustainability (green coding, 99.6% carbon reduction)
-
-*"The needs of the many outweigh the needs of the few."*
-
----
-
 ## Quick Facts
 
 | Item | Detail |
@@ -136,22 +111,3 @@ Deterrent, not lock. Makes tampering visible and intentional.
 **Website:** royalbit.com
 
 ---
-
-## The Bottom Line
-
-**The Zeroth Law:** Allowing AI power to concentrate in the few while the many are left behind is **harm through inaction**.
-
-Asimov democratizes AI power:
-- Commercial licenses available
-- Local-first = No dependency
-- 1 human + AI = 50-person team capability
-
-**The question was never "will AI change work?"**
-**The question is: "Who gets access to AI power?"**
-
-**Asimov's answer: Everyone.**
-
-*"The needs of the many outweigh the needs of the few."*
-
----
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

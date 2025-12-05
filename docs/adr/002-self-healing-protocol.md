@@ -199,4 +199,3 @@ grep -q "claude_checkpoint" .gitignore && echo "✓ checkpoint in .gitignore"
 - [Setup Guide](../SETUP.md) - Per-project-type setup
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

@@ -148,4 +148,3 @@ The real optimization is **subscription tier** and **context window size**.
 - [Claude Code Pricing](https://claudelog.com/claude-code-pricing/)
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

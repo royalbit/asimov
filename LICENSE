@@ -1,6 +1,9 @@
 ROYALBIT ASIMOV - PROPRIETARY LICENSE
 
-Copyright (c) 2024-2025 RoyalBit Inc. All Rights Reserved.
+Copyright (c) 2025 RoyalBit Inc. All Rights Reserved.
+
+This is a research and development project. The software is not available
+for commercial use or distribution.
 
 PERMITTED
 
@@ -13,7 +16,7 @@ non-commercial educational purposes only, provided:
 - You do not modify, distribute, sublicense, or create derivative works
 - You may clone this repository solely for local viewing
 
-ALL OTHER USES REQUIRE A COMMERCIAL LICENSE.
+ALL OTHER USES ARE PROHIBITED.
 
 NO WARRANTY
 
@@ -22,5 +25,3 @@ ANY KIND, EXPRESS OR IMPLIED. ROYALBIT INC. SHALL NOT BE LIABLE FOR ANY
 DAMAGES ARISING FROM THEIR USE.
 
 Governing law: Quebec, Canada. Jurisdiction: Montreal.
-
-Commercial license: https://github.com/royalbit/asimov/issues

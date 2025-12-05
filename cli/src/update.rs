@@ -1,7 +1,6 @@
 //! Self-update functionality for RoyalBit Asimov CLI
 //!
 //! Checks GitHub Releases for new versions and updates the binary in-place.
-//! The needs of the many: users stay current without manual intervention.
 
 use std::env;
 use std::fs;

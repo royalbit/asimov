@@ -296,4 +296,3 @@ That's what makes it an experiment.
 *This document is part of the RoyalBit Asimov Suite. Proprietary License.*
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

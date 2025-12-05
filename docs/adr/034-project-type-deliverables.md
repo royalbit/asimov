@@ -115,4 +115,3 @@ Or auto-append if `deliverables_template` exists.
 - Current templates in `cli/src/templates/`
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

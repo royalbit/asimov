@@ -8,17 +8,9 @@
 >
 > Claude provides the velocity. Asimov provides the guardrails.
 
-> *"A robot may not harm humanity, or, by inaction, allow humanity to come to harm."*
-> — Isaac Asimov, The Zeroth Law (1985)
-
-> *"The needs of the many outweigh the needs of the few."*
-> — Spock, Star Trek II: The Wrath of Khan (1982)
-
 > *"The Three Laws were science fiction for 80 years. Now they're source code."*
 
-**The Mission: Democratize AI Power.**
-
-AI capabilities shouldn't be reserved for well-funded organizations. RoyalBit Asimov enables solo founders, small teams, and developers globally to operate at enterprise scale — ethically, sustainably, and independently.
+**R&D Project:** Self-Evolving Autonomous AI with ethics built in.
 
 **Claude Opus 4.5 and Sonnet 4.5 deliver 50-100x velocity.** That's Claude, not Asimov. ([Anthropic](https://www.anthropic.com/news/claude-opus-4-5))
 
@@ -52,7 +44,7 @@ Each project initialized with `asimov init` becomes a Self-Evolving Autonomous A
 
 ---
 
-### The Journey: 10 Phases in 12 Days
+### The Journey: 9 Phases in 12 Days
 
 | Phase | Date | What Happened |
 |-------|------|---------------|
@@ -64,10 +56,9 @@ Each project initialized with `asimov init` becomes a Self-Evolving Autonomous A
 | 6 | Nov 26-27, 2025 | **Asimov** - Named after Isaac Asimov's Three Laws (1942). First Law = do no harm. Second = obey humans. Third = self-preserve. |
 | 7 | Nov 27-28, 2025 | **Protocol Suite** - Not one protocol, eight. Ethics, freshness, sycophancy, green, sprint, migrations, exhaustive. |
 | 8 | Nov 28-29, 2025 | **Inaction Principle** - Asimov's First Law has two halves: "do no harm" AND "allow no harm through inaction". |
-| 9 | Nov 29-30, 2025 | **Self-Evolving AI** - The protocol improves itself. Forge built Asimov → Asimov now builds Forge. |
-| 10 | Nov 30-Dec 4, 2025 | **Zeroth Law** - "The needs of the many outweigh the needs of the few." Democratize AI power. |
+| 9 | Nov 29-Dec 4, 2025 | **Self-Evolving AI** - The protocol improves itself. Forge built Asimov → Asimov now builds Forge. |
 
-**12 days. 10 phases. 62 releases. 65,000+ LOC. 1 human + 1 AI.**
+**12 days. 9 phases. 62 releases. 65,000+ LOC. 1 human + 1 AI.**
 
 📖 [Full Origin Story](docs/ORIGIN_STORY.md)
 

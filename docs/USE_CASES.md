@@ -288,4 +288,3 @@ If the protocol displaces your job, it also enables your next chapter:
 *Built with the [RoyalBit Asimov](https://github.com/royalbit/asimov)*
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

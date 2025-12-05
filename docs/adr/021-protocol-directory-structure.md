@@ -161,4 +161,3 @@ This is a **major breaking change**: v6.0.0
 - [ADR-014: Ethics File Separation](014-ethics-file-separation.md)
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

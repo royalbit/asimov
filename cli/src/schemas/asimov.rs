@@ -244,15 +244,6 @@ pub const ASIMOV_SCHEMA: &str = r#"{
         }
       }
     },
-    "zeroth_law": {
-      "type": "object",
-      "description": "Harm to humanity supersedes harm to individuals (implicit)",
-      "properties": {
-        "status": { "type": "string", "enum": ["IMPLICIT", "REQUIRED", "OPTIONAL"] },
-        "description": { "type": "string" },
-        "note": { "type": "string" }
-      }
-    },
     "validation": {
       "type": "object",
       "properties": {

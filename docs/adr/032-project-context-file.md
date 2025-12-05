@@ -235,4 +235,3 @@ ADR-007's checkpoint mechanism is fully deprecated:
 - [ADR-002: Self-Healing Protocol](002-self-healing-protocol.md) - Original warmup.yaml design
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

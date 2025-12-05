@@ -122,4 +122,3 @@ From the final design:
 - [SPECIFICATION.md](../SPECIFICATION.md) - Updated with self-healing behavior
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

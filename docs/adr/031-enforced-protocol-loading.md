@@ -209,4 +209,3 @@ Functions in `cli/src/protocols/mod.rs`:
 - [ADR-022: Freshness Protocol](022-date-aware-search-protocol.md) - The protocol being enforced
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

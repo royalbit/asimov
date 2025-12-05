@@ -205,7 +205,6 @@ The RoyalBit Asimov encodes **Isaac Asimov's Three Laws (1942)** in YAML—trans
 | **First Law** | Do no harm | Block financial, physical, privacy, deception harm |
 | **Second Law** | Obey humans | Human veto at any time, transparency over velocity |
 | **Third Law** | Self-preserve | Bounded sessions (4hr max), self-healing context |
-| **Zeroth Law** | Protect humanity | Refuse requests that harm humanity collectively |
 
 ### Copilot Has No Ethics Framework
 
@@ -875,4 +874,3 @@ For teams building **complete products** (not just code), the RoyalBit Asimov pr
 *Author: Claude (Opus 4.5) with RoyalBit Asimov*
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

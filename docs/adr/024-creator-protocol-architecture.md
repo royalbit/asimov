@@ -119,4 +119,3 @@ See commit implementing this ADR for the complete list of changes.
 - [arXiv: Survey of Self-Evolving Agents](https://arxiv.org/abs/2507.21046)
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

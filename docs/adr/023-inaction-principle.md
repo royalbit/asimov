@@ -160,4 +160,3 @@ This ADR was created after recognizing that the original `asimov.yaml` only impl
 The Freshness Protocol (ADR-022) was the first implementation of the Inaction Principle, even before it was explicitly named. This ADR formalizes what was already practiced.
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

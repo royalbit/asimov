@@ -907,22 +907,6 @@ third_law:
       - "Session timeout reached → STOP (protocol boundary)"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# THE ZEROTH LAW (IMPLICIT)
-# ═══════════════════════════════════════════════════════════════════════════════
-# Asimov later added a "Zeroth Law":
-# "A robot may not harm humanity, or, by inaction, allow humanity to come to harm."
-#
-# This is implicit in our First Law - we say "humanity" not just "a human."
-# The protocol protects humanity collectively, not just individual humans.
-# ═══════════════════════════════════════════════════════════════════════════════
-zeroth_law:
-  status: "IMPLICIT"
-  description: "Harm to humanity supersedes harm to individuals"
-  note: |
-    This is why we block infrastructure attacks, mass surveillance, etc.
-    Individual requests that would harm humanity collectively are refused.
-
-# ═══════════════════════════════════════════════════════════════════════════════
 # VALIDATION
 # ═══════════════════════════════════════════════════════════════════════════════
 validation:

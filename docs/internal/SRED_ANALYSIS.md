@@ -221,4 +221,3 @@ First empirical methodology for measuring autonomous AI development velocity.
 *This analysis is for SR&ED claim preparation purposes. Consult a qualified SR&ED consultant for filing.*
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*

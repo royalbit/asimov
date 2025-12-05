@@ -185,4 +185,3 @@ Building these would waste effort duplicating Claude Code's native features.
 - [ADR-003: Self-Healing Based on Real Compaction Data](003-self-healing-real-compaction-data.md)
 
 ---
-*Documentation licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) - Copyright (c) 2024-2025 RoyalBit Inc.*
