@@ -42,14 +42,23 @@ release:
 
 # v9.3.0: Coding standards for Rust projects (ADR-041)
 coding_standards:
-  file_size:
-    soft_limit: 1000
-    hard_limit: 1500
-    note: "lines per file - split if exceeding"
-  coverage: "100%"
-  linting: "clippy pedantic, zero warnings"
-  tests: "colocated with code (#[cfg(test)] mod tests)"
-  formatting: "rustfmt (cargo fmt)"
+  code:
+    file_size:
+      soft_limit: 1000
+      hard_limit: 1500
+      note: "lines per file - split if exceeding"
+    coverage: "100%"
+    linting: "clippy pedantic, zero warnings"
+    tests: "colocated with code (#[cfg(test)] mod tests)"
+    formatting: "rustfmt (cargo fmt)"
+  documentation:
+    linting: "markdownlint-cli2"
+    style:
+      - "ATX-style headers (#)"
+      - "One sentence per line (for git diffs)"
+  architecture:
+    decisions: "ADR format in docs/adr/"
+    diagrams: "Mermaid preferred (text-based, version controlled)"
 
 # v8.8.0: Standard deliverables for coding projects (ADR-034)
 deliverables_template:

@@ -4,26 +4,27 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "9.3.0"
+  version: "9.4.0"
   status: in_progress
-  summary: "Coding Standards Protocol"
-  goal: Quality
-  priority: CRITICAL
+  summary: "Unified Coding Standards for Programming Projects"
+  goal: "Programming templates include doc + arch standards (not just code)"
+  priority: HIGH
   deliverables:
-    - "[x] ADR-041: Coding Standards Protocol - system design"
-    - "[x] coding-standards.json - generic protocol (warmup hook)"
-    - "[x] Project templates: add coding_standards section per type"
-    - "[x] New project type: arch (architecture projects)"
-    - "[x] CLI: load coding-standards.json in warmup"
-    - "[x] Tests: 343 lib + 59 main + 53 e2e = 455 tests passing"
+    - "[x] Update Rust template: add documentation + architecture sections"
+    - "[x] Update Go template: add documentation + architecture sections"
+    - "[x] Update Flutter template: add documentation + architecture sections"
+    - "[x] Update Python template: add documentation + architecture sections"
+    - "[x] Update Node template: add documentation + architecture sections"
+    - "[x] Use markdownlint-cli2 for doc linting (preferred)"
+    - "[x] Tests: 343 lib + 59 main + 53 e2e = 456 tests passing"
 
 next: []
 
 previous:
-  version: "9.2.3"
+  version: "9.3.0"
   status: released
-  summary: "Fix unconditional migrations protocol loading"
-  goal: "migrations.json should only load for migration-type projects, not all projects"
+  summary: "Coding Standards Protocol"
+  goal: Quality
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"

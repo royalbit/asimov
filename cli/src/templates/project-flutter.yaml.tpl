@@ -44,15 +44,24 @@ platform:
 
 # v9.3.0: Coding standards for Flutter projects (ADR-041)
 coding_standards:
-  file_size:
-    soft_limit: 400
-    hard_limit: 800
-    note: "lines per file - split widgets if exceeding"
-  coverage: "80%+"
-  linting: "dart analyze, very_good_analysis recommended"
-  tests: "widget tests, unit tests, integration tests"
-  formatting: "dart format"
-  performance: "60fps minimum, const constructors"
+  code:
+    file_size:
+      soft_limit: 400
+      hard_limit: 800
+      note: "lines per file - split widgets if exceeding"
+    coverage: "80%+"
+    linting: "dart analyze, very_good_analysis recommended"
+    tests: "widget tests, unit tests, integration tests"
+    formatting: "dart format"
+    performance: "60fps minimum, const constructors"
+  documentation:
+    linting: "markdownlint-cli2"
+    style:
+      - "ATX-style headers (#)"
+      - "One sentence per line (for git diffs)"
+  architecture:
+    decisions: "ADR format in docs/adr/"
+    diagrams: "Mermaid preferred (text-based, version controlled)"
 
 # v8.8.0: Standard deliverables for coding projects (ADR-034)
 deliverables_template:
