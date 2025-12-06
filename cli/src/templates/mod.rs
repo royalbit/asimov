@@ -26,6 +26,7 @@ pub enum ProjectType {
     Flutter,
     Docs,
     Migration,
+    Arch,
 }
 
 impl fmt::Display for ProjectType {
@@ -39,6 +40,7 @@ impl fmt::Display for ProjectType {
             ProjectType::Flutter => write!(f, "flutter"),
             ProjectType::Docs => write!(f, "docs"),
             ProjectType::Migration => write!(f, "migration"),
+            ProjectType::Arch => write!(f, "arch"),
         }
     }
 }
@@ -54,10 +56,11 @@ impl std::str::FromStr for ProjectType {
             "node" | "nodejs" | "js" | "javascript" => Ok(ProjectType::Node),
             "go" | "golang" => Ok(ProjectType::Go),
             "flutter" | "dart" => Ok(ProjectType::Flutter),
-            "docs" | "documentation" | "arch" | "architecture" => Ok(ProjectType::Docs),
+            "docs" | "documentation" => Ok(ProjectType::Docs),
             "migration" | "migrations" => Ok(ProjectType::Migration),
+            "arch" | "architecture" => Ok(ProjectType::Arch),
             _ => Err(format!(
-                "Unknown project type: '{}'. Available: generic, rust, python, node, go, flutter, docs, migration",
+                "Unknown project type: '{}'. Available: generic, rust, python, node, go, flutter, docs, migration, arch",
                 s
             )),
         }
@@ -84,6 +87,14 @@ pub fn detect_project_type(dir: &Path) -> ProjectType {
     if dir.join("package.json").exists() {
         return ProjectType::Node;
     }
+    // Check for arch project (ADR-041)
+    // c4-models/ OR decisions/ OR (diagrams/ AND ARCHITECTURE*.md)
+    if dir.join("c4-models").is_dir() || dir.join("decisions").is_dir() {
+        return ProjectType::Arch;
+    }
+    if dir.join("diagrams").is_dir() && has_architecture_file(dir) {
+        return ProjectType::Arch;
+    }
     // Check for docs project (only markdown files in certain patterns)
     if dir.join("docs").is_dir() || dir.join("README.md").exists() {
         // Check if there are no code files, only markdown
@@ -96,6 +107,20 @@ pub fn detect_project_type(dir: &Path) -> ProjectType {
         }
     }
     ProjectType::Generic
+}
+
+/// Check if directory has an ARCHITECTURE*.md file
+fn has_architecture_file(dir: &Path) -> bool {
+    if let Ok(entries) = std::fs::read_dir(dir) {
+        for entry in entries.flatten() {
+            let name = entry.file_name();
+            let name_str = name.to_string_lossy();
+            if name_str.starts_with("ARCHITECTURE") && name_str.ends_with(".md") {
+                return true;
+            }
+        }
+    }
+    false
 }
 
 #[cfg(test)]
@@ -169,6 +194,7 @@ mod tests {
         assert_eq!(format!("{}", ProjectType::Flutter), "flutter");
         assert_eq!(format!("{}", ProjectType::Docs), "docs");
         assert_eq!(format!("{}", ProjectType::Migration), "migration");
+        assert_eq!(format!("{}", ProjectType::Arch), "arch");
     }
 
     #[test]
@@ -288,5 +314,88 @@ mod tests {
             detect_project_type(temp_dir.path()),
             ProjectType::Docs
         ));
+    }
+
+    // v9.3.0: Arch project type tests
+
+    #[test]
+    fn test_project_type_arch_from_str() {
+        assert!(matches!(
+            "arch".parse::<ProjectType>(),
+            Ok(ProjectType::Arch)
+        ));
+        assert!(matches!(
+            "architecture".parse::<ProjectType>(),
+            Ok(ProjectType::Arch)
+        ));
+    }
+
+    #[test]
+    fn test_project_type_arch_equality() {
+        assert_eq!(ProjectType::Arch, ProjectType::Arch);
+        assert_ne!(ProjectType::Arch, ProjectType::Docs);
+    }
+
+    #[test]
+    fn test_detect_project_type_arch_c4_models() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        std::fs::create_dir(temp_dir.path().join("c4-models")).unwrap();
+        assert!(matches!(
+            detect_project_type(temp_dir.path()),
+            ProjectType::Arch
+        ));
+    }
+
+    #[test]
+    fn test_detect_project_type_arch_decisions() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        std::fs::create_dir(temp_dir.path().join("decisions")).unwrap();
+        assert!(matches!(
+            detect_project_type(temp_dir.path()),
+            ProjectType::Arch
+        ));
+    }
+
+    #[test]
+    fn test_detect_project_type_arch_diagrams_with_architecture() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        std::fs::create_dir(temp_dir.path().join("diagrams")).unwrap();
+        std::fs::write(temp_dir.path().join("ARCHITECTURE_OVERVIEW.md"), "# Arch").unwrap();
+        assert!(matches!(
+            detect_project_type(temp_dir.path()),
+            ProjectType::Arch
+        ));
+    }
+
+    #[test]
+    fn test_detect_project_type_arch_priority_over_docs() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        std::fs::create_dir(temp_dir.path().join("docs")).unwrap();
+        std::fs::create_dir(temp_dir.path().join("decisions")).unwrap();
+        // Arch markers take priority over docs markers
+        assert!(matches!(
+            detect_project_type(temp_dir.path()),
+            ProjectType::Arch
+        ));
+    }
+
+    #[test]
+    fn test_has_architecture_file_true() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        std::fs::write(temp_dir.path().join("ARCHITECTURE.md"), "# Test").unwrap();
+        assert!(has_architecture_file(temp_dir.path()));
+    }
+
+    #[test]
+    fn test_has_architecture_file_false() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        std::fs::write(temp_dir.path().join("README.md"), "# Test").unwrap();
+        assert!(!has_architecture_file(temp_dir.path()));
+    }
+
+    #[test]
+    fn test_has_architecture_file_empty_dir() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        assert!(!has_architecture_file(temp_dir.path()));
     }
 }

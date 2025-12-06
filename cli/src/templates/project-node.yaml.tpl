@@ -38,6 +38,17 @@ environment:
   package_manager: "pnpm for efficient installs"
   node_version: "20+"
 
+# v9.3.0: Coding standards for Node.js projects (ADR-041)
+coding_standards:
+  file_size:
+    soft_limit: 400
+    hard_limit: 800
+    note: "lines per file - split if exceeding"
+  coverage: "80%+"
+  linting: "ESLint, TypeScript strict mode"
+  tests: "Jest or Vitest, colocated or tests/ directory"
+  formatting: "Prettier"
+
 # v8.8.0: Standard deliverables for coding projects (ADR-034)
 deliverables_template:
   - "[ ] Unit tests pass (npm test)"

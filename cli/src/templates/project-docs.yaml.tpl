@@ -42,6 +42,17 @@ adr_format:
     ## Decision
     ## Consequences
 
+# v9.3.0: Coding standards for documentation projects (ADR-041)
+coding_standards:
+  file_size:
+    soft_limit: 500
+    note: "lines per markdown file - keep docs focused"
+  linting: "markdownlint, yamllint for configs"
+  diagrams: "Mermaid preferred (text-based, version controlled)"
+  style:
+    - "ATX-style headers (#)"
+    - "One sentence per line (for git diffs)"
+
 # v8.8.0: Standard deliverables for documentation projects (ADR-034)
 deliverables_template:
   - "[ ] Content complete"

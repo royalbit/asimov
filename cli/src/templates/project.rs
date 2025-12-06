@@ -11,6 +11,7 @@ const PROJECT_GO_TEMPLATE: &str = include_str!("project-go.yaml.tpl");
 const PROJECT_FLUTTER_TEMPLATE: &str = include_str!("project-flutter.yaml.tpl");
 const PROJECT_DOCS_TEMPLATE: &str = include_str!("project-docs.yaml.tpl");
 const PROJECT_GENERIC_TEMPLATE: &str = include_str!("project-generic.yaml.tpl");
+const PROJECT_ARCH_TEMPLATE: &str = include_str!("project-arch.yaml.tpl");
 
 /// Generate a project.yaml template for project-specific configuration (ADR-032)
 pub fn project_template(
@@ -25,6 +26,7 @@ pub fn project_template(
         ProjectType::Go => PROJECT_GO_TEMPLATE,
         ProjectType::Flutter => PROJECT_FLUTTER_TEMPLATE,
         ProjectType::Docs => PROJECT_DOCS_TEMPLATE,
+        ProjectType::Arch => PROJECT_ARCH_TEMPLATE,
         ProjectType::Generic | ProjectType::Migration => PROJECT_GENERIC_TEMPLATE,
     };
 
@@ -82,6 +84,13 @@ flutter build apk             # Build Android
 asimov lint-docs .           # Check markdown
 asimov lint-docs --fix .     # Fix markdown
 markdownlint '**/*.md'               # Standard lint
+```"#
+        }
+        ProjectType::Arch => {
+            r#"```bash
+asimov lint-docs .           # Check markdown
+asimov lint-docs --fix .     # Fix markdown
+# Verify diagrams render correctly
 ```"#
         }
         ProjectType::Generic | ProjectType::Migration => {
@@ -142,6 +151,7 @@ mod tests {
             ProjectType::Docs,
             ProjectType::Generic,
             ProjectType::Migration,
+            ProjectType::Arch,
         ];
         for pt in types {
             let template = project_template("test", "tagline", pt);
@@ -167,6 +177,7 @@ mod tests {
             ProjectType::Docs,
             ProjectType::Generic,
             ProjectType::Migration,
+            ProjectType::Arch,
         ];
         for pt in types {
             let template = claude_md_template("test", pt);

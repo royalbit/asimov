@@ -42,6 +42,18 @@ platform:
   cupertino_first: "CupertinoPageScaffold, CupertinoNavigationBar, CupertinoButton"
   material_fallback: "Only when Cupertino unavailable"
 
+# v9.3.0: Coding standards for Flutter projects (ADR-041)
+coding_standards:
+  file_size:
+    soft_limit: 400
+    hard_limit: 800
+    note: "lines per file - split widgets if exceeding"
+  coverage: "80%+"
+  linting: "dart analyze, very_good_analysis recommended"
+  tests: "widget tests, unit tests, integration tests"
+  formatting: "dart format"
+  performance: "60fps minimum, const constructors"
+
 # v8.8.0: Standard deliverables for coding projects (ADR-034)
 deliverables_template:
   - "[ ] Unit tests pass (flutter test)"

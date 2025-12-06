@@ -10,12 +10,12 @@ current:
   goal: Quality
   priority: CRITICAL
   deliverables:
-    - "[ ] ADR-041: Coding Standards Protocol - system design"
-    - "[ ] coding-standards.json - generic protocol (warmup hook)"
-    - "[ ] Project templates: add coding_standards section per type"
-    - "[ ] New project type: arch (architecture projects)"
-    - "[ ] CLI: load coding-standards.json in warmup"
-    - "[ ] Tests: 100% coverage on new code"
+    - "[x] ADR-041: Coding Standards Protocol - system design"
+    - "[x] coding-standards.json - generic protocol (warmup hook)"
+    - "[x] Project templates: add coding_standards section per type"
+    - "[x] New project type: arch (architecture projects)"
+    - "[x] CLI: load coding-standards.json in warmup"
+    - "[x] Tests: 343 lib + 59 main + 53 e2e = 455 tests passing"
 
 next: []
 

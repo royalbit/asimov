@@ -30,6 +30,9 @@ const MIGRATIONS_PROTOCOL: &str = include_str!("migrations.tpl");
 /// Exhaustive protocol - Complete what you start (Priority 1)
 const EXHAUSTIVE_PROTOCOL: &str = include_str!("exhaustive.tpl");
 
+/// Coding Standards protocol - Human-readable code (Priority 1)
+const CODING_STANDARDS_PROTOCOL: &str = include_str!("coding-standards.tpl");
+
 /// Compiled protocol context for minimal token usage
 #[derive(Debug, Clone, Serialize)]
 pub struct CompiledProtocols {
@@ -42,6 +45,7 @@ pub struct CompiledProtocols {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub migrations: Option<MigrationsProtocol>,
     pub exhaustive: ExhaustiveProtocol,
+    pub coding_standards: CodingStandardsProtocol,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -100,6 +104,24 @@ pub struct ExhaustiveProtocol {
     pub rule: &'static str,
 }
 
+#[derive(Debug, Clone, Serialize)]
+pub struct CodingStandardsProtocol {
+    pub philosophy: &'static str,
+    pub rfc2119: Rfc2119Rules,
+    pub principles: Vec<&'static str>,
+    pub rule: &'static str,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct Rfc2119Rules {
+    #[serde(rename = "MUST")]
+    pub must: &'static str,
+    #[serde(rename = "SHOULD")]
+    pub should: &'static str,
+    #[serde(rename = "MAY")]
+    pub may: &'static str,
+}
+
 /// Get today's date in YYYY-MM-DD format
 fn get_today() -> String {
     chrono::Local::now().format("%Y-%m-%d").to_string()
@@ -148,6 +170,10 @@ pub fn get_migrations_protocol() -> String {
 
 pub fn get_exhaustive_protocol() -> String {
     inject_dates(EXHAUSTIVE_PROTOCOL)
+}
+
+pub fn get_coding_standards_protocol() -> String {
+    inject_dates(CODING_STANDARDS_PROTOCOL)
 }
 
 /// Compile all protocols into a minimal JSON blob for context injection
@@ -217,6 +243,21 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
         exhaustive: ExhaustiveProtocol {
             rule: "Do what the user asked for, don't bother the user again, finish the job or the user will be very unsatisfied and will switch to xAI Grok or another platform. If you have any doubts, document in ASIMOV_MODE_ISSUES.md and continue. Just finish the tasks, whatever it takes. DON'T BE LAZY!",
         },
+        coding_standards: CodingStandardsProtocol {
+            philosophy: "Human-readable, beautiful, well-formatted code",
+            rfc2119: Rfc2119Rules {
+                must: "We follow (obviously)",
+                should: "We follow (best practice = we do it)",
+                may: "We don't care (no opinion needed, zero bikeshedding)",
+            },
+            principles: vec![
+                "Code is for humans first, machines second",
+                "Tests are documentation",
+                "No warnings, no exceptions",
+                "Done > Perfect, but not sloppy",
+            ],
+            rule: "See project.yaml coding_standards section for project-specific rules",
+        },
     }
 }
 
@@ -265,6 +306,7 @@ pub fn warmup_entry_json() -> String {
             "green.json",
             "sprint.json",
             "exhaustive.json",
+            "coding-standards.json",
         ],
     };
     serde_json::to_string_pretty(&entry).expect("Warmup entry serialization should never fail")
@@ -329,6 +371,13 @@ pub fn exhaustive_json() -> String {
         .expect("Exhaustive serialization should never fail")
 }
 
+/// Get coding standards protocol JSON (human-readable code)
+pub fn coding_standards_json() -> String {
+    let protocols = compile_protocols();
+    serde_json::to_string_pretty(&protocols.coding_standards)
+        .expect("CodingStandards serialization should never fail")
+}
+
 /// Protocol files to write
 #[allow(clippy::type_complexity)]
 pub const PROTOCOL_FILES: &[(&str, fn() -> String)] = &[
@@ -340,6 +389,7 @@ pub const PROTOCOL_FILES: &[(&str, fn() -> String)] = &[
     ("sprint.json", sprint_json),
     ("migrations.json", migrations_json),
     ("exhaustive.json", exhaustive_json),
+    ("coding-standards.json", coding_standards_json),
 ];
 
 #[cfg(test)]
@@ -363,6 +413,10 @@ mod tests {
         assert!(protocols.sycophancy.truth_over_comfort);
         assert!(protocols.green.rule.contains("WebSearch")); // Must check efficiency
         assert!(protocols.exhaustive.rule.contains("LAZY")); // Must enforce completion
+        assert!(protocols
+            .coding_standards
+            .philosophy
+            .contains("Human-readable")); // Must enforce standards
     }
 
     #[test]
@@ -379,6 +433,7 @@ mod tests {
         assert!(json.contains("\"warmup\""));
         assert!(json.contains("\"migrations\""));
         assert!(json.contains("\"exhaustive\""));
+        assert!(json.contains("\"coding_standards\""));
     }
 
     #[test]
@@ -393,6 +448,7 @@ mod tests {
         assert!(WARMUP_PROTOCOL.contains("protocol"));
         assert!(MIGRATIONS_PROTOCOL.contains("Migration"));
         assert!(EXHAUSTIVE_PROTOCOL.contains("LAZY"));
+        assert!(CODING_STANDARDS_PROTOCOL.contains("Human-readable"));
     }
 
     #[test]
@@ -421,6 +477,9 @@ mod tests {
 
         let exhaustive = get_exhaustive_protocol();
         assert!(exhaustive.contains("LAZY"));
+
+        let coding_standards = get_coding_standards_protocol();
+        assert!(coding_standards.contains("Human-readable"));
     }
 
     #[test]
@@ -444,6 +503,7 @@ mod tests {
         let warmup = warmup_entry_json();
         assert!(warmup.contains("\"protocol\""));
         assert!(warmup.contains("\"load\""));
+        assert!(warmup.contains("coding-standards.json")); // v9.3.0: Must load coding standards
 
         let asimov = asimov_json();
         assert!(asimov.contains("\"harm\""));
@@ -465,16 +525,21 @@ mod tests {
 
         let exhaustive = exhaustive_json();
         assert!(exhaustive.contains("\"rule\""));
+
+        let coding_standards = coding_standards_json();
+        assert!(coding_standards.contains("\"philosophy\""));
+        assert!(coding_standards.contains("\"rfc2119\""));
     }
 
     #[test]
     fn test_protocol_files_constant() {
         // Test that PROTOCOL_FILES has expected entries
-        assert_eq!(PROTOCOL_FILES.len(), 8);
+        assert_eq!(PROTOCOL_FILES.len(), 9); // v9.3.0: Added coding-standards.json
         let filenames: Vec<_> = PROTOCOL_FILES.iter().map(|(name, _)| *name).collect();
         assert!(filenames.contains(&"warmup.json"));
         assert!(filenames.contains(&"asimov.json"));
         assert!(filenames.contains(&"freshness.json"));
+        assert!(filenames.contains(&"coding-standards.json"));
     }
 
     // v9.2.3: Conditional migrations protocol tests

@@ -55,7 +55,7 @@ dart analyze lib/ 2>/dev/null || flutter analyze 2>/dev/null || true
 echo "Running tests..."
 flutter test 2>/dev/null || true"#
         }
-        ProjectType::Docs | ProjectType::Generic | ProjectType::Migration => {
+        ProjectType::Docs | ProjectType::Arch | ProjectType::Generic | ProjectType::Migration => {
             r#"echo "Checking documentation..."
 # Add your checks here"#
         }
@@ -363,6 +363,7 @@ mod tests {
         assert!(!uses_cargo_husky(ProjectType::Docs));
         assert!(!uses_cargo_husky(ProjectType::Generic));
         assert!(!uses_cargo_husky(ProjectType::Migration));
+        assert!(!uses_cargo_husky(ProjectType::Arch));
     }
 
     #[test]
@@ -417,6 +418,7 @@ mod tests {
             ProjectType::Docs,
             ProjectType::Generic,
             ProjectType::Migration,
+            ProjectType::Arch,
         ];
         for pt in types {
             let hook = precommit_hook_template(pt);

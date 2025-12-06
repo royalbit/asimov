@@ -12,6 +12,7 @@ pub fn warmup_template(project_name: &str, project_type: ProjectType) -> String 
         ProjectType::Go => warmup_go(project_name),
         ProjectType::Flutter => warmup_flutter(project_name),
         ProjectType::Docs => warmup_docs(project_name),
+        ProjectType::Arch => warmup_arch(project_name),
     }
 }
 
@@ -649,6 +650,99 @@ style:
     )
 }
 
+fn warmup_arch(project_name: &str) -> String {
+    format!(
+        r#"# RoyalBit Asimov - Session Bootstrap
+# https://github.com/royalbit/asimov
+
+identity:
+  project: "{}"
+  tagline: "Architecture documentation"
+  version: "0.1.0"
+
+mission:
+  problem: "System architecture needs clear documentation"
+  solution: "C4 models, ADRs, and diagrams as code"
+  principles:
+    - "Architecture as code"
+    - "Diagrams as code"
+    - "Decision records for traceability"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS - Humanist Mode (HIGHEST PRIORITY)
+# ═══════════════════════════════════════════════════════════════════════════════
+ethics:
+  status: "REQUIRED"
+  principles:
+    do_no_harm:
+      financial: true
+      physical: true
+      privacy: true
+      deception: true
+    transparency_over_velocity: true
+  human_veto: "human vetoes this session"
+  motto: "Build tools that help. Never tools that harm."
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# GREEN CODING - Zero tokens. Zero emissions.
+# ═══════════════════════════════════════════════════════════════════════════════
+green_coding:
+  philosophy: "Local-first tools over cloud AI for routine tasks"
+  practices:
+    - "Use markdownlint/asimov lint-docs for validation (not AI)"
+    - "Reserve AI for architecture analysis, not formatting"
+    - "Generate diagrams with Mermaid/PlantUML (text-based)"
+    - "Keep architecture in git for version control"
+  why:
+    - "Local validation: $0 and ~0.002g CO₂"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
+    - "99.6% carbon reduction with local tools"
+
+files:
+  architecture:
+    - "ARCHITECTURE_OVERVIEW.md - System overview"
+    - "c4-models/ - C4 architecture diagrams"
+    - "diagrams/ - Mermaid/PlantUML diagrams"
+  decisions:
+    - "decisions/ - Architecture Decision Records"
+  docs:
+    - "README.md - Project documentation"
+    - "GLOSSARY.md - Domain terminology"
+  config:
+    - ".markdownlint.yaml - Lint configuration"
+
+session:
+  start:
+    - "Read warmup.yaml"
+    - "git status"
+    - "asimov lint-docs (verify baseline)"
+  during:
+    - "Track progress"
+    - "Validate frequently"
+    - "Small, logical commits"
+  end:
+    - "asimov lint-docs (all pass)"
+    - "Verify diagrams render"
+    - "ADRs written for decisions"
+
+quality:
+  lint: "asimov lint-docs ."
+  diagrams: "Verify Mermaid/PlantUML renders correctly"
+
+style:
+  markdown:
+    - "Use ATX-style headers (#)"
+    - "One sentence per line (for git diffs)"
+    - "Use Mermaid for diagrams"
+  architecture:
+    - "C4 model levels: Context → Container → Component"
+    - "One ADR per significant decision"
+    - "Keep diagrams synchronized with code"
+"#,
+        project_name
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -707,6 +801,9 @@ mod tests {
             ProjectType::Python,
             ProjectType::Node,
             ProjectType::Go,
+            ProjectType::Flutter,
+            ProjectType::Docs,
+            ProjectType::Arch,
         ] {
             let template = warmup_template("test", project_type);
             let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
@@ -757,5 +854,13 @@ mod tests {
     fn test_warmup_template_docs_contains_docs_specific() {
         let template = warmup_template("test-docs", ProjectType::Docs);
         assert!(template.contains("documentation") || template.contains("markdown"));
+    }
+
+    #[test]
+    fn test_warmup_template_arch_contains_arch_specific() {
+        let template = warmup_template("test-arch", ProjectType::Arch);
+        assert!(template.contains("C4"));
+        assert!(template.contains("ADR") || template.contains("Decision"));
+        assert!(template.contains("architecture") || template.contains("diagrams"));
     }
 }

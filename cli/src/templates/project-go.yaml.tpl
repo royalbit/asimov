@@ -38,6 +38,17 @@ release:
   static_binary: "CGO_ENABLED=0 go build"
   compression: "UPX --best --lzma (optional)"
 
+# v9.3.0: Coding standards for Go projects (ADR-041)
+coding_standards:
+  file_size:
+    soft_limit: 500
+    hard_limit: 1000
+    note: "lines per file - split if exceeding"
+  coverage: "80%+"
+  linting: "golangci-lint (golint, errcheck, staticcheck)"
+  tests: "table-driven tests, *_test.go files"
+  formatting: "gofmt"
+
 # v8.8.0: Standard deliverables for coding projects (ADR-034)
 deliverables_template:
   - "[ ] Unit tests pass (go test ./...)"

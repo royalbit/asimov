@@ -37,6 +37,17 @@ environment:
   manager: "uv or pip-tools for fast installs"
   python_version: "3.11+"
 
+# v9.3.0: Coding standards for Python projects (ADR-041)
+coding_standards:
+  file_size:
+    soft_limit: 500
+    hard_limit: 1000
+    note: "lines per file - split if exceeding"
+  coverage: "90%+"
+  linting: "ruff, mypy strict (optional)"
+  tests: "pytest, colocated or tests/ directory"
+  formatting: "ruff format"
+
 # v8.8.0: Standard deliverables for coding projects (ADR-034)
 deliverables_template:
   - "[ ] Unit tests pass (pytest)"
