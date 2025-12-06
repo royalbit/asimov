@@ -4,7 +4,7 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "9.2.0"
+  version: "9.3.0"
   status: in_progress
   summary: "TBD"
   goal: TBD
@@ -14,10 +14,10 @@ current:
 next: []
 
 previous:
-  version: "9.1.0"
+  version: "9.2.1"
   status: released
-  summary: "Code Organization & Refactoring"
-  goal: Maintainability
+  summary: "Fix Update Command"
+  goal: Reliability
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"

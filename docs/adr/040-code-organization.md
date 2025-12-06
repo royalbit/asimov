@@ -15,13 +15,25 @@ RoyalBit follows Rust official guidelines **strictly**. The Rust Book states:
 
 ### RFC 2119 Interpretation
 
-In technical documentation, **"should"** means:
+In technical documentation ([RFC 2119](https://www.rfc-editor.org/rfc/rfc2119)):
 
 | Term | Meaning |
 |------|---------|
 | **MUST** | Absolute requirement |
-| **SHOULD** | Recommended - valid reasons may exist to ignore, but implications must be understood |
-| **MAY** | Optional |
+| **SHOULD** | Best practice - recommended, valid reasons may exist to ignore |
+| **MAY** | Optional - no opinion, take it or leave it |
+
+### RoyalBit Interpretation
+
+For RoyalBit projects, we interpret RFC 2119 as:
+
+| Term | RoyalBit Action |
+|------|-----------------|
+| **MUST** | We follow (obviously) |
+| **SHOULD** | We follow (best practice = we do it) |
+| **MAY** | We don't care (no opinion needed, zero bikeshedding) |
+
+**Why?** Best practices exist for a reason. Experts recommend them. We follow expert recommendations.
 
 ### RoyalBit Philosophy
 

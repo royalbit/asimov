@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.2.1] - 2025-12-06
+
+### Fix: Update Command GitHub API Parsing
+
+**Hotfix for self-update functionality.**
+
+#### Bug Fix
+- Fix: `asimov update` failed with "No binary for this platform" due to GitHub API response parsing
+- Root cause: 500-character window too small for GitHub's large `uploader` objects (~1500 chars)
+- Solution: Increased parsing window from 500 to 2500 characters in `find_asset_url()` and `find_checksums_url()`
+
+---
+
+## [9.2.0] - 2025-12-06
+
+### CI Improvements
+
+**Quality release.**
+
+#### CI/CD
+- Added test gate to Release workflow - releases blocked if tests fail
+- Expanded CI trigger paths for better coverage
+
+---
+
 ## [9.1.0] - 2025-12-06
 
 ### Code Organization & Refactoring

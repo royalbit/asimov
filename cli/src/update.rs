@@ -92,7 +92,8 @@ pub fn find_asset_url(body: &str, asset_name: &str) -> Option<String> {
         .or_else(|| body.find(&search_no_space));
     if let Some(pos) = pos {
         // Look for browser_download_url near this position
-        let chunk = &body[pos.saturating_sub(500)..body.len().min(pos + 500)];
+        // GitHub API has large uploader objects (~1500 chars) between name and browser_download_url
+        let chunk = &body[pos.saturating_sub(500)..body.len().min(pos + 2500)];
         extract_json_string(chunk, "browser_download_url").filter(|url| url.contains(asset_name))
     } else {
         None
@@ -105,7 +106,8 @@ pub fn find_checksums_url(body: &str) -> Option<String> {
         .find("\"name\": \"checksums.txt\"")
         .or_else(|| body.find("\"name\":\"checksums.txt\""));
     if let Some(pos) = pos {
-        let chunk = &body[pos.saturating_sub(500)..body.len().min(pos + 500)];
+        // GitHub API has large uploader objects (~1500 chars) between name and browser_download_url
+        let chunk = &body[pos.saturating_sub(500)..body.len().min(pos + 2500)];
         extract_json_string(chunk, "browser_download_url")
             .filter(|url| url.contains("checksums.txt"))
     } else {
