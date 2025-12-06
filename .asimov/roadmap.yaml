@@ -4,20 +4,19 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "9.3.0"
-  status: in_progress
-  summary: "TBD"
-  goal: TBD
-  priority: MEDIUM
+  version: "9.2.4"
+  status: planned
+  summary: "TBD - Next milestone"
+  goal: "Define next improvement"
   deliverables: []
 
 next: []
 
 previous:
-  version: "9.2.1"
+  version: "9.2.3"
   status: released
-  summary: "Fix Update Command"
-  goal: Reliability
+  summary: "Fix unconditional migrations protocol loading"
+  goal: "migrations.json should only load for migration-type projects, not all projects"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"

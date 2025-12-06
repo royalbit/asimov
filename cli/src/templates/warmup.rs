@@ -5,7 +5,7 @@ use super::ProjectType;
 /// Generate a starter warmup.yaml template
 pub fn warmup_template(project_name: &str, project_type: ProjectType) -> String {
     match project_type {
-        ProjectType::Generic => warmup_generic(project_name),
+        ProjectType::Generic | ProjectType::Migration => warmup_generic(project_name),
         ProjectType::Rust => warmup_rust(project_name),
         ProjectType::Python => warmup_python(project_name),
         ProjectType::Node => warmup_node(project_name),

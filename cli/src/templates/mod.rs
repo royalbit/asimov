@@ -15,7 +15,7 @@ pub use protocols::*;
 pub use warmup::*;
 
 /// Supported project types for template generation
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub enum ProjectType {
     #[default]
     Generic,
@@ -25,6 +25,7 @@ pub enum ProjectType {
     Go,
     Flutter,
     Docs,
+    Migration,
 }
 
 impl fmt::Display for ProjectType {
@@ -37,6 +38,7 @@ impl fmt::Display for ProjectType {
             ProjectType::Go => write!(f, "go"),
             ProjectType::Flutter => write!(f, "flutter"),
             ProjectType::Docs => write!(f, "docs"),
+            ProjectType::Migration => write!(f, "migration"),
         }
     }
 }
@@ -53,8 +55,9 @@ impl std::str::FromStr for ProjectType {
             "go" | "golang" => Ok(ProjectType::Go),
             "flutter" | "dart" => Ok(ProjectType::Flutter),
             "docs" | "documentation" | "arch" | "architecture" => Ok(ProjectType::Docs),
+            "migration" | "migrations" => Ok(ProjectType::Migration),
             _ => Err(format!(
-                "Unknown project type: '{}'. Available: generic, rust, python, node, go, flutter, docs",
+                "Unknown project type: '{}'. Available: generic, rust, python, node, go, flutter, docs, migration",
                 s
             )),
         }
@@ -165,6 +168,25 @@ mod tests {
         assert_eq!(format!("{}", ProjectType::Go), "go");
         assert_eq!(format!("{}", ProjectType::Flutter), "flutter");
         assert_eq!(format!("{}", ProjectType::Docs), "docs");
+        assert_eq!(format!("{}", ProjectType::Migration), "migration");
+    }
+
+    #[test]
+    fn test_project_type_migration_from_str() {
+        assert!(matches!(
+            "migration".parse::<ProjectType>(),
+            Ok(ProjectType::Migration)
+        ));
+        assert!(matches!(
+            "migrations".parse::<ProjectType>(),
+            Ok(ProjectType::Migration)
+        ));
+    }
+
+    #[test]
+    fn test_project_type_equality() {
+        assert_eq!(ProjectType::Migration, ProjectType::Migration);
+        assert_ne!(ProjectType::Migration, ProjectType::Rust);
     }
 
     #[test]

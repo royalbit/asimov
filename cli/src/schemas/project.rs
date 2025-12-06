@@ -23,7 +23,7 @@ pub const PROJECT_SCHEMA: &str = r#"{
         },
         "type": {
           "type": "string",
-          "enum": ["rust", "python", "node", "go", "flutter", "docs", "generic"],
+          "enum": ["rust", "python", "node", "go", "flutter", "docs", "generic", "migration"],
           "description": "Project type"
         },
         "version": {

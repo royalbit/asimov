@@ -25,7 +25,7 @@ pub fn project_template(
         ProjectType::Go => PROJECT_GO_TEMPLATE,
         ProjectType::Flutter => PROJECT_FLUTTER_TEMPLATE,
         ProjectType::Docs => PROJECT_DOCS_TEMPLATE,
-        ProjectType::Generic => PROJECT_GENERIC_TEMPLATE,
+        ProjectType::Generic | ProjectType::Migration => PROJECT_GENERIC_TEMPLATE,
     };
 
     template
@@ -84,7 +84,7 @@ asimov lint-docs --fix .     # Fix markdown
 markdownlint '**/*.md'               # Standard lint
 ```"#
         }
-        ProjectType::Generic => {
+        ProjectType::Generic | ProjectType::Migration => {
             r#"```bash
 # Add your project-specific commands here
 ```"#
@@ -141,6 +141,7 @@ mod tests {
             ProjectType::Flutter,
             ProjectType::Docs,
             ProjectType::Generic,
+            ProjectType::Migration,
         ];
         for pt in types {
             let template = project_template("test", "tagline", pt);
@@ -165,6 +166,7 @@ mod tests {
             ProjectType::Flutter,
             ProjectType::Docs,
             ProjectType::Generic,
+            ProjectType::Migration,
         ];
         for pt in types {
             let template = claude_md_template("test", pt);

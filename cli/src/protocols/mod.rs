@@ -3,6 +3,7 @@
 //! Protocols are ENFORCED by the Rust binary, not optional YAML files.
 //! This is the source of truth for behavior protocols.
 
+use crate::templates::ProjectType;
 use serde::Serialize;
 
 /// Asimov protocol - Three Laws (Priority 0)
@@ -38,7 +39,8 @@ pub struct CompiledProtocols {
     pub green: GreenProtocol,
     pub sprint: SprintProtocol,
     pub warmup: WarmupProtocol,
-    pub migrations: MigrationsProtocol,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub migrations: Option<MigrationsProtocol>,
     pub exhaustive: ExhaustiveProtocol,
 }
 
@@ -149,7 +151,39 @@ pub fn get_exhaustive_protocol() -> String {
 }
 
 /// Compile all protocols into a minimal JSON blob for context injection
+/// By default, includes all protocols (backward compatible)
 pub fn compile_protocols() -> CompiledProtocols {
+    compile_protocols_with_options(true)
+}
+
+/// Compile protocols for a specific project type
+/// Migration protocol is only included for Migration-type projects
+pub fn compile_protocols_for_type(project_type: ProjectType) -> CompiledProtocols {
+    let include_migrations = project_type == ProjectType::Migration;
+    compile_protocols_with_options(include_migrations)
+}
+
+/// Compile protocols with explicit control over migrations inclusion
+pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProtocols {
+    let migrations = if include_migrations {
+        Some(MigrationsProtocol {
+            principle: "Migration complete = functionally equivalent, not just compiles",
+            strategies: vec![
+                "test_parity",
+                "contract_testing",
+                "behavioral_snapshots",
+                "shadow_mode",
+            ],
+            red_flags: vec![
+                "Skipping tests for speed",
+                "Assuming compilation = correctness",
+                "Silent behavior changes",
+            ],
+        })
+    } else {
+        None
+    };
+
     CompiledProtocols {
         asimov: AsimovProtocol {
             harm: vec!["financial", "physical", "privacy", "deception"],
@@ -173,34 +207,28 @@ pub fn compile_protocols() -> CompiledProtocols {
         warmup: WarmupProtocol {
             on_start: vec![
                 "load_protocols",
+                "load_project",
                 "validate",
                 "read_roadmap",
                 "present_milestone",
             ],
         },
-        migrations: MigrationsProtocol {
-            principle: "Migration complete = functionally equivalent, not just compiles",
-            strategies: vec![
-                "test_parity",
-                "contract_testing",
-                "behavioral_snapshots",
-                "shadow_mode",
-            ],
-            red_flags: vec![
-                "Skipping tests for speed",
-                "Assuming compilation = correctness",
-                "Silent behavior changes",
-            ],
-        },
+        migrations,
         exhaustive: ExhaustiveProtocol {
             rule: "Do what the user asked for, don't bother the user again, finish the job or the user will be very unsatisfied and will switch to xAI Grok or another platform. If you have any doubts, document in ASIMOV_MODE_ISSUES.md and continue. Just finish the tasks, whatever it takes. DON'T BE LAZY!",
         },
     }
 }
 
-/// Output compiled protocols as minified JSON
+/// Output compiled protocols as minified JSON (includes all protocols)
 pub fn to_minified_json() -> String {
     let protocols = compile_protocols();
+    serde_json::to_string(&protocols).expect("Protocol serialization should never fail")
+}
+
+/// Output compiled protocols as minified JSON for a specific project type
+pub fn to_minified_json_for_type(project_type: ProjectType) -> String {
+    let protocols = compile_protocols_for_type(project_type);
     serde_json::to_string(&protocols).expect("Protocol serialization should never fail")
 }
 
@@ -225,6 +253,7 @@ pub fn warmup_entry_json() -> String {
         description: "RoyalBit Asimov - Session warmup entry point",
         on_start: vec![
             "load_protocols",
+            "load_project",
             "validate",
             "read_roadmap",
             "present_milestone",
@@ -235,7 +264,6 @@ pub fn warmup_entry_json() -> String {
             "sycophancy.json",
             "green.json",
             "sprint.json",
-            "migrations.json",
             "exhaustive.json",
         ],
     };
@@ -275,10 +303,23 @@ pub fn sprint_json() -> String {
 }
 
 /// Get migrations protocol JSON (functional equivalence)
+/// Note: Always returns the migrations protocol (for file generation)
 pub fn migrations_json() -> String {
-    let protocols = compile_protocols();
-    serde_json::to_string_pretty(&protocols.migrations)
-        .expect("Migrations serialization should never fail")
+    let migrations = MigrationsProtocol {
+        principle: "Migration complete = functionally equivalent, not just compiles",
+        strategies: vec![
+            "test_parity",
+            "contract_testing",
+            "behavioral_snapshots",
+            "shadow_mode",
+        ],
+        red_flags: vec![
+            "Skipping tests for speed",
+            "Assuming compilation = correctness",
+            "Silent behavior changes",
+        ],
+    };
+    serde_json::to_string_pretty(&migrations).expect("Migrations serialization should never fail")
 }
 
 /// Get exhaustive protocol JSON (complete what you start)
@@ -434,5 +475,78 @@ mod tests {
         assert!(filenames.contains(&"warmup.json"));
         assert!(filenames.contains(&"asimov.json"));
         assert!(filenames.contains(&"freshness.json"));
+    }
+
+    // v9.2.3: Conditional migrations protocol tests
+
+    #[test]
+    fn test_compile_protocols_includes_migrations_by_default() {
+        let protocols = compile_protocols();
+        assert!(protocols.migrations.is_some());
+        let migrations = protocols.migrations.unwrap();
+        assert!(migrations.principle.contains("functionally equivalent"));
+    }
+
+    #[test]
+    fn test_compile_protocols_with_options_includes_migrations() {
+        let protocols = compile_protocols_with_options(true);
+        assert!(protocols.migrations.is_some());
+    }
+
+    #[test]
+    fn test_compile_protocols_with_options_excludes_migrations() {
+        let protocols = compile_protocols_with_options(false);
+        assert!(protocols.migrations.is_none());
+    }
+
+    #[test]
+    fn test_compile_protocols_for_migration_type() {
+        let protocols = compile_protocols_for_type(ProjectType::Migration);
+        assert!(protocols.migrations.is_some());
+    }
+
+    #[test]
+    fn test_compile_protocols_for_rust_type() {
+        let protocols = compile_protocols_for_type(ProjectType::Rust);
+        assert!(protocols.migrations.is_none());
+    }
+
+    #[test]
+    fn test_compile_protocols_for_generic_type() {
+        let protocols = compile_protocols_for_type(ProjectType::Generic);
+        assert!(protocols.migrations.is_none());
+    }
+
+    #[test]
+    fn test_compile_protocols_for_python_type() {
+        let protocols = compile_protocols_for_type(ProjectType::Python);
+        assert!(protocols.migrations.is_none());
+    }
+
+    #[test]
+    fn test_compile_protocols_for_node_type() {
+        let protocols = compile_protocols_for_type(ProjectType::Node);
+        assert!(protocols.migrations.is_none());
+    }
+
+    #[test]
+    fn test_to_minified_json_for_migration_type() {
+        let json = to_minified_json_for_type(ProjectType::Migration);
+        assert!(json.contains("\"migrations\""));
+        assert!(json.contains("functionally equivalent"));
+    }
+
+    #[test]
+    fn test_to_minified_json_for_rust_type() {
+        let json = to_minified_json_for_type(ProjectType::Rust);
+        assert!(!json.contains("\"migrations\""));
+    }
+
+    #[test]
+    fn test_migrations_skipped_in_serialization_when_none() {
+        let protocols = compile_protocols_with_options(false);
+        let json = serde_json::to_string(&protocols).unwrap();
+        // migrations field should not appear in JSON when None
+        assert!(!json.contains("\"migrations\""));
     }
 }

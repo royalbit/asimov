@@ -1,6 +1,9 @@
 //! Warmup command implementation
 
-use crate::{check_for_update, compile_protocols, resolve_protocol_dir, to_minified_json};
+use crate::{
+    check_for_update, compile_protocols_for_type, resolve_protocol_dir, to_minified_json_for_type,
+    ProjectType,
+};
 use std::path::Path;
 
 #[derive(Debug, Clone)]
@@ -8,6 +11,7 @@ pub struct WarmupResult {
     pub success: bool,
     pub project_name: Option<String>,
     pub project_tagline: Option<String>,
+    pub project_type: ProjectType,
     pub current_version: Option<String>,
     pub current_status: Option<String>,
     pub current_summary: Option<String>,
@@ -21,6 +25,7 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
         success: false,
         project_name: None,
         project_tagline: None,
+        project_type: ProjectType::Generic,
         current_version: None,
         current_status: None,
         current_summary: None,
@@ -82,12 +87,20 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
                     .get("tagline")
                     .and_then(|v| v.as_str())
                     .map(String::from);
+                // Read project type from identity.type (v9.2.3)
+                if let Some(type_str) = identity.get("type").and_then(|v| v.as_str()) {
+                    if let Ok(pt) = type_str.parse::<ProjectType>() {
+                        result.project_type = pt;
+                    }
+                }
             }
         }
     }
 
-    let _protocols = compile_protocols();
-    result.protocols_json = Some(to_minified_json());
+    // Compile protocols based on project type (v9.2.3)
+    // Migrations protocol only included for migration-type projects
+    let _protocols = compile_protocols_for_type(result.project_type);
+    result.protocols_json = Some(to_minified_json_for_type(result.project_type));
     result.success = true;
     result
 }
@@ -161,6 +174,7 @@ mod tests {
             success: true,
             project_name: Some("Test".to_string()),
             project_tagline: Some("Test tagline".to_string()),
+            project_type: ProjectType::Rust,
             current_version: Some("1.0.0".to_string()),
             current_status: Some("active".to_string()),
             current_summary: Some("Test milestone".to_string()),
@@ -170,6 +184,7 @@ mod tests {
         };
         assert!(r.success);
         assert_eq!(r.project_name.unwrap(), "Test");
+        assert_eq!(r.project_type, ProjectType::Rust);
     }
 
     #[test]
@@ -249,5 +264,100 @@ mod tests {
         // Either way, warmup should succeed
         assert!(result.success);
         // The update check code path was exercised
+    }
+
+    // v9.2.3: Conditional migrations protocol tests
+
+    #[test]
+    fn test_warmup_rust_project_excludes_migrations() {
+        let temp = TempDir::new().unwrap();
+        let asimov_dir = temp.path().join(".asimov");
+        std::fs::create_dir_all(&asimov_dir).unwrap();
+        std::fs::write(
+            asimov_dir.join("roadmap.yaml"),
+            "current:\n  version: '1.0'\n  status: in_progress\n  summary: Test\n",
+        )
+        .unwrap();
+        std::fs::write(
+            asimov_dir.join("project.yaml"),
+            "identity:\n  name: TestProject\n  type: rust\n",
+        )
+        .unwrap();
+
+        let result = run_warmup(temp.path(), false);
+        assert!(result.success);
+        assert_eq!(result.project_type, ProjectType::Rust);
+        // Rust projects should NOT include migrations protocol
+        let json = result.protocols_json.unwrap();
+        assert!(!json.contains("\"migrations\""));
+    }
+
+    #[test]
+    fn test_warmup_migration_project_includes_migrations() {
+        let temp = TempDir::new().unwrap();
+        let asimov_dir = temp.path().join(".asimov");
+        std::fs::create_dir_all(&asimov_dir).unwrap();
+        std::fs::write(
+            asimov_dir.join("roadmap.yaml"),
+            "current:\n  version: '1.0'\n  status: in_progress\n  summary: Test\n",
+        )
+        .unwrap();
+        std::fs::write(
+            asimov_dir.join("project.yaml"),
+            "identity:\n  name: MigrationProject\n  type: migration\n",
+        )
+        .unwrap();
+
+        let result = run_warmup(temp.path(), false);
+        assert!(result.success);
+        assert_eq!(result.project_type, ProjectType::Migration);
+        // Migration projects SHOULD include migrations protocol
+        let json = result.protocols_json.unwrap();
+        assert!(json.contains("\"migrations\""));
+        assert!(json.contains("functionally equivalent"));
+    }
+
+    #[test]
+    fn test_warmup_generic_project_excludes_migrations() {
+        let temp = TempDir::new().unwrap();
+        let asimov_dir = temp.path().join(".asimov");
+        std::fs::create_dir_all(&asimov_dir).unwrap();
+        std::fs::write(
+            asimov_dir.join("roadmap.yaml"),
+            "current:\n  version: '1.0'\n  status: in_progress\n  summary: Test\n",
+        )
+        .unwrap();
+        // No project.yaml means generic type
+
+        let result = run_warmup(temp.path(), false);
+        assert!(result.success);
+        assert_eq!(result.project_type, ProjectType::Generic);
+        // Generic projects should NOT include migrations protocol
+        let json = result.protocols_json.unwrap();
+        assert!(!json.contains("\"migrations\""));
+    }
+
+    #[test]
+    fn test_warmup_python_project_excludes_migrations() {
+        let temp = TempDir::new().unwrap();
+        let asimov_dir = temp.path().join(".asimov");
+        std::fs::create_dir_all(&asimov_dir).unwrap();
+        std::fs::write(
+            asimov_dir.join("roadmap.yaml"),
+            "current:\n  version: '1.0'\n  status: in_progress\n  summary: Test\n",
+        )
+        .unwrap();
+        std::fs::write(
+            asimov_dir.join("project.yaml"),
+            "identity:\n  name: PyProject\n  type: python\n",
+        )
+        .unwrap();
+
+        let result = run_warmup(temp.path(), false);
+        assert!(result.success);
+        assert_eq!(result.project_type, ProjectType::Python);
+        // Python projects should NOT include migrations protocol
+        let json = result.protocols_json.unwrap();
+        assert!(!json.contains("\"migrations\""));
     }
 }

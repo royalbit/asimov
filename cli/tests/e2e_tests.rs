@@ -1592,3 +1592,128 @@ fn e2e_replay_command_runs() {
         "Replay should succeed, got: {stdout}"
     );
 }
+
+// v9.2.3: Conditional migrations protocol e2e tests
+
+#[test]
+fn e2e_warmup_rust_project_excludes_migrations() {
+    let temp_dir = TempDir::new().unwrap();
+
+    // Initialize the project
+    let init_output = Command::new(binary_path())
+        .arg("init")
+        .arg("--name")
+        .arg("rust-test-project")
+        .arg("--type")
+        .arg("rust")
+        .arg("--output")
+        .arg(temp_dir.path())
+        .output()
+        .expect("Failed to execute init");
+
+    assert!(init_output.status.success(), "Init should succeed");
+
+    // Run warmup
+    let output = Command::new(binary_path())
+        .arg("warmup")
+        .current_dir(temp_dir.path())
+        .output()
+        .expect("Failed to execute");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        output.status.success(),
+        "Warmup should succeed, stdout: {stdout}, stderr: {stderr}"
+    );
+    // Rust projects should NOT include migrations protocol in output
+    assert!(
+        !stdout.contains("\"migrations\""),
+        "Rust project should NOT include migrations protocol, got: {stdout}"
+    );
+}
+
+#[test]
+fn e2e_warmup_migration_project_includes_migrations() {
+    let temp_dir = TempDir::new().unwrap();
+    let asimov_dir = temp_dir.path().join(".asimov");
+    fs::create_dir_all(&asimov_dir).unwrap();
+
+    // Create roadmap.yaml
+    fs::write(
+        asimov_dir.join("roadmap.yaml"),
+        "current:\n  version: '1.0'\n  status: in_progress\n  summary: Test migration\n",
+    )
+    .unwrap();
+
+    // Create project.yaml with migration type
+    fs::write(
+        asimov_dir.join("project.yaml"),
+        "identity:\n  name: migration-test\n  type: migration\n",
+    )
+    .unwrap();
+
+    // Run warmup
+    let output = Command::new(binary_path())
+        .arg("warmup")
+        .current_dir(temp_dir.path())
+        .output()
+        .expect("Failed to execute");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        output.status.success(),
+        "Warmup should succeed, stdout: {stdout}, stderr: {stderr}"
+    );
+    // Migration projects SHOULD include migrations protocol in output
+    assert!(
+        stdout.contains("\"migrations\""),
+        "Migration project SHOULD include migrations protocol, got: {stdout}"
+    );
+    assert!(
+        stdout.contains("functionally equivalent"),
+        "Migration protocol should contain principle, got: {stdout}"
+    );
+}
+
+#[test]
+fn e2e_warmup_generic_project_excludes_migrations() {
+    let temp_dir = TempDir::new().unwrap();
+
+    // Initialize the project
+    let init_output = Command::new(binary_path())
+        .arg("init")
+        .arg("--name")
+        .arg("generic-test-project")
+        .arg("--type")
+        .arg("generic")
+        .arg("--output")
+        .arg(temp_dir.path())
+        .output()
+        .expect("Failed to execute init");
+
+    assert!(init_output.status.success(), "Init should succeed");
+
+    // Run warmup
+    let output = Command::new(binary_path())
+        .arg("warmup")
+        .current_dir(temp_dir.path())
+        .output()
+        .expect("Failed to execute");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        output.status.success(),
+        "Warmup should succeed, stdout: {stdout}, stderr: {stderr}"
+    );
+    // Generic projects should NOT include migrations protocol in output
+    assert!(
+        !stdout.contains("\"migrations\""),
+        "Generic project should NOT include migrations protocol, got: {stdout}"
+    );
+}

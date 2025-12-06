@@ -112,10 +112,13 @@ pub use update::{check_for_update, perform_update, VersionCheck, CURRENT_VERSION
 
 // Protocol exports for enforced loading (v8.0.0 - ADR-031)
 // v8.14.0: Added individual protocol JSON exports
+// v9.2.3: Added conditional migrations support
 pub use protocols::{
     // v8.14.0: Individual protocol JSON files
     asimov_json,
     compile_protocols,
+    compile_protocols_for_type,
+    compile_protocols_with_options,
     exhaustive_json,
     freshness_json,
     green_json,
@@ -124,6 +127,7 @@ pub use protocols::{
     sprint_json,
     sycophancy_json,
     to_minified_json,
+    to_minified_json_for_type,
     to_pretty_json,
     warmup_entry_json,
     CompiledProtocols,

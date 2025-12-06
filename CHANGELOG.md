@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.2.3] - 2025-12-06
+
+### Fix: Conditional Migrations Protocol Loading
+
+**migrations.json now only loads for migration-type projects.**
+
+#### Changes
+- Added `Migration` variant to `ProjectType` enum
+- Made `migrations` field optional in `CompiledProtocols` (using `#[serde(skip_serializing_if = "Option::is_none")]`)
+- Warmup now reads `identity.type` from `project.yaml` to determine project type
+- Protocol compilation conditionally includes migrations only for `type: migration` projects
+- New functions: `compile_protocols_for_type()`, `compile_protocols_with_options()`, `to_minified_json_for_type()`
+
+#### Test Coverage
+- 12 new unit tests for conditional migrations
+- 3 new e2e tests verifying rust/generic exclude migrations, migration includes it
+
+#### Impact
+- Non-migration projects no longer receive irrelevant migrations protocol in context
+- Reduces token usage for typical projects
+- Migration-type projects still get full migrations guidance
+
+---
+
 ## [9.2.1] - 2025-12-06
 
 ### Fix: Update Command GitHub API Parsing
