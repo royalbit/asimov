@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.1.0] - 2025-12-06
+
+### Code Organization & Refactoring
+
+**Maintainability release.**
+
+#### Module Refactoring
+- Split commands.rs (2424 lines) into commands/ module with separate files per command
+- Split templates.rs (2263 lines) into templates/ module by type
+- Refactored tests accordingly
+
+---
+
 ## [9.0.0] - 2025-12-05
 
 ### Proprietary License, Protocol Review, Protocol Integrity

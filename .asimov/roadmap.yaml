@@ -4,28 +4,20 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "9.1.0"
+  version: "9.2.0"
   status: in_progress
-  summary: "Code Organization & Refactoring"
-  goal: Maintainability
-  priority: HIGH
-  deliverables:
-    - "[x] Split commands.rs (2424 lines) into modules by command"
-    - "[x] Split templates.rs (2263 lines) into modules by type"
-    - "[x] Refactor tests accordingly"
+  summary: "TBD"
+  goal: TBD
+  priority: MEDIUM
+  deliverables: []
 
-next:
-  - version: "9.2.0"
-    summary: "TBD"
-    goal: TBD
-    priority: MEDIUM
-    deliverables: []
+next: []
 
 previous:
-  version: "9.0.0"
+  version: "9.1.0"
   status: released
-  summary: "Proprietary License, Protocol Review, Protocol Integrity"
-  goal: Quality
+  summary: "Code Organization & Refactoring"
+  goal: Maintainability
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"
