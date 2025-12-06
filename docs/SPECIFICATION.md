@@ -1,6 +1,6 @@
 # RoyalBit Asimov Specification
 
-Version 4.1.8
+Version 9.6.0
 
 ## Overview
 
@@ -276,6 +276,45 @@ patterns:                      # Language-specific best practices
 **Enforcement:**
 - `asimov validate` warns on soft limit, errors on hard limit
 - Protocols are hardcoded, so no need to manage warmup.yaml size manually
+
+### Coding Standards Enforcement (v9.6.0 - ADR-043)
+
+Pre-commit hooks enforce coding standards **directly** without asimov as a runtime dependency. This eliminates Single Point of Failure (SPOF) - commits work even if asimov is missing or broken.
+
+**Architecture:**
+```
+┌─────────────────────────────────────────────────────────────┐
+│  INDEPENDENT CHECKS (always run, no asimov needed)          │
+│    - Format: cargo fmt, ruff format, prettier, gofmt, dart  │
+│    - Lint: clippy, ruff check, eslint, golangci-lint        │
+│    - Test: cargo test, pytest, npm test, go test, flutter   │
+│    - File size: inline shell check                          │
+│    - Docs: markdownlint-cli2 (if installed)                 │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│  OPTIONAL CHECKS (soft-fail if asimov unavailable)          │
+│    - asimov refresh || true                                 │
+│    - asimov validate || true                                │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**File Size Limits Per Project Type:**
+
+| Type    | Extension | Hard Limit |
+|---------|-----------|------------|
+| Rust    | *.rs      | 1500       |
+| Python  | *.py      | 1000       |
+| Node    | *.ts/*.js | 800        |
+| Go      | *.go      | 1000       |
+| Flutter | *.dart    | 800        |
+| Docs    | *.md      | 800        |
+
+**asimov's Role:**
+- `asimov init` / `asimov refresh` generate pre-commit hooks with direct tool calls
+- asimov is a code generator, not a runtime dependency
+- Hooks are regenerated on every `asimov refresh`
 
 ### Structure Validation (v3.2.0)
 

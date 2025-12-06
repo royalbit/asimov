@@ -1,100 +1,248 @@
 //! Hook template generators for git and Claude Code
+//! v9.6.0: Direct coding standards enforcement (ADR-043)
 
 use super::ProjectType;
 
 /// Generate pre-commit hook for RoyalBit Asimov
+/// v9.6.0: Direct tool calls, asimov is optional (no SPOF)
 pub fn precommit_hook_template(project_type: ProjectType) -> String {
-    let checks = match project_type {
-        ProjectType::Rust => {
-            r#"echo "Checking formatting..."
-cargo fmt --check
+    let (checks, file_ext, max_lines, exclude_dirs) = match project_type {
+        ProjectType::Rust => (
+            r#"# === QUALITY CHECKS (independent, no asimov) ===
+echo "Checking formatting..."
+if [ -f "cli/Cargo.toml" ]; then
+  (cd cli && cargo fmt --all -- --check) || {
+    echo ""; echo "❌ Run: cd cli && cargo fmt --all"; exit 1
+  }
+elif [ -f "Cargo.toml" ]; then
+  cargo fmt --all -- --check || {
+    echo ""; echo "❌ Run: cargo fmt --all"; exit 1
+  }
+fi
 
 echo "Running clippy..."
-cargo clippy --all-targets -- -D warnings
+if [ -f "cli/Cargo.toml" ]; then
+  (cd cli && cargo clippy --all-targets -- -D warnings) || exit 1
+elif [ -f "Cargo.toml" ]; then
+  cargo clippy --all-targets -- -D warnings || exit 1
+fi
 
 echo "Running tests..."
-cargo test"#
-        }
-        ProjectType::Python => {
-            r#"echo "Checking formatting..."
-ruff format --check . 2>/dev/null || true
+if [ -f "cli/Cargo.toml" ]; then
+  (cd cli && cargo test) || exit 1
+elif [ -f "Cargo.toml" ]; then
+  cargo test || exit 1
+fi"#,
+            "rs",
+            1500,
+            "target",
+        ),
+        ProjectType::Python => (
+            r#"# === QUALITY CHECKS (independent, no asimov) ===
+echo "Checking formatting..."
+if command -v ruff &>/dev/null; then
+  ruff format --check . || { echo ""; echo "❌ Run: ruff format ."; exit 1; }
+elif command -v black &>/dev/null; then
+  black --check . || { echo ""; echo "❌ Run: black ."; exit 1; }
+fi
 
 echo "Running linter..."
-ruff check . 2>/dev/null || true
+if command -v ruff &>/dev/null; then
+  ruff check . || exit 1
+elif command -v flake8 &>/dev/null; then
+  flake8 . || exit 1
+fi
 
 echo "Running tests..."
-pytest 2>/dev/null || true"#
-        }
-        ProjectType::Node => {
-            r#"echo "Checking formatting..."
-npm run format:check 2>/dev/null || true
+if command -v pytest &>/dev/null; then
+  pytest || exit 1
+elif [ -f "setup.py" ] || [ -f "pyproject.toml" ]; then
+  python -m pytest || true
+fi"#,
+            "py",
+            1000,
+            "venv __pycache__ .venv",
+        ),
+        ProjectType::Node => (
+            r#"# === QUALITY CHECKS (independent, no asimov) ===
+echo "Checking formatting..."
+if [ -f "package.json" ]; then
+  if command -v npx &>/dev/null; then
+    npx prettier --check "**/*.{js,ts,jsx,tsx}" 2>/dev/null || npm run format:check 2>/dev/null || true
+  fi
+fi
 
 echo "Running linter..."
-npm run lint 2>/dev/null || true
+if [ -f "package.json" ]; then
+  npm run lint 2>/dev/null || npx eslint . 2>/dev/null || true
+fi
 
 echo "Running tests..."
-npm test 2>/dev/null || true"#
-        }
-        ProjectType::Go => {
-            r#"echo "Checking formatting..."
-gofmt -l . | read && echo "Files need formatting" && exit 1 || true
+if [ -f "package.json" ]; then
+  npm test 2>/dev/null || npx jest 2>/dev/null || true
+fi"#,
+            "ts js tsx jsx",
+            800,
+            "node_modules dist build",
+        ),
+        ProjectType::Go => (
+            r#"# === QUALITY CHECKS (independent, no asimov) ===
+echo "Checking formatting..."
+if command -v gofmt &>/dev/null; then
+  unformatted=$(gofmt -l . 2>/dev/null | grep -v vendor || true)
+  if [ -n "$unformatted" ]; then
+    echo "❌ Files need formatting:"; echo "$unformatted"
+    echo "Run: gofmt -w ."; exit 1
+  fi
+fi
 
 echo "Running linter..."
-golangci-lint run 2>/dev/null || true
+if command -v golangci-lint &>/dev/null; then
+  golangci-lint run || exit 1
+elif command -v go &>/dev/null; then
+  go vet ./... || exit 1
+fi
 
 echo "Running tests..."
-go test ./... 2>/dev/null || true"#
-        }
-        ProjectType::Flutter => {
-            r#"echo "Checking formatting..."
-dart format --set-exit-if-changed lib/ test/ 2>/dev/null || true
+if command -v go &>/dev/null; then
+  go test ./... || exit 1
+fi"#,
+            "go",
+            1000,
+            "vendor",
+        ),
+        ProjectType::Flutter => (
+            r#"# === QUALITY CHECKS (independent, no asimov) ===
+echo "Checking formatting..."
+if command -v dart &>/dev/null; then
+  dart format --set-exit-if-changed lib/ test/ 2>/dev/null || {
+    echo ""; echo "❌ Run: dart format lib/ test/"; exit 1
+  }
+fi
 
 echo "Running analyzer..."
-dart analyze lib/ 2>/dev/null || flutter analyze 2>/dev/null || true
+if command -v flutter &>/dev/null; then
+  flutter analyze || exit 1
+elif command -v dart &>/dev/null; then
+  dart analyze lib/ || exit 1
+fi
 
 echo "Running tests..."
-flutter test 2>/dev/null || true"#
-        }
-        ProjectType::Docs | ProjectType::Arch | ProjectType::Generic | ProjectType::Migration => {
-            r#"echo "Checking documentation..."
-# Add your checks here"#
-        }
+if command -v flutter &>/dev/null; then
+  flutter test || exit 1
+fi"#,
+            "dart",
+            800,
+            ".dart_tool build",
+        ),
+        ProjectType::Docs | ProjectType::Arch | ProjectType::Generic | ProjectType::Migration => (
+            r#"# === QUALITY CHECKS ===
+echo "Checking documentation..."
+# No code-specific checks for docs/arch/generic projects"#,
+            "md",
+            800,
+            "node_modules",
+        ),
+    };
+
+    // Build file size check for code files
+    let file_size_check = if matches!(
+        project_type,
+        ProjectType::Docs | ProjectType::Arch | ProjectType::Generic | ProjectType::Migration
+    ) {
+        // For docs projects, check markdown files
+        format!(
+            r#"
+# === FILE SIZE CHECK (inline, no deps) ===
+echo "Checking file sizes..."
+max_lines={}
+found_large=0
+for f in $(find . -name '*.md' {} 2>/dev/null); do
+  lines=$(wc -l < "$f" | tr -d ' ')
+  if [ "$lines" -gt "$max_lines" ]; then
+    echo "⚠️  $f has $lines lines (limit: $max_lines)"
+    found_large=1
+  fi
+done
+if [ "$found_large" -eq 1 ]; then
+  echo "Consider splitting large files"
+fi"#,
+            max_lines,
+            exclude_dirs
+                .split_whitespace()
+                .map(|d| format!("-not -path './{d}/*'"))
+                .collect::<Vec<_>>()
+                .join(" ")
+        )
+    } else {
+        // For code projects, check source files
+        let extensions: Vec<&str> = file_ext.split_whitespace().collect();
+        let find_patterns: String = extensions
+            .iter()
+            .map(|ext| format!("-name '*.{ext}'"))
+            .collect::<Vec<_>>()
+            .join(" -o ");
+        let exclude_pattern: String = exclude_dirs
+            .split_whitespace()
+            .map(|d| format!("-not -path './{d}/*'"))
+            .collect::<Vec<_>>()
+            .join(" ");
+
+        format!(
+            r#"
+# === FILE SIZE CHECK (inline, no deps) ===
+echo "Checking file sizes..."
+max_lines={}
+found_large=0
+for f in $(find . \( {} \) {} 2>/dev/null); do
+  lines=$(wc -l < "$f" | tr -d ' ')
+  if [ "$lines" -gt "$max_lines" ]; then
+    echo "❌ $f exceeds $max_lines lines ($lines)"
+    found_large=1
+  fi
+done
+if [ "$found_large" -eq 1 ]; then
+  echo "Split large files to improve maintainability"
+  exit 1
+fi"#,
+            max_lines, find_patterns, exclude_pattern
+        )
     };
 
     format!(
         r#"#!/bin/bash
-# Pre-commit hook for RoyalBit Asimov
-# Generated by asimov init --asimov
+# ═══════════════════════════════════════════════════════════════════════════════
+# Pre-commit hook - Direct Coding Standards Enforcement (v9.6.0)
+# ═══════════════════════════════════════════════════════════════════════════════
+# Generated by: asimov init / asimov refresh
+# Architecture: ADR-043 - No SPOF, asimov is optional
+# ═══════════════════════════════════════════════════════════════════════════════
 
 set -e
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# PROTOCOL REFRESH - Injects rules into fresh context (survives compaction)
-# ═══════════════════════════════════════════════════════════════════════════════
-if command -v asimov &> /dev/null; then
-    asimov refresh
-fi
+echo "Running pre-commit checks..."
 
 {}
+{}
 
-# RoyalBit Asimov validation
-if command -v asimov &> /dev/null; then
-    echo "Validating protocol files..."
-    asimov validate . || true
-
-    echo "Linting documentation..."
-    asimov lint-docs . || exit 1
-else
-    echo ""
-    echo "⚠️  asimov CLI not installed - skipping protocol validation"
-    echo "   Install with: cargo install royalbit-asimov"
-    echo "   Then re-run your commit to validate protocol files."
-    echo ""
+# === DOCUMENTATION CHECK (if markdownlint-cli2 available) ===
+if command -v markdownlint-cli2 &>/dev/null; then
+  echo "Linting markdown..."
+  markdownlint-cli2 "**/*.md" --ignore node_modules --ignore target --ignore vendor 2>/dev/null || true
 fi
 
-echo "Pre-commit checks passed!"
+# === ASIMOV (optional, soft-fail) ===
+# Protocol refresh - survives context compaction
+if command -v asimov &>/dev/null; then
+  echo "Refreshing protocols..."
+  asimov refresh || true
+  asimov validate || true
+fi
+
+echo ""
+echo "✅ Pre-commit checks passed!"
 "#,
-        checks
+        checks, file_size_check
     )
 }
 
@@ -102,7 +250,7 @@ echo "Pre-commit checks passed!"
 pub fn hook_installer_template() -> String {
     r#"#!/bin/bash
 # Install git hooks for RoyalBit Asimov
-# Generated by asimov init --asimov
+# Generated by asimov init
 
 set -e
 
@@ -171,54 +319,39 @@ pub fn claude_settings_json() -> String {
 pub fn claude_session_start_hook() -> String {
     r#"#!/bin/bash
 # ═══════════════════════════════════════════════════════════════════════════════
-# ROYALBIT ASIMOV - SessionStart Hook (v8.1.0)
+# ROYALBIT ASIMOV - SessionStart Hook (v9.6.0)
 # ═══════════════════════════════════════════════════════════════════════════════
 #
 # Triggers: startup, resume, clear
 # Purpose: Auto-initialize RoyalBit Asimov on every session start
 #
 # When exit code is 0, stdout is injected into Claude's context.
-#
-# v8.1.0: project.yaml added for project context (ADR-032)
-# v8.0.0: Protocols are hardcoded in binary - run `asimov warmup` to load
-#
-# Protocol: https://github.com/royalbit/asimov
 # ═══════════════════════════════════════════════════════════════════════════════
 
 set -e
 
-cat << 'EOF'
-🔥 ROYALBIT ASIMOV ACTIVE (v8.1.0)
+# Check if asimov is available
+if ! command -v asimov &> /dev/null; then
+    cat << 'EOF'
+🔥 ROYALBIT ASIMOV ACTIVE (v9.6.0)
 
 ══════════════════════════════════════════════════════════════════════════════
 SESSION START - Autonomous Development Protocol Initialized
 ══════════════════════════════════════════════════════════════════════════════
 
-IMMEDIATE ACTIONS REQUIRED:
-1. Run: asimov warmup (loads hardcoded protocols + validates)
-2. Read .asimov/roadmap.yaml for current version and next milestone
-3. Present next milestone to user
-4. Wait for "go" to start autonomous execution
+⚠ asimov not found in PATH
 
-CORE RULES (non-negotiable):
-- 4 hour MAX session duration
-- 1 milestone per session
-- Tests MUST pass before release
-- ZERO warnings policy
+Install from: https://github.com/royalbit/asimov
 
-Say "go" to start autonomous execution.
-Say "skip" to pick a different milestone.
-Say "plan" to discuss approach first.
-
-ASIMOV MODE:
-When user says "asimov mode", display:
-══════════════════════════════════════════════════════════════════════════════
-🤖 ASIMOV MODE - AUTONOMOUS EXECUTION ENGAGED
-══════════════════════════════════════════════════════════════════════════════
-Then proceed with full autonomous execution for 4h MAX or until roadmap exhausted.
+Or run `cargo install --path cli` from the repo root.
 
 ══════════════════════════════════════════════════════════════════════════════
 EOF
+    exit 0
+fi
+
+# Run warmup with full verbose output for session start
+asimov warmup --verbose
 
 exit 0
 "#
@@ -229,20 +362,11 @@ exit 0
 pub fn claude_pre_compact_hook() -> String {
     r#"#!/bin/bash
 # ═══════════════════════════════════════════════════════════════════════════════
-# ROYALBIT ASIMOV - PreCompact Hook (v8.1.0)
+# ROYALBIT ASIMOV - PreCompact Hook (v9.6.0)
 # ═══════════════════════════════════════════════════════════════════════════════
 #
 # Triggers: Before context compaction (auto or manual)
 # Purpose: Re-inject protocol context that will survive compaction summary
-#
-# CRITICAL: Compaction happens every ~15 minutes with MAX_THINKING_TOKENS=200000
-# This hook fires BEFORE compaction, injecting context into the summary.
-#
-# When exit code is 0, stdout is injected into Claude's context.
-#
-# v8.0.0: Protocols are hardcoded in binary - run `asimov warmup` to reload
-#
-# Protocol: https://github.com/royalbit/asimov
 # ═══════════════════════════════════════════════════════════════════════════════
 
 set -e
@@ -264,13 +388,10 @@ CORE RULES (non-negotiable):
 - NO scope creep ("Let me also..." = NO)
 
 POST-COMPACTION ACTIONS:
-1. Run: asimov warmup (protocols are hardcoded in v8.0.0)
+1. Run: asimov warmup
 2. Re-read .asimov/roadmap.yaml for current milestone
 3. Check TodoWrite for in-progress tasks
 4. Continue where you left off
-
-CONFUSION PROTOCOL:
-If uncertain: STOP → run `asimov warmup` → re-read roadmap.yaml → continue
 
 ETHICS (Priority 0):
 - Do no harm (financial, physical, privacy, deception)
@@ -285,68 +406,10 @@ exit 0
     .to_string()
 }
 
-/// Generate .git/hooks/pre-commit for Git
+/// Generate .git/hooks/pre-commit for Git (legacy, use precommit_hook_template instead)
 pub fn git_precommit_hook() -> String {
-    r#"#!/bin/bash
-# ═══════════════════════════════════════════════════════════════════════════════
-# ROYALBIT ASIMOV - Git Pre-commit Hook (v8.16.1)
-# ═══════════════════════════════════════════════════════════════════════════════
-#
-# Auto-installed by `asimov init` or `asimov warmup`
-# Hardcoded in binary - restored on tampering
-#
-# Protocol: https://github.com/royalbit/asimov
-# ═══════════════════════════════════════════════════════════════════════════════
-
-set -e
-
-echo "Running pre-commit checks..."
-
-# v8.16.1: Rust formatting check (if Cargo.toml exists)
-if [ -f "Cargo.toml" ] || [ -f "cli/Cargo.toml" ]; then
-    echo "Checking Rust formatting..."
-    if [ -f "cli/Cargo.toml" ]; then
-        cd cli && cargo fmt --all -- --check || {
-            echo ""
-            echo "❌ Rust formatting check failed!"
-            echo "   Run: cd cli && cargo fmt --all"
-            echo ""
-            exit 1
-        }
-        cd ..
-    else
-        cargo fmt --all -- --check || {
-            echo ""
-            echo "❌ Rust formatting check failed!"
-            echo "   Run: cargo fmt --all"
-            echo ""
-            exit 1
-        }
-    fi
-fi
-
-# Protocol refresh - injects rules into fresh context (survives compaction)
-if command -v asimov &> /dev/null; then
-    asimov refresh
-fi
-
-# Validate protocol files
-if command -v asimov &> /dev/null; then
-    echo "Validating protocol files..."
-    asimov validate || exit 1
-
-    echo "Linting documentation..."
-    asimov lint-docs . || exit 1
-else
-    echo ""
-    echo "⚠️  asimov CLI not installed - skipping protocol validation"
-    echo "   Install with: cargo install royalbit-asimov"
-    echo ""
-fi
-
-echo "Pre-commit checks passed!"
-"#
-    .to_string()
+    // Default to Rust project type for backwards compatibility
+    precommit_hook_template(ProjectType::Rust)
 }
 
 #[cfg(test)]
@@ -369,19 +432,66 @@ mod tests {
     #[test]
     fn test_git_precommit_hook() {
         let hook = git_precommit_hook();
-        assert!(hook.contains("#!/bin/sh") || hook.contains("#!/bin/bash"));
+        assert!(hook.contains("#!/bin/bash"));
+        assert!(hook.contains("cargo"));
     }
 
     #[test]
     fn test_precommit_hook_template() {
         let hook = precommit_hook_template(ProjectType::Rust);
-        assert!(hook.contains("cargo") || hook.contains("Checking"));
+        assert!(hook.contains("cargo fmt"));
+        assert!(hook.contains("cargo clippy"));
+        assert!(hook.contains("cargo test"));
+        assert!(hook.contains("FILE SIZE CHECK"));
+        assert!(hook.contains("asimov refresh || true")); // Optional, soft-fail
+    }
+
+    #[test]
+    fn test_precommit_hook_python() {
+        let hook = precommit_hook_template(ProjectType::Python);
+        assert!(hook.contains("ruff") || hook.contains("black"));
+        assert!(hook.contains("pytest"));
+        assert!(hook.contains("FILE SIZE CHECK"));
+        assert!(hook.contains("*.py"));
+    }
+
+    #[test]
+    fn test_precommit_hook_node() {
+        let hook = precommit_hook_template(ProjectType::Node);
+        assert!(hook.contains("prettier") || hook.contains("eslint"));
+        assert!(hook.contains("npm test"));
+        assert!(hook.contains("FILE SIZE CHECK"));
+    }
+
+    #[test]
+    fn test_precommit_hook_go() {
+        let hook = precommit_hook_template(ProjectType::Go);
+        assert!(hook.contains("gofmt"));
+        assert!(hook.contains("go test"));
+        assert!(hook.contains("FILE SIZE CHECK"));
+    }
+
+    #[test]
+    fn test_precommit_hook_flutter() {
+        let hook = precommit_hook_template(ProjectType::Flutter);
+        assert!(hook.contains("dart format"));
+        assert!(hook.contains("flutter test") || hook.contains("flutter analyze"));
+        assert!(hook.contains("FILE SIZE CHECK"));
+    }
+
+    #[test]
+    fn test_precommit_hook_docs() {
+        let hook = precommit_hook_template(ProjectType::Docs);
+        assert!(hook.contains("FILE SIZE CHECK"));
+        assert!(hook.contains("*.md"));
+        assert!(hook.contains("asimov refresh || true"));
     }
 
     #[test]
     fn test_hook_installer_template() {
         let installer = hook_installer_template();
-        assert!(installer.contains("#!/bin/sh") || installer.contains("#!/bin/bash"));
+        assert!(installer.contains("#!/bin/bash"));
+        assert!(installer.contains(".git/hooks"));
     }
 
     #[test]
@@ -394,17 +504,15 @@ mod tests {
     #[test]
     fn test_claude_session_start_hook() {
         let hook = claude_session_start_hook();
-        assert!(
-            hook.contains("#!/bin/sh") || hook.contains("#!/bin/bash") || hook.contains("asimov")
-        );
+        assert!(hook.contains("#!/bin/bash"));
+        assert!(hook.contains("asimov warmup"));
     }
 
     #[test]
     fn test_claude_pre_compact_hook() {
         let hook = claude_pre_compact_hook();
-        assert!(
-            hook.contains("#!/bin/sh") || hook.contains("#!/bin/bash") || hook.contains("asimov")
-        );
+        assert!(hook.contains("#!/bin/bash"));
+        assert!(hook.contains("CONTEXT REFRESH"));
     }
 
     #[test]
@@ -423,6 +531,44 @@ mod tests {
         for pt in types {
             let hook = precommit_hook_template(pt);
             assert!(!hook.is_empty(), "Hook for {:?} should not be empty", pt);
+            assert!(
+                hook.contains("asimov refresh || true"),
+                "Hook for {:?} should have optional asimov",
+                pt
+            );
+            assert!(
+                hook.contains("FILE SIZE CHECK"),
+                "Hook for {:?} should have file size check",
+                pt
+            );
+        }
+    }
+
+    #[test]
+    fn test_precommit_no_spof() {
+        // Verify asimov calls are optional (soft-fail with || true)
+        for pt in [
+            ProjectType::Rust,
+            ProjectType::Python,
+            ProjectType::Node,
+            ProjectType::Go,
+            ProjectType::Flutter,
+        ] {
+            let hook = precommit_hook_template(pt);
+            // Quality checks should NOT depend on asimov
+            assert!(
+                !hook.contains("asimov lint"),
+                "Hook should not call asimov lint"
+            );
+            // asimov calls should be soft-fail
+            assert!(
+                hook.contains("asimov refresh || true"),
+                "asimov refresh should soft-fail"
+            );
+            assert!(
+                hook.contains("asimov validate || true"),
+                "asimov validate should soft-fail"
+            );
         }
     }
 }

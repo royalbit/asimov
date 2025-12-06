@@ -530,6 +530,14 @@ fn cmd_refresh(verbose: bool, yes: bool, dry_run: bool) -> ExitCode {
         println!("  {} {}", "UNCHANGED".dimmed(), f);
     }
 
+    // v9.6.0: Pre-commit hook regeneration (ADR-043)
+    if result.hook_regenerated {
+        println!(
+            "  {} .git/hooks/pre-commit (direct enforcement)",
+            "HOOK".green()
+        );
+    }
+
     // v9.5.0: Migration status
     if verbose {
         if let Some(ref pt) = result.project_type_detected {
@@ -558,6 +566,9 @@ fn cmd_refresh(verbose: bool, yes: bool, dry_run: bool) -> ExitCode {
         };
         if result.coding_standards_upgraded {
             msg.push_str(", coding_standards upgraded");
+        }
+        if result.hook_regenerated {
+            msg.push_str(", pre-commit hook updated");
         }
         println!("{} {}", "Success:".bold().green(), msg);
         ExitCode::SUCCESS

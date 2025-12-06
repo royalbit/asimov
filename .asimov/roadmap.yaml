@@ -4,31 +4,32 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "9.5.0"
-  status: in_progress
-  summary: "Enhanced Refresh: Project Migration Assistant"
-  goal: "Refresh upgrades existing projects to latest template format"
-  priority: HIGH
+  version: "9.6.0"
+  status: released
+  summary: "Direct Coding Standards Enforcement (No SPOF)"
+  goal: "Pre-commit hooks use direct tool calls, asimov is not a runtime dependency"
+  priority: CRITICAL
   deliverables:
-    - "[x] ADR-042: Enhanced Refresh Protocol - migration design"
-    - "[x] Detect missing identity.type in project.yaml"
-    - "[x] Interactive project type selection (numbered list: 1=rust, 2=python, etc.)"
-    - "[x] Detect missing or outdated coding_standards section"
-    - "[x] Compare project coding_standards vs template coding_standards"
-    - "[x] Recommend template coding_standards if outdated (prompt)"
-    - "[x] User choice: [A]ccept template / [K]eep current"
-    - "[x] Preserve user customizations (identity.name, identity.tagline)"
-    - "[x] --yes flag for non-interactive mode"
-    - "[x] --dry-run flag to preview changes"
-    - "[x] Tests passing (lib + main + e2e)"
+    - "[x] ADR-043: Direct Coding Standards Enforcement"
+    - "[x] Update hooks.rs: precommit templates for ALL project types"
+    - "[x] Rust: cargo fmt/clippy/test + file size check"
+    - "[x] Python: ruff format/check + pytest + file size check"
+    - "[x] Node: prettier/eslint/npm test + file size check"
+    - "[x] Go: gofmt/golangci-lint/go test + file size check"
+    - "[x] Flutter: dart format/analyze/flutter test + file size check"
+    - "[x] Docs/Arch/Generic: markdownlint + file size check"
+    - "[x] Make asimov calls optional in hooks (soft-fail)"
+    - "[x] Refresh command: always regenerate hooks"
+    - "[x] Update SPECIFICATION.md"
+    - "[x] Tests passing (473 tests)"
 
 next: []
 
 previous:
-  version: "9.4.0"
+  version: "9.5.1"
   status: released
-  summary: "Unified Coding Standards for Programming Projects"
-  goal: "Programming templates include doc + arch standards"
+  summary: "Enhanced Refresh + Update fix"
+  goal: "Project migration assistant, rate-limit-free updates"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"

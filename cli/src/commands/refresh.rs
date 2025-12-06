@@ -1,9 +1,13 @@
 //! Refresh command implementation
 //! v9.5.0: Enhanced with project migration assistant (ADR-042)
+//! v9.6.0: Always regenerate pre-commit hooks (ADR-043)
 
-use crate::templates::{detect_project_type, project_template, ProjectType};
+use crate::templates::{
+    detect_project_type, precommit_hook_template, project_template, ProjectType,
+};
 use crate::{validate_directory_with_regeneration, validator::regenerate_protocol_files};
 use std::io::{self, BufRead, Write};
+use std::os::unix::fs::PermissionsExt;
 use std::path::Path;
 
 /// Options for refresh command
@@ -35,6 +39,8 @@ pub struct RefreshResult {
     pub project_type_detected: Option<ProjectType>,
     pub project_type_was_missing: bool,
     pub coding_standards_upgraded: bool,
+    // v9.6.0: Hook regeneration (ADR-043)
+    pub hook_regenerated: bool,
     pub dry_run: bool,
     pub error: Option<String>,
 }
@@ -44,7 +50,7 @@ pub fn run_refresh(dir: &Path) -> RefreshResult {
     run_refresh_with_options(dir, RefreshOptions::default())
 }
 
-/// Run refresh with options (v9.5.0)
+/// Run refresh with options (v9.5.0, v9.6.0)
 pub fn run_refresh_with_options(dir: &Path, options: RefreshOptions) -> RefreshResult {
     let mut result = RefreshResult {
         success: false,
@@ -57,6 +63,7 @@ pub fn run_refresh_with_options(dir: &Path, options: RefreshOptions) -> RefreshR
         project_type_detected: None,
         project_type_was_missing: false,
         coding_standards_upgraded: false,
+        hook_regenerated: false,
         dry_run: options.dry_run,
         error: None,
     };
@@ -139,6 +146,18 @@ pub fn run_refresh_with_options(dir: &Path, options: RefreshOptions) -> RefreshR
             }
             result.protocols_created.push("project.yaml".to_string());
             result.project_type_detected = Some(project_type);
+        }
+    }
+
+    // v9.6.0: Always regenerate pre-commit hook (ADR-043 - No SPOF)
+    if !options.dry_run {
+        if let Some(project_type) = result.project_type_detected {
+            if let Err(e) = regenerate_precommit_hook(dir, project_type) {
+                // Non-fatal: git might not be initialized
+                eprintln!("Note: Could not regenerate pre-commit hook: {}", e);
+            } else {
+                result.hook_regenerated = true;
+            }
         }
     }
 
@@ -287,6 +306,34 @@ fn apply_project_migration(
     Ok(())
 }
 
+/// Regenerate pre-commit hook for direct coding standards enforcement (v9.6.0 ADR-043)
+fn regenerate_precommit_hook(dir: &Path, project_type: ProjectType) -> Result<(), String> {
+    let git_dir = dir.join(".git");
+    if !git_dir.is_dir() {
+        return Err("Not a git repository".to_string());
+    }
+
+    let hooks_dir = git_dir.join("hooks");
+    std::fs::create_dir_all(&hooks_dir)
+        .map_err(|e| format!("Failed to create hooks directory: {}", e))?;
+
+    let hook_path = hooks_dir.join("pre-commit");
+    let hook_content = precommit_hook_template(project_type);
+
+    std::fs::write(&hook_path, hook_content)
+        .map_err(|e| format!("Failed to write pre-commit hook: {}", e))?;
+
+    // Make executable (Unix)
+    let mut perms = std::fs::metadata(&hook_path)
+        .map_err(|e| format!("Failed to get hook metadata: {}", e))?
+        .permissions();
+    perms.set_mode(0o755);
+    std::fs::set_permissions(&hook_path, perms)
+        .map_err(|e| format!("Failed to set hook permissions: {}", e))?;
+
+    Ok(())
+}
+
 /// Prompt user for project type selection
 fn prompt_project_type(detected: ProjectType) -> ProjectType {
     let types = [
@@ -394,6 +441,7 @@ mod tests {
             project_type_detected: Some(ProjectType::Rust),
             project_type_was_missing: false,
             coding_standards_upgraded: false,
+            hook_regenerated: true,
             dry_run: false,
             error: None,
         };
@@ -401,6 +449,7 @@ mod tests {
         assert!(!r.files_regenerated.is_empty());
         assert!(!r.protocols_updated.is_empty());
         assert!(r.project_type_detected.is_some());
+        assert!(r.hook_regenerated);
     }
 
     #[test]
@@ -612,5 +661,58 @@ coding_standards:
         let result = run_refresh_with_options(temp.path(), options);
         assert!(result.success);
         assert_eq!(result.project_type_detected, Some(ProjectType::Node));
+    }
+
+    #[test]
+    fn test_refresh_regenerates_hook() {
+        let temp = TempDir::new().unwrap();
+        let asimov_dir = temp.path().join(".asimov");
+        let git_dir = temp.path().join(".git");
+        std::fs::create_dir_all(&asimov_dir).unwrap();
+        std::fs::create_dir_all(&git_dir).unwrap();
+        std::fs::write(
+            asimov_dir.join("roadmap.yaml"),
+            "current:\n  version: '1.0'\n  status: planned\n  summary: Test\n",
+        )
+        .unwrap();
+        // Add Cargo.toml to detect as Rust
+        std::fs::write(temp.path().join("Cargo.toml"), "[package]").unwrap();
+
+        let options = RefreshOptions {
+            yes: true,
+            dry_run: false,
+        };
+        let result = run_refresh_with_options(temp.path(), options);
+        assert!(result.success);
+        assert!(result.hook_regenerated);
+
+        // Verify hook file exists and has correct content
+        let hook_path = git_dir.join("hooks/pre-commit");
+        assert!(hook_path.exists());
+        let content = std::fs::read_to_string(hook_path).unwrap();
+        assert!(content.contains("cargo fmt"));
+        assert!(content.contains("asimov refresh || true")); // Soft-fail
+    }
+
+    #[test]
+    fn test_refresh_hook_not_regenerated_without_git() {
+        let temp = TempDir::new().unwrap();
+        let asimov_dir = temp.path().join(".asimov");
+        // No .git directory
+        std::fs::create_dir_all(&asimov_dir).unwrap();
+        std::fs::write(
+            asimov_dir.join("roadmap.yaml"),
+            "current:\n  version: '1.0'\n  status: planned\n  summary: Test\n",
+        )
+        .unwrap();
+        std::fs::write(temp.path().join("Cargo.toml"), "[package]").unwrap();
+
+        let options = RefreshOptions {
+            yes: true,
+            dry_run: false,
+        };
+        let result = run_refresh_with_options(temp.path(), options);
+        assert!(result.success);
+        assert!(!result.hook_regenerated); // No git, no hook
     }
 }
