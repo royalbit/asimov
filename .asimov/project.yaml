@@ -9,7 +9,12 @@
 # "Without these rules, you are a JUNIOR programmer - but super fast one...
 #  that creates tons of ugly, unmaintainable code for humans at high velocity!"
 #
-# Rust recommendations followed STRICTLY ("should" → "must"):
+# RFC 2119 Interpretation for RoyalBit:
+#   MUST   → We follow (obviously)
+#   SHOULD → We follow (best practice = we do it)
+#   MAY    → We don't care (no opinion needed, zero bikeshedding)
+#
+# Rust recommendations followed STRICTLY:
 # - File size: 1,000 lines soft limit, 1,500 hard limit (ADR-040)
 # - Tests: Colocated with code (#[cfg(test)] mod tests)
 # - Coverage: 100% mandatory (ADR-038)
@@ -18,7 +23,7 @@
 #
 # References:
 # - https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
-# - RFC 2119: "should" = recommended → for RoyalBit: "must"
+# - RFC 2119: https://www.rfc-editor.org/rfc/rfc2119
 # ═══════════════════════════════════════════════════════════════════════════════
 
 identity:
