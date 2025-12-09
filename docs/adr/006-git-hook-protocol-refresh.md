@@ -35,7 +35,7 @@ $ asimov refresh
 
 ON CONFUSION → re-read warmup.yaml
 
-RULES: 4hr max | 1 milestone | tests pass | ship it
+RULES: run until done | 1 milestone | tests pass | ship it
 
 QUALITY GATES:
   tests: cargo test
@@ -132,7 +132,7 @@ fn cmd_refresh(verbose: bool) -> ExitCode {
     println!();
     println!("ON CONFUSION → re-read warmup.yaml");
     println!();
-    println!("RULES: 4hr max | 1 milestone | tests pass | ship it");
+    println!("RULES: run until done | 1 milestone | tests pass | ship it");
 
     if verbose {
         // Parse warmup.yaml and output quality gates

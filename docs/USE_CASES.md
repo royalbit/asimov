@@ -55,9 +55,9 @@ take_rate:
 | Traditional | With Protocol |
 |-------------|---------------|
 | Human decides everything | AI executes, human reviews at gates |
-| Constant context switching | 4hr focused sessions |
+| Constant context switching | Focused sessions until done |
 | Scope creep is constant | Stay on roadmap, no tangents |
-| Burnout from endless work | Sustainable bounded sessions |
+| Burnout from endless work | Sustainable pacing, human controls duration |
 
 **How it works**:
 1. Human says "run warmup"
@@ -115,7 +115,7 @@ take_rate:
 **Pain**: Burnout. Endless backlog. Weekend time stolen. Slow progress.
 
 **Protocol Solution**:
-- 4hr bounded sessions (sustainable pace)
+- Sessions run until done (sustainable pace)
 - AI handles grind, human guides direction
 - Rapid releases (41 in 6 days)
 - Done > Perfect (actually ships)
@@ -167,12 +167,12 @@ If asimov.yaml is removed, that's a choice. The community will notice.
 ### Unbounded "Just Keep Going" Development
 
 The protocol enforces:
-- 4-hour maximum sessions
+- Sessions run until complete (no artificial time limits)
 - Keep shipping until done or stopped (ADR-028)
-- Stop conditions: 4h, roadmap empty, blocked, human stop
+- Stop conditions: roadmap empty, blocked, human stop
 - Done > Perfect
 
-This is a feature, not a bug. Unbounded sessions = burnout + scope creep.
+Human can stop at any time for sustainable pacing.
 
 ### Replacing Human Judgment Entirely
 

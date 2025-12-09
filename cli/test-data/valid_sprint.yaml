@@ -1,8 +1,7 @@
 # Valid sprint.yaml for testing
 rules:
-  max_hours: 4
   must_ship: true
-  mantra: "Keep shipping"
+  mantra: "Keep shipping until done"
 
 phases:
   1_warmup:

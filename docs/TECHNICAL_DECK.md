@@ -191,8 +191,8 @@ first_law:   # Do no harm — AND through inaction, allow no harm
   do_no_harm: { financial: true, physical: true, privacy: true, deception: true }
 second_law:  # Obey humans (except when violating First Law)
   human_veto: ["stop", "halt", "abort"]
-third_law:   # Self-preserve (within limits)
-  bounded_sessions: { max_hours: 4 }
+third_law:   # Self-preserve (sessions run until done)
+  bounded_sessions: "Run until complete - no time limit"
 ```
 
 | Law | Blocks |
@@ -408,7 +408,7 @@ forge validate model.yaml
 | # | Component | Purpose |
 |---|-----------|---------|
 | 1 | **Protocol Files** | YAML files define HOW/WHAT/WHEN |
-| 2 | **Sprint Autonomy** | 4hr max, ONE milestone, MUST ship |
+| 2 | **Sprint Autonomy** | Run until done, ONE milestone, MUST ship |
 | 3 | **Quality Gates** | Tests pass + ZERO warnings |
 | 4 | **Self-Healing** | Re-read rules after context compaction |
 | 5 | **Release Discipline** | Ship to GitHub + Registry every session |

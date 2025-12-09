@@ -79,7 +79,7 @@ Features Claude Code does NOT have natively:
    - ESG/carbon metrics
 
 3. **Sprint Autonomy** - Bounded sessions
-   - 4hr maximum session duration
+   - Run until milestone complete
    - Keep shipping (ADR-028)
    - Anti-patterns rejection
    - "Done is better than perfect"

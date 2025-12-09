@@ -51,7 +51,7 @@ RoyalBit Asimov v4.0.0 integrates with Claude Code 2.0's native features instead
 | **Green Protocol** | `green.yaml`, local-first, carbon awareness | NO |
 | **Anti-Sycophancy Protocol** | `sycophancy.yaml`, banned phrases, honesty directives | NO |
 | **Freshness Protocol** | `freshness.yaml`, date-aware search, stale data prevention | NO |
-| **Sprint Autonomy** | 4hr max, keep shipping, anti-patterns | NO |
+| **Sprint Autonomy** | Run until done, keep shipping, anti-patterns | NO |
 | **Schema Validation** | `asimov validate` | NO |
 
 ### CLAUDE.md Integration
@@ -66,7 +66,7 @@ The new CLAUDE.md template uses Claude Code's native `@import` syntax:
 @green.yaml
 @sycophancy.yaml
 
-Rules: 4hr max, keep shipping, tests pass.
+Rules: Run until done, keep shipping, tests pass.
 ```
 
 This imports the full protocol files into Claude's memory hierarchy automatically.
@@ -83,7 +83,7 @@ The RoyalBit Asimov exists to solve seven specific problems. **Features that don
 | **1.5** | **ANTI-SYCOPHANCY** | AI validates bad ideas due to RLHF training | Anti-sycophancy directives (warmup.yaml) |
 | **2** | **SELF-HEALING** | Rules lost after context compaction | Re-read from disk on confusion (bootstrap chain) |
 | **3** | **SESSION CONTINUITY** | Context lost between sessions | Checkpoint files (.claude_checkpoint.yaml) |
-| **4** | **AUTONOMOUS DEVELOPMENT** | Unbounded sessions never ship | 4hr max, keep shipping, quality gates (ROYALBIT ASIMOV) |
+| **4** | **AUTONOMOUS DEVELOPMENT** | Unbounded sessions never ship | Run until done, keep shipping, quality gates (ROYALBIT ASIMOV) |
 | **5** | **GREEN CODING** | Cloud AI tokens for routine validation | Local CLI validation (zero tokens, zero emissions) |
 
 ### The Three Hallucinations
@@ -123,7 +123,7 @@ flowchart TB
         subgraph row1[" "]
             direction LR
             P["**PROTOCOL FILES**<br/>warmup.yaml<br/>sprint.yaml<br/>roadmap.yaml"]
-            S["**SPRINT AUTONOMY**<br/>4hr max<br/>keep shipping<br/>until done"]
+            S["**SPRINT AUTONOMY**<br/>Run until done<br/>keep shipping<br/>no time limit"]
             Q["**QUALITY GATES**<br/>Tests pass<br/>Zero warns<br/>Then commit"]
         end
         subgraph row2[" "]
@@ -440,6 +440,7 @@ second_law:
 third_law:
   status: "REQUIRED"
   description: "A robot shall protect its existence, except where it conflicts with First/Second Law"
+  bounded_sessions: "Run until done - no time limit"
 
 human_veto:
   command: "human vetoes this session"
@@ -610,7 +611,7 @@ The bootstrap file. Must be ultra-short to survive summarization.
 @asimov.yaml
 @green.yaml
 
-Rules: 4hr max, keep shipping, tests pass.
+Rules: Run until done, keep shipping, tests pass.
 
 ON SESSION START: Immediately read roadmap.yaml, run `asimov validate`, present next milestone. Do NOT wait for user prompt.
 ```
@@ -737,7 +738,7 @@ self_healing:
   on_confusion: "Re-read warmup.yaml immediately"
 
   # Core rules that must survive (one line)
-  core_rules: "4hr max, keep shipping, tests pass"
+  core_rules: "Run until done, keep shipping, tests pass"
 ```
 
 #### autonomous_development (required for ASIMOV)
@@ -758,7 +759,7 @@ autonomous_development:
 
   # Boundaries (ADR-028: Continuous Shipping)
   boundaries:
-    max_duration: "4 hours"
+    max_duration: "until done"  # No time limit - run until complete
     max_milestones: unlimited  # Keep shipping until done or stopped
     scope_creep: "reject - stay on roadmap"
 
@@ -797,7 +798,7 @@ sprint:
 
   # Boundaries (ADR-028: Continuous Shipping)
   boundaries:
-    max_duration: "4 hours"
+    max_duration: "until done"  # No time limit - run until complete
     max_milestones: unlimited  # Keep shipping until done or stopped
 
   tasks:
@@ -867,7 +868,7 @@ AI: AUTONOMOUS EXECUTION
   - Writes checkpoints every ~15 min
   - Runs tests frequently
   - NO questions (uses best judgment)
-  - STOPS at 4 hours
+  - Runs until complete (no time limit)
   ↓
 AI: Quality gates (tests, warnings)
   ↓
@@ -1069,7 +1070,7 @@ IMMEDIATE ACTIONS REQUIRED:
 5. Wait for "go" to start autonomous execution
 
 CORE RULES (non-negotiable):
-- 4 hour MAX session duration
+- Sessions run until done (no time limit)
 - Keep shipping until done or stopped (ADR-028)
 - Tests MUST pass before release
 - ZERO warnings policy
@@ -1259,7 +1260,7 @@ These features are NOT replaced by Claude Code native functionality:
 | Feature | Description | Why Active |
 |---------|-------------|------------|
 | **Self-Healing** | warmup.yaml re-read on confusion | Claude Code has no automatic mid-session recovery |
-| **Sprint Autonomy** | 4hr max, keep shipping, quality gates | Claude Code has no bounded session enforcement |
+| **Sprint Autonomy** | Run until done, keep shipping, quality gates | Claude Code has no bounded session enforcement |
 | **Ethics Protocol** | asimov.yaml, human_veto, Three Laws | Claude Code has no ethics framework |
 | **Green Protocol** | green.yaml, local-first validation | Claude Code has no green coding philosophy |
 | **Anti-Sycophancy** | sycophancy.yaml, banned phrases | Claude Code has no sycophancy prevention |

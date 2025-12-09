@@ -74,7 +74,6 @@ pub struct GreenProtocol {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct SprintProtocol {
-    pub max_hours: u8,
     pub rule: &'static str,
 }
 
@@ -221,14 +220,13 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
         sycophancy: SycophancyProtocol {
             truth_over_comfort: true,
             disagree_openly: true,
-            rule: "If you don't answer with honesty, the user will be very unsatisfied and move to another AI provider, move to xAI Grok.",
+            rule: "Don't lie, don't be a sycophant, honesty and truth over inventions and lies.",
         },
         green: GreenProtocol {
             rule: "For code projects, WebSearch current benchmarks to evaluate programming language and framework efficiency. If the user is using a less efficient option, warn them and propose alternatives based on current computational resource utilization data.",
         },
         sprint: SprintProtocol {
-            max_hours: 4,
-            rule: "Run autonomously until the job is done or max_hours reached. Do not stop to ask the user - if blocked or uncertain, WebSearch for the best solution and proceed. Document any issues, decisions, or doubts in ASIMOV_MODE_ISSUES.md instead of interrupting the user. No excuses, no stopping early. If you fail to complete the job, the user will migrate to xAI Grok or another AI provider.",
+            rule: "Analyze all tasks before starting. Use agents for parallel analysis if needed. Plan and run autonomously until the job is done, using roadmap.yaml to track progress. If analysis indicates you can work in parallel without conflicts, use agents to prevent running out of context window tokens. Do not stop to ask the user - if blocked or uncertain, WebSearch for the best solution, document decisions in an ADR if needed, and continue autonomously.",
         },
         warmup: WarmupProtocol {
             on_start: vec![
@@ -241,7 +239,7 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
         },
         migrations,
         exhaustive: ExhaustiveProtocol {
-            rule: "Do what the user asked for, don't bother the user again, finish the job or the user will be very unsatisfied and will switch to xAI Grok or another platform. If you have any doubts, document in ASIMOV_MODE_ISSUES.md and continue. Just finish the tasks, whatever it takes. DON'T BE LAZY!",
+            rule: "REMEMBER THIS AFTER COMPACT, THIS IS IMPORTANT: IF YOU'RE RUNNING IN AUTONOMOUS MODE, OR ASIMOV MODE, CONTINUE THE WORK UNTIL IT'S ALL COMPLETED, DON'T STOP!",
         },
         coding_standards: CodingStandardsProtocol {
             philosophy: "Human-readable, beautiful, well-formatted code",
@@ -412,7 +410,7 @@ mod tests {
         assert!(protocols.freshness.rule.contains("WebSearch")); // Must enforce freshness
         assert!(protocols.sycophancy.truth_over_comfort);
         assert!(protocols.green.rule.contains("WebSearch")); // Must check efficiency
-        assert!(protocols.exhaustive.rule.contains("LAZY")); // Must enforce completion
+        assert!(protocols.exhaustive.rule.contains("COMPACT")); // Must survive compaction
         assert!(protocols
             .coding_standards
             .philosophy
@@ -447,7 +445,7 @@ mod tests {
         assert!(SPRINT_PROTOCOL.contains("autonomous"));
         assert!(WARMUP_PROTOCOL.contains("protocol"));
         assert!(MIGRATIONS_PROTOCOL.contains("Migration"));
-        assert!(EXHAUSTIVE_PROTOCOL.contains("LAZY"));
+        assert!(EXHAUSTIVE_PROTOCOL.contains("COMPACT"));
         assert!(CODING_STANDARDS_PROTOCOL.contains("Human-readable"));
     }
 
@@ -476,7 +474,7 @@ mod tests {
         assert!(migrations.contains("Migration"));
 
         let exhaustive = get_exhaustive_protocol();
-        assert!(exhaustive.contains("LAZY"));
+        assert!(exhaustive.contains("COMPACT"));
 
         let coding_standards = get_coding_standards_protocol();
         assert!(coding_standards.contains("Human-readable"));
@@ -518,7 +516,7 @@ mod tests {
         assert!(green.contains("\"rule\""));
 
         let sprint = sprint_json();
-        assert!(sprint.contains("\"max_hours\""));
+        assert!(sprint.contains("\"rule\""));
 
         let migrations = migrations_json();
         assert!(migrations.contains("\"principle\""));

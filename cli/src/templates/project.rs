@@ -110,7 +110,7 @@ asimov lint-docs --fix .     # Fix markdown
 
 ## Core Rules
 
-- 4hr MAX session, keep shipping, NO scope creep
+- Keep shipping until done, NO scope creep
 - Tests pass + ZERO warnings → then commit
 - Done > Perfect. Ship it.
 

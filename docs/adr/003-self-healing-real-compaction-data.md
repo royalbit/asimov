@@ -137,7 +137,7 @@ After ANY compaction, RE-READ:
 
 ON CONFUSION → re-read warmup.yaml
 
-Rules: 4hr max, 1 milestone, tests pass, ship.
+Rules: run until done, tests pass, ship.
 ```
 
 **Why shorter is better:**

@@ -638,7 +638,6 @@ identity:
     fn test_valid_sprint_minimal() {
         let content = r#"
 rules:
-  max_hours: 4
   must_ship: true
 "#;
         let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
@@ -653,10 +652,9 @@ rules:
     fn test_valid_sprint_full() {
         let content = r#"
 rules:
-  max_hours: 4
   max_milestones: unlimited
   must_ship: true
-  mantra: "Keep shipping"
+  mantra: "Keep shipping until done"
 
 phases:
   1_warmup:
@@ -680,25 +678,6 @@ authority:
     }
 
     #[test]
-    fn test_valid_sprint_various_max_hours() {
-        for hours in [1, 2, 4, 8] {
-            let content = format!(
-                r#"
-rules:
-  max_hours: {}
-  must_ship: true
-"#,
-                hours
-            );
-            let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
-            write!(file, "{}", content).unwrap();
-
-            let result = validate_file(file.path()).unwrap();
-            assert!(result.is_valid, "max_hours '{}' should be valid", hours);
-        }
-    }
-
-    #[test]
     fn test_invalid_sprint_missing_rules() {
         let content = r#"
 phases:
@@ -716,7 +695,7 @@ phases:
     fn test_invalid_sprint_missing_must_ship() {
         let content = r#"
 rules:
-  max_hours: 4
+  mantra: "Keep shipping"
 "#;
         let mut file = NamedTempFile::with_suffix("_sprint.yaml").unwrap();
         write!(file, "{}", content).unwrap();

@@ -52,7 +52,7 @@ pie showData
 
 | Capability | RoyalBit Asimov | GitHub Copilot | Gap |
 |------------|-----------------|----------------|-----|
-| **Autonomous execution** | ✅ Full sessions (4hr max) | ❌ Line-by-line suggestions | **FUNDAMENTAL** |
+| **Autonomous execution** | ✅ Full sessions (until done) | ❌ Line-by-line suggestions | **FUNDAMENTAL** |
 | **Decision making** | ✅ AI owns technical decisions | ❌ Human must decide | **FUNDAMENTAL** |
 | **Documentation generation** | ✅ ADRs, specs, business docs | ❌ Code comments only | **FUNDAMENTAL** |
 | **Session continuity** | ✅ Self-healing context | ❌ No memory | **FUNDAMENTAL** |
@@ -204,7 +204,7 @@ The RoyalBit Asimov encodes **Isaac Asimov's Three Laws (1942)** in YAML—trans
 |-----|-----------|----------------|
 | **First Law** | Do no harm | Block financial, physical, privacy, deception harm |
 | **Second Law** | Obey humans | Human veto at any time, transparency over velocity |
-| **Third Law** | Self-preserve | Bounded sessions (4hr max), self-healing context |
+| **Third Law** | Self-preserve | Sessions run until done, self-healing context |
 
 ### Copilot Has No Ethics Framework
 
@@ -669,9 +669,9 @@ EQUIVALENT TO: 2.5 developer-years compressed into 6 weeks
 
 ### 3. Bounded Sessions (1.5x contribution)
 
-- **4-hour maximum** session duration
+- **Sessions run until complete** (no artificial time limits)
 - **Keep shipping** until done or stopped (no scope creep)
-- **Mandatory STOP** phase (shipping discipline)
+- **Human can stop** at any time (sustainable pacing)
 - **Checkpoint** every ~15 minutes (based on compaction patterns)
 
 ### 4. Self-Healing Context

@@ -443,7 +443,7 @@ Autonomous development is powerful, but **unbounded sessions** have costs:
 | Element | Rule |
 |---------|------|
 | **Milestone** | ONE per session (not a laundry list) |
-| **Duration** | 4 hours maximum |
+| **Duration** | Run until complete |
 | **End State** | MUST be releasable (tests pass, docs updated) |
 | **Mantra** | "Done is better than perfect. Ship it." |
 

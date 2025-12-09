@@ -45,7 +45,7 @@ When validation runs and detects missing files:
 | roadmap.yaml | AUTO-CREATE + INFO | Milestone data (skeleton template) |
 | CLAUDE.md | NEVER AUTO-CREATE | Bootstrap must be intentional |
 
-**Note on sprint.yaml:** Sprint is a PROTOCOL, not optional data. It defines session boundaries (4hr max, 1 milestone, mandatory stop). Without sprint boundaries, ROYALBIT ASIMOV has no stopping discipline.
+**Note on sprint.yaml:** Sprint is a PROTOCOL, not optional data. It defines session boundaries (1 milestone per session, run until complete). Without sprint boundaries, ROYALBIT ASIMOV has no stopping discipline.
 
 **Note on roadmap.yaml:** Roadmap is DATA, but essential for autonomous operation. Auto-generated as a skeleton template with one placeholder milestone that guides the user/AI to define actual work.
 
@@ -96,7 +96,7 @@ current:
     Replace this with your actual milestone:
     - What problem are you solving?
     - What does "done" look like?
-    - Can it ship in 4 hours or less?
+    - What's the minimal shippable scope?
   features:
     - "[ ] Define milestone scope"
 

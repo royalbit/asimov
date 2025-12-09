@@ -580,7 +580,7 @@ CONTEXT REFRESH - Injecting protocol rules before compaction
 IMPORTANT: Compaction is about to occur. These rules MUST survive:
 
 CORE RULES (non-negotiable):
-- 4 hour MAX session duration
+- Run until complete
 - 1 milestone per session
 - Tests MUST pass before release
 - ZERO warnings policy

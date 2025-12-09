@@ -28,11 +28,11 @@ CONTEXT REFRESH - Injecting protocol rules before compaction
 IMPORTANT: Compaction is about to occur. These rules MUST survive:
 
 CORE RULES (non-negotiable):
-- 4 hour MAX session duration
-- 1 milestone per session
+- Run until work is complete
 - Tests MUST pass before release
 - ZERO warnings policy
 - NO scope creep ("Let me also..." = NO)
+- Use agents for parallel work when needed
 
 POST-COMPACTION ACTIONS:
 1. Run: asimov warmup (protocols are hardcoded in v8.0.0)

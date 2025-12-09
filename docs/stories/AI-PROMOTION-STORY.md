@@ -717,7 +717,7 @@ This is the key innovation:
 You: "run warmup"
 Claude: "📋 NEXT MILESTONE: [from roadmap]..."
 You: "punch it"
-Claude: 🤖 [works autonomously for 2-4 hours]
+Claude: 🤖 [works autonomously until done]
 Claude: "✅ RELEASE COMPLETE: vX.Y.Z"
         - GitHub: pushed + tagged
         - Local: installed

@@ -10,7 +10,7 @@
 Each project initialized with `asimov init --asimov` becomes an **independent** Self-Evolving Autonomous AI with:
 - The Three Laws (asimov.yaml) - ethics hardcoded
 - Green coding (green.yaml)
-- Sprint autonomy (4hr max, quality gates)
+- Sprint autonomy (run until done, quality gates)
 - Self-healing (survives context compaction)
 
 The methodology propagates through the ecosystem. Each child project operates independently after creation.
@@ -28,7 +28,7 @@ flowchart TB
         subgraph row1[" "]
             direction LR
             P["**PROTOCOL FILES**<br/>warmup.yaml<br/>sprint.yaml<br/>roadmap.yaml"]
-            S["**SPRINT AUTONOMY**<br/>4hr max<br/>keep shipping<br/>until done"]
+            S["**SPRINT AUTONOMY**<br/>run until done<br/>keep shipping<br/>quality gates"]
             Q["**QUALITY GATES**<br/>Tests pass<br/>Zero warns<br/>Then commit"]
         end
         subgraph row2[" "]
@@ -45,7 +45,7 @@ flowchart TB
 | # | Component | Purpose | Key Rule |
 |---|-----------|---------|----------|
 | 1 | [Protocol Files](components/1-PROTOCOL_FILES.md) | Define HOW/WHAT/WHEN | YAML files in git |
-| 2 | [Sprint Autonomy](components/2-SPRINT_AUTONOMY.md) | Bounded sessions | 4hr max, keep shipping |
+| 2 | [Sprint Autonomy](components/2-SPRINT_AUTONOMY.md) | Bounded sessions | Run until done, keep shipping |
 | 3 | [Quality Gates](components/3-QUALITY_GATES.md) | Enforce standards | Tests + zero warnings |
 | 4 | [Self-Healing](components/4-SELF_HEALING.md) | Survive compaction | Re-read from disk |
 | 5 | [Release Discipline](components/5-RELEASE_DISCIPLINE.md) | Ship everything | Triple release |
@@ -108,7 +108,7 @@ flowchart TB
         subgraph auto["AUTONOMOUS EXECUTION"]
             direction TB
             LOOP["Implement → Test → Document<br/>(repeat)<br/><br/>Every 2hr: Checkpoint + Re-read warmup"]
-            RULES["**Rules:**<br/>• NO questions (use best judgment)<br/>• NO scope creep<br/>• If blocked: note it, continue<br/>• 4hr max, then STOP"]
+            RULES["**Rules:**<br/>• NO questions (use best judgment)<br/>• NO scope creep<br/>• If blocked: note it, continue<br/>• Run until done"]
         end
 
         QG["Quality Gates<br/>cargo test, clippy, fmt (must pass)"]

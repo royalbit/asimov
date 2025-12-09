@@ -14,7 +14,7 @@ Every feature must serve one of these goals. Features that don't serve these goa
 | **1.5** | ANTI-SYCOPHANCY | AI validates bad ideas due to RLHF training | Anti-sycophancy directives (sycophancy.yaml) |
 | **2** | SELF-HEALING | Rules lost after context compaction | Re-read from disk on confusion |
 | **3** | SESSION_CONTINUITY | Context lost between sessions | Claude Code native (--continue/--resume) |
-| **4** | AUTONOMOUS_DEVELOPMENT | Unbounded sessions never ship | 4hr max, keep shipping, quality gates |
+| **4** | AUTONOMOUS_DEVELOPMENT | Unbounded sessions never ship | Run until done, keep shipping, quality gates |
 
 ### The Two Hallucinations
 
@@ -54,7 +54,7 @@ Claude Code 2.0 (Nov 2025) has native features for cross-session continuity:
 - Ethics Protocol (asimov.yaml - Three Laws)
 - Green Protocol (green.yaml)
 - Anti-Sycophancy Protocol (sycophancy.yaml)
-- Sprint Autonomy (4hr max, keep shipping)
+- Sprint Autonomy (run until done, keep shipping)
 - Mid-session self-healing (warmup.yaml re-read)
 - Schema Validation (`asimov validate`)
 

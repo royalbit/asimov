@@ -99,7 +99,7 @@ Eight JSON protocols in `.asimov/` directory, loaded on session start:
 ├── freshness.json   # WebSearch for current information
 ├── sycophancy.json  # Truth over comfort
 ├── green.json       # Efficiency benchmarking
-├── sprint.json      # 4hr max, autonomous execution
+├── sprint.json      # Autonomous execution until done
 ├── migrations.json  # Functional equivalence rules
 └── exhaustive.json  # Finish the job
 ```
@@ -113,12 +113,11 @@ Eight JSON protocols in `.asimov/` directory, loaded on session start:
 }
 ```
 
-### sprint.json - Bounded Autonomy
+### sprint.json - Autonomous Execution
 
 ```json
 {
-  "max_hours": 4,
-  "rule": "Run autonomously until done or max_hours. WebSearch when blocked. Document issues in ASIMOV_MODE_ISSUES.md."
+  "rule": "Analyse tasks, use agents for parallel work, run autonomously until done. WebSearch when blocked. Document decisions in ADRs."
 }
 ```
 
@@ -225,7 +224,7 @@ All protocols stored as JSON in `.asimov/` directory:
 | `freshness.json` | WebSearch for current information |
 | `sycophancy.json` | Truth over comfort, disagree openly |
 | `green.json` | Efficiency benchmarking |
-| `sprint.json` | Bounded autonomy (4hr max) |
+| `sprint.json` | Autonomous execution (run until done) |
 | `migrations.json` | Functional equivalence rules |
 | `exhaustive.json` | Complete the task |
 

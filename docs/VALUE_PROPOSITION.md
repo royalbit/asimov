@@ -8,7 +8,7 @@ Claude Opus 4.5 and Sonnet 4.5 deliver 50-100x velocity. **That's Claude, not As
 
 Asimov ensures you don't destroy yourself in the process:
 - **Ethics**: The Three Laws propagate to every child project
-- **Bounded Autonomy**: 4hr max sessions, quality gates
+- **Bounded Autonomy**: Run until done, quality gates
 - **Sustainability**: Green coding, local validation
 
 ---
@@ -94,7 +94,7 @@ Every company using Claude gets the velocity. The question is:
 | Before | After |
 |--------|-------|
 | Endless backlog | 41 releases in 6 days |
-| Weekend burnout | 4hr bounded sessions |
+| Weekend burnout | Bounded sessions until done |
 | Slow progress | Rapid iteration |
 
 ### Small Agencies
@@ -149,7 +149,7 @@ Every company using Claude gets the velocity. The question is:
 | MVP timeline | 3-6 months | Days to weeks |
 | Team size | 5-10 | 1 + AI |
 | Rework | 30-50% | ~0% |
-| Sustainability | Burnout common | 4hr bounded sessions |
+| Sustainability | Burnout common | Bounded sessions until done |
 
 ---
 
@@ -172,7 +172,7 @@ Claude can work autonomously for hours. **Asimov ensures it ships.**
 
 | Constraint | Why |
 |------------|-----|
-| 4hr max sessions | Bounded blast radius |
+| Run until done | Bounded blast radius |
 | Quality gates | Tests MUST pass, zero warnings |
 | Phase checkpoints | Human review at milestones |
 | Self-healing | Recover from compaction |

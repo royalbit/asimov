@@ -27,7 +27,7 @@ The question arose: Should Asimov integrate with or adopt BMAD patterns?
 | Agent Count | 1 (Claude) |
 | Orchestration | Autonomous with guardrails |
 | Philosophy | "Make decisions. Don't ask. Ship." |
-| Checkpoints | 2-hour self-check, 4-hour hard stop |
+| Checkpoints | Periodic self-check, run until complete |
 | Planning | Warmup → Execute → Ship |
 
 ## Decision
@@ -81,7 +81,7 @@ BMAD uses human checkpoints for safety. Asimov uses:
 | Guardrail | Enforcement |
 |-----------|-------------|
 | Three Laws | Hardcoded ethics |
-| Bounded Sessions | 4hr max, 1 milestone |
+| Bounded Sessions | 1 milestone, run until complete |
 | Quality Gates | Tests pass, zero warnings |
 | Self-Healing | Auto-recovery from context loss |
 

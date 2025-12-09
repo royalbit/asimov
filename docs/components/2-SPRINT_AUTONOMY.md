@@ -7,7 +7,7 @@
 Sprint Autonomy is the discipline of **continuous, hands-off shipping**:
 
 - **Unlimited milestones** per session (ADR-028)
-- **4-hour maximum** (safety ceiling)
+- **Run until done** (no time limit)
 - **Keep shipping** until roadmap empty or blocked
 
 ## The Core Rules
@@ -15,7 +15,7 @@ Sprint Autonomy is the discipline of **continuous, hands-off shipping**:
 | Rule | Why |
 |------|-----|
 | Keep shipping | Milestones complete in minutes, not hours |
-| 4-hour ceiling | Safety boundary, not target |
+| Run until done | Sessions continue until complete or blocked |
 | Must end shippable | Every commit is atomic and complete |
 | No scope creep | Stay on roadmap, no tangents |
 
@@ -25,7 +25,7 @@ The original "1 milestone per session" rule was artificial friction:
 
 ```
 OLD: Ship 1 → Stop → Wait for next session → Friction
-NEW: Ship 1 → Ship 2 → Ship N → Done or 4h
+NEW: Ship 1 → Ship 2 → Ship N → Until done
 ```
 
 **"Keep shipping until done or stopped."**
@@ -34,7 +34,6 @@ NEW: Ship 1 → Ship 2 → Ship N → Done or 4h
 
 | Condition | Action |
 |-----------|--------|
-| 4 hour ceiling | STOP |
 | Roadmap exhausted | STOP |
 | Blocked by dependency | STOP |
 | Human says stop | STOP |

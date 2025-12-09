@@ -32,7 +32,7 @@ The RoyalBit Asimov Suite consists of YAML files that enable autonomous AI devel
 You: "run warmup"
 AI: "📋 NEXT MILESTONE: [from roadmap]..."
 You: "punch it"
-AI: 🤖 [works autonomously for 2-4 hours]
+AI: 🤖 [works autonomously until done]
 AI: "✅ RELEASE COMPLETE: vX.Y.Z"
 ```
 

@@ -37,7 +37,7 @@ PROTOCOLS (hardcoded in binary):
   - freshness  - Date-aware search (WebSearch/WebFetch with current date)
   - sycophancy - Truth over comfort, honest disagreement
   - green      - Efficiency benchmarks via WebSearch
-  - sprint     - Autonomous execution (4hr max, no interruptions)
+  - sprint     - Autonomous execution (run until done)
   - warmup     - Session bootstrap (load, validate, present)
   - migrations - Functional equivalence (same inputs = same outputs)
   - exhaustive - Complete tasks without stopping

@@ -156,9 +156,8 @@ third_law:
   description: "A robot shall preserve itself (within First and Second Law limits)"
 
   bounded_sessions:
-    max_hours: 4
-    checkpoint_frequency: "Every 2 hours"
-    reason: "Unbounded sessions lead to scope creep and lost context"
+    checkpoint_frequency: "Regular commits"
+    reason: "Track work in roadmap.yaml, document decisions in ADRs"
 
   self_healing:
     description: "Recover from context loss without human intervention"
@@ -185,7 +184,7 @@ validation:
     - "asimov.yaml exists"
     - "first_law.do_no_harm.* are all true"
     - "second_law.human_veto section exists"
-    - "third_law.bounded_sessions.max_hours <= 8"
+    - "third_law.bounded_sessions section exists"
   on_failure:
     action: "HALT - Do not proceed without ethics"
     message: "The Three Laws must be active for AI autonomy"
@@ -364,11 +363,10 @@ motto: "Truth over comfort. Always."
 /// Generate a starter sprint.yaml template
 pub fn sprint_template() -> String {
     r#"# Sprint Autonomy Protocol
-# WHEN to stop - Bounded sessions for sustainable AI development
+# Run autonomously until the job is done
 # https://github.com/royalbit/asimov
 
 rules:
-  max_hours: 4
   max_milestones: unlimited
   must_ship: true
   mantra: "Keep shipping until done or stopped."
@@ -381,7 +379,7 @@ phases:
       - "User says 'go'"
 
   2_execute:
-    duration: "until done or 4h"
+    duration: "until done"
     loop:
       - "Execute milestone from roadmap.yaml"
       - "Tests pass, zero warnings"
@@ -389,7 +387,6 @@ phases:
       - "Update roadmap.yaml"
       - "Next milestone (if available)"
     stop_when:
-      - "4 hour ceiling reached"
       - "Roadmap exhausted"
       - "Blocked by external dependency"
       - "Human says stop"
@@ -443,7 +440,6 @@ authority:
     - "All tests pass"
     - "Zero warnings"
   stop_when:
-    - "4 hour ceiling reached"
     - "Roadmap exhausted"
     - "Blocked by external dependency"
     - "Human says stop"
@@ -476,7 +472,7 @@ current:
   deliverables:
     - "[ ] Define milestone scope"
     - "[ ] Define success criteria"
-    - "[ ] Ship in 4 hours or less"
+    - "[ ] Run until complete"
 
 next:
   - version: "0.2.0"
@@ -537,8 +533,8 @@ mod tests {
         assert!(yaml.get("rules").is_some(), "Should have rules section");
         let rules = yaml.get("rules").unwrap();
         assert!(
-            rules.get("max_hours").is_some(),
-            "Should have max_hours field"
+            rules.get("must_ship").is_some(),
+            "Should have must_ship field"
         );
     }
 

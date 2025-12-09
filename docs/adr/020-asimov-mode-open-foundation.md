@@ -102,8 +102,8 @@ second_law:
 third_law:
   description: "A robot shall preserve itself (within First and Second Law limits)"
   bounded_sessions:
-    max_hours: 4
-    checkpoint_frequency: "2 hours"
+    run_until_complete: true
+    checkpoint_frequency: "periodic"
   self_healing:
     on_confusion: "Re-read asimov.yaml, wait for human"
 ```

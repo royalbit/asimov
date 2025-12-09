@@ -212,11 +212,6 @@ pub const ASIMOV_SCHEMA: &str = r#"{
         "bounded_sessions": {
           "type": "object",
           "properties": {
-            "max_hours": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 8
-            },
             "checkpoint_frequency": { "type": "string" },
             "reason": { "type": "string" }
           }

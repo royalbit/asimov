@@ -75,7 +75,7 @@ sprint:
   status: in_progress  # planned | in_progress | blocked | done
 
   boundaries:
-    max_duration: "4 hours"
+    max_duration: "until done"
     milestone_count: 1
     scope_creep: "reject"
 

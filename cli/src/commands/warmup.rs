@@ -91,7 +91,9 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
     if let Some(next) = roadmap.get("next") {
         // Handle both array format and single object format
         let next_items: Vec<&serde_yaml::Value> = if next.is_sequence() {
-            next.as_sequence().map(|s| s.iter().collect()).unwrap_or_default()
+            next.as_sequence()
+                .map(|s| s.iter().collect())
+                .unwrap_or_default()
         } else {
             vec![next]
         };
@@ -121,7 +123,8 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
                             done += 1;
                         } else if status == "wip" && result.wip_item.is_none() {
                             result.wip_active = true;
-                            result.wip_item = d.get("id").and_then(|i| i.as_str()).map(String::from);
+                            result.wip_item =
+                                d.get("id").and_then(|i| i.as_str()).map(String::from);
                         }
                     }
                 }

@@ -125,7 +125,7 @@ Even if all other rules are lost, this instruction triggers full recovery.
 1. Matches typical compaction frequency in long sessions
 2. Frequent enough to catch context loss early
 3. Infrequent enough to not waste tokens
-4. Aligns with existing sprint autonomy rules (4hr max)
+4. Aligns with existing sprint autonomy rules (run until done)
 
 ### Why Three Files?
 

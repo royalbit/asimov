@@ -65,7 +65,7 @@ The question is not "how do we go faster?" but:
 ├─────────────────────────────────────────────────────────────┤
 │  GUARDRAILS: Asimov Protocol                                │
 │  - Ethics (Three Laws)                                      │
-│  - Bounded autonomy (4hr max, quality gates)                │
+│  - Bounded autonomy (run until done, quality gates)         │
 │  - Self-healing (compensates for compaction)                │
 │  - Anti-hallucination (file-based truth)                    │
 │  - Green coding (local validation)                          │
@@ -95,7 +95,7 @@ The question is not "how do we go faster?" but:
 
 **NEW Three Pillars:**
 1. **Ethics** (The Three Laws)
-2. **Bounded Autonomy** (4hr max, quality gates)
+2. **Bounded Autonomy** (run until complete, quality gates)
 3. **Sustainability** (Green coding, local-first)
 
 ## Consequences

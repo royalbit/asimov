@@ -12,14 +12,8 @@ pub const SPRINT_SCHEMA: &str = r#"
     "rules": {
       "type": "object",
       "description": "Core session rules",
-      "required": ["max_hours", "must_ship"],
+      "required": ["must_ship"],
       "properties": {
-        "max_hours": {
-          "type": "integer",
-          "description": "Maximum session duration in hours",
-          "minimum": 1,
-          "maximum": 8
-        },
         "max_milestones": {
           "type": ["integer", "string"],
           "description": "Maximum milestones per session (or 'unlimited')"
