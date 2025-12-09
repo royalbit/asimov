@@ -80,7 +80,7 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
         if let Ok(project) = serde_yaml::from_str::<serde_yaml::Value>(&content) {
             if let Some(identity) = project.get("identity") {
                 result.project_name = identity
-                    .get("project")
+                    .get("name")
                     .and_then(|v| v.as_str())
                     .map(String::from);
                 result.project_tagline = identity
@@ -146,7 +146,7 @@ mod tests {
         .unwrap();
         std::fs::write(
             asimov_dir.join("project.yaml"),
-            "identity:\n  project: MyProject\n  tagline: My tagline\n",
+            "identity:\n  name: MyProject\n  tagline: My tagline\n",
         )
         .unwrap();
 

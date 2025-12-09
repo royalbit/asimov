@@ -22,7 +22,7 @@ fn warmup_generic(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Brief project description"
   version: "0.1.0"
 
@@ -103,7 +103,7 @@ fn warmup_rust(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Brief project description"
   version: "0.1.0"
 
@@ -199,7 +199,7 @@ fn warmup_python(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Brief project description"
   version: "0.1.0"
 
@@ -292,7 +292,7 @@ fn warmup_node(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Brief project description"
   version: "0.1.0"
 
@@ -384,7 +384,7 @@ fn warmup_go(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Brief project description"
   version: "0.1.0"
 
@@ -479,7 +479,7 @@ fn warmup_flutter(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Brief project description"
   version: "0.1.0"
 
@@ -571,7 +571,7 @@ fn warmup_docs(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Brief project description"
   version: "0.1.0"
 
@@ -656,7 +656,7 @@ fn warmup_arch(project_name: &str) -> String {
 # https://github.com/royalbit/asimov
 
 identity:
-  project: "{}"
+  name: "{}"
   tagline: "Architecture documentation"
   version: "0.1.0"
 
@@ -752,7 +752,7 @@ mod tests {
         let template = warmup_template("my-project", ProjectType::Generic);
         assert!(template.contains("my-project"));
         assert!(template.contains("identity:"));
-        assert!(template.contains("project:"));
+        assert!(template.contains("name:"));
     }
 
     #[test]

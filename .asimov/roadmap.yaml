@@ -30,7 +30,16 @@ previous:
   summary: "Dependency Setup Assistant"
   goal: "asimov init adds dev dependencies for coding standards tools"
 
-next: []
+next:
+  - version: "9.10.0"
+    status: planned
+    summary: "Fix identity.name in warmup protocol"
+    goal: "Warmup correctly reads identity.name from project.yaml instead of identity.project"
+    deliverables:
+      - "[ ] Fix warmup.rs to read identity.name"
+      - "[ ] Update warmup schema to use identity.name"
+      - "[ ] Update warmup templates to use identity.name"
+      - "[ ] Update tests"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"

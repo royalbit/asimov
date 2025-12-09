@@ -528,7 +528,7 @@ mod tests {
     fn test_valid_warmup_minimal() {
         let content = r#"
 identity:
-  project: "Test Project"
+  name: "Test Project"
 "#;
         let mut file = NamedTempFile::with_suffix("_warmup.yaml").unwrap();
         write!(file, "{}", content).unwrap();
@@ -542,7 +542,7 @@ identity:
     fn test_valid_warmup_full() {
         let content = r#"
 identity:
-  project: "Test Project"
+  name: "Test Project"
   tagline: "A test project"
   version: "1.0.0"
   philosophy: "Test all the things"
@@ -602,7 +602,7 @@ mission:
     }
 
     #[test]
-    fn test_invalid_warmup_missing_project() {
+    fn test_invalid_warmup_missing_name() {
         let content = r#"
 identity:
   tagline: "No project name"
@@ -613,23 +613,23 @@ identity:
         let result = validate_file(file.path()).unwrap();
         assert!(!result.is_valid);
         assert!(
-            result.errors.iter().any(|e| e.contains("project")),
-            "Should mention missing project: {:?}",
+            result.errors.iter().any(|e| e.contains("name")),
+            "Should mention missing name: {:?}",
             result.errors
         );
     }
 
     #[test]
-    fn test_invalid_warmup_empty_project() {
+    fn test_invalid_warmup_empty_name() {
         let content = r#"
 identity:
-  project: ""
+  name: ""
 "#;
         let mut file = NamedTempFile::with_suffix("_warmup.yaml").unwrap();
         write!(file, "{}", content).unwrap();
 
         let result = validate_file(file.path()).unwrap();
-        assert!(!result.is_valid, "Empty project should fail");
+        assert!(!result.is_valid, "Empty name should fail");
     }
 
     // ========== sprint.yaml Tests ==========
@@ -1265,7 +1265,7 @@ current:
         // This test exercises the check_warmup_structure code path
         let content = r#"
 identity:
-  project: "test"
+  name: "test"
   tagline: "A test"
 "#;
         let mut file = NamedTempFile::with_suffix("_warmup.yaml").unwrap();

@@ -1161,7 +1161,7 @@ mod tests {
         .unwrap();
         std::fs::write(
             asimov_dir.join("project.yaml"),
-            "identity:\n  project: Test\n  tagline: Test\n",
+            "identity:\n  name: Test\n  tagline: Test\n",
         )
         .unwrap();
         std::env::set_current_dir(temp.path()).unwrap();

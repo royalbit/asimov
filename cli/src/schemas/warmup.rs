@@ -12,9 +12,9 @@ pub const WARMUP_SCHEMA: &str = r#"
     "identity": {
       "type": "object",
       "description": "Project identity and metadata",
-      "required": ["project"],
+      "required": ["name"],
       "properties": {
-        "project": {
+        "name": {
           "type": "string",
           "description": "Project name",
           "minLength": 1
