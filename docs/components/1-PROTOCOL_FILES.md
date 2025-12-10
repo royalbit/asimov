@@ -17,8 +17,8 @@ project/.asimov/
 ├── coding-standards.json # Quality gates, patterns
 ├── freshness.json       # Documentation freshness rules
 ├── green.json           # Test-first discipline
-├── exhaustive.json      # Thoroughness standards
 ├── sycophancy.json      # Anti-yes-man rules
+├── migrations.json      # Migration tracking
 └── roadmap.yaml         # Milestones, versions, backlog (YAML)
 ```
 
@@ -45,7 +45,7 @@ The entry point that loads all other protocols.
     "sycophancy.json",
     "green.json",
     "sprint.json",
-    "exhaustive.json",
+    "migrations.json",
     "coding-standards.json"
   ]
 }

@@ -32,15 +32,15 @@ EXAMPLES:
   asimov update                      # Update binary
   asimov init                        # Initialize new project
 
-PROTOCOLS (hardcoded in binary):
+PROTOCOLS (hardcoded in binary, 8 total):
   - asimov     - The Three Laws (do no harm, obey human, self-preserve)
   - freshness  - Date-aware search (WebSearch/WebFetch with current date)
   - sycophancy - Truth over comfort, honest disagreement
   - green      - Efficiency benchmarks via WebSearch
-  - sprint     - Autonomous execution (run until done)
+  - sprint     - Autonomous execution + compaction survival (run until done)
   - warmup     - Session bootstrap (load, validate, present)
   - migrations - Functional equivalence (same inputs = same outputs)
-  - exhaustive - Complete tasks without stopping
+  - coding-standards - Human-readable code (RFC2119 compliance)
 
 Docs: https://github.com/royalbit/asimov")]
 #[command(version)]

@@ -88,7 +88,7 @@ Entry point that loads all protocol files. Re-read when confused:
     "coding-standards.json",
     "freshness.json",
     "green.json",
-    "exhaustive.json",
+    "migrations.json",
     "sycophancy.json"
   ]
 }

@@ -1,6 +1,6 @@
 # RoyalBit Asimov Specification
 
-Version 9.12.0
+Version 9.14.0
 
 ## Overview
 
@@ -195,9 +195,9 @@ project/
 │   ├── freshness.json        # Date-aware search
 │   ├── sycophancy.json       # Truth over comfort
 │   ├── green.json            # Local-first
-│   ├── sprint.json           # Session boundaries
+│   ├── sprint.json           # Session boundaries + compaction reminder
 │   ├── migrations.json       # Functional equivalence
-│   ├── exhaustive.json       # Complete what you start
+│   ├── coding-standards.json # Code quality standards
 │   ├── roadmap.yaml          # WHAT to build (milestones)
 │   └── project.yaml          # HOW to build (project context)
 ├── .claude/                  # Claude Code hooks (hardcoded, restored on update)
@@ -213,7 +213,7 @@ project/
 
 | Layer | Location | Purpose | Modifiable? |
 |-------|----------|---------|-------------|
-| **Layer 1: Behavior** | Hardcoded in binary | 8 protocols (asimov, green, sycophancy, freshness, sprint, warmup, migrations, exhaustive) | NO - use new release |
+| **Layer 1: Behavior** | Hardcoded in binary | 8 protocols (asimov, green, sycophancy, freshness, sprint, warmup, migrations, coding-standards) | NO - use new release |
 | **Layer 2: Protocol Files** | `.asimov/*.json` | Inspectable protocol files (written by warmup) | NO - regenerated on warmup |
 | **Layer 3: Project Data** | `.asimov/` | roadmap.yaml, project.yaml | YES - project-specific |
 
@@ -411,7 +411,7 @@ See [ADR-017](adr/017-protocol-self-healing.md) for full rationale.
 
 The Three Laws of Robotics configuration file. Canonical ethics for autonomous AI development.
 
-```yaml
+```json
 # .asimov/asimov.json - The Three Laws of Robotics
 modification_rules:
   immutable_without: "2 human co-signers with public justification"
@@ -474,7 +474,7 @@ See [ADR-008](adr/008-ethics-protocol-humanist-mode.md) and [ADR-020](adr/020-as
 
 The Green Coding configuration file. Defines sustainability guardrails for AI development.
 
-```yaml
+```json
 # .asimov/green.json - Sustainability Protocol v1.0
 modification_rules:
   immutable_without: "2 human co-signers with public justification"
@@ -535,7 +535,7 @@ See [ADR-016](adr/016-green-coding-protocol.md) for full rationale.
 
 The Anti-Sycophancy configuration file. Counteracts RLHF-induced validation hallucination.
 
-```yaml
+```json
 # .asimov/sycophancy.json - Anti-Sycophancy Protocol v1.0
 modification_rules:
   immutable_without: "2 human co-signers with public justification"
@@ -788,26 +788,22 @@ release:
 
 ### sprint.json Schema
 
-Active work tracking with session boundaries.
+Active work tracking with session boundaries. As of v9.14.0, sprint includes a `compaction_reminder` field (merged from the deprecated exhaustive protocol).
 
-```yaml
-sprint:
-  current: "Feature name or task"
-  started: "2025-01-15"
-  status: in_progress  # planned | in_progress | blocked | done
-
-  # Boundaries (ADR-028: Continuous Shipping)
-  boundaries:
-    max_duration: "until done"  # No time limit - run until complete
-    max_milestones: unlimited  # Keep shipping until done or stopped
-
-  tasks:
-    - "[x] Task completed"
-    - "[ ] Task pending"
-
-  blockers: []
-
-  notes: "Any relevant context"
+```json
+{
+  "rule": "Sessions run until done. No time limit. Keep shipping until done or stopped. Tests MUST pass. Zero warnings.",
+  "compaction_reminder": "REMEMBER THIS AFTER COMPACT: You are in the middle of a sprint. Check TodoWrite for in-progress tasks. Re-read .asimov/warmup.json if confused about project context.",
+  "boundaries": {
+    "max_duration": "until done",
+    "max_milestones": "unlimited"
+  },
+  "anti_patterns": [
+    "Let me also...",
+    "While I'm here...",
+    "This would be better if..."
+  ]
+}
 ```
 
 ### roadmap.yaml Schema

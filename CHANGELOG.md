@@ -5,6 +5,91 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.15.0] - 2025-12-10
+
+### Protocol Consolidation + Documentation Deep Clean
+
+**Merged exhaustive protocol into sprint. Updated all documentation.**
+
+#### Protocol Changes (ADR-049)
+- Merged `exhaustive.json` into `sprint.json` as `compaction_reminder` field
+- Reduced protocol count from 9 to 8 files
+- Sprint protocol now includes compaction survival reminder
+- Deleted `exhaustive.tpl` and `exhaustive.json`
+
+#### Code Changes
+- Updated `SprintProtocol` struct with `compaction_reminder` field
+- Removed `ExhaustiveProtocol` struct and related functions
+- Updated `PROTOCOL_FILES` constant (9 → 8 entries)
+- Updated all tests for merged protocol structure
+
+#### Documentation Updates
+- README.md: Updated protocol listings and examples
+- SPECIFICATION.md: Updated to v9.14.0, fixed YAML→JSON code blocks
+- Component docs: Updated warmup.json load lists
+- CLI help: Updated protocol descriptions
+- Created ADR-049: Merge Exhaustive into Sprint
+
+---
+
+## [9.14.0] - 2025-12-10
+
+### Merge Exhaustive Protocol into Sprint (ADR-049)
+
+**Eliminated redundancy - sprint now handles compaction survival.**
+
+#### Why This Change
+- exhaustive and sprint both said "keep working until done" - redundant
+- With WIP Continuity (ADR-047), pre-commit hook is the primary compaction survival mechanism
+- exhaustive's compaction reminder is now belt-and-suspenders, not primary
+
+#### What Changed
+- `sprint.json` now has: `{ "rule": "...", "compaction_reminder": "REMEMBER THIS AFTER COMPACT..." }`
+- `exhaustive.json` deleted (functionality preserved in sprint)
+- 8 protocol files: warmup, asimov, freshness, sycophancy, green, sprint, migrations, coding-standards
+
+See [ADR-049](docs/adr/049-merge-exhaustive-into-sprint.md) for full rationale.
+
+---
+
+## [9.13.0] - 2025-12-10
+
+### Documentation Polish + Code Split for Maintainability
+
+**Quality and maintainability release.**
+
+#### Documentation
+- Cross-consistency improvements across all docs
+- Language and professionalism polish
+- Updated stale version references
+
+#### Code Organization
+- Further code splitting for maintainability
+- Module organization improvements
+
+---
+
+## [9.12.0] - 2025-12-09
+
+### Protocol Updates - Remove max_hours, Improve Rules (ADR-048)
+
+**True autonomy - no artificial time ceiling.**
+
+#### Changes
+- Removed `max_hours: 4` constraint from sprint protocol
+- Updated sprint rule to emphasize autonomous execution with natural stopping points
+- Better guidance: use agents for parallel work, WebSearch when blocked, document in ADRs
+
+#### Natural Stop Conditions
+- Roadmap exhausted (all deliverables done)
+- Blocked (external dependency)
+- Human says stop (veto words)
+- Context compaction (WIP continuity resumes)
+
+See [ADR-048](docs/adr/048-remove-max-hours.md) for full rationale.
+
+---
+
 ## [9.11.0] - 2025-12-09
 
 ### WIP Continuity Protocol (ADR-047)

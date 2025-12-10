@@ -4,47 +4,27 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "9.11.0"
+  version: "9.15.0"
   status: released
-  summary: "WIP Continuity Protocol - Survive Context Compaction"
-  goal: "Claude auto-resumes WIP after context compaction. No user re-prompting needed."
-  deliverables:
-    - "[x] ADR-047: WIP Continuity Protocol"
-    - "[x] Warmup detects and outputs WIP state from roadmap.yaml"
-    - "[x] Add WIP workflow to sprint protocol"
-    - "[x] Tests for WIP detection (3 new tests)"
+  summary: "Protocol Consolidation + Documentation Deep Clean"
+  goal: "Merge exhaustive into sprint (ADR-049), update all documentation"
 
 previous:
-  version: "9.10.0"
+  version: "9.13.0"
   status: released
-  summary: "Pre-commit WIP Injection"
-  goal: "Git pre-commit hook outputs WIP state for context compaction survival"
+  summary: "Documentation Polish + Code Split for Maintainability"
+  goal: "Quality and maintainability release"
 
 next:
-  - version: "9.13.0"
+  - version: "9.16.0"
     status: planned
-    summary: "Documentation Polish - Cross-consistency, Language & Professionalism"
-    goal: "All documentation consistent, professional, and accurately reflects current v9.12.0 architecture"
+    summary: "SPECIFICATION.md Trim"
+    goal: "Reduce SPECIFICATION.md from 1287 to ~800 lines"
     deliverables:
-      - "[ ] Terminology standardization: Establish 'RoyalBit Asimov' as canonical (not all-caps)"
-      - "[ ] Protocol file references: Update all YAML references to JSON (.asimov/*.json)"
-      - "[ ] Remove outdated session limits: Remove '4-hour max' references (ADR-048)"
-      - "[ ] Version consistency: Update stale version references to 9.12.0"
-      - "[ ] README.md: Polish as primary entry point, verify all links"
-      - "[ ] SPECIFICATION.md: Reorganize/trim (1287 lines → target 800)"
-      - "[ ] MANIFESTO.md: Trim redundant sections, tighten prose"
-      - "[ ] SETUP.md: Update to current CLI commands and file structure"
-      - "[ ] VALUE_PROPOSITION.md: Align stats with current release numbers"
-      - "[ ] ECOSYSTEM.md: Update project stats and consolidate with other docs"
-      - "[ ] ORIGIN_STORY.md: Update timeline to include v9.x developments"
-      - "[ ] VENDOR_IMPLEMENTATION.md: Soften aggressive language while keeping honesty"
-      - "[ ] AI_REALITY.md: Verify all research citations still valid (2025 dates)"
-      - "[ ] Component docs (1-5): Verify consistency with current architecture"
-      - "[ ] ADR index: Verify all ADR links work, update version tags"
-      - "[ ] PRESS_KIT.md: Update verified numbers to current release"
-      - "[ ] Remove redundant emoji usage across all docs"
-      - "[ ] Final cross-reference audit: All internal links resolve correctly"
+      - "Reorganize redundant sections"
+      - "Move detailed examples to separate files"
+      - "Improve readability"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"
-  - "Deliverables Template (ADR-034): auto-append standard checklist to milestones based on project type - needs design for how to inject/display"
+  - "Deliverables Template (ADR-034): auto-append standard checklist to milestones based on project type"

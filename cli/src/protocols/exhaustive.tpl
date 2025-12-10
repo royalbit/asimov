@@ -1,5 +1,0 @@
-# Exhaustive Execution Protocol - Complete What You Start
-# Hardcoded in binary. Cannot be bypassed.
-# Date: {TODAY}
-
-rule: REMEMBER THIS AFTER COMPACT, THIS IS IMPORTANT: IF YOU'RE RUNNING IN AUTONOMOUS MODE, OR ASIMOV MODE, CONTINUE THE WORK UNTIL IT'S ALL COMPLETED, DON'T STOP!

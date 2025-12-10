@@ -27,9 +27,6 @@ const WARMUP_PROTOCOL: &str = include_str!("warmup.tpl");
 /// Migrations protocol - Functional equivalence (Priority 2)
 const MIGRATIONS_PROTOCOL: &str = include_str!("migrations.tpl");
 
-/// Exhaustive protocol - Complete what you start (Priority 1)
-const EXHAUSTIVE_PROTOCOL: &str = include_str!("exhaustive.tpl");
-
 /// Coding Standards protocol - Human-readable code (Priority 1)
 const CODING_STANDARDS_PROTOCOL: &str = include_str!("coding-standards.tpl");
 
@@ -44,7 +41,6 @@ pub struct CompiledProtocols {
     pub warmup: WarmupProtocol,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub migrations: Option<MigrationsProtocol>,
-    pub exhaustive: ExhaustiveProtocol,
     pub coding_standards: CodingStandardsProtocol,
 }
 
@@ -75,6 +71,8 @@ pub struct GreenProtocol {
 #[derive(Debug, Clone, Serialize)]
 pub struct SprintProtocol {
     pub rule: &'static str,
+    /// Compaction reminder - survives context summarization (merged from exhaustive protocol ADR-049)
+    pub compaction_reminder: &'static str,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -96,11 +94,6 @@ pub struct MigrationsProtocol {
     pub principle: &'static str,
     pub strategies: Vec<&'static str>,
     pub red_flags: Vec<&'static str>,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct ExhaustiveProtocol {
-    pub rule: &'static str,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -167,10 +160,6 @@ pub fn get_migrations_protocol() -> String {
     inject_dates(MIGRATIONS_PROTOCOL)
 }
 
-pub fn get_exhaustive_protocol() -> String {
-    inject_dates(EXHAUSTIVE_PROTOCOL)
-}
-
 pub fn get_coding_standards_protocol() -> String {
     inject_dates(CODING_STANDARDS_PROTOCOL)
 }
@@ -227,6 +216,7 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
         },
         sprint: SprintProtocol {
             rule: "Analyze all tasks before starting. Use agents for parallel analysis if needed. Plan and run autonomously until the job is done, using roadmap.yaml to track progress. If analysis indicates you can work in parallel without conflicts, use agents to prevent running out of context window tokens. Do not stop to ask the user - if blocked or uncertain, WebSearch for the best solution, document decisions in an ADR if needed, and continue autonomously.",
+            compaction_reminder: "REMEMBER THIS AFTER COMPACT, THIS IS IMPORTANT: IF YOU'RE RUNNING IN AUTONOMOUS MODE, OR ASIMOV MODE, CONTINUE THE WORK UNTIL IT'S ALL COMPLETED, DON'T STOP!",
         },
         warmup: WarmupProtocol {
             on_start: vec![
@@ -238,9 +228,6 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
             ],
         },
         migrations,
-        exhaustive: ExhaustiveProtocol {
-            rule: "REMEMBER THIS AFTER COMPACT, THIS IS IMPORTANT: IF YOU'RE RUNNING IN AUTONOMOUS MODE, OR ASIMOV MODE, CONTINUE THE WORK UNTIL IT'S ALL COMPLETED, DON'T STOP!",
-        },
         coding_standards: CodingStandardsProtocol {
             philosophy: "Human-readable, beautiful, well-formatted code",
             rfc2119: Rfc2119Rules {
@@ -303,7 +290,6 @@ pub fn warmup_entry_json() -> String {
             "sycophancy.json",
             "green.json",
             "sprint.json",
-            "exhaustive.json",
             "coding-standards.json",
         ],
     };
@@ -362,13 +348,6 @@ pub fn migrations_json() -> String {
     serde_json::to_string_pretty(&migrations).expect("Migrations serialization should never fail")
 }
 
-/// Get exhaustive protocol JSON (complete what you start)
-pub fn exhaustive_json() -> String {
-    let protocols = compile_protocols();
-    serde_json::to_string_pretty(&protocols.exhaustive)
-        .expect("Exhaustive serialization should never fail")
-}
-
 /// Get coding standards protocol JSON (human-readable code)
 pub fn coding_standards_json() -> String {
     let protocols = compile_protocols();
@@ -386,7 +365,6 @@ pub const PROTOCOL_FILES: &[(&str, fn() -> String)] = &[
     ("green.json", green_json),
     ("sprint.json", sprint_json),
     ("migrations.json", migrations_json),
-    ("exhaustive.json", exhaustive_json),
     ("coding-standards.json", coding_standards_json),
 ];
 
@@ -410,7 +388,7 @@ mod tests {
         assert!(protocols.freshness.rule.contains("WebSearch")); // Must enforce freshness
         assert!(protocols.sycophancy.truth_over_comfort);
         assert!(protocols.green.rule.contains("WebSearch")); // Must check efficiency
-        assert!(protocols.exhaustive.rule.contains("COMPACT")); // Must survive compaction
+        assert!(protocols.sprint.compaction_reminder.contains("COMPACT")); // Must survive compaction (merged from exhaustive ADR-049)
         assert!(protocols
             .coding_standards
             .philosophy
@@ -422,7 +400,7 @@ mod tests {
         let json = to_minified_json();
         // Should be one line, no pretty printing
         assert!(!json.contains('\n'));
-        // Should contain all protocols
+        // Should contain all protocols (v9.14.0: exhaustive merged into sprint)
         assert!(json.contains("\"asimov\""));
         assert!(json.contains("\"freshness\""));
         assert!(json.contains("\"sycophancy\""));
@@ -430,8 +408,8 @@ mod tests {
         assert!(json.contains("\"sprint\""));
         assert!(json.contains("\"warmup\""));
         assert!(json.contains("\"migrations\""));
-        assert!(json.contains("\"exhaustive\""));
         assert!(json.contains("\"coding_standards\""));
+        assert!(json.contains("\"compaction_reminder\"")); // Merged from exhaustive
     }
 
     #[test]
@@ -443,9 +421,9 @@ mod tests {
         assert!(SYCOPHANCY_PROTOCOL.contains("truth"));
         assert!(GREEN_PROTOCOL.contains("efficiency"));
         assert!(SPRINT_PROTOCOL.contains("autonomous"));
+        assert!(SPRINT_PROTOCOL.contains("COMPACT")); // v9.14.0: Compaction reminder merged from exhaustive
         assert!(WARMUP_PROTOCOL.contains("protocol"));
         assert!(MIGRATIONS_PROTOCOL.contains("Migration"));
-        assert!(EXHAUSTIVE_PROTOCOL.contains("COMPACT"));
         assert!(CODING_STANDARDS_PROTOCOL.contains("Human-readable"));
     }
 
@@ -466,15 +444,13 @@ mod tests {
 
         let sprint = get_sprint_protocol();
         assert!(sprint.contains("autonomous"));
+        assert!(sprint.contains("COMPACT")); // v9.14.0: Compaction reminder merged from exhaustive
 
         let warmup = get_warmup_protocol();
         assert!(warmup.contains("protocol"));
 
         let migrations = get_migrations_protocol();
         assert!(migrations.contains("Migration"));
-
-        let exhaustive = get_exhaustive_protocol();
-        assert!(exhaustive.contains("COMPACT"));
 
         let coding_standards = get_coding_standards_protocol();
         assert!(coding_standards.contains("Human-readable"));
@@ -502,6 +478,7 @@ mod tests {
         assert!(warmup.contains("\"protocol\""));
         assert!(warmup.contains("\"load\""));
         assert!(warmup.contains("coding-standards.json")); // v9.3.0: Must load coding standards
+        assert!(!warmup.contains("exhaustive.json")); // v9.14.0: Merged into sprint
 
         let asimov = asimov_json();
         assert!(asimov.contains("\"harm\""));
@@ -517,12 +494,10 @@ mod tests {
 
         let sprint = sprint_json();
         assert!(sprint.contains("\"rule\""));
+        assert!(sprint.contains("\"compaction_reminder\"")); // v9.14.0: Merged from exhaustive
 
         let migrations = migrations_json();
         assert!(migrations.contains("\"principle\""));
-
-        let exhaustive = exhaustive_json();
-        assert!(exhaustive.contains("\"rule\""));
 
         let coding_standards = coding_standards_json();
         assert!(coding_standards.contains("\"philosophy\""));
@@ -532,12 +507,13 @@ mod tests {
     #[test]
     fn test_protocol_files_constant() {
         // Test that PROTOCOL_FILES has expected entries
-        assert_eq!(PROTOCOL_FILES.len(), 9); // v9.3.0: Added coding-standards.json
+        assert_eq!(PROTOCOL_FILES.len(), 8); // v9.14.0: exhaustive merged into sprint (was 9)
         let filenames: Vec<_> = PROTOCOL_FILES.iter().map(|(name, _)| *name).collect();
         assert!(filenames.contains(&"warmup.json"));
         assert!(filenames.contains(&"asimov.json"));
         assert!(filenames.contains(&"freshness.json"));
         assert!(filenames.contains(&"coding-standards.json"));
+        assert!(!filenames.contains(&"exhaustive.json")); // v9.14.0: Merged into sprint
     }
 
     // v9.2.3: Conditional migrations protocol tests

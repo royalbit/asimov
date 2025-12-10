@@ -4,7 +4,7 @@ Output as a markdown table with two columns:
 - Protocol name (bold)
 - Key rules/values
 
-Include all 8 protocols: asimov, freshness, sycophancy, green, sprint, warmup, migrations, exhaustive.
+Include all 8 protocols: asimov, freshness, sycophancy, green, sprint, warmup, migrations, coding-standards.
 
 Show the actual values from the context injection, not placeholders.
 

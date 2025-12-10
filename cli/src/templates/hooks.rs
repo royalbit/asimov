@@ -36,7 +36,7 @@ elif [ -f "Cargo.toml" ]; then
 fi"#,
             "rs",
             1500,
-            "target",
+            "target cli/target",
         ),
         ProjectType::Python => (
             r#"# === QUALITY CHECKS (independent, no asimov) ===

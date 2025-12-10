@@ -54,7 +54,7 @@ Each project initialized with `asimov init` becomes a Self-Evolving Autonomous A
 | 4 | Nov 25, 2025 | **Forge Protocol** - Extracted as standalone. But the name was wrong—other projects could use it. |
 | 5 | Nov 25-26, 2025 | **Ethics** - Claude refused to build surveillance features. The protocol worked. Formalized harm prevention. |
 | 6 | Nov 26-27, 2025 | **Asimov** - Named after Isaac Asimov's Three Laws (1942). First Law = do no harm. Second = obey humans. Third = self-preserve. |
-| 7 | Nov 27-28, 2025 | **Protocol Suite** - Not one protocol, eight. Ethics, freshness, sycophancy, green, sprint, migrations, exhaustive. |
+| 7 | Nov 27-28, 2025 | **Protocol Suite** - Not one protocol, eight. Ethics, freshness, sycophancy, green, sprint, migrations, coding-standards. |
 | 8 | Nov 28-29, 2025 | **Inaction Principle** - Asimov's First Law has two halves: "do no harm" AND "allow no harm through inaction". |
 | 9 | Nov 29-Dec 4, 2025 | **Self-Evolving AI** - The protocol improves itself. Forge built Asimov → Asimov now builds Forge. |
 
@@ -94,14 +94,14 @@ Eight JSON protocols in `.asimov/` directory, loaded on session start:
 
 ```
 .asimov/
-├── warmup.json      # Entry point - loads all protocols
-├── asimov.json      # Ethics: harm categories + veto commands
-├── freshness.json   # WebSearch for current information
-├── sycophancy.json  # Truth over comfort
-├── green.json       # Efficiency benchmarking
-├── sprint.json      # Autonomous execution until done
-├── migrations.json  # Functional equivalence rules
-└── exhaustive.json  # Finish the job
+├── warmup.json         # Entry point - loads all protocols
+├── asimov.json         # Ethics: harm categories + veto commands
+├── freshness.json      # WebSearch for current information
+├── sycophancy.json     # Truth over comfort
+├── green.json          # Efficiency benchmarking
+├── sprint.json         # Autonomous execution until done
+├── migrations.json     # Functional equivalence rules
+└── coding-standards.json  # Code quality standards
 ```
 
 ### asimov.json - The Three Laws
@@ -117,7 +117,8 @@ Eight JSON protocols in `.asimov/` directory, loaded on session start:
 
 ```json
 {
-  "rule": "Analyse tasks, use agents for parallel work, run autonomously until done. WebSearch when blocked. Document decisions in ADRs."
+  "rule": "Analyse tasks, use agents for parallel work, run autonomously until done. WebSearch when blocked. Document decisions in ADRs.",
+  "compaction_reminder": "Re-read protocols from .asimov/ after context compaction to restore full context"
 }
 ```
 
@@ -224,9 +225,9 @@ All protocols stored as JSON in `.asimov/` directory:
 | `freshness.json` | WebSearch for current information |
 | `sycophancy.json` | Truth over comfort, disagree openly |
 | `green.json` | Efficiency benchmarking |
-| `sprint.json` | Autonomous execution (run until done) |
+| `sprint.json` | Autonomous execution (run until done, re-read after compaction) |
 | `migrations.json` | Functional equivalence rules |
-| `exhaustive.json` | Complete the task |
+| `coding-standards.json` | Code quality standards |
 
 Plus YAML files for project metadata:
 - `roadmap.yaml` - Milestones & planning
