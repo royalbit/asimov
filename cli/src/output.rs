@@ -110,33 +110,85 @@ pub(crate) fn cmd_warmup(path: &std::path::Path, verbose: bool) -> ExitCode {
         return ExitCode::FAILURE;
     }
 
-    if verbose {
-        println!();
-        println!(
-            "{}",
-            "══════════════════════════════════════════════════════════════════════════════"
-                .bright_cyan()
-        );
-        println!(
-            "{}",
-            "🔥 ROYALBIT ASIMOV - SESSION WARMUP".bold().bright_cyan()
-        );
-        println!(
-            "{}",
-            "══════════════════════════════════════════════════════════════════════════════"
-                .bright_cyan()
-        );
-        println!();
+    // v9.16.0: Default mode outputs structured JSON with EVERYTHING
+    // One Bash call = complete context, zero Claude file reads
+    if !verbose {
+        // Parse protocols JSON string back to Value for embedding
+        let protocols: serde_json::Value = result
+            .protocols_json
+            .as_ref()
+            .and_then(|s| serde_json::from_str(s).ok())
+            .unwrap_or(serde_json::json!({}));
 
-        if let Some(ref update_ver) = result.update_available {
-            println!(
-                "{}  Update available: {} (run: {})",
-                "⚠️".yellow(),
-                update_ver.bright_green(),
-                "asimov update".bold()
-            );
-            println!();
-        }
+        // Convert YAML values to JSON values
+        let project_json: serde_json::Value = result
+            .project_yaml
+            .as_ref()
+            .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
+            .unwrap_or(serde_json::json!({}));
+
+        let roadmap_json: serde_json::Value = result
+            .roadmap_yaml
+            .as_ref()
+            .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
+            .unwrap_or(serde_json::json!({}));
+
+        // Build WIP section
+        let wip = if result.wip_active {
+            serde_json::json!({
+                "active": true,
+                "item": result.wip_item,
+                "progress": result.wip_progress,
+                "milestone": result.next_milestone,
+                "rule": "RESUME IMMEDIATELY. User consent given at milestone start."
+            })
+        } else {
+            serde_json::json!({
+                "active": false,
+                "next_milestone": result.next_milestone,
+                "next_summary": result.next_summary
+            })
+        };
+
+        // Output single comprehensive JSON blob
+        let output = serde_json::json!({
+            "version": result.current_version,
+            "protocols": protocols,
+            "project": project_json,
+            "roadmap": roadmap_json,
+            "wip": wip
+        });
+
+        println!("{}", output);
+        return ExitCode::SUCCESS;
+    }
+
+    // Verbose mode: human-readable output for terminal use
+    println!();
+    println!(
+        "{}",
+        "══════════════════════════════════════════════════════════════════════════════"
+            .bright_cyan()
+    );
+    println!(
+        "{}",
+        "🔥 ROYALBIT ASIMOV - SESSION WARMUP".bold().bright_cyan()
+    );
+    println!(
+        "{}",
+        "══════════════════════════════════════════════════════════════════════════════"
+            .bright_cyan()
+    );
+    println!();
+
+    if let Some(ref update_ver) = result.update_available {
+        println!(
+            "{}  Update available: {} (run: {})",
+            "⚠️".yellow(),
+            update_ver.bright_green(),
+            "asimov update".bold()
+        );
+        println!();
     }
 
     // Display milestone info
@@ -145,88 +197,76 @@ pub(crate) fn cmd_warmup(path: &std::path::Path, verbose: bool) -> ExitCode {
         &result.current_summary,
         &result.current_status,
     ) {
-        if verbose {
-            println!("{}", "CURRENT VERSION".bold());
-            println!("  v{} - {}", ver.bright_blue(), summary);
-            println!("  Status: {}", status);
-            println!();
-        } else {
-            println!("v{} - {} [{}]", ver.bright_blue(), summary, status);
-        }
+        println!("{}", "CURRENT VERSION".bold());
+        println!("  v{} - {}", ver.bright_blue(), summary);
+        println!("  Status: {}", status);
+        println!();
     }
 
-    if verbose {
-        if let Some(ref json) = result.protocols_json {
-            println!("{}", "PROTOCOLS".bold());
-            println!("  {} bytes of protocol context loaded", json.len());
-            println!();
+    if let Some(ref json) = result.protocols_json {
+        println!("{}", "PROTOCOLS".bold());
+        println!("  {} bytes of protocol context loaded", json.len());
+        println!();
+    }
+
+    if let Some(ref project) = result.project_yaml {
+        println!("{}", "PROJECT".bold());
+        if let Some(name) = &result.project_name {
+            println!("  Name: {}", name.bright_green());
         }
+        if let Some(tagline) = &result.project_tagline {
+            println!("  Tagline: {}", tagline);
+        }
+        println!("  Type: {:?}", result.project_type);
+        // Show coding standards if present
+        if let Some(standards) = project.get("coding_standards") {
+            if let Some(seq) = standards.as_sequence() {
+                println!("  Coding standards: {} rules", seq.len());
+            }
+        }
+        println!();
     }
 
     // WIP Continuity (ADR-047)
     if result.wip_active {
-        if verbose {
-            println!("{}", "═".repeat(78).bright_yellow());
-            println!(
-                "{}",
-                "🔥 ACTIVE WIP - RESUME THIS TASK".bold().bright_yellow()
-            );
-            println!("{}", "═".repeat(78).bright_yellow());
-            if let Some(ref item) = result.wip_item {
-                println!("  Current: {}", item.bright_green().bold());
-            }
-            if let Some(ref progress) = result.wip_progress {
-                println!("  Progress: {} items complete", progress);
-            }
-            println!();
-            println!(
-                "  {}",
-                ">>> CONTINUE WORKING - USER CONSENT ALREADY GIVEN <<<".bright_yellow()
-            );
-            println!();
-        }
-        // Output WIP JSON for context injection
-        println!();
+        println!("{}", "═".repeat(78).bright_yellow());
         println!(
             "{}",
-            serde_json::json!({
-                "wip_continuity": {
-                    "active": true,
-                    "item": result.wip_item,
-                    "progress": result.wip_progress,
-                    "milestone": result.next_milestone,
-                    "rule": "RESUME IMMEDIATELY. User consent given at milestone start."
-                }
-            })
+            "🔥 ACTIVE WIP - RESUME THIS TASK".bold().bright_yellow()
         );
+        println!("{}", "═".repeat(78).bright_yellow());
+        if let Some(ref item) = result.wip_item {
+            println!("  Current: {}", item.bright_green().bold());
+        }
+        if let Some(ref progress) = result.wip_progress {
+            println!("  Progress: {} items complete", progress);
+        }
+        println!();
+        println!(
+            "  {}",
+            ">>> CONTINUE WORKING - USER CONSENT ALREADY GIVEN <<<".bright_yellow()
+        );
+        println!();
     } else if result.next_milestone.is_some() {
         // Show ready-to-start message
-        if verbose {
-            println!("{}", "NEXT MILESTONE".bold());
-            if let Some(ref ver) = result.next_milestone {
-                print!("  v{}", ver.bright_blue());
-            }
-            if let Some(ref summary) = result.next_summary {
-                println!(" - {}", summary);
-            } else {
-                println!();
-            }
-            if let Some(ref progress) = result.wip_progress {
-                println!("  Progress: {} items complete", progress);
-            }
-            println!();
-            println!(
-                "  {}",
-                "Say \"go\" to start autonomous execution.".bright_cyan()
-            );
+        println!("{}", "NEXT MILESTONE".bold());
+        if let Some(ref ver) = result.next_milestone {
+            print!("  v{}", ver.bright_blue());
+        }
+        if let Some(ref summary) = result.next_summary {
+            println!(" - {}", summary);
+        } else {
             println!();
         }
-    }
-
-    // Output protocols JSON for context injection
-    if let Some(ref json) = result.protocols_json {
+        if let Some(ref progress) = result.wip_progress {
+            println!("  Progress: {} items complete", progress);
+        }
         println!();
-        println!("{}", json);
+        println!(
+            "  {}",
+            "Say \"go\" to start autonomous execution.".bright_cyan()
+        );
+        println!();
     }
 
     ExitCode::SUCCESS

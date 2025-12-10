@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.16.0] - 2025-12-10
+
+### Full Context Warmup - Zero File Reads
+
+**One Bash call = complete context. Claude never needs to read project files.**
+
+#### Why This Change
+- Previous warmup output only included protocols JSON
+- Claude would then try to read project.yaml and roadmap.yaml
+- Paths were wrong (missing `.asimov/` prefix), wasting tokens searching
+- Now: single JSON blob contains EVERYTHING
+
+#### Output Structure
+```json
+{
+  "version": "9.16.0",
+  "protocols": { "asimov": {...}, "sprint": {...}, ... },
+  "project": { "identity": {...}, "quality": {...}, "patterns": [...] },
+  "roadmap": { "current": {...}, "next": [...], "backlog": [...] },
+  "wip": { "active": true/false, "item": "...", "progress": "1/3" }
+}
+```
+
+#### Code Changes
+- `WarmupResult` struct: Added `project_yaml` and `roadmap_yaml` fields
+- `run_warmup()`: Stores full parsed YAML content
+- `cmd_warmup()`: Default mode emits comprehensive JSON (verbose mode unchanged)
+- `cmd_launch()`: `asimov` without args outputs full JSON when inside Claude
+
+#### New Slash Commands
+- `/warmup` → runs `asimov warmup` (outputs complete context JSON)
+- `/doctor` → runs `asimov doctor` (outputs health check)
+
+#### Token Efficiency
+- Before: 1 warmup + 2-3 file reads = ~5000+ tokens wasted
+- After: 1 warmup = complete context, 0 additional reads
+
+---
+
 ## [9.15.0] - 2025-12-10
 
 ### Protocol Consolidation + Documentation Deep Clean

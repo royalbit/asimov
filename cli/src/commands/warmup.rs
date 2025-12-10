@@ -24,6 +24,9 @@ pub struct WarmupResult {
     pub wip_progress: Option<String>,
     pub next_milestone: Option<String>,
     pub next_summary: Option<String>,
+    // v9.16.0: Full context - include raw file content for zero file reads
+    pub project_yaml: Option<serde_yaml::Value>,
+    pub roadmap_yaml: Option<serde_yaml::Value>,
 }
 
 pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
@@ -44,6 +47,9 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
         wip_progress: None,
         next_milestone: None,
         next_summary: None,
+        // v9.16.0: Full context
+        project_yaml: None,
+        roadmap_yaml: None,
     };
 
     if check_updates {
@@ -70,6 +76,9 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
             return result;
         }
     };
+
+    // v9.16.0: Store full roadmap content for zero file reads
+    result.roadmap_yaml = Some(roadmap.clone());
 
     if let Some(current) = roadmap.get("current") {
         result.current_version = current
@@ -140,6 +149,9 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
     let project_path = resolve_protocol_dir(dir).join("project.yaml");
     if let Ok(content) = std::fs::read_to_string(&project_path) {
         if let Ok(project) = serde_yaml::from_str::<serde_yaml::Value>(&content) {
+            // v9.16.0: Store full project content for zero file reads
+            result.project_yaml = Some(project.clone());
+
             if let Some(identity) = project.get("identity") {
                 result.project_name = identity
                     .get("name")
@@ -248,6 +260,9 @@ mod tests {
             wip_progress: Some("1/3".to_string()),
             next_milestone: Some("2.0.0".to_string()),
             next_summary: Some("Next milestone".to_string()),
+            // v9.16.0: Full context fields
+            project_yaml: None,
+            roadmap_yaml: None,
         };
         assert!(r.success);
         assert_eq!(r.project_name.unwrap(), "Test");
