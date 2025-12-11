@@ -4,16 +4,16 @@
 # See: CHANGELOG.md for release history
 
 current:
+  version: "9.17.1"
+  status: released
+  summary: "Documentation Reference Validation"
+  goal: "Validate ALL 216 URLs in 51 .md files, fix broken refs"
+
+previous:
   version: "9.17.0"
   status: released
   summary: "Warmup Tool Detection"
   goal: "Detect ref-tools in PATH, output directive to use CLI instead of WebFetch/WebSearch"
-
-previous:
-  version: "9.16.1"
-  status: released
-  summary: "Coding Standards Protocol Update"
-  goal: "Perfect > Done, 100% coverage"
 
 next:
   - version: "9.18.0"

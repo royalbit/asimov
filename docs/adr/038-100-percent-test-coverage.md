@@ -176,8 +176,9 @@ PR Merge Requirements:
 
 ## Related
 
-- [Forge ADR-004: 100% Test Coverage](https://github.com/royalbit/forge/blob/main/docs/architecture/ADR-004-100-PERCENT-TEST-COVERAGE.md)
 - [ADR-011: Hardcoded Ethics](011-hardcoded-ethics.md)
+
+**Note:** This ADR was inspired by similar 100% coverage requirements in sister projects.
 
 ---
 

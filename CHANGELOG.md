@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.17.1] - 2025-12-11
+
+### Documentation Reference Validation
+
+**Validated ALL 216 URLs across 51 .md files using ref-tools, fixed broken references.**
+
+#### What Was Validated
+- 5 parallel agents validated all ADRs and documentation files
+- Each agent used `ref-tools fetch` via Bash (not server-side WebFetch/WebSearch)
+- All references cross-checked for accuracy and staleness
+
+#### Fixes Applied
+- **ADR-005**: Fixed broken crates.io URL → docs.rs for redis-streams
+- **ADR-010**: Updated forge repository references (not publicly available)
+- **ADR-018**: Fixed platform.claude.com → code.claude.com
+- **ADR-033**: Fixed Anthropic docs URL
+- **ADR-036**: Fixed Anthropic docs URL
+- **ADR-038, 039, 040**: Removed broken forge repository links
+
+#### Validation Results
+- 216+ URLs validated across 51 markdown files
+- 10 broken URLs fixed
+- No stale 2024 information found (all dates are historical and appropriate)
+- All tests pass (493 tests)
+
+---
+
 ## [9.17.0] - 2025-12-11
 
 ### Warmup Tool Detection

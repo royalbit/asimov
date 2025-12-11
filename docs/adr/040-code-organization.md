@@ -214,11 +214,12 @@ Many lines + proper organization = readable code
 
 ## Related
 
-- [Forge ADR-007: Code Organization](https://github.com/royalbit/forge/blob/main/docs/architecture/ADR-007-CODE-ORGANIZATION.md)
 - [ADR-038: 100% Test Coverage](038-100-percent-test-coverage.md)
 - [The Rust Book - Managing Growing Projects](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
 - [The Rust Book - Separating Modules](https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html)
 - [RFC 2119 - Key Words](https://www.rfc-editor.org/rfc/rfc2119)
+
+**Note:** File organization principles inspired by sister projects and Rust official guidelines.
 
 ---
 

@@ -184,7 +184,7 @@ Hooks can be tested manually:
 
 ## References
 
-- [Claude Code Hooks Documentation](https://docs.anthropic.com/claude-code/hooks)
+- [Claude Code Hooks Documentation](https://code.claude.com/docs/en/hooks)
 - [ADR-003: Compaction Reality](docs/adr/003-compaction-reality.md)
 - [ADR-017: Protocol Self-Healing](docs/adr/017-protocol-self-healing.md)
 

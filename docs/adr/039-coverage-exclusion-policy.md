@@ -164,7 +164,6 @@ match perform_update(&url, ...) { ... }
 ## Related
 
 - [ADR-038: 100% Test Coverage Requirement](038-100-percent-test-coverage.md)
-- [Forge ADR-004: 100% Test Coverage](https://github.com/royalbit/forge/blob/main/docs/architecture/ADR-004-100-PERCENT-TEST-COVERAGE.md)
 
 ---
 
