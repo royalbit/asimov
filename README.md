@@ -291,7 +291,7 @@ forge sensitivity model.yaml ... # Analysis tools
 forge export model.yaml out.xlsx # Excel bridge
 ```
 
-Forge: 2,486 tests, 159 functions. Demo: 1,267 tests, 48 functions.
+Forge: 2,486 tests, 159 functions. Demo: 70 E2E tests, 48 functions.
 
 ### The Protocol Built Itself
 

@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Stats Updated (from forge/forge-demo READMEs)
 - **Forge**: 45,700 LOC, 2,486 tests, 159 functions (153 Excel + 6 FP&A)
-- **Forge-Demo**: 28,000 LOC, 1,267 tests, 48 functions
+- **Forge-Demo**: 28,000 LOC, 70 E2E tests, 48 functions
 
 #### Files Updated
 - README.md, CHANGELOG.md
