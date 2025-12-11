@@ -118,7 +118,7 @@ take_rate:
 - Sessions run until done (sustainable pace)
 - AI handles grind, human guides direction
 - Rapid releases (41 in 6 days)
-- Done > Perfect (actually ships)
+- Perfect > Done, no sloppy code
 
 ### Small Agencies/Consultancies
 
@@ -170,7 +170,7 @@ The protocol enforces:
 - Sessions run until complete (no artificial time limits)
 - Keep shipping until done or stopped (ADR-028)
 - Stop conditions: roadmap empty, blocked, human stop
-- Done > Perfect
+- Perfect > Done, no sloppy code
 
 Human can stop at any time for sustainable pacing.
 

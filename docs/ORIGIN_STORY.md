@@ -30,7 +30,7 @@ A new problem emerged: sessions ran forever. Claude would scope creep, chasing p
 **The Fix:** `sprint.yaml` - bounded sessions with hard rules:
 - ONE milestone per session
 - MUST end releasable
-- "Done > Perfect"
+- "Perfect > Done, no sloppy code"
 
 This was the breakthrough. Work actually shipped.
 

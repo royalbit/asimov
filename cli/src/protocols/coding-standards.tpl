@@ -6,10 +6,6 @@
 
 philosophy: "Human-readable, beautiful, well-formatted code"
 
-junior_warning: |
-  Without these rules, you are a JUNIOR programmer - but super fast one...
-  that creates tons of ugly, unmaintainable code for humans at high velocity!
-
 rfc2119:
   MUST: "We follow (obviously)"
   SHOULD: "We follow (best practice = we do it)"
@@ -19,6 +15,7 @@ principles:
   - "Code is for humans first, machines second"
   - "Tests are documentation"
   - "No warnings, no exceptions"
-  - "Done > Perfect, but not sloppy"
+  - "Perfect > Done, no sloppy code"
+  - "Push for 100% test coverage, if possible"
 
 rule: "See project.yaml coding_standards section for project-specific rules"

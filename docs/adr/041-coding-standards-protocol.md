@@ -47,17 +47,17 @@ A generic protocol loaded for ALL projects containing:
 {
   "coding_standards": {
     "philosophy": "Human-readable, beautiful, well-formatted code",
-    "junior_warning": "Without these rules, you are a JUNIOR programmer...",
     "rfc2119": {
       "MUST": "We follow (obviously)",
       "SHOULD": "We follow (best practice = we do it)",
-      "MAY": "We don't care (zero bikeshedding)"
+      "MAY": "We don't care (no opinion needed, zero bikeshedding)"
     },
     "principles": [
       "Code is for humans first, machines second",
       "Tests are documentation",
       "No warnings, no exceptions",
-      "Done > Perfect, but not sloppy"
+      "Perfect > Done, no sloppy code",
+      "Push for 100% test coverage, if possible"
     ],
     "rule": "See project.yaml coding_standards section for project-specific rules"
   }
