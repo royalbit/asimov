@@ -125,7 +125,7 @@ LLMs predict the most probable next token. No fact-checking. Trained for **plaus
 | Calculate NPV | Pattern-matches probable-looking number |
 | Sum a column | Predicts what a sum looks like |
 
-**Forge:** 60+ Excel functions, 96K rows/sec, deterministic
+**Forge:** 2,486 tests, 159 functions, deterministic
 
 ```
 AI (probabilistic) → Plausible wrong answers

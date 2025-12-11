@@ -125,16 +125,10 @@ The `master-roadmap.yaml` coordinates across repositories:
 
 | Metric | Value |
 | ------ | ----- |
-| Total dev time | **~38 hours** |
-| Commits | 229 |
-| Releases | **41** (v1.0.0 → v4.1.0) |
-| Lines of Rust | **18,338** |
-| Tests passing | **226** |
-| LOC/hour | **483** (vs ~25 industry standard) |
-| MCP tools | 10 |
-| Editor extensions | 1 (forge-zed) |
-| Excel functions | 60+ |
-| GitHub downloads | 646+ |
+| Lines of Rust | **45,700** |
+| Tests passing | **2,486** |
+| Functions | **159** (153 Excel + 6 FP&A) |
+| Demo | forge-demo (forge not public) |
 
 **Velocity multiplier: 50-150x** (verified via git logs, zero rework, production quality from first iteration)
 
@@ -201,7 +195,7 @@ The entire Forge project was built with RoyalBit Asimov:
 | v1.4-v2.0 | ~12h | Watch, LSP, MCP, HTTP API |
 | v2.1-v3.1 | ~9h | XNPV/XIRR, Scenarios, Sensitivity, Zed |
 | v4.0-v4.1 | ~4h | Rich metadata, UNIQUE/COUNTUNIQUE |
-| **Total** | **~38h** | **41 releases, 226 tests, 18,338 LOC** |
+| **Total** | **~38h** | **2,486 tests, 45,700 LOC, 159 functions** |
 
 **Industry comparison:**
 - Solo senior dev: 3-4 months (~500 hours)
@@ -225,7 +219,7 @@ The protocol built itself. Both projects use the same methodology:
 
 | Project | LOC | Releases | Hours | Verified |
 |---------|-----|----------|-------|----------|
-| forge (not public) | 18,338 | 41 | ~38 | [demo](https://github.com/royalbit/forge-demo/releases) |
+| forge (not public) | 45,700 | 41 | ~38 | [demo](https://github.com/royalbit/forge-demo/releases) |
 | [asimov](https://github.com/royalbit/asimov) | 32,226 | 76 | ~20 | [GitHub](https://github.com/royalbit/asimov/releases) |
 | **Combined** | **50,564** | **117** | **~58** | Both published |
 

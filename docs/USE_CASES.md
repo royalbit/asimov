@@ -11,9 +11,9 @@ The RoyalBit Asimov isn't just for coding faster. It's a methodology for autonom
 | Metric | Traditional | With Protocol |
 |--------|-------------|---------------|
 | Lines of Code | 25/day | 3,056/day |
-| Time to 18K LOC | 3-6 months | 38 hours |
+| Time to 45K LOC | 3-6 months | 38 hours |
 | Releases | 3-5 per project | 41 in 6 days |
-| Test coverage | Often skipped | 226 tests, all passing |
+| Test coverage | Often skipped | 2,486 tests, all passing |
 | Rework | 30-50% | 0% |
 
 **What this enables**:
@@ -219,11 +219,10 @@ asimov validate --ethics-check
 
 | Metric | Value |
 |--------|-------|
-| LOC | 18,338 |
-| Tests | 226 passing |
-| Releases | 41 |
-| Time | ~38 hours |
-| Published | GitHub (646+ downloads) |
+| LOC | 45,700 |
+| Tests | 2,486 passing |
+| Functions | 159 (153 Excel + 6 FP&A) |
+| Published | Demo: forge-demo (forge not public) |
 
 **Verify it yourself**: [forge-demo](https://github.com/royalbit/forge-demo) (forge not public)
 

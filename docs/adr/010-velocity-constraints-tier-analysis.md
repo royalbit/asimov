@@ -16,10 +16,10 @@ The Forge project demonstrates **50-150x velocity** is achievable:
 
 | Metric | Evidence |
 |--------|----------|
-| Codebase | 18,338 lines Rust |
-| Tests | 226 tests, all passing |
-| Releases | 41 (v1.0.0 → v4.1.0) in 6 days |
-| Features | MCP server, LSP, HTTP API, 60+ Excel functions, editor extensions |
+| Codebase | 45,700 lines Rust |
+| Tests | 2,486 tests, all passing |
+| Functions | 159 (153 Excel + 6 FP&A) |
+| Features | MCP server, LSP, HTTP API, editor extensions |
 | Traditional estimate | 3-6 months with 3-5 engineers |
 | Actual time | ~38 hours |
 | LOC/day | 3,056 (vs 25 industry average) |
@@ -35,7 +35,7 @@ The protocol built itself — asimov was developed using asimov:
 
 | Project | LOC | Releases | Hours | Verified |
 |---------|-----|----------|-------|----------|
-| forge | 18,338 | 41 | ~38 | Private/Unavailable |
+| forge | 45,700 | 41 | ~38 | Private/Unavailable |
 | asimov | 17,118 | 10 | ~9 | [GitHub](https://github.com/royalbit/asimov/releases) |
 | **Combined** | **35,456** | **51** | **~47** | asimov published |
 
@@ -114,7 +114,7 @@ The real optimization is **subscription tier** and **context window size**.
 
 ### For Users
 
-1. **50-150x velocity is real** - Proven by Forge project (18K LOC, 226 tests, 41 releases)
+1. **50-150x velocity is real** - Proven by Forge project (45K LOC, 2,486 tests, 159 functions)
 2. **Tier matters for overhead** - Enterprise/API tiers reduce self-healing cycles
 3. **Hardware is not limiting** - Don't upgrade workstation, upgrade subscription
 4. **1M context is game-changing** - Load entire codebases, minimal compaction
@@ -128,7 +128,7 @@ The real optimization is **subscription tier** and **context window size**.
 ## References
 
 ### Velocity Proof
-- Forge Project - 18K LOC, 226 tests, 41 releases (repository currently not publicly available)
+- Forge Project - 45K LOC, 2,486 tests, 159 functions (not public, demo: forge-demo)
 - [RoyalBit Asimov](https://github.com/royalbit/asimov) - 17K LOC, 10 releases
 - [GitHub Releases (asimov)](https://github.com/royalbit/asimov/releases) - Published
 

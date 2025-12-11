@@ -556,7 +556,7 @@ Forge Response (deterministic):
 ```
 
 The [Forge Calculator](https://github.com/royalbit/forge-demo) (forge not public) executes formulas deterministically:
-- **60+ Excel functions** implemented in Rust
+- **159 functions** (153 Excel + 6 FP&A) implemented in Rust
 - **96K rows/sec** throughput
 - **Zero AI inference** - pure calculation
 - **Verifiable** - same formula, same result, every time

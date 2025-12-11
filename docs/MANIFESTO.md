@@ -502,10 +502,10 @@ The warmup.yaml **file format** works with any AI that can read YAML. Paste it i
 ### AI Ownership Without AI Dependency
 
 Claude is credited as Principal Autonomous AI on Forge because Claude **earned** it:
-- 226 tests, zero warnings
-- 18,338 lines of Rust
-- ~38 hours of autonomous development
-- 41 releases, published on GitHub
+- 2,486 tests, zero warnings
+- 45,700 lines of Rust
+- 159 functions (153 Excel + 6 FP&A)
+- Demo: forge-demo (forge not public)
 
 ### Proven at Scale
 

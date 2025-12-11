@@ -142,7 +142,7 @@ LLMs predict the most probable next token. No fact-checking step. They were trai
 | Sum a column | Predicts what a sum looks like |
 | Apply XIRR | Generates from training patterns |
 
-**RoyalBit Forge:** 60+ Excel functions, 96K rows/sec, **deterministic**
+**RoyalBit Forge:** 2,486 tests, 159 functions, **deterministic**
 
 </div>
 

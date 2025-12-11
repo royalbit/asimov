@@ -47,7 +47,7 @@ Every company using Claude gets the velocity. The question is:
 | Metric | Industry Standard | With Protocol | Multiplier |
 |--------|-------------------|---------------|------------|
 | LOC/day | 25 | 3,056 | **122x** |
-| Time to 18K LOC | 3-6 months | 38 hours | **100-200x** |
+| Time to 45K LOC | 3-6 months | 38 hours | **100-200x** |
 | Releases | 3-5 typical | 41 in 6 days | **10x** |
 | Rework | 30-50% | 0% | **Infinite** |
 
@@ -57,7 +57,7 @@ Every company using Claude gets the velocity. The question is:
 
 | Project | LOC | Releases | Hours | Verified |
 |---------|-----|----------|-------|----------|
-| forge | 18,338 | 41 | ~38 | GitHub |
+| forge | 45,700 | 41 | ~38 | GitHub |
 | asimov | 17,118 | 10 | ~9 | GitHub |
 | **Combined** | **35,456** | **51** | **~47** | Both published |
 

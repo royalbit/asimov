@@ -1280,7 +1280,7 @@ Paste .asimov/warmup.json content at session start. Note: Self-healing won't wor
 
 ## Context Window Optimization (ADR-010)
 
-**Proven velocity: 50-150x** (Forge project: 18K LOC, 226 tests, 41 releases in ~38 hours)
+**Proven velocity: 50-150x** (Forge project: 45K LOC, 2,486 tests, 159 functions)
 
 Context window size affects self-healing overhead:
 

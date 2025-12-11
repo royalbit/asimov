@@ -268,7 +268,7 @@ Plus YAML files for project metadata:
 
 | Project | Stack | Stats |
 |---------|-------|-------|
-| **Forge** (not public) | Rust | 45,700 LOC, 1,436 tests, 46 releases |
+| **Forge** (not public) | Rust | 45,700 LOC, 2,486 tests, 159 functions |
 | **[Asimov](https://github.com/royalbit/asimov)** | Rust | 19,000+ LOC, 429 tests, 62 releases |
 
 **Total: 65,000+ LOC, 108 releases. 1 human + 1 AI.**
@@ -291,7 +291,7 @@ forge sensitivity model.yaml ... # Analysis tools
 forge export model.yaml out.xlsx # Excel bridge
 ```
 
-**62 Excel functions**, sensitivity analysis, goal seek, break-even, scenarios, LSP server, MCP server, HTTP API, VSCode/Zed extensions.
+Forge: 2,486 tests, 159 functions. Demo: 1,267 tests, 48 functions.
 
 ### The Protocol Built Itself
 

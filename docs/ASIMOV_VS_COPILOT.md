@@ -349,7 +349,7 @@ Sycophancy leads to:
 | Project | Type | Language | Code LOC | Tests | Domain |
 |---------|------|----------|----------|-------|--------|
 | Protocol Framework | CLI Tool | Rust | 7,187 | 131 | Developer Tools |
-| Formula Engine | CLI + API | Rust | 18,338 | 232 | FinTech |
+| Formula Engine | CLI + API | Rust | 45,700 | 232 | FinTech |
 | Backend API | REST API | Rust | 2,715 | 29 | SaaS Platform |
 | Mobile App | iOS App | Dart/Flutter | 12,281 | 141 | Consumer Mobile |
 | ML Service | gRPC API | Rust | 1,132 | 47 | Machine Learning |
