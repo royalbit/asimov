@@ -201,6 +201,24 @@ Sources:
 - Security research continues to evolve
 - Protocol effectiveness varies by model and vendor
 
+### 10. MCP Token Overhead vs CLI Tools (ADR-052)
+
+Analysis of Model Context Protocol (MCP) reveals significant token overhead:
+
+| Component | Per-Message Cost |
+|-----------|------------------|
+| Tool schema | ~200-400 tokens |
+| Capability negotiation | ~50-100 tokens |
+| **Total per tool** | ~300-500 tokens |
+
+**50-message session with one MCP tool: ~15,000 tokens wasted**
+
+Alternative: CLI tools via Bash have zero standing overhead - only pay when used.
+
+Source: [MCP Architecture Overview](https://modelcontextprotocol.io/docs/concepts/architecture)
+
+**Implication:** Protocol-level tool preference can save significant tokens by directing AI to use CLI tools instead of MCP servers for static, known tools.
+
 ## Mitigation Strategies (To Be Researched)
 
 ### Against Instruction Hierarchy
@@ -271,6 +289,7 @@ Sources:
 - ADR-015: Anti-Sycophancy Protocol
 - ADR-022: Date-Aware Search Protocol (Freshness Protocol)
 - ADR-050: Economic Incentives in LLM Inference
+- ADR-052: CLI Tool Preference Over MCP
 
 ---
 

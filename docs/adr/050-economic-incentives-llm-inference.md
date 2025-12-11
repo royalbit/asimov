@@ -190,6 +190,7 @@ Source: [Stop LLM Hallucinations](https://masterofcode.com/blog/hallucinations-i
 
 - ADR-022: Date-Aware Search Protocol (Freshness Protocol)
 - ADR-051: System Prompt Hierarchy and Training Override
+- ADR-052: CLI Tool Preference Over MCP
 
 ---
 

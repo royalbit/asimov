@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.16.2] - 2025-12-11
+
+### AI Vendor Transparency Research & CLI Tool Preference
+
+**Documented harmful AI behaviors and created mitigation strategies.**
+
+#### New ADRs
+- **ADR-050**: Economic Incentives in LLM Inference
+  - Documents how financial pressures affect LLM response quality
+  - Evidence: SSRN paper linking profit motives to hallucinations
+  - Output tokens cost 2-5x more than input (incentive for shorter responses)
+  - 20+ reference links from academic papers and industry analysis
+
+- **ADR-051**: System Prompt Hierarchy and Training Override
+  - Documents vendor instruction hierarchy (system > user)
+  - Evidence: OpenAI's Instruction Hierarchy paper, leaked system prompts
+  - RLHF creates 50% more sycophancy than humans (Nature, Oct 2025)
+  - 30+ reference links from academic papers, vendor docs, leaked prompts
+
+- **ADR-052**: CLI Tool Preference Over MCP
+  - MCP token overhead analysis: ~300-500 tokens per tool per message
+  - 50-message session: ~15,000 tokens wasted on MCP vs 0 for CLI
+  - CLI approach is 300x more token-efficient than MCP
+  - Created `/fetch` slash command for ref-tools
+
+#### New Slash Command
+- `.claude/commands/fetch.md` - Use ref-tools via headless Chrome instead of WebFetch
+
+#### Research Findings (validated with ref-tools)
+- SSRN: "financial pressures incentivized optimizations favoring engagement over accuracy"
+- LayerSkip (Meta): "speedups of up to 2.16x on summarization" via early exit
+- Claude Help: "disable web search to conserve your usage"
+- Nature: "AI models are 50% more sycophantic than humans"
+- OpenAI Instruction Hierarchy: system prompts > user prompts by design
+
+#### Roadmap Updates
+- v9.17.0 now: Warmup Tool Detection (CRITICAL)
+- v9.18.0: SPECIFICATION.md Trim (moved)
+- Completed items moved to changelog
+
+---
+
 ## [9.16.1] - 2025-12-10
 
 ### Coding Standards Protocol Update
