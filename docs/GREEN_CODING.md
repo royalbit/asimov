@@ -514,7 +514,7 @@ Confidence: 100%
 
 ```bash
 # Download from GitHub Releases
-curl -L https://github.com/royalbit/forge/releases/latest/download/forge-x86_64-unknown-linux-gnu.tar.gz | tar xz
+curl -L https://github.com/royalbit/forge-demo/releases/latest/download/forge-demo-x86_64-unknown-linux-gnu.tar.gz | tar xz
 sudo mv forge /usr/local/bin/
 ```
 

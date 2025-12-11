@@ -8,7 +8,7 @@ Nine phases of evolution from November 23 to December 4, 2025.
 
 ### Phase 1: Forge (November 23, 2025)
 
-It started with [Forge](https://github.com/royalbit/forge) - an Excel-compatible formula engine written in Rust. Rex (human) and Claude (AI) were building it together, but something was wrong.
+It started with [Forge](https://github.com/royalbit/forge-demo) (forge not public) - an Excel-compatible formula engine written in Rust. Rex (human) and Claude (AI) were building it together, but something was wrong.
 
 **The Problem:** Every new Claude session started from zero. Context was lost. Hours wasted re-explaining the project. AI would make the same mistakes. Progress was slow.
 

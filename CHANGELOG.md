@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.17.2] - 2025-12-11
+
+### Forge Repository Reference Update
+
+**Updated all forge references: forge is not public, forge-demo is the public demo.**
+
+#### Changes
+- **README.md**: Updated 5 forge links to note "forge not public", link to forge-demo
+- **docs/stories/AUTONOMOUS_STORY.md**: Updated repository and release links
+- **docs/stories/AI-PROMOTION-STORY.md**: Updated stats link to forge-demo
+- **docs/GREEN_CODING.md**: Updated download URL to forge-demo
+- **docs/ECOSYSTEM.md**: Updated project table with correct links
+- **docs/VALUE_PROPOSITION.md**: Updated verification links
+- **docs/TECHNICAL_DECK.md**: Updated forge link
+- **docs/PRESS_KIT.md**: Updated forge link
+- **docs/EXECUTIVE_DECK.md**: Updated forge link
+- **docs/USE_CASES.md**: Updated verification link
+
+#### Clarification
+- **Forge** (full 160 functions, enterprise): Not publicly available
+- **Forge-Demo** (48 functions, R&D preview): Public at github.com/royalbit/forge-demo
+- All stats (45,700 LOC, 1,436 tests) reference the full Forge project
+
+---
+
 ## [9.17.1] - 2025-12-11
 
 ### Documentation Reference Validation

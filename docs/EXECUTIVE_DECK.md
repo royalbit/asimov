@@ -115,7 +115,7 @@ Generate PPTX: marp --no-stdin EXECUTIVE_DECK.md --pptx -o EXECUTIVE_DECK.pptx
 
 | Project | Started | LOC | Releases | Tests | Commits |
 |---------|---------|-----|----------|-------|---------|
-| [**Forge**](https://github.com/royalbit/forge) | Nov 23 | 15,901 | 44 | 163 | 245 |
+| [**Forge**](https://github.com/royalbit/forge-demo) (forge not public) | Nov 23 | 15,901 | 44 | 163 | 245 |
 | [**Asimov**](https://github.com/royalbit/asimov) | Nov 25 | 6,338 | 34 | 94 | 159 |
 | **Combined** | **8 days** | **22,239** | **78** | **257** | **404** |
 
@@ -278,7 +278,7 @@ LLMs predict the most probable next token. No fact-checking step. They were trai
 # Questions?
 
 **Asimov:** [github.com/royalbit/asimov](https://github.com/royalbit/asimov)
-**Forge:** [github.com/royalbit/forge](https://github.com/royalbit/forge)
+**Forge:** [forge-demo](https://github.com/royalbit/forge-demo) (forge not public)
 
 **78 releases | 22,239 LOC | 257 tests | 8 days | 56x velocity**
 
@@ -300,7 +300,7 @@ LLMs predict the most probable next token. No fact-checking step. They were trai
 
 **Ethics:** [IEEE: Copilot Malware](https://ieeexplore.ieee.org/document/10284976/) | [Case Study](https://github.com/royalbit/asimov/blob/main/docs/case-studies/001-ethics-protocol-blocks-surveillance.md)
 
-**Proof:** [Forge](https://github.com/royalbit/forge) | [Asimov](https://github.com/royalbit/asimov) | [GitHub Releases](https://github.com/royalbit/asimov/releases)
+**Proof:** [Forge](https://github.com/royalbit/forge-demo) (forge not public) | [Asimov](https://github.com/royalbit/asimov) | [GitHub Releases](https://github.com/royalbit/asimov/releases)
 
 </div>
 

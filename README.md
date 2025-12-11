@@ -171,7 +171,7 @@ File truth (stable, deterministic) → Reliability
 **The RoyalBit Asimov doesn't fix AI. It compensates for architectural limitations.**
 
 - Don't let AI *imagine* your project context → **read protocols from `.asimov/`**
-- Don't let AI *imagine* your financial calculations → **execute locally with [Forge](https://github.com/royalbit/forge)**
+- Don't let AI *imagine* your financial calculations → **execute locally with [Forge](https://github.com/royalbit/forge-demo)** (demo available)
 - Don't let AI give *stale data confidently* → **`freshness.json` enforces search**
 
 📖 **[Read the full analysis: AI_REALITY.md](https://github.com/royalbit/asimov/blob/main/docs/AI_REALITY.md)** — vendor limits, research citations, what's really happening.
@@ -268,14 +268,14 @@ Plus YAML files for project metadata:
 
 | Project | Stack | Stats |
 |---------|-------|-------|
-| **[Forge](https://github.com/royalbit/forge)** | Rust | 45,700 LOC, 1,436 tests, 46 releases |
+| **Forge** (not public) | Rust | 45,700 LOC, 1,436 tests, 46 releases |
 | **[Asimov](https://github.com/royalbit/asimov)** | Rust | 19,000+ LOC, 429 tests, 62 releases |
 
 **Total: 65,000+ LOC, 108 releases. 1 human + 1 AI.**
 
 ## Use Case: Forge
 
-**[Forge](https://github.com/royalbit/forge)** - deterministic YAML formula calculator. AI hallucinates numbers; Forge doesn't.
+**Forge** - deterministic YAML formula calculator. AI hallucinates numbers; Forge doesn't. Demo available at [forge-demo](https://github.com/royalbit/forge-demo).
 
 | Stat | Value |
 |------|-------|
@@ -297,7 +297,7 @@ forge export model.yaml out.xlsx # Excel bridge
 
 | Project | LOC | Releases | Verified |
 |---------|-----|----------|----------|
-| [forge](https://github.com/royalbit/forge) | 45,700 | 46 | [GitHub](https://github.com/royalbit/forge/releases) |
+| forge (not public) | 45,700 | 46 | - |
 | [asimov](https://github.com/royalbit/asimov) | 19,000+ | 62 | [GitHub](https://github.com/royalbit/asimov/releases) |
 | **Total** | **65,000+** | **108** | Git history |
 
@@ -365,7 +365,7 @@ The `sprint.json` protocol bounds autonomous sessions with quality gates and nat
 
 ## Origin
 
-Born from building [Forge](https://github.com/royalbit/forge) - a YAML formula calculator. The protocol emerged from solving real problems: How do you maintain context across AI sessions? How do you ship quality code autonomously? How do you scale to an entire ecosystem?
+Born from building Forge ([demo](https://github.com/royalbit/forge-demo)) - a YAML formula calculator. The protocol emerged from solving real problems: How do you maintain context across AI sessions? How do you ship quality code autonomously? How do you scale to an entire ecosystem?
 
 The answers became the RoyalBit Asimov.
 

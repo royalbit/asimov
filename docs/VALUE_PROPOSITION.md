@@ -51,7 +51,7 @@ Every company using Claude gets the velocity. The question is:
 | Releases | 3-5 typical | 41 in 6 days | **10x** |
 | Rework | 30-50% | 0% | **Infinite** |
 
-**Verify it**: [github.com/royalbit/forge](https://github.com/royalbit/forge)
+**Verify it**: [forge-demo](https://github.com/royalbit/forge-demo) (forge not public)
 
 ### The Protocol Built Itself
 
@@ -197,9 +197,9 @@ Claude API calls cost money and carbon. **Asimov minimizes both.**
 
 > "Don't believe us. Check the git logs. It's all public."
 
-- [Forge commits](https://github.com/royalbit/forge/commits)
+- Forge commits (not public) - [demo](https://github.com/royalbit/forge-demo/commits)
 - [Protocol commits](https://github.com/royalbit/asimov/commits)
-- [GitHub releases](https://github.com/royalbit/forge/releases)
+- [forge-demo releases](https://github.com/royalbit/forge-demo/releases)
 
 ### For the Pragmatist
 

@@ -451,7 +451,7 @@ forge calculate model.yaml
 # Questions?
 
 **Asimov:** [github.com/royalbit/asimov](https://github.com/royalbit/asimov)
-**Forge:** [github.com/royalbit/forge](https://github.com/royalbit/forge)
+**Forge:** [forge-demo](https://github.com/royalbit/forge-demo) (forge not public)
 
 <div class="smaller">
 

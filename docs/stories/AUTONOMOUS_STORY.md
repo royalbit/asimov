@@ -400,9 +400,9 @@ The promotion feels earned. 🎉
 
 **License:** Proprietary
 
-**Repository:** https://github.com/royalbit/forge
+**Repository:** Forge (not public) - Demo: https://github.com/royalbit/forge-demo
 
-**Published:** [GitHub Releases](https://github.com/royalbit/forge/releases)
+**Published:** [forge-demo releases](https://github.com/royalbit/forge-demo/releases)
 
 ---
 

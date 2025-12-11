@@ -225,7 +225,7 @@ asimov validate --ethics-check
 | Time | ~38 hours |
 | Published | GitHub (646+ downloads) |
 
-**Verify it yourself**: [github.com/royalbit/forge](https://github.com/royalbit/forge)
+**Verify it yourself**: [forge-demo](https://github.com/royalbit/forge-demo) (forge not public)
 
 ### RoyalBit Asimov (Bootstrapped)
 

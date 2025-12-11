@@ -98,7 +98,7 @@ Deterrent, not lock. Makes tampering visible and intentional.
 ## Links
 
 - **Asimov:** [github.com/royalbit/asimov](https://github.com/royalbit/asimov)
-- **Forge:** [github.com/royalbit/forge](https://github.com/royalbit/forge)
+- **Forge:** [forge-demo](https://github.com/royalbit/forge-demo) (forge not public)
 - **Origin Story:** [PDF](ORIGIN_STORY.pdf) | [MD](ORIGIN_STORY.md)
 - **Technical Deck:** [PDF](TECHNICAL_DECK.pdf) | [MD](TECHNICAL_DECK.md)
 - **Executive Deck:** [PDF](EXECUTIVE_DECK.pdf) | [MD](EXECUTIVE_DECK.md)

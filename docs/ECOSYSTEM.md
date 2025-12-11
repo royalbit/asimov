@@ -225,7 +225,7 @@ The protocol built itself. Both projects use the same methodology:
 
 | Project | LOC | Releases | Hours | Verified |
 |---------|-----|----------|-------|----------|
-| [forge](https://github.com/royalbit/forge) | 18,338 | 41 | ~38 | [GitHub](https://github.com/royalbit/forge/releases) |
+| forge (not public) | 18,338 | 41 | ~38 | [demo](https://github.com/royalbit/forge-demo/releases) |
 | [asimov](https://github.com/royalbit/asimov) | 32,226 | 76 | ~20 | [GitHub](https://github.com/royalbit/asimov/releases) |
 | **Combined** | **50,564** | **117** | **~58** | Both published |
 
