@@ -104,7 +104,7 @@ pub fn validate_file(path: &Path) -> Result<ValidationResult> {
 
     // Read and parse YAML
     let content = std::fs::read_to_string(path)?;
-    let yaml_value: serde_yaml::Value = serde_yaml::from_str(&content)?;
+    let yaml_value: serde_yaml_ng::Value = serde_yaml_ng::from_str(&content)?;
 
     // Convert YAML to JSON for schema validation
     let json_value = yaml_to_json(&yaml_value)?;
@@ -334,8 +334,8 @@ fn validate_directory_internal(
     Ok((results, regen_info))
 }
 
-/// Convert serde_yaml::Value to serde_json::Value
-fn yaml_to_json(yaml: &serde_yaml::Value) -> Result<serde_json::Value> {
+/// Convert serde_yaml_ng::Value to serde_json::Value
+fn yaml_to_json(yaml: &serde_yaml_ng::Value) -> Result<serde_json::Value> {
     // Serialize to string and back to handle type conversions
     let json_str = serde_json::to_string(&yaml)
         .map_err(|e| Error::ValidationError(format!("Failed to convert YAML to JSON: {}", e)))?;
@@ -367,7 +367,7 @@ pub fn check_asimov_structure(content: &str) -> Vec<String> {
     let mut errors = Vec::new();
 
     // Parse YAML to check structure
-    let yaml: serde_yaml::Value = match serde_yaml::from_str(content) {
+    let yaml: serde_yaml_ng::Value = match serde_yaml_ng::from_str(content) {
         Ok(v) => v,
         Err(_) => return errors, // YAML parsing errors handled elsewhere
     };

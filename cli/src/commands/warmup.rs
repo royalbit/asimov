@@ -34,8 +34,8 @@ pub struct WarmupResult {
     pub next_milestone: Option<String>,
     pub next_summary: Option<String>,
     // v9.16.0: Full context - include raw file content for zero file reads
-    pub project_yaml: Option<serde_yaml::Value>,
-    pub roadmap_yaml: Option<serde_yaml::Value>,
+    pub project_yaml: Option<serde_yaml_ng::Value>,
+    pub roadmap_yaml: Option<serde_yaml_ng::Value>,
     // v9.17.0: Tool detection
     pub tools_available: Vec<ToolInfo>,
 }
@@ -119,7 +119,7 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
         }
     };
 
-    let roadmap: serde_yaml::Value = match serde_yaml::from_str(&roadmap_content) {
+    let roadmap: serde_yaml_ng::Value = match serde_yaml_ng::from_str(&roadmap_content) {
         Ok(v) => v,
         Err(e) => {
             result.error = Some(format!("Failed to parse roadmap.yaml: {}", e));
@@ -149,7 +149,7 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
     // Check for next milestone and WIP items
     if let Some(next) = roadmap.get("next") {
         // Handle both array format and single object format
-        let next_items: Vec<&serde_yaml::Value> = if next.is_sequence() {
+        let next_items: Vec<&serde_yaml_ng::Value> = if next.is_sequence() {
             next.as_sequence()
                 .map(|s| s.iter().collect())
                 .unwrap_or_default()
@@ -198,7 +198,7 @@ pub fn run_warmup(dir: &Path, check_updates: bool) -> WarmupResult {
     // Load project.yaml if exists
     let project_path = resolve_protocol_dir(dir).join("project.yaml");
     if let Ok(content) = std::fs::read_to_string(&project_path) {
-        if let Ok(project) = serde_yaml::from_str::<serde_yaml::Value>(&content) {
+        if let Ok(project) = serde_yaml_ng::from_str::<serde_yaml_ng::Value>(&content) {
             // v9.16.0: Store full project content for zero file reads
             result.project_yaml = Some(project.clone());
 

@@ -295,7 +295,7 @@ pub fn load_deprecated_patterns(dir: &Path) -> Vec<DeprecatedPattern> {
     let deprecated_file = dir.join(".asimov").join("deprecated.yaml");
     if deprecated_file.exists() {
         if let Ok(content) = fs::read_to_string(&deprecated_file) {
-            if let Ok(yaml) = serde_yaml::from_str::<serde_yaml::Value>(&content) {
+            if let Ok(yaml) = serde_yaml_ng::from_str::<serde_yaml_ng::Value>(&content) {
                 if let Some(deprecated) = yaml.get("deprecated") {
                     if let Some(arr) = deprecated.as_sequence() {
                         for item in arr {

@@ -73,7 +73,7 @@ pub fn run_stats(dir: &Path) -> StatsResult {
     // Get milestone info
     let roadmap_path = resolve_protocol_dir(dir).join("roadmap.yaml");
     if let Ok(content) = std::fs::read_to_string(&roadmap_path) {
-        if let Ok(roadmap) = serde_yaml::from_str::<serde_yaml::Value>(&content) {
+        if let Ok(roadmap) = serde_yaml_ng::from_str::<serde_yaml_ng::Value>(&content) {
             if let Some(current) = roadmap.get("current") {
                 result.milestone_version = current
                     .get("version")

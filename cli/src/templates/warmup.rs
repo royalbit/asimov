@@ -784,7 +784,7 @@ mod tests {
             ProjectType::Go,
         ] {
             let template = warmup_template("test", project_type);
-            let result: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+            let result: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
             assert!(
                 result.is_ok(),
                 "Template should be valid YAML for {:?}",
@@ -806,7 +806,7 @@ mod tests {
             ProjectType::Arch,
         ] {
             let template = warmup_template("test", project_type);
-            let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+            let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&template).unwrap();
             assert!(
                 yaml.get("identity").is_some(),
                 "Should have identity section for {:?}",

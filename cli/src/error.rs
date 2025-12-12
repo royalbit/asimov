@@ -15,7 +15,7 @@ pub enum Error {
     ReadError(#[from] std::io::Error),
 
     #[error("Invalid YAML: {0}")]
-    YamlError(#[from] serde_yaml::Error),
+    YamlError(#[from] serde_yaml_ng::Error),
 
     #[error("Schema validation failed: {0}")]
     SchemaError(String),

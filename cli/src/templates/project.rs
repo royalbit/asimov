@@ -136,7 +136,7 @@ mod tests {
     #[test]
     fn test_project_template_valid_yaml() {
         let template = project_template("test-project", "A test project", ProjectType::Rust);
-        let yaml: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        let yaml: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
         assert!(yaml.is_ok(), "Project template should be valid YAML");
     }
 
@@ -155,7 +155,7 @@ mod tests {
         ];
         for pt in types {
             let template = project_template("test", "tagline", pt);
-            let yaml: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+            let yaml: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
             assert!(yaml.is_ok(), "Template for {:?} should be valid YAML", pt);
         }
     }

@@ -494,42 +494,42 @@ mod tests {
     #[allow(deprecated)]
     fn test_ethics_template_valid_yaml() {
         let template = ethics_template();
-        let yaml: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        let yaml: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
         assert!(yaml.is_ok(), "Ethics template should be valid YAML");
     }
 
     #[test]
     fn test_green_template_valid_yaml() {
         let template = green_template();
-        let yaml: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        let yaml: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
         assert!(yaml.is_ok(), "Green template should be valid YAML");
     }
 
     #[test]
     fn test_sycophancy_template_valid_yaml() {
         let template = sycophancy_template();
-        let yaml: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        let yaml: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
         assert!(yaml.is_ok(), "Sycophancy template should be valid YAML");
     }
 
     #[test]
     fn test_asimov_template_valid_yaml() {
         let template = asimov_template();
-        let yaml: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        let yaml: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
         assert!(yaml.is_ok(), "Asimov template should be valid YAML");
     }
 
     #[test]
     fn test_sprint_template_is_valid_yaml() {
         let template = sprint_template();
-        let result: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        let result: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
         assert!(result.is_ok(), "Sprint template should be valid YAML");
     }
 
     #[test]
     fn test_sprint_template_has_required_fields() {
         let template = sprint_template();
-        let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+        let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&template).unwrap();
         assert!(yaml.get("rules").is_some(), "Should have rules section");
         let rules = yaml.get("rules").unwrap();
         assert!(
@@ -541,14 +541,14 @@ mod tests {
     #[test]
     fn test_roadmap_template_is_valid_yaml() {
         let template = roadmap_template();
-        let result: Result<serde_yaml::Value, _> = serde_yaml::from_str(&template);
+        let result: Result<serde_yaml_ng::Value, _> = serde_yaml_ng::from_str(&template);
         assert!(result.is_ok(), "Roadmap template should be valid YAML");
     }
 
     #[test]
     fn test_roadmap_template_has_sections() {
         let template = roadmap_template();
-        let yaml: serde_yaml::Value = serde_yaml::from_str(&template).unwrap();
+        let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&template).unwrap();
         assert!(yaml.get("current").is_some(), "Should have current section");
         assert!(yaml.get("next").is_some(), "Should have next section");
         assert!(yaml.get("backlog").is_some(), "Should have backlog section");

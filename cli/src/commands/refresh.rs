@@ -208,7 +208,7 @@ fn check_project_migration(
     let content = std::fs::read_to_string(project_yaml_path)
         .map_err(|e| format!("Failed to read project.yaml: {}", e))?;
 
-    let yaml: serde_yaml::Value = serde_yaml::from_str(&content)
+    let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&content)
         .map_err(|e| format!("Invalid YAML in project.yaml: {}", e))?;
 
     // Check identity.type

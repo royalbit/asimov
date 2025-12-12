@@ -268,7 +268,7 @@ pub fn to_pretty_json() -> String {
 /// Output compiled protocols as YAML
 pub fn to_yaml() -> String {
     let protocols = compile_protocols();
-    serde_yaml::to_string(&protocols).expect("Protocol serialization should never fail")
+    serde_yaml_ng::to_string(&protocols).expect("Protocol serialization should never fail")
 }
 
 // ========== Individual Protocol JSON Output (v8.14.0) ==========
