@@ -60,14 +60,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux x86_64
-          - target: x86_64-unknown-linux-gnu
+          # Linux x86_64 (musl - static binary)
+          - target: x86_64-unknown-linux-musl
             os: ubuntu-latest
             archive: tar.gz
             upx: true
+            musl: true
 
-          # Linux ARM64 (v8.4.0)
-          - target: aarch64-unknown-linux-gnu
+          # Linux ARM64 (musl - static binary)
+          - target: aarch64-unknown-linux-musl
             os: ubuntu-latest
             archive: tar.gz
             upx: false  # Cross-compile, UPX may not work
@@ -108,16 +109,23 @@ jobs:
             cli/target
           key: ${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install cross-compilation tools (Linux ARM64)
-        if: matrix.cross
+      - name: Install musl-tools (Linux x86_64 musl)
+        if: matrix.musl
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu
+          sudo apt-get install -y musl-tools
 
-      - name: Build release
+      - name: Install cross (Linux ARM64 musl)
+        if: matrix.cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Build release (native)
+        if: ${{ !matrix.cross }}
         run: cd cli && cargo build --release --target ${{ matrix.target }}
-        env:
-          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: ${{ matrix.cross && 'aarch64-linux-gnu-gcc' || '' }}
+
+      - name: Build release (cross)
+        if: matrix.cross
+        run: cd cli && cross build --release --target ${{ matrix.target }}
 
       - name: Install UPX (Linux)
         if: matrix.upx && matrix.os == 'ubuntu-latest'

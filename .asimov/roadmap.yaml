@@ -5,9 +5,11 @@
 
 current:
   version: "9.19.0"
-  status: planned
-  summary: "LLM Harmful Behavior Mitigation"
+  status: in_progress
+  summary: "LLM Harmful Behavior Mitigation + Build Fixes"
   goal: "Research countermeasures against economic incentive-driven shallow responses, vendor system prompt overrides, RLHF sycophancy"
+  tasks:
+    - "[DONE] Switch Linux builds from glibc to musl for truly static, portable binaries"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"
