@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.18.1] - 2025-12-29
+
+### Build: Static Linux Binaries (musl)
+
+**Switch Linux builds from glibc to musl for truly portable static binaries.**
+
+#### Changes
+- `x86_64-unknown-linux-gnu` → `x86_64-unknown-linux-musl`
+- `aarch64-unknown-linux-gnu` → `aarch64-unknown-linux-musl`
+- Use `musl-tools` for native x86_64 builds
+- Use `cross-rs` for ARM64 cross-compilation
+
+#### Result
+Linux binaries are now fully static with no glibc dependency - portable across all Linux distros without compatibility issues.
+
+---
+
 ## [9.18.0] - 2025-12-11
 
 ### Documentation Conciseness Review
