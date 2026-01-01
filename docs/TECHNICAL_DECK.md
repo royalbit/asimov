@@ -374,6 +374,52 @@ Deterministic. Auditable. No spreadsheet chaos.
 
 ---
 
+# Why Not LangChain / CrewAI?
+
+<div class="smaller">
+
+**Brooks' Law applies to agents:** N agents = N×(N-1)/2 channels
+
+| Agents | Channels | Result |
+|--------|----------|--------|
+| 4 | 6 | Manageable |
+| 10 | 45 | Chaos |
+| 20 | 190 | Impossible |
+
+**Google/MIT 2024:** Overhead scales with **exponent 1.724**
+
+| Finding | Source |
+|---------|--------|
+| Max **3-4 agents** effective | [Google/MIT](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
+| **17.2x error amplification** | Independent agents vs single |
+| **95% vs 80%** accuracy | Full context vs fragmented |
+
+</div>
+
+---
+
+# Asimov vs Fixed Frameworks
+
+<div class="smaller">
+
+| Dimension | Asimov | LangChain/CrewAI |
+|-----------|--------|------------------|
+| Context | **200k+ tokens** | 8-32k per agent |
+| Topology | **AI-decided at runtime** | Fixed at design time |
+| Coordination | **O(1)** in-context | O(n^1.724) external |
+| Code accuracy | **95%** | 80% (fragmented) |
+
+**Cognition (Devin):**
+> "In 2025, running multiple agents in collaboration only results in fragile systems."
+
+**Asimov insight:** One large context = one source of truth. AI spawns agents only when benefit > coordination cost.
+
+[ADR-054](https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md) — 50+ verified references
+
+</div>
+
+---
+
 # How It Works
 
 <div class="smaller">
@@ -501,6 +547,10 @@ forge calculate model.yaml
 **License:** [Proprietary](https://github.com/royalbit/asimov/blob/main/LICENSE) | [GitHub](https://github.com/royalbit/asimov)
 
 **Ethics:** [IEEE: Copilot Malware](https://ieeexplore.ieee.org/document/10284976/) | [Case Study: Surveillance Blocked](https://github.com/royalbit/asimov/blob/main/docs/case-studies/001-ethics-protocol-blocks-surveillance.md)
+
+**Agentic Frameworks (ADR-054):**
+- [Google/MIT: More Agents Isn't Reliable](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) | [Cognition: Don't Build Multi-Agents](https://cognition.ai/blog/dont-build-multi-agents)
+- [Anthropic: Multi-Agent Research](https://www.anthropic.com/engineering/multi-agent-research-system) | [Google DeepMind: RAG vs Long Context](https://arxiv.org/abs/2407.16833)
 
 </div>
 
