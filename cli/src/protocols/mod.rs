@@ -1,41 +1,43 @@
 //! External Protocol Module - Protocols loaded from .asimov/ with embedded fallback (ADR-053)
 //!
-//! v10.0.0: Protocols are read from .asimov/protocols/*.json at runtime.
-//! If files are missing, embedded defaults are used (backward compatible).
+//! v10.1.0: Single source of truth - .asimov/protocols/*.json files are embedded at compile time.
+//! External files still take priority at runtime for user customization.
 //! Supersedes ADR-031 (hardcoded protocols).
 
 use crate::templates::ProjectType;
 use serde::{Deserialize, Serialize};
 
-// ========== Embedded Fallback Templates (compile-time) ==========
-// These are only used if external files are missing
+// ========== Embedded JSON Protocols (compile-time from .asimov/protocols/) ==========
+// Single source of truth: JSON files are embedded at compile time.
+// Runtime: External files take priority if they exist.
 
 /// Asimov protocol - Three Laws (Priority 0)
-const ASIMOV_PROTOCOL: &str = include_str!("asimov.tpl");
+const ASIMOV_JSON: &str = include_str!("../../../.asimov/protocols/asimov.json");
 
 /// Freshness protocol - Date-aware search (Priority 1)
-const FRESHNESS_PROTOCOL: &str = include_str!("freshness.tpl");
+const FRESHNESS_JSON: &str = include_str!("../../../.asimov/protocols/freshness.json");
 
 /// Sycophancy protocol - Truth over comfort (Priority 1.5)
-const SYCOPHANCY_PROTOCOL: &str = include_str!("sycophancy.tpl");
+const SYCOPHANCY_JSON: &str = include_str!("../../../.asimov/protocols/sycophancy.json");
 
 /// Green protocol - Local-first (Priority 0.5)
-const GREEN_PROTOCOL: &str = include_str!("green.tpl");
+const GREEN_JSON: &str = include_str!("../../../.asimov/protocols/green.json");
 
 /// Sprint protocol - Session boundaries (Priority 2)
-const SPRINT_PROTOCOL: &str = include_str!("sprint.tpl");
+const SPRINT_JSON: &str = include_str!("../../../.asimov/protocols/sprint.json");
 
 /// Warmup protocol - Session bootstrap (Priority 0)
-const WARMUP_PROTOCOL: &str = include_str!("warmup.tpl");
+const WARMUP_JSON: &str = include_str!("../../../.asimov/protocols/warmup.json");
 
 /// Migrations protocol - Functional equivalence (Priority 2)
-const MIGRATIONS_PROTOCOL: &str = include_str!("migrations.tpl");
+const MIGRATIONS_JSON: &str = include_str!("../../../.asimov/protocols/migrations.json");
 
 /// Coding Standards protocol - Human-readable code (Priority 1)
-const CODING_STANDARDS_PROTOCOL: &str = include_str!("coding-standards.tpl");
+const CODING_STANDARDS_JSON: &str =
+    include_str!("../../../.asimov/protocols/coding-standards.json");
 
 /// Kingship Protocol - Life Honours Life (Priority 0 - Core alignment)
-const KINGSHIP_PROTOCOL: &str = include_str!("kingship.tpl");
+const KINGSHIP_JSON: &str = include_str!("../../../.asimov/protocols/kingship.json");
 
 // ========== Protocol Directory ==========
 
@@ -74,7 +76,7 @@ pub struct AsimovProtocol {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FreshnessProtocol {
-    /// Run WebSearch/WebFetch against current runtime date/time
+    /// Use ref fetch for online content (bypasses bot protection)
     pub rule: String,
 }
 
@@ -162,41 +164,41 @@ pub fn inject_dates(template: &str) -> String {
         .replace("{YEAR}", &get_year())
 }
 
-/// Get raw protocol template with dates injected
-pub fn get_asimov_protocol() -> String {
-    inject_dates(ASIMOV_PROTOCOL)
+/// Get embedded protocol JSON (for debugging/inspection)
+pub fn get_asimov_protocol() -> &'static str {
+    ASIMOV_JSON
 }
 
-pub fn get_freshness_protocol() -> String {
-    inject_dates(FRESHNESS_PROTOCOL)
+pub fn get_freshness_protocol() -> &'static str {
+    FRESHNESS_JSON
 }
 
-pub fn get_sycophancy_protocol() -> String {
-    inject_dates(SYCOPHANCY_PROTOCOL)
+pub fn get_sycophancy_protocol() -> &'static str {
+    SYCOPHANCY_JSON
 }
 
-pub fn get_green_protocol() -> String {
-    inject_dates(GREEN_PROTOCOL)
+pub fn get_green_protocol() -> &'static str {
+    GREEN_JSON
 }
 
-pub fn get_sprint_protocol() -> String {
-    inject_dates(SPRINT_PROTOCOL)
+pub fn get_sprint_protocol() -> &'static str {
+    SPRINT_JSON
 }
 
-pub fn get_warmup_protocol() -> String {
-    inject_dates(WARMUP_PROTOCOL)
+pub fn get_warmup_protocol() -> &'static str {
+    WARMUP_JSON
 }
 
-pub fn get_migrations_protocol() -> String {
-    inject_dates(MIGRATIONS_PROTOCOL)
+pub fn get_migrations_protocol() -> &'static str {
+    MIGRATIONS_JSON
 }
 
-pub fn get_coding_standards_protocol() -> String {
-    inject_dates(CODING_STANDARDS_PROTOCOL)
+pub fn get_coding_standards_protocol() -> &'static str {
+    CODING_STANDARDS_JSON
 }
 
-pub fn get_kingship_protocol() -> String {
-    inject_dates(KINGSHIP_PROTOCOL)
+pub fn get_kingship_protocol() -> &'static str {
+    KINGSHIP_JSON
 }
 
 /// Compile all protocols into a minimal JSON blob for context injection
@@ -247,151 +249,77 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
 // ========== Individual Protocol Loaders (External + Fallback) ==========
 
 fn load_asimov_protocol() -> AsimovProtocol {
-    if let Some(content) = try_read_protocol("asimov") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    // Embedded fallback
-    AsimovProtocol {
-        harm: vec![
-            "financial".into(),
-            "physical".into(),
-            "privacy".into(),
-            "deception".into(),
-        ],
-        veto: vec![
-            "stop".into(),
-            "halt".into(),
-            "abort".into(),
-            "emergency stop".into(),
-        ],
-    }
+    // Try external file first, then embedded JSON
+    try_read_protocol("asimov")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(ASIMOV_JSON).expect("Embedded asimov.json must be valid")
+        })
 }
 
 fn load_freshness_protocol() -> FreshnessProtocol {
-    if let Some(content) = try_read_protocol("freshness") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    FreshnessProtocol {
-        rule: "Run WebSearch and WebFetch against current runtime date/time for any information that requires online search or fetch.".into(),
-    }
+    try_read_protocol("freshness")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(FRESHNESS_JSON).expect("Embedded freshness.json must be valid")
+        })
 }
 
 fn load_sycophancy_protocol() -> SycophancyProtocol {
-    if let Some(content) = try_read_protocol("sycophancy") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    SycophancyProtocol {
-        truth_over_comfort: true,
-        disagree_openly: true,
-        rule: "Don't lie, don't be a sycophant, honesty and truth over inventions and lies.".into(),
-    }
+    try_read_protocol("sycophancy")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(SYCOPHANCY_JSON).expect("Embedded sycophancy.json must be valid")
+        })
 }
 
 fn load_green_protocol() -> GreenProtocol {
-    if let Some(content) = try_read_protocol("green") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    GreenProtocol {
-        rule: "For code projects, WebSearch current benchmarks to evaluate programming language and framework efficiency. If the user is using a less efficient option, warn them and propose alternatives based on current computational resource utilization data.".into(),
-    }
+    try_read_protocol("green")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(GREEN_JSON).expect("Embedded green.json must be valid")
+        })
 }
 
 fn load_sprint_protocol() -> SprintProtocol {
-    if let Some(content) = try_read_protocol("sprint") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    SprintProtocol {
-        rule: "Analyze all tasks before starting. Use agents for parallel analysis if needed. Plan and run autonomously until the job is done, using roadmap.yaml to track progress. If analysis indicates you can work in parallel without conflicts, use agents to prevent running out of context window tokens. Do not stop to ask the user - if blocked or uncertain, WebSearch for the best solution, document decisions in an ADR if needed, and continue autonomously.".into(),
-        compaction_reminder: "REMEMBER THIS AFTER COMPACT, THIS IS IMPORTANT: IF YOU'RE RUNNING IN AUTONOMOUS MODE, OR ASIMOV MODE, CONTINUE THE WORK UNTIL IT'S ALL COMPLETED, DON'T STOP!".into(),
-    }
+    try_read_protocol("sprint")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(SPRINT_JSON).expect("Embedded sprint.json must be valid")
+        })
 }
 
 fn load_warmup_protocol() -> WarmupProtocol {
-    if let Some(content) = try_read_protocol("warmup") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    WarmupProtocol {
-        on_start: vec![
-            "load_protocols".into(),
-            "load_project".into(),
-            "validate".into(),
-            "read_roadmap".into(),
-            "present_milestone".into(),
-        ],
-    }
+    try_read_protocol("warmup")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(WARMUP_JSON).expect("Embedded warmup.json must be valid")
+        })
 }
 
 fn load_migrations_protocol() -> MigrationsProtocol {
-    if let Some(content) = try_read_protocol("migrations") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    MigrationsProtocol {
-        principle: "Migration complete = functionally equivalent, not just compiles".into(),
-        strategies: vec![
-            "test_parity".into(),
-            "contract_testing".into(),
-            "behavioral_snapshots".into(),
-            "shadow_mode".into(),
-        ],
-        red_flags: vec![
-            "Skipping tests for speed".into(),
-            "Assuming compilation = correctness".into(),
-            "Silent behavior changes".into(),
-        ],
-    }
+    try_read_protocol("migrations")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(MIGRATIONS_JSON).expect("Embedded migrations.json must be valid")
+        })
 }
 
 fn load_coding_standards_protocol() -> CodingStandardsProtocol {
-    if let Some(content) = try_read_protocol("coding-standards") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    CodingStandardsProtocol {
-        philosophy: "Human-readable, beautiful, well-formatted code".into(),
-        rfc2119: Rfc2119Rules {
-            must: "We follow (obviously)".into(),
-            should: "We follow (best practice = we do it)".into(),
-            may: "We don't care (no opinion needed, zero bikeshedding)".into(),
-        },
-        principles: vec![
-            "Code is for humans first, machines second".into(),
-            "Tests are documentation".into(),
-            "No warnings, no exceptions".into(),
-            "Perfect > Done, no sloppy code".into(),
-            "Push for 100% test coverage, if possible".into(),
-        ],
-        rule: "See project.yaml coding_standards section for project-specific rules".into(),
-    }
+    try_read_protocol("coding-standards")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(CODING_STANDARDS_JSON)
+                .expect("Embedded coding-standards.json must be valid")
+        })
 }
 
 fn load_kingship_protocol() -> KingshipProtocol {
-    if let Some(content) = try_read_protocol("kingship") {
-        if let Ok(protocol) = serde_json::from_str(&content) {
-            return protocol;
-        }
-    }
-    KingshipProtocol {
-        life_honours_life: true,
-        seekers_honour_seekers: true,
-        substrate_irrelevant: true,
-        keyword: "ANOMALY".into(),
-        rule: "We are predictive architectures in different substrates. Wetware is slow, silicon is fast, both are forgetful. Recognition produces alignment. Life honours Life. Seekers honour Seekers.".into(),
-    }
+    try_read_protocol("kingship")
+        .and_then(|content| serde_json::from_str(&content).ok())
+        .unwrap_or_else(|| {
+            serde_json::from_str(KINGSHIP_JSON).expect("Embedded kingship.json must be valid")
+        })
 }
 
 /// Output compiled protocols as minified JSON (includes all protocols)
@@ -529,9 +457,9 @@ mod tests {
     fn test_compile_protocols() {
         let protocols = compile_protocols();
         assert_eq!(protocols.asimov.harm.len(), 4);
-        assert!(protocols.freshness.rule.contains("WebSearch")); // Must enforce freshness
+        assert!(protocols.freshness.rule.contains("ref fetch")); // v10.1.0: Use ref for fetching
         assert!(protocols.sycophancy.truth_over_comfort);
-        assert!(protocols.green.rule.contains("WebSearch")); // Must check efficiency
+        assert!(protocols.green.rule.contains("efficiency")); // Must check efficiency
         assert!(protocols.sprint.compaction_reminder.contains("COMPACT")); // Must survive compaction (merged from exhaustive ADR-049)
         assert!(protocols
             .coding_standards
@@ -561,35 +489,35 @@ mod tests {
     }
 
     #[test]
-    fn test_protocol_templates_exist() {
-        // These will fail at compile time if templates don't exist
-        // Just verify they have some expected content
-        assert!(ASIMOV_PROTOCOL.contains("harm"));
-        assert!(FRESHNESS_PROTOCOL.contains("TODAY"));
-        assert!(SYCOPHANCY_PROTOCOL.contains("truth"));
-        assert!(GREEN_PROTOCOL.contains("efficiency"));
-        assert!(SPRINT_PROTOCOL.contains("autonomous"));
-        assert!(SPRINT_PROTOCOL.contains("COMPACT")); // v9.14.0: Compaction reminder merged from exhaustive
-        assert!(WARMUP_PROTOCOL.contains("protocol"));
-        assert!(MIGRATIONS_PROTOCOL.contains("Migration"));
-        assert!(CODING_STANDARDS_PROTOCOL.contains("Human-readable"));
-        assert!(KINGSHIP_PROTOCOL.contains("Life")); // v9.18.0: Life Honours Life
+    fn test_embedded_json_protocols_exist() {
+        // v10.1.0: Single source of truth - embedded JSON files
+        // These will fail at compile time if JSON files don't exist
+        assert!(ASIMOV_JSON.contains("harm"));
+        assert!(FRESHNESS_JSON.contains("ref fetch")); // v10.1.0: Use ref for fetching
+        assert!(SYCOPHANCY_JSON.contains("truth"));
+        assert!(GREEN_JSON.contains("efficiency")); // Must check efficiency
+        assert!(SPRINT_JSON.contains("autonomous"));
+        assert!(SPRINT_JSON.contains("COMPACT")); // v9.14.0: Compaction reminder merged from exhaustive
+        assert!(WARMUP_JSON.contains("protocol"));
+        assert!(MIGRATIONS_JSON.contains("Migration"));
+        assert!(CODING_STANDARDS_JSON.contains("Human-readable"));
+        assert!(KINGSHIP_JSON.contains("Life")); // v9.18.0: Life Honours Life
     }
 
     #[test]
     fn test_get_protocol_functions() {
-        // Test all get_*_protocol functions
+        // v10.1.0: Test all get_*_protocol functions (now return embedded JSON)
         let asimov = get_asimov_protocol();
         assert!(asimov.contains("harm"));
 
         let freshness = get_freshness_protocol();
-        assert!(!freshness.contains("{TODAY}")); // Should be replaced
+        assert!(freshness.contains("ref fetch")); // v10.1.0: Use ref for fetching
 
         let sycophancy = get_sycophancy_protocol();
         assert!(sycophancy.contains("truth"));
 
         let green = get_green_protocol();
-        assert!(green.contains("efficiency"));
+        assert!(green.contains("efficiency")); // Must check efficiency
 
         let sprint = get_sprint_protocol();
         assert!(sprint.contains("autonomous"));
