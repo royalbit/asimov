@@ -103,6 +103,24 @@ LangChain, CrewAI, Semantic Kernel, AutoGen—they fragment context across agent
 >
 > — [Cognition](https://cognition.ai/blog/dont-build-multi-agents)
 
+### Error Compounding: The Math That Kills Multi-Agent
+
+The 95% vs 80% gap isn't 15 points. **Errors compound multiplicatively.**
+
+```
+P(success after N steps) = accuracy^N
+```
+
+| Steps | Fragmented (80%) | Full Context (95%) | Gap |
+|-------|------------------|--------------------| ----|
+| 10 | 10.7% | 59.9% | **5.6x** |
+| 20 | 1.2% | 35.8% | **31x** |
+| 50 | 0.001% | 7.7% | **5,391x** |
+
+At 10 steps (typical complex task): fragmented has **89% failure rate**.
+
+**This is why multi-agent systems collapse.** Each handoff compounds the error. See [models/error-compounding.yaml](models/error-compounding.yaml).
+
 ### Asimov vs Fixed Frameworks
 
 | Dimension | Asimov | LangChain/CrewAI |

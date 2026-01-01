@@ -91,6 +91,22 @@ That's worse than quadratic.
 
 ---
 
+# Error Compounding
+
+**P(success) = accuracy^steps**
+
+| Steps | Fragmented (80%) | Full Context (95%) | Gap |
+|-------|------------------|--------------------| ----|
+| 10 | 10.7% | 59.9% | **5.6x** |
+| 20 | 1.2% | 35.8% | **31x** |
+| 50 | 0.001% | 7.7% | **5,391x** |
+
+At 10 steps: **89% failure** (fragmented) vs **40% failure** (full context)
+
+**Each handoff compounds the error. The math doesn't lie.**
+
+---
+
 # Asimov vs Fixed Frameworks
 
 | Dimension | LangChain / CrewAI | Asimov |

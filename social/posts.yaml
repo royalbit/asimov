@@ -263,3 +263,111 @@ posts:
 
     #AI #RAG #LLM #SoftwareEngineering #Research
   posted: {}
+
+- id: error-compounding-math
+  title: Error Compounding Math
+  url: https://github.com/royalbit/asimov/blob/main/models/error-compounding.yaml
+  x: |
+    95% vs 80% isn't 15 points.
+
+    Errors compound: accuracy^steps
+
+    10 steps:
+    - 80%: 10.7% success
+    - 95%: 59.9% success
+
+    That's 5.6x better odds.
+
+    At 50 steps? 5,391x.
+
+    Multi-agent collapses on complex tasks.
+
+    #AI #Math
+  linkedin: |
+    The 95% vs 80% accuracy gap isn't 15 percentage points.
+
+    Errors compound multiplicatively.
+
+    The formula: P(success after N steps) = accuracy^N
+
+    Here's what that means in practice:
+
+    At 1 step:
+    - Fragmented (80%): 80% success
+    - Full context (95%): 95% success
+    - Gap: 1.2x
+
+    At 10 steps (typical complex task):
+    - Fragmented: 10.7% success
+    - Full context: 59.9% success
+    - Gap: 5.6x
+
+    At 20 steps (large feature):
+    - Fragmented: 1.2% success
+    - Full context: 35.8% success
+    - Gap: 31x
+
+    At 50 steps (system integration):
+    - Fragmented: 0.001% success
+    - Full context: 7.7% success
+    - Gap: 5,391x
+
+    This is why multi-agent systems collapse on complex tasks.
+
+    Each agent handoff is a step. Each step compounds the error.
+
+    We built a deterministic Forge model to prove it:
+    https://github.com/royalbit/asimov/blob/main/models/error-compounding.yaml
+
+    The math doesn't lie.
+
+    #AI #Agents #Math #SoftwareEngineering #MultiAgent
+  posted: {}
+
+- id: error-compounding-89-percent
+  title: 89% Failure Rate
+  url: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+  x: |
+    At 10 steps:
+
+    Fragmented context: 89% failure
+    Full context: 40% failure
+
+    That's a typical complex coding task.
+
+    Multi-agent collapses because each handoff compounds the error.
+
+    One context beats many agents.
+
+    #AI #Agents
+  linkedin: |
+    At 10 steps—a typical complex coding task—fragmented context systems have an 89% failure rate.
+
+    Full context systems? 40% failure rate.
+
+    Same steps. Same task. Different architecture.
+
+    The difference is error compounding.
+
+    When accuracy is 80% per step (fragmented/multi-agent):
+    - Step 1: 80% success
+    - Step 5: 32.8% success
+    - Step 10: 10.7% success ← 89% failure
+
+    When accuracy is 95% per step (full context):
+    - Step 1: 95% success
+    - Step 5: 77.4% success
+    - Step 10: 59.9% success ← 40% failure
+
+    This is why LangChain, CrewAI, and other multi-agent frameworks hit a wall on complex tasks.
+
+    They fragment context. Each agent handoff is a step. Each step compounds the 20% error rate.
+
+    By step 10, you're essentially guaranteed to fail.
+
+    The solution: One large context (200k+ tokens). AI decides when to spawn agents. Context IS the coordination layer.
+
+    Research: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+
+    #AI #Agents #MultiAgent #SoftwareEngineering #LangChain
+  posted: {}

@@ -74,6 +74,7 @@ Generate PDF:  marp --no-stdin EXECUTIVE_DECK.md -o EXECUTIVE_DECK.pdf
 | **95% vs 80%** code accuracy (full context vs fragmented) | [SWE-bench](https://inkeep.com/blog/context-engineering-why-agents-fail) |
 | **17.2x error amplification** with independent agents | [Google/MIT 2024](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
 | Max **3-4 agents** before overhead dominates | Google/MIT |
+| **Error compounding:** 10 steps → 89% failure (fragmented) | [Forge Model](../models/error-compounding.yaml) |
 
 </div>
 

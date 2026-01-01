@@ -180,9 +180,21 @@ Every company using Claude gets the velocity. The question is:
 
 > "In 2025, running multiple agents in collaboration only results in fragile systems. The decision-making ends up being too dispersed and context isn't able to be shared thoroughly enough."
 
+**Error Compounding: Why Multi-Agent Collapses**
+
+The 95% vs 80% gap isn't 15 points. Errors compound multiplicatively: `P(success) = accuracy^steps`
+
+| Steps | Fragmented (80%) | Full Context (95%) | Gap |
+|-------|------------------|--------------------| ----|
+| 10 | 10.7% | 59.9% | **5.6x** |
+| 20 | 1.2% | 35.8% | **31x** |
+| 50 | 0.001% | 7.7% | **5,391x** |
+
+At 10 steps (typical complex task): fragmented has **89% failure rate** vs full context at **40%**.
+
 **The Asimov insight:** One 200k-token context = one source of truth. AI spawns agents only when parallelization benefit exceeds coordination cost.
 
-**Full research:** [ADR-054: Dynamic Swarm vs Fixed Agentic Frameworks](adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md) — 50+ verified references
+**Full research:** [ADR-054: Dynamic Swarm vs Fixed Agentic Frameworks](adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md) — 50+ verified references. [Forge model](../models/error-compounding.yaml) for deterministic proof.
 
 ---
 

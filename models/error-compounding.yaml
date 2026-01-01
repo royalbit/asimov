@@ -1,0 +1,85 @@
+_forge_version: 5.0.0
+inputs:
+  fragmented_accuracy:
+    value: 0.8
+  full_context_accuracy:
+    value: 0.95
+cumulative_success:
+  fragmented_1:
+    value: 0.8
+    formula: =POWER(inputs.fragmented_accuracy, 1)
+  full_context_1:
+    value: 0.95
+    formula: =POWER(inputs.full_context_accuracy, 1)
+  fragmented_5:
+    value: 0.3276800000000001
+    formula: =POWER(inputs.fragmented_accuracy, 5)
+  full_context_5:
+    value: 0.7737809374999998
+    formula: =POWER(inputs.full_context_accuracy, 5)
+  fragmented_10:
+    value: 0.10737418240000006
+    formula: =POWER(inputs.fragmented_accuracy, 10)
+  full_context_10:
+    value: 0.5987369392383787
+    formula: =POWER(inputs.full_context_accuracy, 10)
+  fragmented_20:
+    value: 0.011529215046068483
+    formula: =POWER(inputs.fragmented_accuracy, 20)
+  full_context_20:
+    value: 0.3584859224085419
+    formula: =POWER(inputs.full_context_accuracy, 20)
+  fragmented_50:
+    value: 0.000014272476927059638
+    formula: =POWER(inputs.fragmented_accuracy, 50)
+  full_context_50:
+    value: 0.07694497527671315
+    formula: =POWER(inputs.full_context_accuracy, 50)
+gap_multiplier:
+  at_1_step:
+    value: 1.1874999999999998
+    formula: =cumulative_success.full_context_1 / cumulative_success.fragmented_1
+  at_5_steps:
+    value: 2.361392021179198
+    formula: =cumulative_success.full_context_5 / cumulative_success.fragmented_5
+  at_10_steps:
+    value: 5.576172277688778
+    formula: =cumulative_success.full_context_10 / cumulative_success.fragmented_10
+  at_20_steps:
+    value: 31.09369727046485
+    formula: =cumulative_success.full_context_20 / cumulative_success.fragmented_20
+  at_50_steps:
+    value: 5391.143784638443
+    formula: =cumulative_success.full_context_50 / cumulative_success.fragmented_50
+error_rates:
+  fragmented_1:
+    value: 19.999999999999996
+    formula: =(1 - cumulative_success.fragmented_1) * 100
+  fragmented_10:
+    value: 89.26258175999999
+    formula: =(1 - cumulative_success.fragmented_10) * 100
+  fragmented_20:
+    value: 98.84707849539315
+    formula: =(1 - cumulative_success.fragmented_20) * 100
+  full_context_1:
+    value: 5.000000000000004
+    formula: =(1 - cumulative_success.full_context_1) * 100
+  full_context_10:
+    value: 40.12630607616213
+    formula: =(1 - cumulative_success.full_context_10) * 100
+  full_context_20:
+    value: 64.15140775914581
+    formula: =(1 - cumulative_success.full_context_20) * 100
+implications:
+  fragmented_failure_threshold_steps:
+    value: 3.1062837195053907
+    formula: =LOG(0.5) / LOG(inputs.fragmented_accuracy)
+  full_context_failure_threshold_steps:
+    value: 13.513407333964874
+    formula: =LOG(0.5) / LOG(inputs.full_context_accuracy)
+  fragmented_10pct_threshold:
+    value: 10.318851158516171
+    formula: =LOG(0.10) / LOG(inputs.fragmented_accuracy)
+  full_context_10pct_threshold:
+    value: 44.89056748035485
+    formula: =LOG(0.10) / LOG(inputs.full_context_accuracy)

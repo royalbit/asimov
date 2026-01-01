@@ -221,6 +221,43 @@ Source: [Liu et al. - Lost in the Middle](https://arxiv.org/abs/2307.03172)
 
 ---
 
+### 6. Error Compounding: The Mathematical Proof
+
+The 95% vs 80% accuracy gap isn't just 15 percentage points. **Errors compound multiplicatively over steps.**
+
+#### The Formula
+
+```
+P(success after N steps) = accuracy^N
+```
+
+#### Cumulative Success Rates (Forge Model)
+
+| Steps | Fragmented (80%) | Full Context (95%) | Gap Multiplier |
+|-------|------------------|--------------------| --------------|
+| 1 | 80.0% | 95.0% | 1.2x |
+| 5 | 32.8% | 77.4% | 2.4x |
+| 10 | 10.7% | 59.9% | **5.6x** |
+| 20 | 1.2% | 35.8% | **31.1x** |
+| 50 | 0.001% | 7.7% | **5,391x** |
+
+Source: [Forge Model - error-compounding.yaml](../../models/error-compounding.yaml)
+
+#### Failure Thresholds
+
+| Metric | Fragmented | Full Context |
+|--------|------------|--------------|
+| Steps to <50% success | 3.1 | 13.5 |
+| Steps to <10% success | 10.3 | 44.9 |
+
+**The insight:** At 10 steps (typical complex task), fragmented context has **89% failure rate** while full context has **40% failure rate**.
+
+At 50 steps (system integration), fragmented is essentially guaranteed to fail (**99.999% failure**) while full context still has a fighting chance (**92% failure**, but 5,391x better odds).
+
+**This is why multi-agent systems collapse on complex tasks.** Each agent handoff is a step. Each step compounds the error. The math doesn't lie.
+
+---
+
 ## Decision
 
 ### 1. Maximize Context Window Usage
