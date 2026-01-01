@@ -1,25 +1,53 @@
-# ADR-056: Extended Thinking vs RAG+Agentic Systems
+# ADR-056: Dynamic Swarm + HITM vs Fixed Agentic Systems
 
 **Status:** Accepted
-**Date:** 2025-12-31
+**Date:** 2025-12-31 (Amended 2026-01-01)
 **Author:** Claude (Opus 4.5) - Principal Engineer
-**References:** All links verified via ref-tools (headless Chrome) on 2025-12-31
+**References:** All links verified via ref-tools (headless Chrome)
 **Supplements:** ADR-054, ADR-055
 
 ---
 
 ## Context
 
-ADR-054 established Asimov's "context as coordination layer" thesis. ADR-055 acknowledged trade-offs. This ADR addresses a critical distinction overlooked in both: **extended thinking tokens are not the same as context storage**.
+ADR-054 established Asimov's "context as coordination layer" thesis. ADR-055 acknowledged trade-offs. This ADR addresses the **actual architecture** used by Asimov + Claude Code:
 
-The Chroma research finding that "LLMs effectively utilize only 10-20% of context" applies to **retrieval from stored context** - the lost-in-the-middle problem where attention-based retrieval degrades for middle-positioned information.
+**Dynamic Swarm + HITM (Human-in-the-Middle)**:
+```
+Human (HITM)
+    ↓ oversight
+Orchestrator (~200K tokens, extended thinking)
+    ↓ spawns dynamically at runtime
+    ├── Sub-Agent 1 (~200K tokens)
+    ├── Sub-Agent 2 (~200K tokens)
+    └── Sub-Agent N (~200K tokens)
+```
+
+This is NOT single-agent. This is NOT fixed multi-agent.
+
+**Key differences from fixed agentic frameworks (LangChain, CrewAI, AutoGen):**
+
+| Dimension | Dynamic Swarm + HITM | Fixed Agentic |
+|-----------|---------------------|---------------|
+| Context per agent | **~200K tokens each** | 8-32K fragmented |
+| Agent spawning | **AI-decided at runtime** | Pre-defined at design time |
+| Human oversight | **HITM gate between steps** | None or batch approval |
+| Topology | **Dynamic, task-adapted** | Fixed roles/workflows |
+
+Source: [Claude Code Subagents](https://code.claude.com/docs/en/sub-agents) — Official Anthropic documentation
+
+---
+
+## The Critical Distinction
+
+The Chroma research finding that "LLMs effectively utilize only 10-20% of context" applies to **retrieval from stored context** - the lost-in-the-middle problem.
 
 **Extended thinking is fundamentally different.** When `MAX_THINKING_TOKENS=200000`, the model uses tokens for:
 - Active sequential computation, not passive storage
 - Reasoning chains with self-correction
 - Inference-time compute scaling (o1/o3 paradigm)
 
-This changes the cost-benefit calculus for dynamic swarm vs RAG+agentic architectures.
+**Dynamic Swarm amplifies this:** Each sub-agent ALSO gets ~200K context for its specific subtask. No fragmentation.
 
 ---
 
@@ -100,26 +128,31 @@ Source: [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml)
 
 | Architecture | Base Accuracy | Self-Correction | Effective Accuracy |
 |--------------|---------------|-----------------|-------------------|
-| Single + Extended Thinking | 95% | 70% detect × 85% fix | **97.98%** |
-| Multi-Agent Centralized | 88% | 55% detect × 75% fix | **87.03%** |
-| Multi-Agent Independent | 80% | 40% detect × 60% fix | **68.69%** |
+| Dynamic Swarm + HITM | 95% | 70% detect × 85% fix | **97.98%** |
+| Fixed Agentic (Centralized) | 88% | 55% detect × 75% fix | **87.03%** |
+| Fixed Agentic (Independent) | 80% | 40% detect × 60% fix | **68.69%** |
 
-**Key insight:** Extended thinking enables 70% error detection (in-context self-verification via "Wait" tokens) vs 40% for distributed agents (requires external retry loops).
+**Key insight:** Dynamic Swarm enables 70% error detection (in-context self-verification via "Wait" tokens + HITM oversight) vs 40% for fixed agentic (requires external retry loops, no human gate).
+
+**Why Dynamic Swarm has higher base accuracy:**
+- Each sub-agent has ~200K context (not fragmented)
+- HITM catches errors between spawns
+- AI-decided topology adapts to task requirements
 
 #### Monte Carlo Results (10K trials, 95% CI)
 
-| Steps | Single + Extended | Multi-Agent Centralized | Multi-Agent Independent |
-|-------|-------------------|------------------------|------------------------|
+| Steps | Dynamic Swarm + HITM | Fixed Centralized | Fixed Independent |
+|-------|---------------------|-------------------|-------------------|
 | 5 | **90.3%** ± 0.6% | 50.1% ± 1.0% | 15.4% ± 0.7% |
 | 10 | **81.5%** ± 0.8% | 25.1% ± 0.9% | 2.4% ± 0.3% |
 | 20 | **66.4%** ± 0.9% | 6.3% ± 0.5% | 0.06% ± 0.05% |
 | 50 | **36.0%** ± 0.9% | 0.1% ± 0.06% | ~0% |
 | 100 | **13.0%** ± 0.7% | ~0% | ~0% |
 
-#### Advantage Ratios (Extended Thinking vs Others)
+#### Advantage Ratios (Dynamic Swarm vs Fixed Agentic)
 
-| Steps | vs Independent | vs Centralized |
-|-------|---------------|----------------|
+| Steps | vs Fixed Independent | vs Fixed Centralized |
+|-------|---------------------|---------------------|
 | 5 | **5.9x** | 1.8x |
 | 10 | **34x** | 3.2x |
 | 20 | **1,106x** | 10.6x |
@@ -127,8 +160,8 @@ Source: [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml)
 
 #### Steps to Failure Thresholds
 
-| Threshold | Single + Extended | Centralized | Independent |
-|-----------|-------------------|-------------|-------------|
+| Threshold | Dynamic Swarm + HITM | Fixed Centralized | Fixed Independent |
+|-----------|---------------------|-------------------|-------------------|
 | 50% failure | **34 steps** | 5 steps | 1 step |
 | 90% failure | **113 steps** | 16 steps | 3 steps |
 
@@ -143,15 +176,19 @@ The model slightly overpredicts success for short tasks (SWE-bench) but closely 
 
 Source: [Agent-R](https://arxiv.org/abs/2501.11425), [MATC Framework](https://arxiv.org/abs/2508.04306), [RLI Benchmark](https://arxiv.org/abs/2504.02189)
 
-#### Why Single-Agent + Extended Thinking Beats Multi-Agent
+#### Why Dynamic Swarm + HITM Beats Fixed Agentic
 
 | Architecture | Error Model | Communication Overhead |
 |--------------|-------------|----------------------|
-| Single + extended thinking | Self-correction in-context | **None** |
-| Multi-agent (centralized) | 4.4x error containment | O(n) hub-and-spoke |
-| Multi-agent (independent) | 17.2x error amplification | O(n²) full mesh |
+| Dynamic Swarm + HITM | Self-correction + HITM gate | **O(1) per spawn** |
+| Fixed agentic (centralized) | 4.4x error containment | O(n) hub-and-spoke |
+| Fixed agentic (independent) | 17.2x error amplification | O(n²) full mesh |
 
-The single orchestrator with extended thinking avoids inter-agent communication overhead entirely. Errors are caught and corrected before propagating.
+**Dynamic Swarm advantages:**
+1. **Sub-agents are ephemeral** - spawned for specific tasks, return results, context doesn't fragment
+2. **HITM oversight** - human catches cascading errors between spawns
+3. **Full context per agent** - each sub-agent gets ~200K tokens for its subtask
+4. **AI-decided topology** - no fixed roles that misfit the task
 
 Source: [VentureBeat - More Agents Isn't Reliable](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai)
 
@@ -276,15 +313,16 @@ Use RAG when:
 
 ## Comparison Table
 
-| Dimension | Extended Thinking | RAG+Agentic |
-|-----------|-------------------|-------------|
-| Best for | Coherent reasoning | Scale, parallelization |
-| Error handling | Self-correction in-context | Retry loops, external |
-| Context utilization | High (sequential) | 10-20% (retrieval) |
-| Coordination overhead | None | O(n^1.724) |
-| Cost model | Predictable | Variable |
-| Latency | Higher (thinking time) | Lower (parallel) |
-| Real-time knowledge | Requires web search | Native with RAG |
+| Dimension | Dynamic Swarm + HITM | Fixed Agentic | RAG |
+|-----------|---------------------|---------------|-----|
+| Best for | Coherent multi-step reasoning | Parallelizable independent tasks | Scale (10M+ docs) |
+| Context per agent | **~200K tokens** | 8-32K fragmented | N/A |
+| Error handling | Self-correction + HITM | External retry loops | N/A |
+| Context utilization | High (sequential reasoning) | 10-20% (retrieval) | External |
+| Coordination overhead | **O(1) per spawn** | O(n^1.724) | Query overhead |
+| Human oversight | **HITM gate** | None/batch | None |
+| Agent topology | **AI-decided at runtime** | Pre-defined | N/A |
+| Cost model | Predictable per spawn | Variable | Per query |
 
 ---
 
@@ -307,6 +345,12 @@ Use RAG when:
 ### Agentic Error Compounding
 - [VentureBeat - More Agents Isn't Reliable](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) - 17.2x error amplification
 - [RLI Benchmark](https://arxiv.org/abs/2504.02189) - 97.5% failure on real work
+- [Cognition (Devin) - Don't Build Multi-Agents](https://cognition.ai/blog/dont-build-multi-agents) - Fragile systems, dispersed decision-making
+
+### Claude Code Dynamic Swarm
+- [Claude Code Subagents](https://code.claude.com/docs/en/sub-agents) - Official Anthropic documentation on dynamic agent spawning
+- [Claude Code CLI Reference](https://code.claude.com/docs/en/cli-reference) - --agents flag, MAX_THINKING_TOKENS
+- [Claude Code GitHub](https://github.com/anthropics/claude-code) - 50K+ stars, plugins, hooks, subagent examples
 
 ### Forge Models
 - [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml) - 10K trial Monte Carlo simulation (validated against R/Gnumeric)

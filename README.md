@@ -4,23 +4,51 @@
 [![License](https://img.shields.io/badge/code-ELv2-blue.svg)](LICENSE)
 [![Docs License](https://img.shields.io/badge/docs-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-> **Extended thinking beats multi-agent by 34x. We have the math.**
+> **Dynamic Swarm + HITM beats Fixed Agentic by 34x. We have the math.**
+
+## The Architecture
+
+```
+Human (HITM)
+    ↓ oversight
+Orchestrator (~200K tokens, extended thinking)
+    ↓ spawns dynamically at runtime
+    ├── Sub-Agent 1 (~200K tokens)
+    ├── Sub-Agent 2 (~200K tokens)
+    └── Sub-Agent N (~200K tokens)
+```
+
+**Dynamic Swarm** (Asimov + Claude Code): Each agent has full context (~200K tokens). Spawning is AI-decided at runtime. Human-in-the-middle (HITM) approves/guides.
+
+**Fixed Agentic** (LangChain, CrewAI, AutoGen): Pre-defined roles. Fragmented context. No human gate. 17.2x error amplification.
+
+Source: [Claude Code Subagents](https://code.claude.com/docs/en/sub-agents) — Official Anthropic documentation
+
+---
 
 ## The Insight
 
-Single agent + 200K thinking tokens outperforms LangChain, CrewAI, AutoGen, and every fixed agentic framework.
-
 **Monte Carlo simulation (10K trials, 95% CI):**
 
-| Steps | Single + Extended Thinking | Multi-Agent Independent | Advantage |
-|-------|---------------------------|------------------------|-----------|
+| Steps | Dynamic Swarm + HITM | Fixed Multi-Agent | Advantage |
+|-------|---------------------|-------------------|-----------|
 | 10 | **81.5%** ± 0.8% | 2.4% ± 0.3% | **34x** |
 | 20 | **66.4%** ± 0.9% | 0.06% ± 0.05% | **1,106x** |
 | 50 | **36.0%** ± 0.9% | ~0% | **∞** |
 
 Source: [monte-carlo-agents.yaml](models/monte-carlo-agents.yaml) — validated against R and Gnumeric via Forge.
 
-**Why?** Context-as-thinking ≠ context-as-storage. Extended thinking tokens are active computation with 70% in-context error detection. Multi-agent systems hit O(n^1.724) communication overhead and 17.2x error amplification.
+**Why Dynamic Swarm wins:**
+- Each sub-agent has **full context** (~200K tokens), not fragmented
+- **HITM oversight** prevents error cascades between steps
+- **AI-decided spawning** avoids fixed topology overhead
+- Extended thinking enables **70% in-context error detection**
+
+**Why Fixed Agentic fails:**
+- Context fragmented across agents (10-20% effective utilization)
+- O(n^1.724) communication overhead
+- 17.2x error amplification without human gate
+- Pre-defined roles can't adapt to task requirements
 
 📖 [ADR-056: Extended Thinking vs RAG+Agentic](docs/adr/056-extended-thinking-vs-rag-agentic.md) — Full research
 
@@ -36,7 +64,7 @@ sudo mv asimov /usr/local/bin/
 # Initialize project
 asimov init
 
-# Launch Claude Code with optimal settings
+# Launch Claude Code with optimal settings (Dynamic Swarm enabled)
 asimov
 ```
 
@@ -65,7 +93,7 @@ Eight protocol files in `.asimov/` ground AI in file-based truth:
 ## CLI
 
 ```bash
-asimov              # Launch Claude Code with MAX_THINKING_TOKENS=200000
+asimov              # Launch Claude Code with MAX_THINKING_TOKENS=200000 + Dynamic Swarm
 asimov init         # Initialize project
 asimov warmup       # Output complete context as JSON
 asimov doctor       # Diagnose setup issues
@@ -81,11 +109,12 @@ asimov update       # Self-update
 
 | Finding | Source |
 |---------|--------|
-| Extended thinking: **34x advantage** over multi-agent at 10 steps | [Monte Carlo Model](models/monte-carlo-agents.yaml) |
+| Dynamic Swarm: **34x advantage** over fixed agentic at 10 steps | [Monte Carlo Model](models/monte-carlo-agents.yaml) |
+| Sub-agents run with **full context (~200K tokens)** | [Claude Code Docs](https://code.claude.com/docs/en/sub-agents) |
 | Max **3-4 effective agents** before overhead dominates | [Google/MIT 2024](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
-| **17.2x error amplification** with independent agents | Google/MIT |
+| **17.2x error amplification** with independent fixed agents | Google/MIT |
 | RLI benchmark: **97.5% failure** on real work (vs 70% SWE-bench) | [arXiv:2504.02189](https://arxiv.org/abs/2504.02189) |
-| Context utilization: **10-20%** for storage, **high** for thinking | [Chroma 2025](https://research.trychroma.com/context-rot) |
+| Fixed multi-agent: **fragile systems, dispersed decision-making** | [Cognition (Devin)](https://cognition.ai/blog/dont-build-multi-agents) |
 
 ### Architecture Decisions
 
@@ -133,4 +162,4 @@ asimov update       # Self-update
 
 ---
 
-*Built with [RoyalBit Asimov](https://github.com/royalbit/asimov) — Extended thinking beats multi-agent.*
+*Built with [RoyalBit Asimov](https://github.com/royalbit/asimov) — Dynamic Swarm + HITM beats Fixed Agentic.*

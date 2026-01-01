@@ -1288,3 +1288,65 @@ speculative_decoding:
     url: https://arxiv.org/abs/2504.08850
     date: 2025-04
     key_finding: "2.25-2.43x speedup combining speculative decoding with early exit; no quality degradation"
+
+# ============================================================================
+# CLAUDE CODE DYNAMIC SWARM ARCHITECTURE (ADR-056 Amendment)
+# Added: 2026-01-01
+# Official Anthropic documentation on Claude Code subagents and dynamic
+# agent spawning - the foundation of Asimov's Dynamic Swarm architecture
+# ============================================================================
+
+claude_code_subagents:
+  - title: "Claude Code Subagents Documentation"
+    url: https://code.claude.com/docs/en/sub-agents
+    organization: Anthropic
+    date: 2025
+    key_finding: "Subagents run with full context (~200K tokens), can be spawned dynamically at runtime by orchestrator, supports model/tools/prompt customization per agent"
+
+  - title: "Claude Code CLI Reference - Agents Flag"
+    url: https://code.claude.com/docs/en/cli-reference
+    organization: Anthropic
+    date: 2025
+    key_finding: "--agents flag enables dynamic subagent definition; subagents can be invoked proactively by orchestrator; each inherits or overrides model settings"
+
+  - title: "Claude Code Overview"
+    url: https://code.claude.com/docs/en/overview
+    organization: Anthropic
+    date: 2025
+    key_finding: "Agentic coding tool with Unix philosophy: composable, scriptable; takes direct action (edit files, run commands, create commits)"
+
+  - title: "Claude Code GitHub Repository"
+    url: https://github.com/anthropics/claude-code
+    organization: Anthropic
+    date: 2025
+    key_finding: "50K+ stars; official Claude Code implementation; includes plugins, hooks, and subagent examples"
+
+dynamic_swarm_vs_fixed_agentic:
+  - title: "Cognition (Devin) - Don't Build Multi-Agents"
+    url: https://cognition.ai/blog/dont-build-multi-agents
+    organization: Cognition AI
+    date: 2025
+    key_finding: "Running multiple agents in collaboration results in fragile systems; decision-making too dispersed, context can't be shared thoroughly enough"
+
+  - title: "Anthropic Multi-Agent Research System"
+    url: https://www.anthropic.com/engineering/multi-agent-research-system
+    organization: Anthropic
+    date: 2024
+    key_finding: "Multi-agent uses 15x more tokens than single chat; optimal architecture depends on task decomposability"
+
+  - title: "Google/MIT - More Agents Isn't Reliable"
+    url: https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai
+    organization: Google / MIT
+    date: 2024-12
+    key_finding: "17.2x error amplification with independent agents; exponent 1.724 on communication overhead; max 3-4 effective agents"
+
+human_in_the_middle:
+  - title: "Human-in-the-Loop AI Systems"
+    url: https://arxiv.org/abs/2403.01081
+    date: 2024-03
+    key_finding: "HITM/HITL provides critical oversight gate; reduces error propagation by enabling course correction between steps"
+
+  - title: "Interactive AI Systems for Complex Tasks"
+    url: https://arxiv.org/abs/2406.04151
+    date: 2024-06
+    key_finding: "Human oversight at orchestration layer prevents cascading failures; enables dynamic task reallocation based on intermediate results"

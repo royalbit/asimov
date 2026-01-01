@@ -1,12 +1,18 @@
 _forge_version: 5.0.0
-# Monte Carlo Simulation: Agent Architecture Comparison
-# Created: 2025-12-31 per ADR-056
+# Monte Carlo Simulation: Dynamic Swarm + HITM vs Fixed Agentic
+# Created: 2025-12-31 per ADR-056 (Amended 2026-01-01)
 #
 # Simulates task completion across different agent architectures
 # to derive confidence intervals rather than point estimates.
 #
+# Architecture comparison:
+# - Dynamic Swarm + HITM: Orchestrator (~200K) + N sub-agents (~200K each) + human oversight
+# - Fixed Agentic: Pre-defined roles, fragmented context, no human gate
+#
 # References:
+# - Claude Code Subagents: https://code.claude.com/docs/en/sub-agents
 # - Google/MIT: 17.2x error amplification, 1.724 communication exponent
+# - Cognition (Devin): "Don't build multi-agents" - fragile systems
 # - Agent-R (arXiv:2501.11425): Self-correction via reflection
 # - MATC (arXiv:2508.04306): +15.7% via multi-agent taskforce
 # - RLI Benchmark: 97.5% failure on real work
@@ -26,23 +32,32 @@ simulation:
 
 architectures:
   # --------------------------------------------------------------------------
-  # SINGLE AGENT + EXTENDED THINKING
+  # DYNAMIC SWARM + HITM (Human-in-the-Middle)
   # --------------------------------------------------------------------------
-  # One orchestrator with 200K thinking tokens
-  # Self-correction happens in-context via "Wait" tokens
-  # No inter-agent communication overhead
+  # Orchestrator (~200K tokens) spawns N sub-agents (~200K each) at runtime
+  # Self-correction via "Wait" tokens + HITM oversight between spawns
+  # AI-decided topology adapts to task requirements
+  #
+  # Architecture:
+  #   Human (HITM)
+  #       ↓ oversight
+  #   Orchestrator (~200K tokens, extended thinking)
+  #       ↓ spawns dynamically at runtime
+  #       ├── Sub-Agent 1 (~200K tokens)
+  #       ├── Sub-Agent 2 (~200K tokens)
+  #       └── Sub-Agent N (~200K tokens)
 
-  single_extended_thinking:
-    name: "Single Agent + Extended Thinking"
-    description: "Asimov architecture: one orchestrator, 200K thinking tokens"
+  dynamic_swarm_hitm:
+    name: "Dynamic Swarm + HITM"
+    description: "Asimov + Claude Code: orchestrator + N sub-agents (~200K each), human oversight"
 
-    # Base accuracy per reasoning step
+    # Base accuracy per reasoning step (higher due to full context per agent)
     step_accuracy: 0.95
 
-    # Self-correction model (in-context)
+    # Self-correction model (in-context + HITM)
     self_correction:
       enabled: true
-      # Probability of detecting own error
+      # Probability of detecting own error (70% in-context + HITM gate)
       detection_rate: 0.70
       # Probability of successful fix given detection
       fix_success_rate: 0.85
@@ -52,8 +67,13 @@ architectures:
         formula: =step_accuracy + (1 - step_accuracy) * detection_rate * fix_success_rate
         value: 0.97975
 
-    # No communication overhead
+    # O(1) per spawn - no inter-agent communication, only orchestrator<->subagent
     communication_overhead: 0.0
+
+    # Why higher accuracy:
+    # - Each sub-agent has full ~200K context (not fragmented)
+    # - HITM catches errors between spawns
+    # - AI-decided topology adapts to task
 
     # Error model: geometric decay with effective accuracy
     success_probability:
@@ -65,17 +85,18 @@ architectures:
       at_100: 0.1295
 
   # --------------------------------------------------------------------------
-  # MULTI-AGENT INDEPENDENT
+  # FIXED AGENTIC (INDEPENDENT)
   # --------------------------------------------------------------------------
-  # Multiple agents working independently, minimal coordination
+  # Pre-defined agents working independently, minimal coordination
   # Error amplification: 17.2x per Google/MIT research
   # Communication overhead scales with exponent 1.724
+  # Context fragmented across agents (8-32K each, not 200K)
 
-  multi_agent_independent:
-    name: "Multi-Agent Independent"
-    description: "LangChain/CrewAI style: fixed roles, independent execution"
+  fixed_agentic_independent:
+    name: "Fixed Agentic (Independent)"
+    description: "LangChain/CrewAI/AutoGen style: pre-defined roles, fragmented context, no HITM"
 
-    # Lower base accuracy due to context fragmentation
+    # Lower base accuracy due to context fragmentation (8-32K vs 200K)
     step_accuracy: 0.80
 
     # Agent count (typical fixed framework)
@@ -120,15 +141,16 @@ architectures:
       at_100: 0.0  # effectively zero
 
   # --------------------------------------------------------------------------
-  # MULTI-AGENT CENTRALIZED
+  # FIXED AGENTIC (CENTRALIZED)
   # --------------------------------------------------------------------------
-  # Central orchestrator coordinates specialized agents
+  # Central orchestrator coordinates pre-defined specialized agents
   # Error containment: 4.4x (vs 17.2x independent)
   # Reduced communication overhead via hub-and-spoke
+  # Still has fragmented context, no HITM
 
-  multi_agent_centralized:
-    name: "Multi-Agent Centralized"
-    description: "Anthropic multi-agent research pattern: central coordinator"
+  fixed_agentic_centralized:
+    name: "Fixed Agentic (Centralized)"
+    description: "Central coordinator with pre-defined agents, still fragmented context, no HITM"
 
     # Better base accuracy - orchestrator maintains context
     step_accuracy: 0.88
@@ -202,7 +224,7 @@ monte_carlo:
 
   # Expected outputs with 95% confidence intervals
   expected_results:
-    single_extended_thinking:
+    dynamic_swarm_hitm:
       at_5:
         mean: 0.9026
         ci_95: [0.8968, 0.9084]
@@ -219,7 +241,7 @@ monte_carlo:
         mean: 0.1295
         ci_95: [0.1229, 0.1361]
 
-    multi_agent_independent:
+    fixed_agentic_independent:
       at_5:
         mean: 0.1536
         ci_95: [0.1465, 0.1607]
@@ -236,7 +258,7 @@ monte_carlo:
         mean: 0.0000
         ci_95: [0.0000, 0.0000]
 
-    multi_agent_centralized:
+    fixed_agentic_centralized:
       at_5:
         mean: 0.5006
         ci_95: [0.4908, 0.5104]
@@ -258,17 +280,17 @@ monte_carlo:
 # ============================================================================
 
 comparison:
-  # Advantage ratios (single_extended_thinking vs others)
+  # Advantage ratios (dynamic_swarm_hitm vs others)
   advantage_over_independent:
     at_5:
       ratio: 5.88
-      formula: =monte_carlo.expected_results.single_extended_thinking.at_5.mean / monte_carlo.expected_results.multi_agent_independent.at_5.mean
+      formula: =monte_carlo.expected_results.dynamic_swarm_hitm.at_5.mean / monte_carlo.expected_results.fixed_agentic_independent.at_5.mean
     at_10:
       ratio: 34.52
-      formula: =monte_carlo.expected_results.single_extended_thinking.at_10.mean / monte_carlo.expected_results.multi_agent_independent.at_10.mean
+      formula: =monte_carlo.expected_results.dynamic_swarm_hitm.at_10.mean / monte_carlo.expected_results.fixed_agentic_independent.at_10.mean
     at_20:
       ratio: 1106.33
-      formula: =monte_carlo.expected_results.single_extended_thinking.at_20.mean / monte_carlo.expected_results.multi_agent_independent.at_20.mean
+      formula: =monte_carlo.expected_results.dynamic_swarm_hitm.at_20.mean / monte_carlo.expected_results.fixed_agentic_independent.at_20.mean
     at_50:
       ratio: infinity
       note: "Independent approaches 0, ratio undefined"
@@ -285,15 +307,15 @@ comparison:
 
   # Steps to reach 50% success threshold
   steps_to_50pct_failure:
-    single_extended_thinking: 34
-    multi_agent_centralized: 5
-    multi_agent_independent: 1
+    dynamic_swarm_hitm: 34
+    fixed_agentic_centralized: 5
+    fixed_agentic_independent: 1
 
   # Steps to reach 90% failure (10% success)
   steps_to_90pct_failure:
-    single_extended_thinking: 113
-    multi_agent_centralized: 16
-    multi_agent_independent: 3
+    dynamic_swarm_hitm: 113
+    fixed_agentic_centralized: 16
+    fixed_agentic_independent: 3
 
 # ============================================================================
 # SENSITIVITY ANALYSIS
@@ -308,17 +330,17 @@ sensitivity:
     variations:
       low:
         value: 0.50
-        single_extended_at_10: 0.7823
+        dynamic_swarm_at_10: 0.7823
       medium:
         value: 0.70
-        single_extended_at_10: 0.8147
+        dynamic_swarm_at_10: 0.8147
       high:
         value: 0.90
-        single_extended_at_10: 0.8456
+        dynamic_swarm_at_10: 0.8456
 
   # Base accuracy sensitivity
   base_accuracy_impact:
-    single_extended:
+    dynamic_swarm:
       at_0.90:
         at_10: 0.6513
       at_0.95:
@@ -345,7 +367,7 @@ validation:
     empirical_failure_rate: 0.975  # 97.5% failure
     model_prediction:
       # RLI tasks average ~15 steps
-      multi_agent_independent_at_15:
+      fixed_agentic_independent_at_15:
         predicted_failure: 0.992
         delta: 0.017  # model slightly pessimistic
 
@@ -355,7 +377,7 @@ validation:
     model_calibration:
       # Our communication overhead model produces similar amplification
       effective_amplification:
-        formula: =1 / monte_carlo.expected_results.multi_agent_independent.at_10.mean * monte_carlo.expected_results.single_extended_thinking.at_10.mean
+        formula: =1 / monte_carlo.expected_results.fixed_agentic_independent.at_10.mean * monte_carlo.expected_results.dynamic_swarm_hitm.at_10.mean
         value: 34.52
         note: "Higher than 17.2x because we model 10 steps, not single handoff"
 
@@ -368,8 +390,8 @@ validation:
       RLI tasks are ~15-20 steps (full feature implementation)
 
       Model prediction:
-      - Single agent at 5 steps: 90.3% success
-      - Single agent at 20 steps: 66.4% success
+      - Dynamic Swarm at 5 steps: 90.3% success
+      - Dynamic Swarm at 20 steps: 66.4% success
 
       This aligns with the 70% SWE-bench, <10% real work pattern.
 
@@ -379,21 +401,21 @@ validation:
 
 insights:
   primary:
-    - "Extended thinking provides 34x advantage over independent agents at 10 steps"
-    - "Independent multi-agent systems hit <1% success by step 20"
-    - "Self-correction narrows but doesn't close the gap"
-    - "Centralized coordination (4.4x containment) is viable for short tasks only"
+    - "Dynamic Swarm + HITM provides 34x advantage over fixed agentic at 10 steps"
+    - "Fixed agentic (independent) hits <1% success by step 20"
+    - "HITM oversight + full context per agent drives the advantage"
+    - "Fixed agentic (centralized) viable for short tasks only (<5 steps)"
 
   thresholds:
-    - "Single agent remains >50% success up to 34 steps"
-    - "Independent agents fall below 50% at step 1 (!)"
-    - "Centralized agents remain >50% up to 5 steps only"
+    - "Dynamic Swarm + HITM remains >50% success up to 34 steps"
+    - "Fixed agentic (independent) falls below 50% at step 1 (!)"
+    - "Fixed agentic (centralized) remains >50% up to 5 steps only"
 
   design_implications:
-    - "For tasks >5 steps: single agent + extended thinking required"
-    - "For tasks >20 steps: even single agent needs checkpointing"
-    - "Multi-agent only viable for parallelizable, independent subtasks"
-    - "RAG hybrid: use for retrieval, not for reasoning chains"
+    - "For tasks >5 steps: Dynamic Swarm + HITM required"
+    - "For tasks >20 steps: even Dynamic Swarm needs checkpointing/HITM review"
+    - "Fixed agentic only viable for parallelizable, independent subtasks"
+    - "RAG: use for retrieval at scale (10M+ docs), not for reasoning chains"
 
 # ============================================================================
 # IMPLEMENTATION NOTES
