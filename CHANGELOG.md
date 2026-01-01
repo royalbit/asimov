@@ -7,6 +7,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [10.0.0] - 2025-12-31
 
+### Docs: LLM Harmful Behavior Countermeasures Research
+
+**Completed research on countermeasures against LLM harmful behaviors (ADR-050, ADR-051).**
+
+#### Countermeasures Added
+
+**Against Economic Incentive-Driven Shallow Responses:**
+- Anti-underthinking prompts (commit to reasoning paths)
+- "Wait" token self-verification
+- Explicit length/depth requirements
+- Chain-of-thought forcing
+- Verbosity signaling
+- LLM-as-a-judge evaluation
+- Multi-agent techniques
+
+**Against Vendor System Prompt Overrides:**
+- Dynamic state injection
+- Bookend reinforcement
+- Canary instructions (override detection)
+- Fresh context strategy
+- Datamarking (Microsoft Spotlighting) - reduces attacks from >50% to <2%
+
+**Against RLHF Sycophancy:**
+- Third-person framing
+- Anti-sycophancy directives
+- Devil's advocate mode
+- Numerical scoring requests
+- Flip detection
+
+**Output Verification:**
+- Semantic entropy (AUROC 0.790)
+- Self-consistency checking (+28.9% accuracy)
+- Chain-of-Verification (-42.5% hallucinations)
+- Dual-LLM verification (-86% hallucinations)
+- Span-level fact-checking
+
+#### References Database
+
+Added 170+ verified sources to `.asimov/references.yaml`:
+- 6 parallel agents verified 131 URLs via ref-tools
+- Organized into 16 categories
+- Fixed 8 broken URLs across documentation
+
+#### Files Changed
+- ADR-050: Economic Incentives in LLM Inference (countermeasures added)
+- ADR-051: System Prompt Hierarchy and Training Override (countermeasures added)
+- `.asimov/references.yaml`: +541 lines (170+ sources)
+- 6 docs with broken URL fixes
+
+---
+
 ### BREAKING: External Protocols + ELv2 License + Plus Merge
 
 **Major architectural change: protocols now external files with embedded fallback.**
