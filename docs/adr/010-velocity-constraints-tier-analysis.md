@@ -3,6 +3,7 @@
 ## Status
 
 Accepted
+**Caveat:** [ADR-055](./055-balanced-architecture-critique.md) notes velocity claims need comparative validation
 
 ## Date
 

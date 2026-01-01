@@ -3,6 +3,7 @@
 ## Status
 
 **ACCEPTED** - 2025-12-01
+**Nuanced by:** [ADR-055: Balanced Architecture Critique](./055-balanced-architecture-critique.md)
 
 ## Context
 
@@ -185,6 +186,29 @@ Cherry-picking BMAD patterns (e.g., spec templates):
 > **"Make decisions. Don't ask. Ship."**
 
 BMAD asks. Asimov ships.
+
+---
+
+## Nuance (ADR-055 Update, 2025-12-31)
+
+While the core decision stands, ADR-055 research reveals nuance:
+
+| BMAD Pattern | Asimov View (Original) | Balanced View (Updated) |
+|--------------|------------------------|-------------------------|
+| Human checkpoints | Friction | Valid self-correction mechanism |
+| Multi-agent | Fragmentation | Works with proper coordination (4.4x error containment) |
+| Role handoffs | Overhead | Self-correction reduces error compounding |
+
+**Key findings:**
+- Self-correction mechanisms (Agent-R, MATC) show +15.7% improvement
+- Human-in-the-loop IS a form of error correction
+- Error gap narrows from 5.6x to 1.9x with correction (Forge model)
+
+**Updated position:** Asimov prefers hands-off for velocity, but acknowledges BMAD-style checkpoints are a valid choice for teams prioritizing error reduction over speed. The approaches serve different optimization targets.
+
+See [ADR-055](./055-balanced-architecture-critique.md) for full analysis.
+
+---
 
 ## References
 

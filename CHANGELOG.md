@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **ADR-055: Balanced Architecture Critique** - Per sycophancy protocol (truth over comfort), acknowledges trade-offs in RAG/agentic/long-context analysis
+- **20 new balanced references** in `references.yaml` across 4 categories:
+  - `rag_hybrid_advantages` - SELF-ROUTE (39-65% cost reduction), LongRAG, prompt caching
+  - `agentic_enterprise_adoption` - Gartner 40% by 2026, SLMs 10-30x cheaper
+  - `agent_self_correction` - Agent-R, MATC (+15.7%), AgentDebug
+  - `long_context_limitations` - 10-20% utilization, 35% accuracy drop
+- **Error compounding model extension** - Self-correction math shows gap narrows from 5.6x to 1.9x
+
+### Changed
+
+- **ADR-054**: Added "Known Limitations" section, linked to ADR-055
+- **ADR-027**: Added "Nuance" section - BMAD checkpoints acknowledged as valid self-correction
+- **ADR-010**: Added caveat that velocity claims need comparative validation
+
 ## [10.0.1] - 2025-12-31
 
 ### Fixed
