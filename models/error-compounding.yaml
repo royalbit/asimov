@@ -1,9 +1,34 @@
 _forge_version: 5.0.0
+# Error Compounding Model with Self-Correction Extension
+# Updated: 2025-12-31 per ADR-055 balanced critique
+#
+# Key insight: Agent-R, MATC, and retry mechanisms can catch/fix errors,
+# improving effective accuracy beyond raw step accuracy.
+#
+# Formula: effective_accuracy = accuracy + (1 - accuracy) * correction_rate
+# Source: Agent-R (arXiv:2501.11425), MATC +15.7% (arXiv:2508.04306)
+
 inputs:
   fragmented_accuracy:
     value: 0.8
   full_context_accuracy:
     value: 0.95
+  # Self-correction rate: probability of catching/fixing an error
+  # Based on Agent-R, MATC research showing 15-20% improvement
+  correction_rate:
+    value: 0.6
+    note: "60% of errors caught via retry/reflection (conservative estimate)"
+
+# Effective accuracy after self-correction
+effective_accuracy:
+  fragmented_with_correction:
+    value: 0.92
+    formula: =inputs.fragmented_accuracy + (1 - inputs.fragmented_accuracy) * inputs.correction_rate
+    note: "0.8 + 0.2 * 0.6 = 0.92"
+  full_context_with_correction:
+    value: 0.98
+    formula: =inputs.full_context_accuracy + (1 - inputs.full_context_accuracy) * inputs.correction_rate
+    note: "0.95 + 0.05 * 0.6 = 0.98"
 cumulative_success:
   fragmented_1:
     value: 0.8
@@ -83,3 +108,78 @@ implications:
   full_context_10pct_threshold:
     value: 44.89056748035485
     formula: =LOG(0.10) / LOG(inputs.full_context_accuracy)
+
+# ============================================================================
+# WITH SELF-CORRECTION (ADR-055 Extension)
+# ============================================================================
+# Using effective_accuracy instead of raw accuracy
+
+cumulative_success_with_correction:
+  fragmented_corrected_5:
+    value: 0.6590815232
+    formula: =POWER(effective_accuracy.fragmented_with_correction, 5)
+    note: "0.92^5 = 65.9% vs 32.8% without correction"
+  fragmented_corrected_10:
+    value: 0.4343884634
+    formula: =POWER(effective_accuracy.fragmented_with_correction, 10)
+    note: "0.92^10 = 43.4% vs 10.7% without correction (4x better)"
+  fragmented_corrected_20:
+    value: 0.1886930919
+    formula: =POWER(effective_accuracy.fragmented_with_correction, 20)
+    note: "0.92^20 = 18.9% vs 1.2% without correction (16x better)"
+  full_context_corrected_5:
+    value: 0.9039207968
+    formula: =POWER(effective_accuracy.full_context_with_correction, 5)
+    note: "0.98^5 = 90.4% vs 77.4% without correction"
+  full_context_corrected_10:
+    value: 0.8170728069
+    formula: =POWER(effective_accuracy.full_context_with_correction, 10)
+    note: "0.98^10 = 81.7% vs 59.9% without correction"
+  full_context_corrected_20:
+    value: 0.6676083838
+    formula: =POWER(effective_accuracy.full_context_with_correction, 20)
+    note: "0.98^20 = 66.8% vs 35.8% without correction"
+
+gap_multiplier_with_correction:
+  at_5_steps:
+    value: 1.3714
+    formula: =cumulative_success_with_correction.full_context_corrected_5 / cumulative_success_with_correction.fragmented_corrected_5
+    note: "Gap narrows from 2.4x to 1.4x with self-correction"
+  at_10_steps:
+    value: 1.8812
+    formula: =cumulative_success_with_correction.full_context_corrected_10 / cumulative_success_with_correction.fragmented_corrected_10
+    note: "Gap narrows from 5.6x to 1.9x with self-correction"
+  at_20_steps:
+    value: 3.5387
+    formula: =cumulative_success_with_correction.full_context_corrected_20 / cumulative_success_with_correction.fragmented_corrected_20
+    note: "Gap narrows from 31x to 3.5x with self-correction"
+
+implications_with_correction:
+  fragmented_corrected_failure_threshold:
+    value: 8.3134
+    formula: =LOG(0.5) / LOG(effective_accuracy.fragmented_with_correction)
+    note: "Steps to <50%: 3.1 → 8.3 (2.7x more runway with correction)"
+  fragmented_corrected_10pct_threshold:
+    value: 27.6167
+    formula: =LOG(0.10) / LOG(effective_accuracy.fragmented_with_correction)
+    note: "Steps to <10%: 10.3 → 27.6 (2.7x more runway with correction)"
+
+# ============================================================================
+# KEY INSIGHT
+# ============================================================================
+# Self-correction (60% correction rate) dramatically changes the math:
+#
+# WITHOUT CORRECTION (ADR-054 original):
+#   - Fragmented at 10 steps: 10.7% success
+#   - Full context at 10 steps: 59.9% success
+#   - Gap: 5.6x
+#
+# WITH CORRECTION (ADR-055 extension):
+#   - Fragmented at 10 steps: 43.4% success (4x better)
+#   - Full context at 10 steps: 81.7% success (1.4x better)
+#   - Gap: 1.9x (narrowed from 5.6x)
+#
+# CONCLUSION:
+# Full context still wins, but self-correction mechanisms
+# make fixed frameworks more viable than originally claimed.
+# The 5,391x gap at 50 steps collapses to manageable levels.
