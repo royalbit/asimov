@@ -2,7 +2,12 @@
 
 ## Status
 
-Proposed
+Proposed → **Partial Implementation** (v8.8.0: templates have field, v10.3.0: full implementation via ADR-057)
+
+## Related
+
+- **ADR-057**: External Project Templates with Embedded Fallback (implementation approach)
+- **ADR-053**: External Protocol and Template Architecture (pattern origin)
 
 ## Context
 
@@ -112,6 +117,8 @@ Or auto-append if `deliverables_template` exists.
 ## References
 
 - ADR-032: Project Context File
-- Current templates in `cli/src/templates/`
+- ADR-053: External Protocol and Template Architecture
+- ADR-057: External Project Templates with Embedded Fallback (implementation)
+- Templates location: `cli/templates/` (v10.3.0+)
 
 ---
