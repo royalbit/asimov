@@ -5,7 +5,7 @@
 
 current:
   version: "10.2.5"
-  status: in_progress
+  status: released
   summary: "Hotfix: Docs URLs + crates.io packaging + metadata"
 
 backlog:
