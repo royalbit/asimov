@@ -25,7 +25,7 @@ assumptions:
 scenarios:
   dynamic_swarm_hitm:
     probability: 0.33
-    description: "Dynamic Swarm + HITM: Full context, human oversight"
+    description: "Dynamic Swarm + HOTL: Full context, human oversight"
     scalars:
       base_accuracy: 0.97
       detection_rate: 0.75

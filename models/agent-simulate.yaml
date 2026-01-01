@@ -23,7 +23,7 @@ monte_carlo:
       percentiles: [5, 50, 95]
 
 assumptions:
-  # Dynamic Swarm + HITM parameters (with uncertainty)
+  # Dynamic Swarm + HOTL parameters (with uncertainty)
   ds_base_accuracy:
     value: 0.97
     formula: =MC.Triangular(0.95, 0.97, 0.99)

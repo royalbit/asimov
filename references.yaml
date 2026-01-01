@@ -1344,7 +1344,7 @@ human_in_the_middle:
   - title: "Human-in-the-Loop AI Systems"
     url: https://arxiv.org/abs/2403.01081
     date: 2024-03
-    key_finding: "HITM/HITL provides critical oversight gate; reduces error propagation by enabling course correction between steps"
+    key_finding: "HOTL/HITL provides critical oversight gate; reduces error propagation by enabling course correction between steps"
 
   - title: "Interactive AI Systems for Complex Tasks"
     url: https://arxiv.org/abs/2406.04151

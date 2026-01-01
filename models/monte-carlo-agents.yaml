@@ -1,12 +1,12 @@
 _forge_version: 5.0.0
-# Monte Carlo Simulation: Dynamic Swarm + HITM vs Fixed Agentic
+# Monte Carlo Simulation: Dynamic Swarm + HOTL vs Fixed Agentic
 # Created: 2025-12-31 per ADR-056 (Amended 2026-01-01)
 #
 # Simulates task completion across different agent architectures
 # to derive confidence intervals rather than point estimates.
 #
 # Architecture comparison:
-# - Dynamic Swarm + HITM: Orchestrator (~200K) + N sub-agents (~200K each) + human oversight
+# - Dynamic Swarm + HOTL: Orchestrator (~200K) + N sub-agents (~200K each) + human oversight
 # - Fixed Agentic: Pre-defined roles, fragmented context, no human gate
 #
 # References:
@@ -32,14 +32,14 @@ simulation:
 
 architectures:
   # --------------------------------------------------------------------------
-  # DYNAMIC SWARM + HITM (Human-in-the-Middle)
+  # DYNAMIC SWARM + HOTL (Human-on-the-Loop)
   # --------------------------------------------------------------------------
   # Orchestrator (~200K tokens) spawns N sub-agents (~200K each) at runtime
-  # Self-correction via "Wait" tokens + HITM oversight between spawns
+  # Self-correction via "Wait" tokens + HOTL oversight between spawns
   # AI-decided topology adapts to task requirements
   #
   # Architecture:
-  #   Human (HITM)
+  #   Human (HOTL)
   #       ↓ oversight
   #   Orchestrator (~200K tokens, extended thinking)
   #       ↓ spawns dynamically at runtime
@@ -48,7 +48,7 @@ architectures:
   #       └── Sub-Agent N (~200K tokens)
 
   dynamic_swarm_hitm:
-    name: "Dynamic Swarm + HITM"
+    name: "Dynamic Swarm + HOTL"
     description: "Asimov + Claude Code: orchestrator + N sub-agents (~200K each), human oversight"
 
     # Base accuracy per reasoning step (higher due to full context per agent)
@@ -56,11 +56,11 @@ architectures:
     # Conservative estimate: 97% accounting for complex reasoning tasks
     step_accuracy: 0.97
 
-    # Self-correction model (in-context + HITM)
+    # Self-correction model (in-context + HOTL)
     self_correction:
       enabled: true
-      # Probability of detecting own error (in-context + HITM gate)
-      # Research: HITM validation reduces error amplification by 74% (MIT/Google 2024)
+      # Probability of detecting own error (in-context + HOTL gate)
+      # Research: HOTL validation reduces error amplification by 74% (MIT/Google 2024)
       # Validation bottleneck intercepts errors before propagation
       detection_rate: 0.75
       # Probability of successful fix given detection
@@ -77,7 +77,7 @@ architectures:
 
     # Why higher accuracy:
     # - Each sub-agent has full ~200K context (not fragmented)
-    # - HITM catches errors between spawns
+    # - HOTL catches errors between spawns
     # - AI-decided topology adapts to task
 
     # Error model: geometric decay with effective accuracy
@@ -99,7 +99,7 @@ architectures:
 
   fixed_agentic_independent:
     name: "Fixed Agentic (Independent)"
-    description: "LangChain/CrewAI/AutoGen style: pre-defined roles, fragmented context, no HITM"
+    description: "LangChain/CrewAI/AutoGen style: pre-defined roles, fragmented context, no HOTL"
 
     # Lower base accuracy due to context fragmentation (8-32K vs 200K)
     step_accuracy: 0.80
@@ -151,11 +151,11 @@ architectures:
   # Central orchestrator coordinates pre-defined specialized agents
   # Error containment: 4.4x (vs 17.2x independent)
   # Reduced communication overhead via hub-and-spoke
-  # Still has fragmented context, no HITM
+  # Still has fragmented context, no HOTL
 
   fixed_agentic_centralized:
     name: "Fixed Agentic (Centralized)"
-    description: "Central coordinator with pre-defined agents, still fragmented context, no HITM"
+    description: "Central coordinator with pre-defined agents, still fragmented context, no HOTL"
 
     # Better base accuracy - orchestrator maintains context
     step_accuracy: 0.88
@@ -409,18 +409,18 @@ validation:
 
 insights:
   primary:
-    - "Dynamic Swarm + HITM provides 38x advantage over fixed agentic at 10 steps"
+    - "Dynamic Swarm + HOTL provides 38x advantage over fixed agentic at 10 steps"
     - "Fixed agentic (independent) hits <1% success by step 20"
-    - "HITM oversight (74% error reduction) + full 200K context drives the advantage"
+    - "HOTL oversight (74% error reduction) + full 200K context drives the advantage"
     - "Fixed agentic (centralized) viable for short tasks only (<5 steps)"
 
   thresholds:
-    - "Dynamic Swarm + HITM remains >50% success up to 71 steps"
+    - "Dynamic Swarm + HOTL remains >50% success up to 71 steps"
     - "Fixed agentic (independent) falls below 50% at step 1 (!)"
     - "Fixed agentic (centralized) remains >50% up to 5 steps only"
 
   design_implications:
-    - "For tasks >5 steps: Dynamic Swarm + HITM required"
+    - "For tasks >5 steps: Dynamic Swarm + HOTL required"
     - "For tasks >50 steps: Dynamic Swarm maintains >60% success"
     - "Fixed agentic only viable for parallelizable, independent subtasks"
     - "RAG: use for retrieval at scale (10M+ docs), not for reasoning chains"

@@ -515,22 +515,22 @@ posts:
     x: 2026-01-01T03:08:48.000743448+00:00
     linkedin: 2026-01-01T03:12:48.773723454+00:00
 - id: hitm-vs-fixed-multiagent
-  title: HITM Swarm vs Fixed Multi-Agent - The Math
+  title: HOTL Swarm vs Fixed Multi-Agent - The Math
   url: https://github.com/royalbit/asimov/blob/main/docs/adr/056-extended-thinking-vs-rag-agentic.md
   x: |
-    🚨 Fixed multi-agent AI collapses at 10+ steps. HITM swarm orchestration doesn't.
+    🚨 Fixed multi-agent AI collapses at 10+ steps. HOTL swarm orchestration doesn't.
 
     We ran 10,000 Monte Carlo simulations comparing architectures.
 
     The results:
 
     At 10 steps - typical complex task:
-    → Dynamic Swarm + HITM: 90.7% success
+    → Dynamic Swarm + HOTL: 90.7% success
     → Fixed Multi-Agent: 2.3% success
     → Gap: 39x
 
     At 20 steps - large feature:
-    → Dynamic Swarm + HITM: 82.2% success
+    → Dynamic Swarm + HOTL: 82.2% success
     → Fixed Multi-Agent: 0.05% success
     → Gap: 1,502x
 
@@ -564,19 +564,19 @@ posts:
 
     #AI #Agents #MultiAgent #SoftwareEngineering
   linkedin: |
-    🚨 Fixed multi-agent AI collapses at 10+ steps. HITM swarm orchestration doesn't.
+    🚨 Fixed multi-agent AI collapses at 10+ steps. HOTL swarm orchestration doesn't.
 
     We ran 10,000 Monte Carlo simulations comparing AI agent architectures.
 
     The results:
 
     At 10 steps - typical complex task:
-    • Dynamic Swarm + HITM: 90.7% success
+    • Dynamic Swarm + HOTL: 90.7% success
     • Fixed Multi-Agent: 2.3% success
     • Gap: 39x
 
     At 20 steps - large feature:
-    • Dynamic Swarm + HITM: 82.2% success
+    • Dynamic Swarm + HOTL: 82.2% success
     • Fixed Multi-Agent: 0.05% success
     • Gap: 1,502x
 

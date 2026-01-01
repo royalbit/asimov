@@ -4,12 +4,12 @@
 [![License](https://img.shields.io/badge/code-ELv2-blue.svg)](LICENSE)
 [![Docs License](https://img.shields.io/badge/docs-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-> **Dynamic Swarm + HITM beats Fixed Agentic. We have the math.**
+> **Dynamic Swarm + HOTL beats Fixed Agentic. We have the math.**
 
 ## The Architecture
 
 ```
-Human (HITM)
+Human (HOTL)
     ↓ oversight
 Orchestrator (~200K tokens, extended thinking)
     ↓ spawns dynamically at runtime
@@ -18,7 +18,7 @@ Orchestrator (~200K tokens, extended thinking)
     └── Sub-Agent N (~200K tokens)
 ```
 
-**Dynamic Swarm** (Asimov + Claude Code): Each agent has full context (~200K tokens). Spawning is AI-decided at runtime. Human-in-the-middle (HITM) approves/guides.
+**Dynamic Swarm** (Asimov + Claude Code): Each agent has full context (~200K tokens). Spawning is AI-decided at runtime. Human-on-the-Loop (HOTL) approves/guides.
 
 **Fixed Agentic** (LangChain, CrewAI, AutoGen): Pre-defined roles. Fragmented context. No human gate. 17.2x error amplification.
 
@@ -30,7 +30,7 @@ Source: [Claude Code Subagents](https://code.claude.com/docs/en/sub-agents) — 
 
 **Analytical model (research-backed 2024, validated via Forge):**
 
-| Steps | Dynamic Swarm + HITM | Fixed Multi-Agent | Advantage |
+| Steps | Dynamic Swarm + HOTL | Fixed Multi-Agent | Advantage |
 |-------|---------------------|-------------------|-----------|
 | 10 | **90.7%** | 2.3% | **39x** |
 | 20 | **82.2%** | 0.05% | **1,502x** |
@@ -40,7 +40,7 @@ Source: [agent-formulas.yaml](models/agent-formulas.yaml) — validate with `for
 
 **Why Dynamic Swarm wins:**
 - Each sub-agent has **full context** (~200K tokens), not fragmented
-- **HITM oversight** prevents error cascades (74% error reduction measured)
+- **HOTL oversight** prevents error cascades (74% error reduction measured)
 - **AI-decided spawning** avoids fixed topology overhead
 - Extended thinking enables **75% in-context error detection**
 
@@ -111,7 +111,7 @@ asimov update       # Self-update
 |---------|--------|
 | Dynamic Swarm: **39x advantage** over fixed agentic at 10 steps | [Forge Model](models/agent-formulas.yaml) |
 | Sub-agents run with **full context (~200K tokens)** | [Claude Code Docs](https://code.claude.com/docs/en/sub-agents) |
-| HITM validation reduces error by **74%** (17.2x → 4.4x) | [MIT/Google 2024](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
+| HOTL validation reduces error by **74%** (17.2x → 4.4x) | [MIT/Google 2024](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
 | Max **3-4 effective agents** before overhead dominates | MIT/Google 2024 |
 | RLI benchmark: **97.5% failure** on real work (vs 80.9% SWE-bench) | [arXiv:2504.02189](https://arxiv.org/abs/2504.02189) |
 | Fixed multi-agent: **fragile systems, dispersed decision-making** | [Cognition (Devin)](https://cognition.ai/blog/dont-build-multi-agents) |
@@ -162,4 +162,4 @@ asimov update       # Self-update
 
 ---
 
-*Built with [RoyalBit Asimov](https://github.com/royalbit/asimov) — Dynamic Swarm + HITM beats Fixed Agentic.*
+*Built with [RoyalBit Asimov](https://github.com/royalbit/asimov) — Dynamic Swarm + HOTL beats Fixed Agentic.*

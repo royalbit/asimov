@@ -8,7 +8,7 @@ _forge_version: 5.0.0
 #   forge scenarios models/agent-analysis.yaml
 
 assumptions:
-  # Dynamic Swarm + HITM parameters
+  # Dynamic Swarm + HOTL parameters
   base_accuracy:
     value: 0.97
     formula: null
@@ -73,7 +73,7 @@ decision_tree:
   nodes:
     error_detection:
       type: chance
-      name: "HITM Detects Error?"
+      name: "HOTL Detects Error?"
       branches:
         detected:
           probability: 0.75  # detection_rate
@@ -99,7 +99,7 @@ decision_tree:
 scenarios:
   dynamic_swarm_hitm:
     probability: 0.33
-    description: "Dynamic Swarm + HITM: Full context, human oversight"
+    description: "Dynamic Swarm + HOTL: Full context, human oversight"
     scalars:
       base_accuracy: 0.97
       detection_rate: 0.75

@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.2] - 2026-01-01
+
+### Fixed
+
+- **Terminology**: HITM (Human-in-the-Middle) → HOTL (Human-on-the-Loop)
+  - "HITM" was incorrect - MITM is a security attack term
+  - "HOTL" is the correct industry term for "human monitors, can intervene"
+  - Updated 20+ files: README, ADR-056, models, social posts, references
+  - GitHub About section already updated
+
+---
+
 ## [10.1.0] - 2025-12-31
 
 ### Added

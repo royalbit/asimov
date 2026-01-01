@@ -24,7 +24,7 @@ assumptions:
     formula: =1 - fix_rate
 
 decision_tree:
-  name: "Agent Step Execution (Dynamic Swarm + HITM)"
+  name: "Agent Step Execution (Dynamic Swarm + HOTL)"
   root:
     type: chance
     name: "Execute Step"
@@ -39,7 +39,7 @@ decision_tree:
   nodes:
     error_detection:
       type: chance
-      name: "HITM Detects Error?"
+      name: "HOTL Detects Error?"
       branches:
         detected:
           probability: 0.75

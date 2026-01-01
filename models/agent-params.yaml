@@ -6,7 +6,7 @@ _forge_version: 5.0.0
 #       as: "params"
 
 assumptions:
-  # Dynamic Swarm + HITM (research-backed 2024)
+  # Dynamic Swarm + HOTL (research-backed 2024)
   ds_base_accuracy:
     value: 0.97
     formula: null

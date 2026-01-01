@@ -1,4 +1,4 @@
-# ADR-056: Dynamic Swarm + HITM vs Fixed Agentic Systems
+# ADR-056: Dynamic Swarm + HOTL vs Fixed Agentic Systems
 
 **Status:** Accepted
 **Date:** 2025-12-31 (Amended 2026-01-01)
@@ -12,9 +12,9 @@
 
 ADR-054 established Asimov's "context as coordination layer" thesis. ADR-055 acknowledged trade-offs. This ADR addresses the **actual architecture** used by Asimov + Claude Code:
 
-**Dynamic Swarm + HITM (Human-in-the-Middle)**:
+**Dynamic Swarm + HOTL (Human-on-the-Loop)**:
 ```
-Human (HITM)
+Human (HOTL)
     ↓ oversight
 Orchestrator (~200K tokens, extended thinking)
     ↓ spawns dynamically at runtime
@@ -27,11 +27,11 @@ This is NOT single-agent. This is NOT fixed multi-agent.
 
 **Key differences from fixed agentic frameworks (LangChain, CrewAI, AutoGen):**
 
-| Dimension | Dynamic Swarm + HITM | Fixed Agentic |
+| Dimension | Dynamic Swarm + HOTL | Fixed Agentic |
 |-----------|---------------------|---------------|
 | Context per agent | **~200K tokens each** | 8-32K fragmented |
 | Agent spawning | **AI-decided at runtime** | Pre-defined at design time |
-| Human oversight | **HITM gate between steps** | None or batch approval |
+| Human oversight | **HOTL gate between steps** | None or batch approval |
 | Topology | **Dynamic, task-adapted** | Fixed roles/workflows |
 
 Source: [Claude Code Subagents](https://code.claude.com/docs/en/sub-agents) — Official Anthropic documentation
@@ -128,25 +128,25 @@ Source: [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml)
 
 | Architecture | Base Accuracy | Self-Correction | Effective Accuracy |
 |--------------|---------------|-----------------|-------------------|
-| Dynamic Swarm + HITM | 97% | 75% detect × 90% fix | **99.03%** |
+| Dynamic Swarm + HOTL | 97% | 75% detect × 90% fix | **99.03%** |
 | Fixed Agentic (Centralized) | 88% | 55% detect × 75% fix | **87.03%** |
 | Fixed Agentic (Independent) | 80% | 40% detect × 60% fix | **68.69%** |
 
 **Research backing (2024):**
 - Base accuracy 97%: Full 200K context + proper prompting achieves 98% retrieval (Anthropic)
-- Detection rate 75%: HITM validation reduces error amplification by 74% (MIT/Google)
+- Detection rate 75%: HOTL validation reduces error amplification by 74% (MIT/Google)
 - Fix rate 90%: Human oversight enables guided correction with higher success
 
-**Key insight:** Dynamic Swarm enables 75% error detection (in-context self-verification via "Wait" tokens + HITM oversight) vs 40% for fixed agentic (requires external retry loops, no human gate).
+**Key insight:** Dynamic Swarm enables 75% error detection (in-context self-verification via "Wait" tokens + HOTL oversight) vs 40% for fixed agentic (requires external retry loops, no human gate).
 
 **Why Dynamic Swarm has higher base accuracy:**
 - Each sub-agent has ~200K context (not fragmented)
-- HITM catches errors between spawns
+- HOTL catches errors between spawns
 - AI-decided topology adapts to task requirements
 
 #### Analytical Results (validated via Forge)
 
-| Steps | Dynamic Swarm + HITM | Fixed Centralized | Fixed Independent |
+| Steps | Dynamic Swarm + HOTL | Fixed Centralized | Fixed Independent |
 |-------|---------------------|-------------------|-------------------|
 | 5 | **95.2%** | 49.9% | 15.3% |
 | 10 | **90.7%** | 24.9% | 2.3% |
@@ -165,7 +165,7 @@ Source: [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml)
 
 #### Steps to Failure Thresholds
 
-| Threshold | Dynamic Swarm + HITM | Fixed Centralized | Fixed Independent |
+| Threshold | Dynamic Swarm + HOTL | Fixed Centralized | Fixed Independent |
 |-----------|---------------------|-------------------|-------------------|
 | 50% failure | **71 steps** | 5 steps | 1 step |
 | 90% failure | **236 steps** | 16 steps | 3 steps |
@@ -181,17 +181,17 @@ The model slightly overpredicts success for short tasks (SWE-bench 80.9% vs 95.2
 
 Source: [Agent-R](https://arxiv.org/abs/2501.11425), [MATC Framework](https://arxiv.org/abs/2508.04306), [RLI Benchmark](https://arxiv.org/abs/2504.02189)
 
-#### Why Dynamic Swarm + HITM Beats Fixed Agentic
+#### Why Dynamic Swarm + HOTL Beats Fixed Agentic
 
 | Architecture | Error Model | Communication Overhead |
 |--------------|-------------|----------------------|
-| Dynamic Swarm + HITM | Self-correction + HITM gate | **O(1) per spawn** |
+| Dynamic Swarm + HOTL | Self-correction + HOTL gate | **O(1) per spawn** |
 | Fixed agentic (centralized) | 4.4x error containment | O(n) hub-and-spoke |
 | Fixed agentic (independent) | 17.2x error amplification | O(n²) full mesh |
 
 **Dynamic Swarm advantages:**
 1. **Sub-agents are ephemeral** - spawned for specific tasks, return results, context doesn't fragment
-2. **HITM oversight** - human catches cascading errors between spawns
+2. **HOTL oversight** - human catches cascading errors between spawns
 3. **Full context per agent** - each sub-agent gets ~200K tokens for its subtask
 4. **AI-decided topology** - no fixed roles that misfit the task
 
@@ -318,14 +318,14 @@ Use RAG when:
 
 ## Comparison Table
 
-| Dimension | Dynamic Swarm + HITM | Fixed Agentic | RAG |
+| Dimension | Dynamic Swarm + HOTL | Fixed Agentic | RAG |
 |-----------|---------------------|---------------|-----|
 | Best for | Coherent multi-step reasoning | Parallelizable independent tasks | Scale (10M+ docs) |
 | Context per agent | **~200K tokens** | 8-32K fragmented | N/A |
-| Error handling | Self-correction + HITM | External retry loops | N/A |
+| Error handling | Self-correction + HOTL | External retry loops | N/A |
 | Context utilization | High (sequential reasoning) | 10-20% (retrieval) | External |
 | Coordination overhead | **O(1) per spawn** | O(n^1.724) | Query overhead |
-| Human oversight | **HITM gate** | None/batch | None |
+| Human oversight | **HOTL gate** | None/batch | None |
 | Agent topology | **AI-decided at runtime** | Pre-defined | N/A |
 | Cost model | Predictable per spawn | Variable | Per query |
 
