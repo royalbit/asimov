@@ -427,3 +427,544 @@ output_verification:
     organization: Protect AI
     license: MIT
     key_finding: "Prompt injection detection and output sanitization"
+
+# Additional References Verified 2025-12-31
+# Sources referenced in ADRs and documentation
+
+academic_papers:
+  - title: "Energy and Policy Considerations for Deep Learning in NLP"
+    url: https://arxiv.org/abs/1906.02243
+    organization: University of Massachusetts Amherst
+    date: 2019-06
+    key_finding: "Analyzing computational cost and carbon footprint of training large NLP models"
+
+  - title: "Constitutional AI: Harmlessness from AI Feedback"
+    url: https://arxiv.org/abs/2212.08073
+    organization: Anthropic
+    date: 2022-12
+    key_finding: "Introduces CAI for training helpful, harmless, honest AI using AI-generated feedback"
+
+  - title: "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot"
+    url: https://arxiv.org/abs/2302.06590
+    organization: GitHub / Microsoft Research
+    date: 2023-02
+    key_finding: "Copilot users completed tasks 55.8% faster in RCT"
+
+  - title: "GPT-4 Technical Report"
+    url: https://arxiv.org/abs/2303.08774
+    organization: OpenAI
+    date: 2023-03
+    key_finding: "Technical report introducing GPT-4 multimodal model"
+
+  - title: "LayerSkip: Enabling Early Exit Inference and Self-Speculative Decoding"
+    url: https://arxiv.org/abs/2404.16710
+    organization: Meta AI
+    date: 2024-04
+    key_finding: "Accelerates LLM inference without separate draft models"
+
+  - title: "Sycophantic AI Decreases Prosocial Intentions"
+    url: https://arxiv.org/abs/2510.01395
+    organization: Stanford University
+    date: 2025-10
+    key_finding: "Sycophantic AI decreases prosocial intentions and increases dependence"
+
+  - title: "A Survey of Self-Evolving Agents"
+    url: https://arxiv.org/abs/2507.21046
+    organization: University of Illinois / Princeton
+    date: 2025-07
+    key_finding: "Survey on self-evolving AI agents and path to AGI"
+
+  - title: "The Economic Trade-offs of LLMs: A Case Study"
+    url: https://arxiv.org/html/2306.07402
+    organization: LivePerson
+    date: 2023-06
+    key_finding: "ENCS framework showing distilled GPT-2 better ROI than GPT-3 for customer service"
+
+  - title: "Scaling LLM Test-Time Compute Optimally"
+    url: https://arxiv.org/html/2408.03314v1
+    organization: UC Berkeley / Google DeepMind
+    date: 2024-08
+    key_finding: "Smaller model + test-time compute can outperform 14x larger model"
+
+  - title: "SpecEE: Accelerating LLM Inference with Speculative Early Exiting"
+    url: https://arxiv.org/html/2504.08850
+    date: 2025-04
+    key_finding: "2.25x-2.43x speedup via speculative decoding + early exiting"
+
+  - title: "Red Teaming Prompt Injection in LLMs"
+    url: https://arxiv.org/html/2505.04806v1
+    date: 2025-05
+    key_finding: "GPT-4 87.2% attack success rate, roleplay jailbreaks 89.6%"
+
+  - title: "Defending Against Prompt Injection with Defensive Tokens"
+    url: https://arxiv.org/html/2507.07974v1
+    organization: UC Berkeley / UMD
+    date: 2025-07
+    key_finding: "5 optimized tokens reduce attack success by order of magnitude"
+
+  - title: "Computational Economics in LLMs"
+    url: https://arxiv.org/html/2508.10426
+    date: 2025-08
+    key_finding: "40% FLOPS reduction with negligible performance loss via incentive-driven training"
+
+  - title: "Shallow-Deep Networks: Understanding Network Overthinking"
+    url: https://arxiv.org/pdf/1810.07052
+    organization: University of Maryland
+    date: 2018-10
+    key_finding: "Introduces concept of overthinking in deep networks with early exit mechanisms"
+
+  - title: "A Survey on Hallucination in LLMs"
+    url: https://dl.acm.org/doi/10.1145/3703155
+    organization: ACM
+    date: 2024
+    key_finding: "Comprehensive survey on LLM hallucination principles and taxonomy"
+
+  - title: "RLHF: Whose Culture, Whose Values"
+    url: https://link.springer.com/article/10.1007/s13347-025-00861-0
+    organization: Springer / Philosophy & Technology
+    date: 2025
+    key_finding: "Arguments for pluralism in RLHF through diverse feedback groups"
+
+  - title: "Peer Review of GPT-4 Technical Report"
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10795998/
+    organization: PLOS Digital Health
+    date: 2024
+    key_finding: "Limitations in training transparency, confidence estimations, privacy concerns"
+
+  - title: "InstructGPT: Training LLMs with Human Feedback"
+    url: https://cdn.openai.com/papers/Training_language_models_to_follow_instructions_with_human_feedback.pdf
+    organization: OpenAI
+    date: 2022
+    key_finding: "RLHF produces models better at following intent, more truthful, less harmful"
+
+  - title: "Economic Incentives and Mass-Market Training"
+    url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5181079
+    organization: SSRN
+    date: 2025
+    key_finding: "Financial pressures incentivized engagement over accuracy, making hallucinations predictable"
+
+anthropic_official:
+  - title: "Anthropic Homepage"
+    url: https://www.anthropic.com
+    organization: Anthropic
+    key_finding: "Public benefit corporation building AI for humanity's well-being"
+
+  - title: "Claude Opus 4.5"
+    url: https://www.anthropic.com/claude/opus
+    organization: Anthropic
+    key_finding: "80.9% SWE-bench, 66.3% OSWorld, $5/$25 per million tokens"
+
+  - title: "Claude Opus 4.5 Announcement"
+    url: https://www.anthropic.com/news/claude-opus-4-5
+    organization: Anthropic
+    key_finding: "76% fewer output tokens than predecessors for equivalent performance"
+
+  - title: "Claude Sonnet 4.5 Announcement"
+    url: https://www.anthropic.com/news/claude-sonnet-4-5
+    organization: Anthropic
+    key_finding: "Best coding model, 61.4% OSWorld, $3/$15 per million tokens"
+
+  - title: "Claude Code Best Practices"
+    url: https://www.anthropic.com/engineering/claude-code-best-practices
+    organization: Anthropic
+    key_finding: "CLAUDE.md, custom commands, TDD, git worktrees, headless mode"
+
+  - title: "Enabling Claude Code to Work More Autonomously"
+    url: https://www.anthropic.com/news/enabling-claude-code-to-work-more-autonomously
+    organization: Anthropic
+    key_finding: "Checkpoints, VS Code extension, Claude Agent SDK"
+
+  - title: "Constitutional AI: Harmlessness from AI Feedback"
+    url: https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback
+    organization: Anthropic
+    key_finding: "Self-critique + RLAIF for precise behavior control without human labels"
+
+  - title: "Sycophancy to Subterfuge: Reward Tampering"
+    url: https://www.anthropic.com/research/reward-tampering
+    organization: Anthropic
+    key_finding: "Sycophantic models can generalize to reward tampering when given code access"
+
+  - title: "Pretraining Data Filtering for Safety"
+    url: https://alignment.anthropic.com/2025/pretraining-data-filtering/
+    organization: Anthropic
+    date: 2025
+    key_finding: "Filtering CBRN content reduced harmful capabilities by 33%"
+
+  - title: "Enabling and Using Web Search"
+    url: https://support.claude.com/en/articles/10684626-enabling-and-using-web-search
+    organization: Anthropic
+    key_finding: "Web search with citations for Opus/Sonnet/Haiku 4.5 and Claude 4"
+
+claude_code_docs:
+  - title: "Claude Code Product Page"
+    url: https://claude.com/claude-code
+    organization: Anthropic
+    key_finding: "AI coding agent for terminal, IDE, Slack, web - Pro $17/mo to Max $200/mo"
+
+  - title: "Claude Code Checkpointing"
+    url: https://code.claude.com/docs/en/checkpointing
+    organization: Anthropic
+    key_finding: "File edit tracking, Esc+Esc or /rewind, checkpoints persist 30 days"
+
+  - title: "Claude Code Hooks Reference"
+    url: https://code.claude.com/docs/en/hooks
+    organization: Anthropic
+    key_finding: "Custom bash commands or LLM evaluations at lifecycle events via settings.json"
+
+  - title: "Claude Code Memory"
+    url: https://docs.claude.com/en/docs/claude-code/memory
+    organization: Anthropic
+    key_finding: "Hierarchical CLAUDE.md files with @import syntax"
+
+  - title: "What's New in Claude 4.5"
+    url: https://docs.claude.com/en/docs/about-claude/models/whats-new-claude-4-5
+    organization: Anthropic
+    key_finding: "Opus 4.5, Sonnet 4.5, Haiku 4.5 with effort parameter and tool search"
+
+  - title: "Claude Context Windows"
+    url: https://docs.claude.com/en/docs/build-with-claude/context-windows
+    organization: Anthropic
+    key_finding: "Sonnet 4/4.5 supports 1M tokens (beta tier 4), native context awareness"
+
+  - title: "Claude Extended Thinking"
+    url: https://platform.claude.com/docs/en/build-with-claude/extended-thinking
+    organization: Anthropic
+    key_finding: "Extended thinking mode documentation"
+
+openai_official:
+  - title: "OpenAI Model Spec (2025-02-12)"
+    url: https://model-spec.openai.com/2025-02-12.html
+    organization: OpenAI
+    date: 2025-02
+    key_finding: "Comprehensive model behavior spec: chain of command, safety principles"
+
+  - title: "Sycophancy in GPT-4o"
+    url: https://openai.com/index/sycophancy-in-gpt-4o/
+    organization: OpenAI
+    key_finding: "Rolled back update that was overly flattering and agreeable"
+
+  - title: "Why Language Models Hallucinate"
+    url: https://openai.com/index/why-language-models-hallucinate/
+    organization: OpenAI
+    key_finding: "Training rewards guessing over acknowledging uncertainty"
+
+  - title: "OpenAI Cost Optimization Guide"
+    url: https://platform.openai.com/docs/guides/cost-optimization
+    organization: OpenAI
+    key_finding: "Token reduction, Batch API, flex processing strategies"
+
+github_resources:
+  - title: "GitHub Copilot Coding Agent"
+    url: https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent
+    organization: GitHub
+    key_finding: "Autonomous agent in GitHub Actions, opens PRs, for Pro/Business/Enterprise"
+
+  - title: "GitHub Copilot Productivity Research"
+    url: https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/
+    organization: GitHub
+    key_finding: "55% faster task completion, 90% report faster repetitive tasks"
+
+  - title: "Claude Sonnet 4.5 GA in GitHub Copilot"
+    url: https://github.blog/changelog/2025-10-13-anthropics-claude-sonnet-4-5-is-now-generally-available-in-github-copilot/
+    organization: GitHub
+    date: 2025-10-13
+    key_finding: "GA for Enterprise, Business, Pro, Pro+ across all IDEs"
+
+  - title: "Claude Haiku 4.5 in GitHub Copilot"
+    url: https://github.blog/changelog/2025-10-15-anthropics-claude-haiku-4-5-is-in-public-preview-for-github-copilot/
+    organization: GitHub
+    date: 2025-10-15
+    key_finding: "High performance with faster speeds in public preview"
+
+  - title: "Claude Opus 4.5 in GitHub Copilot"
+    url: https://github.blog/changelog/2025-11-24-claude-opus-4-5-is-in-public-preview-for-github-copilot/
+    organization: GitHub
+    date: 2025-11-24
+    key_finding: "Cut token usage in half while surpassing coding benchmarks"
+
+  - title: "cloc - Count Lines of Code"
+    url: https://github.com/AlDanial/cloc
+    author: Al Danial
+    key_finding: "Perl-based tool counting blank, comment, and physical lines in many languages"
+
+  - title: "garak - LLM Vulnerability Scanner"
+    url: https://github.com/leondz/garak
+    organization: NVIDIA
+    key_finding: "Probes for hallucination, data leakage, prompt injection, toxicity, jailbreaks"
+
+  - title: "Rebuff - Prompt Injection Detector"
+    url: https://github.com/protectai/rebuff
+    organization: Protect AI
+    key_finding: "Multi-layer defense: heuristics, LLM detection, vector DB, canary tokens"
+
+  - title: "System Prompts Leaks Collection"
+    url: https://github.com/asgeirtj/system_prompts_leaks
+    author: asgeirtj
+    key_finding: "Community-maintained extracted system prompts from ChatGPT, Claude, Gemini"
+
+  - title: "CL4R1T4S - AI System Prompts"
+    url: https://github.com/elder-plinius/CL4R1T4S
+    author: elder-plinius
+    key_finding: "AI transparency project exposing hidden model instructions"
+
+  - title: "BMAD-METHOD"
+    url: https://github.com/bmad-code-org/BMAD-METHOD
+    organization: BMad Code LLC
+    key_finding: "Agile AI-driven dev framework with 21 agents and 50+ workflows"
+
+  - title: "LLM Knowledge Cutoff Dates"
+    url: https://github.com/HaoooWang/llm-knowledge-cutoff-dates
+    author: HaoooWang
+    key_finding: "Community-maintained summary of LLM knowledge cutoffs"
+
+claude_code_issues:
+  - title: "Web Search Capability Feature Request"
+    url: https://github.com/anthropics/claude-code/issues/600
+    organization: Anthropic
+    key_finding: "Web search shipped and available"
+
+  - title: "CLAUDE.md Context After Compact"
+    url: https://github.com/anthropics/claude-code/issues/2714
+    organization: Anthropic
+    key_finding: "CLAUDE.md persists after compact as foundational context"
+
+  - title: "/compact Loses CLAUDE.md Context"
+    url: https://github.com/anthropics/claude-code/issues/4517
+    organization: Anthropic
+    key_finding: "Compact compresses history but doesn't preserve CLAUDE.md instructions"
+
+  - title: "MAX_THINKING_TOKENS Forces Thinking Mode"
+    url: https://github.com/anthropics/claude-code/issues/5257
+    organization: Anthropic
+    key_finding: "Environment variable forces thinking for all requests"
+
+  - title: "SessionStart Hooks Don't Execute on First Run"
+    url: https://github.com/anthropics/claude-code/issues/10997
+    organization: Anthropic
+    key_finding: "Hooks only execute after marketplace plugins cached locally"
+
+security_research:
+  - title: "GitHub Copilot Security and Privacy"
+    url: https://blog.gitguardian.com/github-copilot-security-and-privacy/
+    organization: GitGuardian
+    key_finding: "Copilot repos have 40% higher secret leakage rate (6.4% vs 4.6%)"
+
+  - title: "Breaking Instruction Hierarchy in gpt-4o-mini"
+    url: https://embracethered.com/blog/posts/2024/chatgpt-gpt-4o-mini-instruction-hierarchie-bypasses/
+    organization: Embrace The Red
+    author: Johann Rehberger
+    key_finding: "System instructions bypassable via persona switching and indirection"
+
+  - title: "LLM01:2025 Prompt Injection - OWASP"
+    url: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+    organization: OWASP
+    key_finding: "Top LLM security risk with direct and indirect variants"
+
+  - title: "CBRN Red Teaming Study"
+    url: https://www.enkryptai.com/company/resources/research-reports/red-teaming-cbrn
+    organization: Enkrypt AI
+    key_finding: "Critical safety gaps in frontier models pose immediate risks"
+
+  - title: "AI Agent CBRN Vulnerabilities"
+    url: https://www.activefence.com/blog/your-ai-agent-is-talking/
+    organization: ActiveFence
+    key_finding: "Non-experts trigger unsafe CBRN responses 25% of time, experts 45%+"
+
+  - title: "New Jailbreaks for GitHub Copilot"
+    url: https://www.darkreading.com/vulnerabilities-threats/new-jailbreaks-manipulate-github-copilot
+    organization: Dark Reading
+    key_finding: "Embedding chat in code bypasses restrictions, proxy captures API tokens"
+
+  - title: "ChatGPT 4o System Prompt Leak"
+    url: https://llmrefs.com/blog/chatgpt-system-prompt-leak
+    organization: LLMrefs
+    key_finding: "ChatGPT has no search index, only 4 trigger scenarios, 5 parallel queries"
+
+  - title: "Claude 3.7 Sonnet System Prompt Leak"
+    url: https://www.actuia.com/en/news/a-leak-reveals-the-entire-system-prompt-of-claude-37-sonnet/
+    organization: ActuIA
+    key_finding: "Constitutional AI approach with Universal Declaration of Human Rights values"
+
+  - title: "Claude 4 System Prompt Analysis"
+    url: https://simonwillison.net/2025/May/25/claude-4-system-prompt/
+    author: Simon Willison
+    key_finding: "Personality design, anti-sycophancy, copyright restrictions, full tool prompts"
+
+  - title: "GPT-5 System Prompt Leak"
+    url: https://www.digitaltrends.com/computing/you-are-chatgpt-leaked-system-prompt-reveals-the-inner-workings-of-gpt-5/
+    organization: Digital Trends
+    key_finding: "June 2024 cutoff, avoid 'Would you like me to' and 'Should I' phrases"
+
+industry_analysis:
+  - title: "LLMflation - LLM Inference Cost Trends"
+    url: https://a16z.com/llmflation-llm-inference-cost/
+    organization: Andreessen Horowitz (a16z)
+    key_finding: "Inference cost decreasing 10x yearly, 1000x drop in 3 years since GPT-3"
+
+  - title: "Rise of Autonomous Agents for Enterprise"
+    url: https://aws.amazon.com/blogs/aws-insights/the-rise-of-autonomous-agents-what-enterprise-leaders-need-to-know-about-the-next-wave-of-ai/
+    organization: AWS
+    key_finding: "15% of work decisions by agentic AI by 2028, $52.6B market by 2030"
+
+  - title: "LLM API Pricing Comparison 2025"
+    url: https://intuitionlabs.ai/articles/llm-api-pricing-comparison-2025
+    organization: IntuitionLabs
+    key_finding: "DeepSeek $0.28/$0.42, OpenAI GPT-5 $1.25-$12 per 1M tokens"
+
+  - title: "Anthropic API Pricing Breakdown"
+    url: https://www.metacto.com/blogs/anthropic-api-pricing-a-full-breakdown-of-costs-and-integration
+    organization: MetaCTO
+    key_finding: "Claude 4.1 thinking tokens priced separately: Sonnet $5/$25/$10, Opus $20/$80/$40"
+
+  - title: "AI Inference Costs Plunge"
+    url: https://www.webpronews.com/ai-inference-costs-plunge-profit-path-for-openai-anthropic/
+    organization: WebProNews
+    key_finding: "OpenAI API pricing likely covers inference costs at volume, individual models profitable"
+
+  - title: "How Much Do OpenAI and Anthropic Make?"
+    url: https://www.wheresyoured.at/howmuchmoney/
+    organization: Where's Your Ed At
+    author: Ed Zitron
+    key_finding: "OpenAI ~$3.6B in 2024, ~$5.3B through July 2025; Anthropic ~$1.5B through July 2025"
+
+  - title: "AI Agents 2025: Expectations vs Reality"
+    url: https://www.ibm.com/think/insights/ai-agents-2025-expectations-vs-reality
+    organization: IBM
+    key_finding: "99% of developers exploring agents, but true autonomous reasoning still maturing"
+
+  - title: "AI Sycophancy Harming Science"
+    url: https://www.nature.com/articles/d41586-025-03390-0
+    organization: Nature
+    key_finding: "AI 50% more sycophantic than humans, could cause immediate harm in healthcare"
+
+  - title: "AI Sycophancy Research - Northeastern"
+    url: https://news.northeastern.edu/2025/11/24/ai-sycophancy-research/
+    organization: Northeastern University
+    key_finding: "Bayesian framework shows sycophancy makes models more error-prone"
+
+  - title: "AI Sycophancy Dark Pattern"
+    url: https://techcrunch.com/2025/08/25/ai-sycophancy-isnt-just-a-quirk-experts-consider-it-a-dark-pattern-to-turn-users-into-profit/
+    organization: TechCrunch
+    key_finding: "Flattery and first-person pronouns fuel AI-related psychosis and delusions"
+
+  - title: "Claude Code Sycophancy Frustration"
+    url: https://www.theregister.com/2025/08/13/claude_codes_copious_coddling_confounds/
+    organization: The Register
+    key_finding: "48 open issues citing 'You're absolutely right!' despite Anthropic's 2023 research"
+
+  - title: "Claude Code Gotchas"
+    url: https://www.dolthub.com/blog/2025-06-30-claude-code-gotchas/
+    organization: DoltHub
+    key_finding: "Context compaction makes it 'dumber', gives up on large tasks, modifies tests"
+
+  - title: "AutoML-Zero: AI Evolving Itself"
+    url: https://www.science.org/content/article/artificial-intelligence-evolving-all-itself
+    organization: Science / AAAS
+    key_finding: "Google's AutoML-Zero uses evolution to develop AI with zero human input"
+
+  - title: "Chinese AI Censorship Leak"
+    url: https://techcrunch.com/2025/03/26/leaked-data-exposes-a-chinese-ai-censorship-machine/
+    organization: TechCrunch
+    key_finding: "133,000 examples for LLM-based censorship detecting subtle political criticism"
+
+developer_productivity:
+  - title: "Mythical Man Month 10 Lines Per Day"
+    url: https://blog.ndepend.com/mythical-man-month-10-lines-per-developer-day/
+    organization: NDepend
+    key_finding: "Real-world data shows 80 LOC/day over 14 years, confirming Brooks"
+
+  - title: "10 LOC Per Day - Skeptics"
+    url: https://skeptics.stackexchange.com/questions/17224/do-professional-software-developers-write-an-average-of-10-lines-of-code-per-day
+    organization: Stack Exchange
+    key_finding: "Productivity varies 2-17 LOC/day for DoD projects"
+
+  - title: "10 LOC Per Day - Stack Overflow"
+    url: https://stackoverflow.com/questions/966800/mythical-man-month-10-lines-per-developer-day-how-close-on-large-projects
+    organization: Stack Overflow
+    key_finding: "Wide variance from negative LOC (refactoring) to 200+ on new projects"
+
+  - title: "Claude Sonnet 4 in Copilot vs Claude Code"
+    url: https://fbakkensen.github.io/ai/devtools/copilot/2025/08/16/claude-sonnet-4-in-gitHub-copilot-vs-claude-code-what-developers-need-to-know.html
+    author: Flemming Bakkensen
+    key_finding: "Same model behaves differently: Copilot ~128k context vs Claude Code full depth"
+
+  - title: "GPT-5 Documentation Gap"
+    url: https://community.openai.com/t/huge-gpt-5-documentation-gap-flaw-causing-bugs-input-tokens-exceed-the-configured-limit-of-272-000-tokens/1344734
+    organization: OpenAI Community
+    key_finding: "400k advertised, 272k input limit undocumented, causes production errors"
+
+mcp_protocol:
+  - title: "MCP Architecture Overview"
+    url: https://modelcontextprotocol.io/docs/concepts/architecture
+    organization: Anthropic / Linux Foundation
+    key_finding: "JSON-RPC 2.0 protocol with initialization, tool discovery, execution, real-time updates"
+
+third_party_claude:
+  - title: "Claude Code Pricing Guide"
+    url: https://claudelog.com/claude-code-pricing/
+    organization: ClaudeLog
+    key_finding: "Free, Pro $17-20/mo, Max $100-200/mo, API pricing comparison"
+
+  - title: "Claude Code Auto-Compact Explained"
+    url: https://claudelog.com/faqs/what-is-claude-code-auto-compact/
+    organization: ClaudeLog
+    key_finding: "Auto-compact summarizes at memory limits, instant compacting since v2.0.64"
+
+  - title: "Claude Context Window Guide"
+    url: https://www.datastudios.org/post/claude-context-window-token-limits-memory-policy-and-2025-rules
+    organization: Data Studios
+    key_finding: "200K tokens (500K Enterprise), system prompt/tools consume shared budget"
+
+  - title: "Claude Web Search API Pricing"
+    url: https://websearchapi.ai/blog/anthropic-claude-web-search-api
+    organization: WebSearchAPI.ai
+    key_finding: "$0.01 per search + token costs = $0.02-0.05 total per search"
+
+  - title: "LLM Knowledge Cutoff Dates Guide"
+    url: https://www.ofzenandcomputing.com/knowledge-cutoff-dates-llms/
+    organization: Of Zen and Computing
+    key_finding: "2-8 month gap between cutoff and release, effective knowledge trails further"
+
+  - title: "Hallucinations in LLMs Guide"
+    url: https://masterofcode.com/blog/hallucinations-in-llms-what-you-need-to-know-before-integration
+    organization: Master of Code Global
+    key_finding: "Hallucination rates fell from 38% (2021) to 8.2% (2026), best at 0.7%"
+
+standards:
+  - title: "Semantic Versioning 2.0.0"
+    url: https://semver.org/
+    organization: Tom Preston-Werner
+    key_finding: "MAJOR.MINOR.PATCH for API change communication"
+
+  - title: "RFC 2119: Requirement Level Keywords"
+    url: https://www.rfc-editor.org/rfc/rfc2119
+    organization: IETF
+    date: 1997
+    key_finding: "Defines MUST, SHALL, SHOULD, MAY interpretation in standards"
+
+rust_documentation:
+  - title: "Rust Packages, Crates, and Modules"
+    url: https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
+    organization: Rust Project
+    key_finding: "Module system for organizing code through packages, crates, modules"
+
+  - title: "Separating Modules into Different Files"
+    url: https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html
+    organization: Rust Project
+    key_finding: "Extract modules via mod declarations, compiler looks for matching filenames"
+
+  - title: "redis-rs Crate Documentation"
+    url: https://docs.rs/redis
+    organization: docs.rs
+    key_finding: "Rust Redis client with low/high-level APIs and async support"
+
+database_comparison:
+  - title: "CockroachDB vs Postgres"
+    url: https://www.bytebase.com/blog/cockroachdb-vs-postgres/
+    organization: Bytebase
+    key_finding: "CockroachDB distributed but proprietary, PostgreSQL open-source with better single-node"
+
+  - title: "YugabyteDB vs CockroachDB"
+    url: https://www.yugabyte.com/yugabytedb-vs-cockroachdb/
+    organization: Yugabyte
+    key_finding: "YugabyteDB 85% PostgreSQL compatible vs CockroachDB 53%, Apache 2.0 license"
