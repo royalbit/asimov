@@ -144,23 +144,23 @@ Source: [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml)
 - HITM catches errors between spawns
 - AI-decided topology adapts to task requirements
 
-#### Monte Carlo Results (10K trials, 95% CI)
+#### Analytical Results (validated via Forge)
 
 | Steps | Dynamic Swarm + HITM | Fixed Centralized | Fixed Independent |
 |-------|---------------------|-------------------|-------------------|
-| 5 | **95.2%** ± 0.4% | 50.1% ± 1.0% | 15.4% ± 0.7% |
-| 10 | **90.7%** ± 0.6% | 25.1% ± 0.9% | 2.4% ± 0.3% |
-| 20 | **82.3%** ± 0.7% | 6.3% ± 0.5% | 0.06% ± 0.05% |
-| 50 | **61.4%** ± 1.0% | 0.1% ± 0.06% | ~0% |
-| 100 | **37.7%** ± 1.0% | ~0% | ~0% |
+| 5 | **95.2%** | 49.9% | 15.3% |
+| 10 | **90.7%** | 24.9% | 2.3% |
+| 20 | **82.2%** | 6.2% | 0.05% |
+| 50 | **61.3%** | 0.1% | ~0% |
+| 100 | **37.5%** | ~0% | ~0% |
 
 #### Advantage Ratios (Dynamic Swarm vs Fixed Agentic)
 
 | Steps | vs Fixed Independent | vs Fixed Centralized |
 |-------|---------------------|---------------------|
 | 5 | **6.2x** | 1.9x |
-| 10 | **38x** | 3.6x |
-| 20 | **1,372x** | 13.1x |
+| 10 | **39x** | 3.6x |
+| 20 | **1,502x** | 13.3x |
 | 50 | **∞** (denominator → 0) | 614x |
 
 #### Steps to Failure Thresholds
@@ -358,8 +358,28 @@ Use RAG when:
 - [Claude Code GitHub](https://github.com/anthropics/claude-code) - 50K+ stars, plugins, hooks, subagent examples
 
 ### Forge Models
-- [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml) - 10K trial Monte Carlo simulation (validated against R/Gnumeric)
-- [error-compounding.yaml](../../models/error-compounding.yaml) - Analytical error compounding model
+
+All models validated via [Forge](https://github.com/royalbit/forge) (Rust, matches R/Gnumeric):
+
+```bash
+# Calculate success rates and advantage ratios
+forge calculate models/agent-formulas.yaml
+
+# Tornado sensitivity analysis (which parameter matters most)
+forge tornado models/agent-tornado.yaml
+
+# Scenario comparison (all 3 architectures)
+forge scenarios models/agent-scenarios.yaml
+
+# Monte Carlo simulation with uncertainty ranges
+forge simulate models/agent-simulate.yaml
+```
+
+- [agent-formulas.yaml](../../models/agent-formulas.yaml) - Core calculations (success rates, advantage ratios)
+- [agent-simulate.yaml](../../models/agent-simulate.yaml) - Monte Carlo with MC.Triangular distributions
+- [agent-tornado.yaml](../../models/agent-tornado.yaml) - One-at-a-time sensitivity analysis
+- [agent-scenarios.yaml](../../models/agent-scenarios.yaml) - Architecture comparison
+- [monte-carlo-agents.yaml](../../models/monte-carlo-agents.yaml) - Detailed documentation model
 
 ### Related ADRs
 - [ADR-054: Dynamic Swarm vs Fixed Agentic Frameworks](./054-dynamic-swarm-vs-fixed-agentic-frameworks.md)

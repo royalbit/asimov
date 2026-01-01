@@ -28,15 +28,15 @@ Source: [Claude Code Subagents](https://code.claude.com/docs/en/sub-agents) — 
 
 ## The Insight
 
-**Monte Carlo simulation (10K trials, 95% CI, research-backed 2024):**
+**Analytical model (research-backed 2024, validated via Forge):**
 
 | Steps | Dynamic Swarm + HITM | Fixed Multi-Agent | Advantage |
 |-------|---------------------|-------------------|-----------|
-| 10 | **90.7%** ± 0.6% | 2.4% ± 0.3% | **38x** |
-| 20 | **82.3%** ± 0.7% | 0.06% ± 0.05% | **1,372x** |
-| 50 | **61.4%** ± 1.0% | ~0% | **∞** |
+| 10 | **90.7%** | 2.3% | **39x** |
+| 20 | **82.2%** | 0.05% | **1,502x** |
+| 50 | **61.3%** | ~0% | **∞** |
 
-Source: [monte-carlo-agents.yaml](models/monte-carlo-agents.yaml) — validated against R and Gnumeric via Forge.
+Source: [agent-formulas.yaml](models/agent-formulas.yaml) — validate with `forge calculate models/agent-formulas.yaml`
 
 **Why Dynamic Swarm wins:**
 - Each sub-agent has **full context** (~200K tokens), not fragmented
@@ -109,7 +109,7 @@ asimov update       # Self-update
 
 | Finding | Source |
 |---------|--------|
-| Dynamic Swarm: **38x advantage** over fixed agentic at 10 steps | [Monte Carlo Model](models/monte-carlo-agents.yaml) |
+| Dynamic Swarm: **39x advantage** over fixed agentic at 10 steps | [Forge Model](models/agent-formulas.yaml) |
 | Sub-agents run with **full context (~200K tokens)** | [Claude Code Docs](https://code.claude.com/docs/en/sub-agents) |
 | HITM validation reduces error by **74%** (17.2x → 4.4x) | [MIT/Google 2024](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
 | Max **3-4 effective agents** before overhead dominates | MIT/Google 2024 |
