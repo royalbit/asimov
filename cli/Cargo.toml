@@ -8,7 +8,7 @@ repository = "https://github.com/royalbit/asimov"
 homepage = "https://github.com/royalbit/asimov"
 documentation = "https://github.com/royalbit/asimov#readme"
 license = "Elastic-2.0"
-publish = false
+license-file = "../LICENSE"
 readme = "../README.md"
 
 [features]

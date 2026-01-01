@@ -5,6 +5,63 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.0] - 2025-12-31
+
+### BREAKING: External Protocols + ELv2 License + Plus Merge
+
+**Major architectural change: protocols now external files with embedded fallback.**
+
+#### Breaking Changes
+- **License**: Proprietary R&D → Elastic License 2.0 (ELv2)
+- **Protocol structs**: `&'static str` → `String` (owned types)
+- **Architecture**: Hardcoded `include_str!()` → External file loading (ADR-053)
+
+#### New Architecture (ADR-053)
+Protocols, templates, hooks, and roles now stored as external files in `.asimov/`:
+
+```
+.asimov/
+├── protocols/     (9 JSON files - asimov, freshness, sycophancy, etc.)
+├── templates/     (21 YAML files - 8 base + 13 enterprise)
+├── hooks/         (3 TPL files - pre-commit, session-start, pre-compact)
+├── roles/         (6 JSON files - eng, biz, fin, ai, pm, qa)
+├── project.yaml
+└── roadmap.yaml
+```
+
+Binary reads from `.asimov/` first, falls back to embedded defaults if missing.
+
+#### Merged from asimov-plus
+- **13 Enterprise Templates**: api-fastapi, api-nestjs, api-spring, api-go, api-rust, web-nextjs, web-react, web-vue, web-angular, admin-dashboard, mono-turbo, mono-nx, mono-pnpm
+- **6 Roles**: Principal Engineer (eng), Business Strategist (biz), Financial Analyst (fin), AI Architect (ai), Product Manager (pm), QA Engineer (qa)
+- **Role Command**: `asimov role` lists roles, `asimov role eng` selects a role
+
+#### New Command
+```bash
+asimov role           # List available roles
+asimov role eng       # Switch to Principal Engineer role
+```
+
+#### Implementation (Parallel Agents)
+Phase 1 executed with 6 parallel agents writing to non-conflicting directories:
+- Agent A: Extract 9 protocols → `.asimov/protocols/*.json`
+- Agent B: Extract 8 project templates → `.asimov/templates/*.yaml`
+- Agent C: Extract hook templates → `.asimov/hooks/*.tpl`
+- Agent D: Copy 13 enterprise templates from asimov-plus
+- Agent E: Create 6 role files → `.asimov/roles/*.json`
+- Agent F: Write LICENSE (ELv2) + ADR-053
+
+Phase 2 (sequential): Rust code changes to support external file loading.
+
+#### Files Changed
+- 50 files changed, +2,196 insertions, -191 deletions
+- 495 tests passing (378 unit + 59 output + 58 e2e)
+
+#### asimov-plus Repository
+Marked as deprecated. All features merged into main asimov repository.
+
+---
+
 ## [9.18.1] - 2025-12-29
 
 ### Build: Static Linux Binaries (musl)
