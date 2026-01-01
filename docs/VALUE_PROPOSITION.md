@@ -151,6 +151,39 @@ Every company using Claude gets the velocity. The question is:
 | Rework | 30-50% | ~0% |
 | Sustainability | Burnout common | Bounded sessions until done |
 
+### vs Agentic Frameworks (LangChain, CrewAI, etc.)
+
+**Brooks' Law applies to AI agents.**
+
+> "Adding manpower to a late software project makes it later." — Fred Brooks, 1975
+
+| Metric | Fixed Frameworks | RoyalBit Asimov |
+|--------|------------------|-----------------|
+| Context per agent | 8-32k tokens | **200k+ tokens** |
+| Agent topology | Fixed at design time | **AI-decided at runtime** |
+| Max effective agents | 3-4 (Rule of 4) | **Unlimited (AI-managed)** |
+| Coordination overhead | O(n^1.724) | **O(1)** |
+| Code understanding | 80% (fragmented) | **95%** (full context) |
+| Error amplification | 17.2x with independent agents | **None** (single context) |
+
+**The research (verified, December 2025):**
+
+| Finding | Source |
+|---------|--------|
+| Full-file context: **95%** accuracy vs fragmented: **80%** | [SWE-bench](https://inkeep.com/blog/context-engineering-why-agents-fail) |
+| Max **3-4 agents** before overhead dominates | [Google/MIT](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
+| **17.2x error amplification** with independent agents | Google/MIT |
+| Multi-agent uses **15x more tokens** than single chat | [Anthropic](https://www.anthropic.com/engineering/multi-agent-research-system) |
+| CrewAI: **37% tool success rate** | [AIMultiple](https://research.aimultiple.com/agentic-analytics/) |
+
+**Cognition (Devin) agrees:**
+
+> "In 2025, running multiple agents in collaboration only results in fragile systems. The decision-making ends up being too dispersed and context isn't able to be shared thoroughly enough."
+
+**The Asimov insight:** One 200k-token context = one source of truth. AI spawns agents only when parallelization benefit exceeds coordination cost.
+
+**Full research:** [ADR-054: Dynamic Swarm vs Fixed Agentic Frameworks](adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md) — 50+ verified references
+
 ---
 
 ## The Three Pillars
