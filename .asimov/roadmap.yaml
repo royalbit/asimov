@@ -3,7 +3,7 @@
 # WHAT to build - milestones only
 # See: CHANGELOG.md for release history
 
-# current: (none - see CHANGELOG.md for v10.3.0)
+# current: (none - see CHANGELOG.md for v10.3.1)
 
 next:
   - "ADR-034 auto-inheritance: Support ~inherit~ marker in roadmap deliverables"

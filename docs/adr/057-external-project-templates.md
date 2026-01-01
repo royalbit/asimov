@@ -1,6 +1,6 @@
 # ADR-057: External Project Templates with Embedded Fallback
 
-**Status:** Proposed
+**Status:** Implemented (v10.3.0, refined v10.3.1)
 **Date:** 2026-01-01
 **Author:** Claude (Opus 4.5) - Principal Autonomous AI
 **Extends:** ADR-053 (External Protocol and Template Architecture)
@@ -46,78 +46,72 @@ This same pattern should apply to project templates.
 
 ### 1. Template File Structure
 
+**v10.3.1 Update:** Flat directory structure (no subdirectories):
+
 ```
 cli/
 ├── protocols/                 # Already done (v10.2.4)
 │   ├── asimov.json
 │   └── ...
-├── templates/                 # NEW: Canonical project templates
-│   ├── project/
-│   │   ├── rust.yaml
-│   │   ├── python.yaml
-│   │   ├── node.yaml
-│   │   ├── go.yaml
-│   │   ├── flutter.yaml
-│   │   ├── docs.yaml
-│   │   ├── arch.yaml
-│   │   ├── generic.yaml
-│   │   └── migration.yaml
-│   ├── warmup/
-│   │   ├── rust.yaml
-│   │   ├── python.yaml
+├── templates/                 # All 21 templates in flat directory
+│   ├── rust.yaml              # Base templates (8)
+│   ├── python.yaml
+│   ├── node.yaml
+│   ├── go.yaml
+│   ├── flutter.yaml
+│   ├── docs.yaml
+│   ├── arch.yaml
+│   ├── generic.yaml
+│   ├── api-rust.yaml          # API templates (5)
+│   ├── api-go.yaml
+│   ├── api-fastapi.yaml
+│   ├── api-nestjs.yaml
+│   ├── api-spring.yaml
+│   ├── web-nextjs.yaml        # Web templates (4)
+│   ├── web-react.yaml
+│   ├── web-vue.yaml
+│   ├── web-angular.yaml
+│   ├── mono-turbo.yaml        # Monorepo templates (3)
+│   ├── mono-nx.yaml
+│   ├── mono-pnpm.yaml
+│   ├── admin-dashboard.yaml   # Other (1)
+│   ├── warmup/                # Warmup-specific templates
 │   │   └── ...
-│   ├── enterprise/            # Previously in .asimov/templates/
-│   │   ├── api-rust.yaml
-│   │   ├── api-go.yaml
-│   │   ├── api-fastapi.yaml
-│   │   ├── api-nestjs.yaml
-│   │   ├── api-spring.yaml
-│   │   ├── web-nextjs.yaml
-│   │   ├── web-react.yaml
-│   │   ├── web-vue.yaml
-│   │   ├── web-angular.yaml
-│   │   ├── mono-turbo.yaml
-│   │   ├── mono-nx.yaml
-│   │   ├── mono-pnpm.yaml
-│   │   └── admin-dashboard.yaml
-│   └── hooks/
-│       ├── pre-commit.sh.tpl
-│       ├── session-start.sh.tpl
-│       └── pre-compact.sh.tpl
+│   └── hooks/                 # Hook templates
+│       └── ...
 └── src/templates/mod.rs       # include_str! loading
 ```
+
+**Why flat?** v10.3.1 simplified from subdirectories (project/, enterprise/) to a flat structure. All templates are first-class citizens - no "enterprise" vs "project" distinction.
 
 ### 2. Embedding Pattern
 
 ```rust
-// cli/src/templates/mod.rs
+// cli/src/templates/project.rs
 
-// Project templates (compile-time embedded)
-const PROJECT_RUST: &str = include_str!("../../templates/project/rust.yaml");
-const PROJECT_PYTHON: &str = include_str!("../../templates/project/python.yaml");
-// ...
+// All templates embedded at compile time (flat structure)
+const TEMPLATE_RUST: &str = include_str!("../../templates/rust.yaml");
+const TEMPLATE_PYTHON: &str = include_str!("../../templates/python.yaml");
+const TEMPLATE_API_RUST: &str = include_str!("../../templates/api-rust.yaml");
+const TEMPLATE_WEB_NEXTJS: &str = include_str!("../../templates/web-nextjs.yaml");
+// ... all 21 templates
 
-// Enterprise templates
-const ENTERPRISE_API_RUST: &str = include_str!("../../templates/enterprise/api-rust.yaml");
-// ...
-
-/// Load project template with runtime override support
-pub fn project_template(project_type: &str) -> String {
-    // 1. Check .asimov/templates/project/{type}.yaml (runtime override)
+/// Unified template lookup (v10.3.1)
+pub fn get_template_by_name(name: &str) -> Option<String> {
+    // 1. Check .asimov/templates/{name}.yaml (runtime override)
     // 2. Fall back to embedded template
-    load_template_with_fallback("project", project_type)
 }
 ```
 
 ### 3. Runtime Override Hierarchy
 
 ```
-.asimov/templates/project/rust.yaml     ← User override (highest priority)
-cli/templates/project/rust.yaml         ← Embedded fallback (compile-time)
+.asimov/templates/rust.yaml     ← User override (highest priority)
+cli/templates/rust.yaml         ← Embedded fallback (compile-time)
 ```
 
 **Loading logic:**
-1. Check `.asimov/templates/{category}/{name}.yaml`
+1. Check `.asimov/templates/{name}.yaml`
 2. If not found, use embedded default
 3. Validate against schema (both sources)
 
@@ -190,21 +184,21 @@ The 21 enterprise templates currently in `.asimov/templates/` will be:
 
 ## Implementation
 
-### Phase 1: Core Templates (v10.3.0)
-- Create `cli/templates/project/` with 9 base types
-- Create `cli/templates/warmup/` with matching warmup templates
-- Update `cli/src/templates/mod.rs` to use `include_str!`
-- Remove `.tpl` files from `cli/src/templates/`
+### v10.3.0: Initial Implementation
+- Created `cli/templates/project/` and `cli/templates/enterprise/` subdirectories
+- Embedded 8 base + 13 extended templates via `include_str!`
+- Added `deliverables_template` to all templates
+- Added `templates_available` to warmup output
 
-### Phase 2: Enterprise Templates (v10.3.0)
-- Move `.asimov/templates/*.yaml` to `cli/templates/enterprise/`
-- Embed all 21 enterprise templates
-- Update `asimov init --template` to use embedded templates
+### v10.3.1: Simplification
+- Merged to flat `cli/templates/` structure (no subdirectories)
+- Unified `get_template_by_name()` API for all templates
+- Removed `templates_available` from warmup (templates only relevant at init time)
+- Updated `asimov init --help` to list all 21 templates
+- Deprecated `get_enterprise_template()` in favor of `get_template_by_name()`
 
-### Phase 3: ADR-034 Completion (v10.3.0)
-- Add `deliverables_template` to all templates
-- Implement auto-inheritance in roadmap parsing
-- Surface templates in `asimov warmup` output
+### Future: ADR-034 Completion
+- Implement `~inherit~` marker for auto-inheritance in roadmap parsing
 
 ## References
 

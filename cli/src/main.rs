@@ -67,7 +67,10 @@ enum Commands {
         #[arg(short, long)]
         name: String,
 
-        /// Project type: generic, rust, python, node, go, flutter, docs
+        /// Template type. Base: rust, python, node, go, flutter, docs, arch, generic.
+        /// API: api-rust, api-go, api-fastapi, api-nestjs, api-spring.
+        /// Web: web-nextjs, web-react, web-vue, web-angular.
+        /// Mono: mono-turbo, mono-nx, mono-pnpm. Other: admin-dashboard.
         #[arg(short = 't', long = "type")]
         project_type: String,
 

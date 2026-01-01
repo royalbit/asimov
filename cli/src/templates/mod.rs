@@ -60,7 +60,7 @@ impl std::str::FromStr for ProjectType {
             "migration" | "migrations" => Ok(ProjectType::Migration),
             "arch" | "architecture" => Ok(ProjectType::Arch),
             _ => Err(format!(
-                "Unknown project type: '{}'. Available: generic, rust, python, node, go, flutter, docs, migration, arch",
+                "Unknown template: '{}'. Use --help to see all 21 available templates",
                 s
             )),
         }
@@ -181,7 +181,7 @@ mod tests {
         let result = "invalid".parse::<ProjectType>();
         assert!(result.is_err());
         let err = result.unwrap_err();
-        assert!(err.contains("Unknown project type"));
+        assert!(err.contains("Unknown template"));
     }
 
     #[test]

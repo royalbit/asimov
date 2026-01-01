@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.3.1] - 2026-01-01
+
+### Changed
+
+- **Templates simplified to flat structure**: Merged `cli/templates/project/` and `cli/templates/enterprise/` into `cli/templates/`
+- **init --help**: Now lists all 21 templates with categories (Base, API, Web, Mono, Other)
+- **init**: Supports all 21 templates directly (e.g., `asimov init -t api-rust -n myapi`)
+- **Unified API**: `get_template_by_name()` replaces `get_enterprise_template()` (deprecated)
+
+### Removed
+
+- **warmup**: Removed `templates_available` from output (templates only relevant at init time)
+
+### Fixed
+
+- **ADR-057**: Updated to reflect v10.3.1 flat directory structure
+
+---
+
 ## [10.3.0] - 2026-01-01
 
 ### Added
@@ -14,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 13 enterprise templates: api-rust, api-go, api-fastapi, api-nestjs, api-spring, web-nextjs, web-react, web-vue, web-angular, mono-turbo, mono-nx, mono-pnpm, admin-dashboard
   - Same pattern as protocols: embedded fallback + external override
   - All templates include `deliverables_template` field (ADR-034)
-- **warmup**: Now outputs `templates_available` listing all 21 templates
 - **lib.rs exports**: `list_templates()` and `get_enterprise_template()` now public
 
 ### Changed

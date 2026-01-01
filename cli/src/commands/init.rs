@@ -2,8 +2,8 @@
 //! v9.7.0: Add dev dependencies for coding standards tools (ADR-044)
 
 use crate::{
-    claude_pre_compact_hook, claude_session_start_hook, claude_settings_json, git_precommit_hook,
-    project_template, protocols::PROTOCOL_FILES, roadmap_template, ProjectType,
+    claude_pre_compact_hook, claude_session_start_hook, claude_settings_json, get_template_by_name,
+    git_precommit_hook, protocols::PROTOCOL_FILES, roadmap_template, ProjectType,
 };
 use std::path::Path;
 
@@ -33,20 +33,48 @@ pub fn run_init(dir: &Path, name: &str, type_str: &str, force: bool) -> InitResu
         error: None,
     };
 
-    let project_type = match type_str.to_lowercase().as_str() {
+    // v10.3.1: Support all 21 templates, map to base ProjectType for hooks/deps
+    let template_name = type_str.to_lowercase();
+    let project_type = match template_name.as_str() {
+        // Base templates
         "rust" | "rs" => ProjectType::Rust,
         "python" | "py" => ProjectType::Python,
         "node" | "nodejs" | "javascript" | "js" | "typescript" | "ts" => ProjectType::Node,
         "go" | "golang" => ProjectType::Go,
         "flutter" | "dart" => ProjectType::Flutter,
         "docs" | "documentation" => ProjectType::Docs,
+        "arch" | "architecture" => ProjectType::Arch,
         "generic" => ProjectType::Generic,
+        // Extended templates map to their base types
+        "api-rust" => ProjectType::Rust,
+        "api-go" => ProjectType::Go,
+        "api-fastapi" => ProjectType::Python,
+        "api-nestjs" => ProjectType::Node,
+        "api-spring" => ProjectType::Generic, // Java not yet a ProjectType
+        "web-nextjs" | "web-react" | "web-vue" | "web-angular" => ProjectType::Node,
+        "mono-turbo" | "mono-nx" | "mono-pnpm" => ProjectType::Node,
+        "admin-dashboard" => ProjectType::Node,
         other => {
-            result.error = Some(format!("Unknown project type: '{}'. Valid types: rust, python, node, go, flutter, docs, generic", other));
+            result.error = Some(format!(
+                "Unknown template: '{}'. Use 'asimov init --help' to see all templates",
+                other
+            ));
             return result;
         }
     };
     result.project_type = Some(project_type);
+
+    // Normalize template name for lookup
+    let template_key = match template_name.as_str() {
+        "rs" => "rust",
+        "py" => "python",
+        "nodejs" | "javascript" | "js" | "typescript" | "ts" => "node",
+        "golang" => "go",
+        "dart" => "flutter",
+        "documentation" => "docs",
+        "architecture" => "arch",
+        other => other,
+    };
 
     let asimov_dir = dir.join(".asimov");
     if let Err(e) = std::fs::create_dir_all(&asimov_dir) {
@@ -76,7 +104,14 @@ pub fn run_init(dir: &Path, name: &str, type_str: &str, force: bool) -> InitResu
     let project_path = asimov_dir.join("project.yaml");
     let project_existed = project_path.exists();
     if !project_existed || force {
-        let content = project_template(name, "Your project tagline", project_type);
+        // v10.3.1: Use unified template lookup for all 21 templates
+        let template = get_template_by_name(template_key).unwrap_or_else(|| {
+            // Fallback to generic if template not found (shouldn't happen)
+            get_template_by_name("generic").unwrap()
+        });
+        let content = template
+            .replace("{PROJECT_NAME}", name)
+            .replace("{PROJECT_TAGLINE}", "Your project tagline");
         if let Err(e) = std::fs::write(&project_path, content) {
             result.error = Some(format!("Failed to write project.yaml: {}", e));
             return result;
@@ -521,7 +556,7 @@ mod tests {
         // Should fail with unknown type
         assert!(!result.success);
         assert!(result.error.is_some());
-        assert!(result.error.unwrap().contains("Unknown project type"));
+        assert!(result.error.unwrap().contains("Unknown template"));
     }
 
     #[test]
