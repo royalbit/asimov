@@ -1116,7 +1116,7 @@ Download from [GitHub Releases](https://github.com/royalbit/asimov/releases/late
 
 ```bash
 # Linux
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-musl.tar.gz | tar xz
 sudo mv asimov /usr/local/bin/
 ```
 

@@ -144,7 +144,7 @@ See [Vendor Implementation Guide](VENDOR_IMPLEMENTATION.md) for what other tools
 
 ```bash
 # Install
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-musl.tar.gz | tar xz
 sudo mv asimov /usr/local/bin/
 
 # Setup

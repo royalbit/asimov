@@ -58,7 +58,7 @@ Source: [agent-formulas.yaml](models/agent-formulas.yaml) — validate with `for
 
 ```bash
 # Install
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-$(uname -m)-unknown-linux-gnu.tar.gz | tar xz
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-$(uname -m)-unknown-linux-musl.tar.gz | tar xz
 sudo mv asimov /usr/local/bin/
 
 # Initialize project

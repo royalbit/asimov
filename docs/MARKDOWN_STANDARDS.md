@@ -18,7 +18,7 @@ The `asimov` CLI includes a documentation linter that catches common issues.
 
 ```bash
 # Install from GitHub Releases
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-musl.tar.gz | tar xz
 sudo mv asimov /usr/local/bin/
 
 # Check documentation
@@ -106,7 +106,7 @@ jobs:
 
       - name: Install asimov
         run: |
-          curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-musl.tar.gz | tar xz
           sudo mv asimov /usr/local/bin/
 
       - name: Lint documentation

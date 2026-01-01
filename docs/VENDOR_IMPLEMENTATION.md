@@ -96,7 +96,7 @@ Anyone can use these files - just paste them:
 
 ```bash
 # Download from GitHub Releases
-curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-gnu.tar.gz | tar xz
+curl -L https://github.com/royalbit/asimov/releases/latest/download/asimov-x86_64-unknown-linux-musl.tar.gz | tar xz
 sudo mv asimov /usr/local/bin/
 
 asimov validate          # Works anywhere
