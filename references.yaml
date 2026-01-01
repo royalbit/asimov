@@ -1108,3 +1108,183 @@ long_context_limitations:
     organization: NexGen Cloud
     date: 2025
     key_finding: "73.34% of RAG implementations in large organizations by 2025; 80%+ enterprises augment LLMs with RAG"
+
+# ============================================================================
+# EXTENDED THINKING & INFERENCE-TIME COMPUTE (ADR-056)
+# Added: 2025-12-31
+# Research on extended thinking, test-time compute scaling, and the distinction
+# between context-as-storage vs context-as-thinking
+# ============================================================================
+
+inference_time_compute:
+  - title: "Scaling LLM Test-Time Compute Optimally Can be More Effective than Scaling Model Parameters"
+    url: https://arxiv.org/abs/2408.03314
+    authors: ["Charlie Snell", "Jaehoon Lee", "Kelvin Xu", "Aviral Kumar"]
+    organization: UC Berkeley / Google DeepMind
+    date: 2024-08
+    key_finding: "Smaller model with test-time compute can match 14x larger model; compute-optimal scaling depends on problem difficulty"
+
+  - title: "State of LLM Reasoning and Inference Scaling"
+    url: https://magazine.sebastianraschka.com/p/state-of-llm-reasoning-and-inference-scaling
+    author: Sebastian Raschka
+    date: 2025-01
+    key_finding: "s1 'Wait' token discovery shows simple interventions trigger self-verification and improve reasoning"
+
+  - title: "Thoughts Are All Over the Place: On the Underthinking of o1-Like LLMs"
+    url: https://arxiv.org/abs/2501.18585
+    authors: ["Yue Wang", "et al."]
+    date: 2025-01
+    key_finding: "225% more tokens on incorrect answers due to 418% more thought-switching; underthinking score predicts errors"
+
+  - title: "Let's Verify Step by Step"
+    url: https://arxiv.org/abs/2305.20050
+    authors: ["Hunter Lightman", "Vineet Kosaraju", "Yura Burda", "et al."]
+    organization: OpenAI
+    date: 2023-05
+    key_finding: "Process supervision (step-by-step verification) outperforms outcome supervision for mathematical reasoning"
+
+  - title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"
+    url: https://arxiv.org/abs/2201.11903
+    authors: ["Jason Wei", "Xuezhi Wang", "Dale Schuurmans", "et al."]
+    organization: Google Research
+    date: 2022-01
+    key_finding: "CoT prompting enables complex reasoning by generating intermediate steps"
+
+  - title: "Tree of Thoughts: Deliberate Problem Solving with Large Language Models"
+    url: https://arxiv.org/abs/2305.10601
+    authors: ["Shunyu Yao", "Dian Yu", "Jeffrey Zhao", "et al."]
+    organization: Princeton / Google DeepMind
+    date: 2023-05
+    key_finding: "ToT enables exploration of multiple reasoning paths with lookahead and backtracking"
+
+extended_thinking_documentation:
+  - title: "Claude Extended Thinking"
+    url: https://platform.claude.com/docs/en/build-with-claude/extended-thinking
+    organization: Anthropic
+    date: 2025
+    key_finding: "Extended thinking mode enables deeper reasoning through thinking tokens"
+
+  - title: "MAX_THINKING_TOKENS Environment Variable"
+    url: https://github.com/anthropics/claude-code/issues/5257
+    organization: Anthropic / GitHub
+    date: 2025
+    key_finding: "MAX_THINKING_TOKENS forces extended thinking for all requests; up to 200K tokens"
+
+  - title: "o1 System Card"
+    url: https://openai.com/index/openai-o1-system-card/
+    organization: OpenAI
+    date: 2024-09
+    key_finding: "o1 uses chain-of-thought reasoning internally; trained with RL for complex problem-solving"
+
+agentic_evaluation_benchmarks:
+  - title: "RLI: A Real-World Benchmark for LLM Agents"
+    url: https://arxiv.org/abs/2504.02189
+    authors: ["Saurav Kadavath", "et al."]
+    date: 2025-04
+    key_finding: "97.5% failure rate on real-world tasks despite 70%+ on SWE-bench; reveals benchmark-production gap"
+
+  - title: "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?"
+    url: https://arxiv.org/abs/2310.06770
+    authors: ["Carlos E. Jimenez", "John Yang", "Alexander Wettig", "et al."]
+    organization: Princeton
+    date: 2023-10
+    key_finding: "Benchmark of 2,294 real GitHub issues; tests autonomous software engineering capability"
+
+  - title: "AgentBench: Evaluating LLMs as Agents"
+    url: https://arxiv.org/abs/2308.03688
+    authors: ["Xiao Liu", "Hao Yu", "Hanchen Zhang", "et al."]
+    organization: Tsinghua University
+    date: 2023-08
+    key_finding: "Multi-dimensional benchmark across 8 environments; GPT-4 leads but significant gaps remain"
+
+  - title: "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks"
+    url: https://arxiv.org/abs/2404.07972
+    authors: ["Tianbao Xie", "Danyang Zhang", "Jixuan Chen", "et al."]
+    organization: HKU / CMU
+    date: 2024-04
+    key_finding: "Real computer environments benchmark; best models achieve <15% on full task suite"
+
+context_compression_research:
+  - title: "LLMLingua: Compressing Prompts for Accelerated Inference"
+    url: https://arxiv.org/abs/2310.05736
+    authors: ["Huiqiang Jiang", "Qianhui Wu", "Chin-Yew Lin", "et al."]
+    organization: Microsoft Research
+    date: 2023-10
+    key_finding: "2-20x compression with minimal performance loss; coarse-to-fine iterative approach"
+
+  - title: "In-Context Autoencoder for Context Compression"
+    url: https://arxiv.org/abs/2307.06945
+    authors: ["Tao Ge", "Jing Hu", "Xun Wang", "et al."]
+    organization: Microsoft Research
+    date: 2023-07
+    key_finding: "ICAE achieves 4x compression; learns memory slots for context representation"
+
+  - title: "Compressing Context to Enhance Inference Efficiency of LLMs"
+    url: https://arxiv.org/abs/2310.06201
+    authors: ["Yucheng Li", "Bo Dong", "Chenghua Lin", "Frank Guerin"]
+    organization: University of Sheffield
+    date: 2023-10
+    key_finding: "Selective context compression based on self-information; preserves task-relevant content"
+
+memory_architecture_research:
+  - title: "MemGPT: Towards LLMs as Operating Systems"
+    url: https://arxiv.org/abs/2310.08560
+    authors: ["Charles Packer", "Vivian Fang", "Shishir G. Patil", "et al."]
+    organization: UC Berkeley
+    date: 2023-10
+    key_finding: "Hierarchical memory system with main context and archival storage; enables unbounded context"
+
+  - title: "Memorizing Transformers"
+    url: https://arxiv.org/abs/2203.08913
+    authors: ["Yuhuai Wu", "Markus N. Rabe", "DeLesley Hutchins", "Christian Szegedy"]
+    organization: Google Research
+    date: 2022-03
+    key_finding: "kNN-augmented attention enables retrieval over massive memory; 3x perplexity improvement"
+
+  - title: "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"
+    url: https://arxiv.org/abs/2005.11401
+    authors: ["Patrick Lewis", "Ethan Perez", "Aleksandra Piktus", "et al."]
+    organization: Facebook AI / UCL
+    date: 2020-05
+    key_finding: "Original RAG paper; combines parametric memory with non-parametric retrieval"
+
+moe_economics:
+  - title: "DeepSeek-V3 Technical Report"
+    url: https://arxiv.org/abs/2412.19437
+    organization: DeepSeek AI
+    date: 2024-12
+    key_finding: "671B total params, 37B active; trained for $5.5M on 2048 H800s; MoE enables 200x cost reduction"
+
+  - title: "Mixtral of Experts"
+    url: https://arxiv.org/abs/2401.04088
+    authors: ["Albert Q. Jiang", "Alexandre Sablayrolles", "et al."]
+    organization: Mistral AI
+    date: 2024-01
+    key_finding: "8x7B MoE matches 70B dense; 6x faster inference via sparse activation"
+
+  - title: "Switch Transformers: Scaling to Trillion Parameter Models"
+    url: https://arxiv.org/abs/2101.03961
+    authors: ["William Fedus", "Barret Zoph", "Noam Shazeer"]
+    organization: Google Research
+    date: 2021-01
+    key_finding: "Simplified MoE routing; 7x speedup over T5-XXL with same compute budget"
+
+speculative_decoding:
+  - title: "Fast Inference from Transformers via Speculative Decoding"
+    url: https://arxiv.org/abs/2211.17192
+    authors: ["Yaniv Leviathan", "Matan Kalman", "Yossi Matias"]
+    organization: Google Research
+    date: 2022-11
+    key_finding: "2-3x speedup without quality loss; draft model proposes, target model verifies"
+
+  - title: "Medusa: Simple LLM Inference Acceleration Framework"
+    url: https://arxiv.org/abs/2401.10774
+    authors: ["Tianle Cai", "Yuhong Li", "Zhengyang Geng", "et al."]
+    organization: Princeton / Together AI
+    date: 2024-01
+    key_finding: "Multiple decoding heads enable parallel token generation; 2.2x speedup"
+
+  - title: "SpecEE: Accelerating LLM Inference with Speculative Early Exiting"
+    url: https://arxiv.org/abs/2504.08850
+    date: 2025-04
+    key_finding: "2.25-2.43x speedup combining speculative decoding with early exit; no quality degradation"
