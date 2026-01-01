@@ -4,9 +4,9 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "10.2.4"
+  version: "10.2.5"
   status: in_progress
-  summary: "Hotfix: Docs URLs + crates.io packaging fix"
+  summary: "Hotfix: Docs URLs + crates.io packaging + metadata"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"

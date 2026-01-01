@@ -1,14 +1,16 @@
 [package]
 name = "royalbit-asimov"
-version = "10.2.4"
+version = "10.2.5"
 edition = "2021"
 authors = ["Claude (Opus 4.5) - Principal Autonomous AI <noreply@anthropic.com>", "RoyalBit Inc. <admin@royalbit.ca>"]
-description = "RoyalBit Asimov - The ethical operating system for Claude's autonomous power. Claude provides velocity, Asimov provides guardrails."
+description = "Ethical guardrails for Claude Code. Dynamic Swarm + HOTL beats Fixed Agentic (39x at 10 steps, 1502x at 20). Three Laws hardcoded."
 repository = "https://github.com/royalbit/asimov"
 homepage = "https://github.com/royalbit/asimov"
 documentation = "https://github.com/royalbit/asimov#readme"
 license = "Elastic-2.0"
 readme = "../README.md"
+keywords = ["claude", "ai", "ethics", "autonomous", "guardrails"]
+categories = ["command-line-utilities", "development-tools"]
 
 [features]
 # Enable coverage attribute (requires nightly)
