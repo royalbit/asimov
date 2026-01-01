@@ -142,6 +142,7 @@ asimov update       # Self-update
 
 - [Value Proposition](docs/VALUE_PROPOSITION.md) — Why this matters
 - [Setup Guide](docs/SETUP.md) — Detailed installation
+- [Glossary](docs/GLOSSARY.md) — HOTL, HITL, Dynamic Swarm, and other terms
 - [AI Reality](docs/AI_REALITY.md) — Why AI "hallucinates"
 - [Full Specification](docs/SPECIFICATION.md) — Protocol schema
 

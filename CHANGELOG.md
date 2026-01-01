@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updated 20+ files: README, ADR-056, models, social posts, references
   - GitHub About section already updated
 
+### Added
+
+- **docs/GLOSSARY.md** - Quick reference for Asimov terminology
+  - AI Oversight Models: HOTL, HITL, Fixed Agentic
+  - Architecture Terms: Dynamic Swarm, Context Fragmentation, Extended Thinking
+  - Protocol Terms: Veto Keywords, Harm Categories, Warmup, Sprint
+  - Metrics: 38x advantage, 17.2x error amplification, 74% error reduction
+  - Abbreviations: ADR, MCP, RAG, SWE-bench, RLI
+
 ---
 
 ## [10.1.0] - 2025-12-31

@@ -4,9 +4,9 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "10.0.0"
+  version: "10.2.2"
   status: released
-  summary: "External Protocols + ELv2 License + Plus Merge"
+  summary: "HOTL Terminology Fix + Glossary"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"
