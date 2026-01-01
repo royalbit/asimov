@@ -8,7 +8,9 @@ current:
   status: released
   summary: "Credibility & Transparency - citations, derivations, limitations, sim code"
 
-next: []
+next:
+  - version: "10.5.0"
+    summary: "ADR-058 Documentation Standards: All claims require primary sources - transparency as moat"
 
 backlog:
   - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"
