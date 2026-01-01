@@ -74,6 +74,49 @@ Every `asimov init` creates a Self-Evolving Autonomous AI project with ethics bu
 
 See [ADR-009](https://github.com/royalbit/asimov/blob/main/docs/adr/009-claude-code-native-integration.md) and [ADR-013](https://github.com/royalbit/asimov/blob/main/docs/adr/013-self-healing-not-replaced.md).
 
+## Why Not Agentic Frameworks?
+
+LangChain, CrewAI, Semantic Kernel, AutoGen—they fragment context across agents. **Asimov uses one large context (200k+) where AI decides when to spawn agents.**
+
+### Brooks' Law Applies to Agents
+
+> "Adding manpower to a late software project makes it later." — Fred Brooks, 1975
+
+**The math:** N agents = N×(N-1)/2 communication channels
+- 4 agents = 6 channels (manageable)
+- 10 agents = 45 channels (chaos)
+- Research confirms: **exponent 1.724** (super-linear overhead)
+
+### The Research (All Verified)
+
+| Finding | Source |
+|---------|--------|
+| Full-file context: **95%** accuracy vs fragmented: **80%** | [SWE-bench](https://inkeep.com/blog/context-engineering-why-agents-fail) |
+| Max **3-4 effective agents** before overhead dominates | [Google/MIT 2024](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) |
+| **17.2x error amplification** with independent agents | Google/MIT |
+| Multi-agent uses **15x more tokens** than single chat | [Anthropic](https://www.anthropic.com/engineering/multi-agent-research-system) |
+| CrewAI: **37% tool success rate** | [AIMultiple](https://research.aimultiple.com/agentic-analytics/) |
+
+### Cognition (Devin) Agrees
+
+> "In 2025, running multiple agents in collaboration only results in fragile systems. The decision-making ends up being too dispersed and context isn't able to be shared thoroughly enough."
+>
+> — [Cognition](https://cognition.ai/blog/dont-build-multi-agents)
+
+### Asimov vs Fixed Frameworks
+
+| Dimension | Asimov | LangChain/CrewAI |
+|-----------|--------|------------------|
+| Context per orchestrator | **200k+** | 8-32k per agent |
+| Agent topology | **Runtime-decided** | Design-time fixed |
+| Coordination | **In-context** | External infra |
+| Code understanding | **95%** | 80% (fragmented) |
+| Communication overhead | **O(1)** | O(n^1.724) |
+
+📖 **[ADR-054: Dynamic Swarm vs Fixed Agentic Frameworks](docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md)** — Full research with 50+ verified references
+
+---
+
 ## The Problem
 
 AI hallucinates, invents conventions, forgets rules mid-session, and "remembers" things that never happened. Context compaction compresses your requirements into oblivion.

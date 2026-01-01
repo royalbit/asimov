@@ -25,6 +25,46 @@ This ADR documents hard evidence supporting the Asimov approach, particularly re
 
 ## Evidence
 
+### 0. Brooks' Law Applies to Agents
+
+> "Adding manpower to a late software project makes it later." — Fred Brooks, *The Mythical Man-Month*, 1975
+
+Brooks' Law states that communication overhead grows quadratically with team size. The formula:
+
+```
+Communication channels = N × (N-1) / 2
+```
+
+| Team Size | Channels | Overhead |
+|-----------|----------|----------|
+| 2 agents | 1 | Minimal |
+| 4 agents | 6 | Manageable |
+| 7 agents | 21 | Significant |
+| 10 agents | 45 | Chaos |
+| 20 agents | 190 | Unmanageable |
+
+**The Google/MIT research (December 2024) validates this for AI agents:**
+
+- Communication overhead scaling: **exponent 1.724** (super-linear, worse than quadratic in practice)
+- Maximum effective team size: **3-4 agents**
+- Independent agents error amplification: **17.2x** vs single-agent baseline
+
+**Why this happens with AI agents:**
+
+1. **Context serialization** - Each agent must serialize its understanding for others
+2. **Translation errors** - The "telephone game" between agents
+3. **State reconstruction** - Each agent must rebuild context from messages
+4. **Coordination latency** - Waiting for other agents to respond
+
+**The Asimov insight:** A single 200k-token context is ONE source of truth. No serialization, no translation, no reconstruction. The AI spawns agents only when parallelization benefit exceeds coordination cost.
+
+```
+Single context:     O(1) coordination
+N fixed agents:     O(n^1.724) coordination  ← Google/MIT measured
+```
+
+---
+
 ### 1. Large Context Windows Outperform RAG
 
 #### Performance Gap (Google DeepMind, July 2024)
@@ -256,6 +296,10 @@ Per ADR-052, use direct CLI invocation for stable tools:
 ---
 
 ## References (All Verified 2025-12-31)
+
+### Brooks' Law
+- Brooks, Fred (1975) - *The Mythical Man-Month: Essays on Software Engineering* - Addison-Wesley
+- [Google/MIT - More Agents Isn't Reliable](https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai) - December 2024 - Exponent 1.724 measured
 
 ### RAG vs Long Context
 - [Li et al. (2024) - RAG or Long-Context LLMs?](https://arxiv.org/abs/2407.16833) - Google DeepMind
