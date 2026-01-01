@@ -1,0 +1,107 @@
+_forge_version: 5.0.0
+assumptions:
+  ds_base_accuracy:
+    value: 0.97
+    formula: null
+  ds_detection_rate:
+    value: 0.75
+    formula: null
+  ds_fix_rate:
+    value: 0.9
+    formula: null
+  ds_effective_accuracy:
+    value: 0.99025
+    formula: =ds_base_accuracy + (1 - ds_base_accuracy) * ds_detection_rate * ds_fix_rate
+  fi_base_accuracy:
+    value: 0.8
+    formula: null
+  fi_agent_count:
+    value: 4.0
+    formula: null
+  fi_channel_error_rate:
+    value: 0.05
+    formula: null
+  fi_channels:
+    value: 6.0
+    formula: =fi_agent_count * (fi_agent_count - 1) / 2
+  fi_overhead_factor:
+    value: 0.2649081093750002
+    formula: =1 - POWER(1 - fi_channel_error_rate, fi_channels)
+  fi_effective_pre_correction:
+    value: 0.5880735124999998
+    formula: =fi_base_accuracy * (1 - fi_overhead_factor)
+  fi_detection_rate:
+    value: 0.4
+    formula: null
+  fi_fix_rate:
+    value: 0.6
+    formula: null
+  fi_effective_accuracy:
+    value: 0.6869358694999999
+    formula: =fi_effective_pre_correction + (1 - fi_effective_pre_correction) * fi_detection_rate * fi_fix_rate
+  fc_base_accuracy:
+    value: 0.88
+    formula: null
+  fc_agent_count:
+    value: 4.0
+    formula: null
+  fc_channel_error_rate:
+    value: 0.03
+    formula: null
+  fc_channels:
+    value: 4.0
+    formula: =fc_agent_count
+  fc_overhead_factor:
+    value: 0.11470719000000007
+    formula: =1 - POWER(1 - fc_channel_error_rate, fc_channels)
+  fc_effective_pre_correction:
+    value: 0.7790576727999999
+    formula: =fc_base_accuracy * (1 - fc_overhead_factor)
+  fc_detection_rate:
+    value: 0.55
+    formula: null
+  fc_fix_rate:
+    value: 0.75
+    formula: null
+  fc_effective_accuracy:
+    value: 0.87019638277
+    formula: =fc_effective_pre_correction + (1 - fc_effective_pre_correction) * fc_detection_rate * fc_fix_rate
+  ds_success_5:
+    value: 0.9521914015025348
+    formula: =POWER(ds_effective_accuracy, 5)
+  ds_success_10:
+    value: 0.9066684650953614
+    formula: =POWER(ds_effective_accuracy, 10)
+  ds_success_20:
+    value: 0.8220477055983786
+    formula: =POWER(ds_effective_accuracy, 20)
+  ds_success_50:
+    value: 0.6126924854306784
+    formula: =POWER(ds_effective_accuracy, 50)
+  ds_success_100:
+    value: 0.3753920817032222
+    formula: =POWER(ds_effective_accuracy, 100)
+  fi_success_5:
+    value: 0.15296109076286651
+    formula: =POWER(fi_effective_accuracy, 5)
+  fi_success_10:
+    value: 0.023397095287365888
+    formula: =POWER(fi_effective_accuracy, 10)
+  fi_success_20:
+    value: 0.000547424067886079
+    formula: =POWER(fi_effective_accuracy, 20)
+  fc_success_5:
+    value: 0.4989837108147566
+    formula: =POWER(fc_effective_accuracy, 5)
+  fc_success_10:
+    value: 0.24898474365846465
+    formula: =POWER(fc_effective_accuracy, 10)
+  fc_success_20:
+    value: 0.06199340257467135
+    formula: =POWER(fc_effective_accuracy, 20)
+  advantage_10:
+    value: 38.751325921425384
+    formula: =ds_success_10 / fi_success_10
+  advantage_20:
+    value: 1501.6652606685348
+    formula: =ds_success_20 / fi_success_20

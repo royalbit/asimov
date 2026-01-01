@@ -1,0 +1,125 @@
+_forge_version: 5.0.0
+# Agent Architecture Analysis - Full Forge Suite
+# Tornado + Decision Tree + Scenarios
+#
+# Run:
+#   forge tornado models/agent-analysis.yaml
+#   forge decision-tree models/agent-analysis.yaml
+#   forge scenarios models/agent-analysis.yaml
+
+assumptions:
+  # Dynamic Swarm + HITM parameters
+  base_accuracy:
+    value: 0.97
+    formula: null
+  detection_rate:
+    value: 0.75
+    formula: null
+  fix_rate:
+    value: 0.90
+    formula: null
+  steps:
+    value: 10.0
+    formula: null
+
+  # Derived
+  effective_accuracy:
+    value: 0.99025
+    formula: =base_accuracy + (1 - base_accuracy) * detection_rate * fix_rate
+  success_rate:
+    value: 0.9069
+    formula: =POWER(effective_accuracy, steps)
+  failure_rate:
+    value: 0.0931
+    formula: =1 - success_rate
+
+# ============================================================================
+# TORNADO: Which parameter matters most?
+# ============================================================================
+tornado:
+  output: success_rate
+  inputs:
+    - name: base_accuracy
+      low: 0.90
+      high: 0.99
+    - name: detection_rate
+      low: 0.50
+      high: 0.90
+    - name: fix_rate
+      low: 0.70
+      high: 0.95
+    - name: steps
+      low: 5
+      high: 20
+
+# ============================================================================
+# DECISION TREE: Agent Step Execution
+# ============================================================================
+# Models a single step with error detection and correction
+# Value = probability of successful completion
+decision_tree:
+  name: "Agent Step Execution"
+  root:
+    type: chance
+    name: "Execute Step"
+    branches:
+      success:
+        probability: 0.97  # base_accuracy
+        value: 1.0  # Step succeeded
+      error:
+        probability: 0.03  # 1 - base_accuracy
+        next: error_detection
+
+  nodes:
+    error_detection:
+      type: chance
+      name: "HITM Detects Error?"
+      branches:
+        detected:
+          probability: 0.75  # detection_rate
+          next: error_correction
+        undetected:
+          probability: 0.25
+          value: 0.0  # Undetected error = failure
+
+    error_correction:
+      type: chance
+      name: "Fix Successful?"
+      branches:
+        fixed:
+          probability: 0.90  # fix_rate
+          value: 1.0  # Corrected, step succeeds
+        not_fixed:
+          probability: 0.10
+          value: 0.0  # Failed to fix = failure
+
+# ============================================================================
+# SCENARIOS: Architecture Comparison
+# ============================================================================
+scenarios:
+  dynamic_swarm_hitm:
+    probability: 0.33
+    description: "Dynamic Swarm + HITM: Full context, human oversight"
+    scalars:
+      base_accuracy: 0.97
+      detection_rate: 0.75
+      fix_rate: 0.90
+      steps: 10
+
+  fixed_centralized:
+    probability: 0.33
+    description: "Fixed Agentic (Centralized): Hub-and-spoke, fragmented context"
+    scalars:
+      base_accuracy: 0.78  # 0.88 * (1 - 0.1147 overhead)
+      detection_rate: 0.55
+      fix_rate: 0.75
+      steps: 10
+
+  fixed_independent:
+    probability: 0.34
+    description: "Fixed Agentic (Independent): Full mesh, 17.2x error amplification"
+    scalars:
+      base_accuracy: 0.59  # 0.80 * (1 - 0.2649 overhead)
+      detection_rate: 0.40
+      fix_rate: 0.60
+      steps: 10

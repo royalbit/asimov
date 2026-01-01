@@ -1,0 +1,51 @@
+_forge_version: 5.0.0
+# Scenario Analysis: Compare architectures
+# Run: forge scenarios models/agent-scenarios.yaml
+
+assumptions:
+  base_accuracy:
+    value: 0.97
+    formula: null
+  detection_rate:
+    value: 0.75
+    formula: null
+  fix_rate:
+    value: 0.90
+    formula: null
+  steps:
+    value: 10.0
+    formula: null
+  effective_accuracy:
+    value: 0.99025
+    formula: =base_accuracy + (1 - base_accuracy) * detection_rate * fix_rate
+  success_rate:
+    value: 0.9069
+    formula: =POWER(effective_accuracy, steps)
+
+scenarios:
+  dynamic_swarm_hitm:
+    probability: 0.33
+    description: "Dynamic Swarm + HITM: Full context, human oversight"
+    scalars:
+      base_accuracy: 0.97
+      detection_rate: 0.75
+      fix_rate: 0.90
+      steps: 10
+
+  fixed_centralized:
+    probability: 0.33
+    description: "Fixed Agentic (Centralized): Hub-and-spoke, fragmented context"
+    scalars:
+      base_accuracy: 0.78
+      detection_rate: 0.55
+      fix_rate: 0.75
+      steps: 10
+
+  fixed_independent:
+    probability: 0.34
+    description: "Fixed Agentic (Independent): Full mesh, 17.2x error amplification"
+    scalars:
+      base_accuracy: 0.59
+      detection_rate: 0.40
+      fix_rate: 0.60
+      steps: 10

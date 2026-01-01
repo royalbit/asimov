@@ -1,0 +1,60 @@
+_forge_version: 5.0.0
+# Decision Tree: Agent Step Execution with Error Detection/Correction
+# Run: forge decision-tree models/agent-decision-tree.yaml
+# Run: forge decision-tree models/agent-decision-tree.yaml --dot > agent-tree.dot
+
+assumptions:
+  base_accuracy:
+    value: 0.97
+    formula: null
+  error_rate:
+    value: 0.03
+    formula: =1 - base_accuracy
+  detection_rate:
+    value: 0.75
+    formula: null
+  miss_rate:
+    value: 0.25
+    formula: =1 - detection_rate
+  fix_rate:
+    value: 0.90
+    formula: null
+  fail_rate:
+    value: 0.10
+    formula: =1 - fix_rate
+
+decision_tree:
+  name: "Agent Step Execution (Dynamic Swarm + HITM)"
+  root:
+    type: chance
+    name: "Execute Step"
+    branches:
+      success:
+        probability: 0.97
+        value: 1.0
+      error:
+        probability: 0.03
+        next: error_detection
+
+  nodes:
+    error_detection:
+      type: chance
+      name: "HITM Detects Error?"
+      branches:
+        detected:
+          probability: 0.75
+          next: error_correction
+        undetected:
+          probability: 0.25
+          value: 0.0
+
+    error_correction:
+      type: chance
+      name: "Fix Successful?"
+      branches:
+        fixed:
+          probability: 0.90
+          value: 1.0
+        not_fixed:
+          probability: 0.10
+          value: 0.0

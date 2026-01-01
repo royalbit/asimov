@@ -1,0 +1,72 @@
+_forge_version: 5.0.0
+# Agent Success Rates - Uses shared parameters
+# Run: forge calculate models/agent-success-rates.yaml
+
+_includes:
+  - file: "agent-params.yaml"
+    as: "params"
+
+assumptions:
+  # Step counts to evaluate
+  steps_5:
+    value: 5.0
+    formula: null
+  steps_10:
+    value: 10.0
+    formula: null
+  steps_20:
+    value: 20.0
+    formula: null
+  steps_50:
+    value: 50.0
+    formula: null
+  steps_100:
+    value: 100.0
+    formula: null
+
+  # Dynamic Swarm success rates
+  ds_at_5:
+    value: 0.0
+    formula: =POWER(params.ds_effective_accuracy, steps_5)
+  ds_at_10:
+    value: 0.0
+    formula: =POWER(params.ds_effective_accuracy, steps_10)
+  ds_at_20:
+    value: 0.0
+    formula: =POWER(params.ds_effective_accuracy, steps_20)
+  ds_at_50:
+    value: 0.0
+    formula: =POWER(params.ds_effective_accuracy, steps_50)
+  ds_at_100:
+    value: 0.0
+    formula: =POWER(params.ds_effective_accuracy, steps_100)
+
+  # Fixed Independent success rates
+  fi_at_5:
+    value: 0.0
+    formula: =POWER(params.fi_effective_accuracy, steps_5)
+  fi_at_10:
+    value: 0.0
+    formula: =POWER(params.fi_effective_accuracy, steps_10)
+  fi_at_20:
+    value: 0.0
+    formula: =POWER(params.fi_effective_accuracy, steps_20)
+
+  # Fixed Centralized success rates
+  fc_at_5:
+    value: 0.0
+    formula: =POWER(params.fc_effective_accuracy, steps_5)
+  fc_at_10:
+    value: 0.0
+    formula: =POWER(params.fc_effective_accuracy, steps_10)
+  fc_at_20:
+    value: 0.0
+    formula: =POWER(params.fc_effective_accuracy, steps_20)
+
+  # Advantage ratios at 10 steps
+  advantage_vs_independent:
+    value: 0.0
+    formula: =ds_at_10 / fi_at_10
+  advantage_vs_centralized:
+    value: 0.0
+    formula: =ds_at_10 / fc_at_10

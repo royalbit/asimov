@@ -1,0 +1,55 @@
+_forge_version: 5.0.0
+# Shared Agent Architecture Parameters
+# Include in other models with:
+#   _includes:
+#     - file: "agent-params.yaml"
+#       as: "params"
+
+assumptions:
+  # Dynamic Swarm + HITM (research-backed 2024)
+  ds_base_accuracy:
+    value: 0.97
+    formula: null
+  ds_detection_rate:
+    value: 0.75
+    formula: null
+  ds_fix_rate:
+    value: 0.90
+    formula: null
+  ds_effective_accuracy:
+    value: 0.99025
+    formula: =ds_base_accuracy + (1 - ds_base_accuracy) * ds_detection_rate * ds_fix_rate
+
+  # Fixed Agentic (Independent) - LangChain/CrewAI/AutoGen
+  fi_base_accuracy:
+    value: 0.80
+    formula: null
+  fi_overhead:
+    value: 0.2649
+    formula: null
+  fi_detection_rate:
+    value: 0.40
+    formula: null
+  fi_fix_rate:
+    value: 0.60
+    formula: null
+  fi_effective_accuracy:
+    value: 0.6869
+    formula: =(fi_base_accuracy * (1 - fi_overhead)) + (1 - fi_base_accuracy * (1 - fi_overhead)) * fi_detection_rate * fi_fix_rate
+
+  # Fixed Agentic (Centralized)
+  fc_base_accuracy:
+    value: 0.88
+    formula: null
+  fc_overhead:
+    value: 0.1147
+    formula: null
+  fc_detection_rate:
+    value: 0.55
+    formula: null
+  fc_fix_rate:
+    value: 0.75
+    formula: null
+  fc_effective_accuracy:
+    value: 0.8703
+    formula: =(fc_base_accuracy * (1 - fc_overhead)) + (1 - fc_base_accuracy * (1 - fc_overhead)) * fc_detection_rate * fc_fix_rate

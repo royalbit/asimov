@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/code-ELv2-blue.svg)](LICENSE)
 [![Docs License](https://img.shields.io/badge/docs-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-> **Dynamic Swarm + HITM beats Fixed Agentic by 38x. We have the math.**
+> **Dynamic Swarm + HITM beats Fixed Agentic. We have the math.**
 
 ## The Architecture
 
@@ -162,4 +162,4 @@ asimov update       # Self-update
 
 ---
 
-*Built with [RoyalBit Asimov](https://github.com/royalbit/asimov) — Dynamic Swarm + HITM beats Fixed Agentic by 38x.*
+*Built with [RoyalBit Asimov](https://github.com/royalbit/asimov) — Dynamic Swarm + HITM beats Fixed Agentic.*

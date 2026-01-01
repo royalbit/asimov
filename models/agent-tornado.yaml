@@ -1,0 +1,35 @@
+_forge_version: 5.0.0
+assumptions:
+  base_accuracy:
+    value: 0.97
+    formula: null
+  detection_rate:
+    value: 0.75
+    formula: null
+  fix_rate:
+    value: 0.9
+    formula: null
+  steps:
+    value: 10.0
+    formula: null
+  effective_accuracy:
+    value: 0.99025
+    formula: =base_accuracy + (1 - base_accuracy) * detection_rate * fix_rate
+  success_rate:
+    value: 0.9066684650953614
+    formula: =POWER(effective_accuracy, steps)
+tornado:
+  output: assumptions.success_rate
+  inputs:
+  - name: assumptions.base_accuracy
+    low: 0.9
+    high: 0.99
+  - name: assumptions.detection_rate
+    low: 0.5
+    high: 0.9
+  - name: assumptions.fix_rate
+    low: 0.7
+    high: 0.95
+  - name: assumptions.steps
+    low: 5
+    high: 20
