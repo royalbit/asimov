@@ -1,0 +1,198 @@
+# References Database - RoyalBit Asimov
+# Verified sources for ADRs and documentation
+# Format: category → sources with metadata
+
+rag_vs_long_context:
+  - title: "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study and Hybrid Approach"
+    url: https://arxiv.org/abs/2407.16833
+    authors: ["Zhuowan Li", "Cheng Li", "Mingyang Zhang", "Qiaozhu Mei", "Michael Bendersky"]
+    organization: Google DeepMind / University of Michigan
+    date: 2024-07
+    key_finding: "LC outperforms RAG by 3.6-13.1% depending on model"
+
+  - title: "Long Context vs. RAG for LLMs: An Evaluation and Revisits"
+    url: https://arxiv.org/abs/2501.01880
+    authors: ["Xinze Li", "Yixin Cao", "Yubo Ma", "Aixin Sun"]
+    organization: NTU Singapore
+    date: 2025-01
+    key_finding: "LC generally outperforms RAG in QA, RAG better for dialogue"
+
+  - title: "Long Context RAG Performance of LLMs"
+    url: https://www.databricks.com/blog/long-context-rag-performance-llms
+    organization: Databricks
+    date: 2024-08
+    key_finding: "2000+ experiments, most models degrade after 32-64k tokens"
+
+  - title: "Lost in the Middle: How Language Models Use Long Contexts"
+    url: https://arxiv.org/abs/2307.03172
+    authors: ["Nelson F. Liu", "Kevin Lin", "John Hewitt", "Ashwin Paranjape", "Michele Bevilacqua", "Fabio Petroni", "Percy Liang"]
+    organization: Stanford
+    date: 2024
+    key_finding: "U-shaped performance curve - models struggle with middle-positioned information"
+
+  - title: "Context Rot: How Increasing Input Tokens Impacts LLM Performance"
+    url: https://research.trychroma.com/context-rot
+    organization: Chroma
+    date: 2025
+    key_finding: "Popular LLMs effectively utilize only 10-20% of context"
+
+  - title: "Contextual Retrieval"
+    url: https://www.anthropic.com/news/contextual-retrieval
+    organization: Anthropic
+    date: 2024-09-19
+    key_finding: "Reduces failed retrievals by 49%, with reranking by 67%"
+
+  - title: "RAG vs. Context-Window in GPT-4: accuracy, cost, & latency"
+    url: https://www.copilotkit.ai/blog/rag-vs-context-window-in-gpt-4
+    organization: CopilotKit
+    date: 2024
+    key_finding: "RAG achieves same performance at 4% of the cost"
+
+mcp_overhead:
+  - title: "Code execution with MCP: Building more efficient agents"
+    url: https://www.anthropic.com/engineering/code-execution-with-mcp
+    authors: ["Adam Jones", "Conor Kelly"]
+    organization: Anthropic
+    date: 2025-11-04
+    key_finding: "134K tokens before optimization, 98.7% reduction possible"
+
+  - title: "Mitigating Token Bloat in MCP (SEP-1576)"
+    url: https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1576
+    authors: ["Zeze Chang", "Jinyang Li", "Zhen Cao"]
+    organization: Huawei
+    date: 2025-09-30
+    key_finding: "50-1000 tokens per tool definition"
+
+  - title: "Reducing MCP token usage by 100x"
+    url: https://www.speakeasy.com/blog/how-we-reduced-token-usage-by-100x-dynamic-toolsets-v2
+    author: Chase Crumbaugh
+    organization: Speakeasy
+    date: 2025-11-17
+    key_finding: "90-96% reduction with dynamic toolsets"
+
+  - title: "MCP vs CLI: Benchmarking Tools for Coding Agents"
+    url: https://mariozechner.at/posts/2025-08-15-mcp-vs-cli/
+    author: Mario Zechner
+    date: 2025-08-15
+    key_finding: "MCP and CLI roughly equivalent for complex tasks"
+
+  - title: "MCP Official Specification"
+    url: https://modelcontextprotocol.io/specification/latest
+    organization: Anthropic / Linux Foundation
+    date: 2025-11-25
+    key_finding: "Protocol revision 2025-11-25"
+
+agentic_frameworks:
+  - title: "Benchmarking Multi-Agent Architectures"
+    url: https://blog.langchain.com/benchmarking-multi-agent-architectures/
+    author: Will Fu-Hinthorn
+    organization: LangChain
+    date: 2025-06-11
+    key_finding: "Single agent falls sharply at 2+ distractor domains"
+
+  - title: "Benchmarking Single Agent Performance"
+    url: https://blog.langchain.com/react-agent-benchmarking/
+    organization: LangChain
+    date: 2025-02-10
+    key_finding: "Both more context and more tools degrade agent performance"
+
+  - title: "Context Engineering for Agents"
+    url: https://blog.langchain.com/context-engineering-for-agents/
+    organization: LangChain
+    date: 2025-07-02
+    key_finding: "Four context failure modes identified"
+
+  - title: "Benchmarking Agentic AI Frameworks in Analytics Workflows"
+    url: https://research.aimultiple.com/agentic-analytics/
+    authors: ["Cem Dilmegani", "Nazli Sipi"]
+    organization: AIMultiple
+    date: 2025
+    key_finding: "CrewAI 37% tool success rate, LangGraph 100%"
+
+  - title: "Research shows 'more agents' isn't a reliable path to better enterprise AI"
+    url: https://venturebeat.com/orchestration/research-shows-more-agents-isnt-a-reliable-path-to-better-enterprise-ai
+    organization: VentureBeat
+    date: 2025-12-23
+    key_finding: "17.2x error amplification with independent agents, max 3-4 agents effective"
+
+  - title: "Don't Build Multi-Agents"
+    url: https://cognition.ai/blog/dont-build-multi-agents
+    organization: Cognition (Devin)
+    date: 2025-06
+    key_finding: "All agents should read/write to same context"
+
+dynamic_orchestration:
+  - title: "Building Effective AI Agents"
+    url: https://www.anthropic.com/research/building-effective-agents
+    authors: ["Erik Schluntz", "Barry Zhang"]
+    organization: Anthropic
+    date: 2024-12-19
+    key_finding: "Simple, composable patterns beat complex frameworks"
+
+  - title: "How we built our multi-agent research system"
+    url: https://www.anthropic.com/engineering/multi-agent-research-system
+    authors: ["Jeremy Hadfield", "Barry Zhang", "Kenneth Lien", "Florian Scholz", "Jeremy Fox", "Daniel Ford"]
+    organization: Anthropic
+    date: 2025-06-13
+    key_finding: "90.2% improvement, token usage explains 80% of performance variance"
+
+  - title: "Claude Code Subagents Documentation"
+    url: https://code.claude.com/docs/en/sub-agents
+    organization: Anthropic
+    date: 2025
+    key_finding: "Task tool + subagents architecture"
+
+  - title: "Introducing 100K Context Windows"
+    url: https://www.anthropic.com/news/100k-context-windows
+    organization: Anthropic
+    date: 2023-05
+    key_finding: "Located needle in 72K tokens in 22 seconds"
+
+  - title: "S-Agents: Self-organizing Agents in Open-ended Environments"
+    url: https://arxiv.org/abs/2402.04578
+    authors: ["Jiaqi Chen", "Yuxian Jiang", "Jiachen Lu", "Li Zhang"]
+    date: 2024-02
+    key_finding: "Tree of Agents with dynamic workflow"
+
+  - title: "Multi-Agent Collaboration Mechanisms Survey"
+    url: https://arxiv.org/html/2501.06322v1
+    date: 2025-01
+    key_finding: "Social behaviors autonomously emerge within agent groups"
+
+context_utilization:
+  - title: "Context Fragmentation Costs"
+    url: https://arya.ai/blog/ai-context-fragmentation
+    organization: Arya.ai
+    date: 2025
+    key_finding: "Multi-agent task costing $0.10 can cost $1.50 with context sharing"
+
+  - title: "Context Engineering: Why Agents Fail in Production"
+    url: https://inkeep.com/blog/context-engineering-why-agents-fail
+    organization: Inkeep
+    date: 2025
+    key_finding: "Full-file context: 95% accuracy vs fragmented: 80%"
+
+  - title: "Why Multi-Agent LLM Systems Fail"
+    url: https://orq.ai/blog/why-do-multi-agent-llm-systems-fail
+    organization: Orq.ai
+    date: 2025
+    key_finding: "Lack of shared context results in fragmented logic"
+
+  - title: "Multi-Agent Coordination Failure Mitigation"
+    url: https://galileo.ai/blog/multi-agent-coordination-failure-mitigation
+    organization: Galileo
+    date: 2025
+    key_finding: "Architectural limitations in maintaining shared context"
+
+gemini_extended_context:
+  - title: "Gemini 1.5: Unlocking multimodal understanding across millions of tokens"
+    url: https://arxiv.org/abs/2403.05530
+    organization: Google
+    date: 2024-03
+    key_finding: ">99.7% recall up to 1M tokens, 99.2% at 10M tokens"
+
+  - title: "The Needle in the Haystack Test"
+    url: https://cloud.google.com/blog/products/ai-machine-learning/the-needle-in-the-haystack-test-and-how-gemini-pro-solves-it
+    organization: Google Cloud
+    date: 2024
+    key_finding: "100% accuracy up to 107 hours of audio"
