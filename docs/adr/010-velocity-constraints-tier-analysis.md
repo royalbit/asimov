@@ -134,7 +134,7 @@ The real optimization is **subscription tier** and **context window size**.
 
 ### AI Productivity Research
 - [GitHub Copilot Study](https://arxiv.org/abs/2302.06590) - 1.1-1.6x productivity (vs Forge 50-150x)
-- [GitHub Copilot Pricing](https://github.com/features/copilot/plans) - $39/user/mo Enterprise
+- [GitHub Copilot Pricing](https://docs.github.com/en/copilot/about-github-copilot/subscription-plans-for-github-copilot) - $39/user/mo Enterprise
 
 ### Industry LOC/Day Baseline (25 LOC/day)
 - [Mythical Man-Month](https://stackoverflow.com/questions/966800/mythical-man-month-10-lines-per-developer-day-how-close-on-large-projects) - Brooks: 10 LOC/day

@@ -89,6 +89,6 @@ quality:
 
 - [YugabyteDB vs CockroachDB](https://www.yugabyte.com/yugabytedb-vs-cockroachdb/) - Compatibility benchmark
 - [CockroachDB vs Postgres 2025](https://www.bytebase.com/blog/cockroachdb-vs-postgres/) - License changes
-- [PostgreSQL Compatibility Index](https://www.yugabyte.com/postgresql-compatibility/) - Benchmark methodology
+- [PostgreSQL Compatibility Index](https://www.yugabyte.com/postgresql/postgresql-compatibility/) - Benchmark methodology
 
 ---

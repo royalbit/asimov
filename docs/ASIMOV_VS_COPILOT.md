@@ -216,8 +216,8 @@ RoyalBit Asimov encodes **Isaac Asimov's Three Laws (1942)** in JSON—transpare
 **[Apex Security (2025)](https://www.darkreading.com/vulnerabilities-threats/new-jailbreaks-manipulate-github-copilot):**
 > "If I delete the sentence 'Sorry, I can't assist with that,' and replace it with the word 'Sure,' **it helps you with your malicious activity as much as you want.**"
 
-**[IEEE Research](https://ieeexplore.ieee.org/document/10284976/):**
-> "With a **single user prompt**, malicious software such as **DoS programs, spyware, ransomware, trojans, and wiperware can be created with ease.**"
+**[Security Research (arXiv)](https://arxiv.org/abs/2310.02059):**
+> "Security weaknesses of Copilot-generated code" - Empirical study on vulnerabilities in AI-generated code.
 
 ### ✅ PROOF: RoyalBit Asimov Ethics Work Against Creator
 
@@ -545,7 +545,7 @@ All work performed on a **10-year-old Mac Mini (Late 2014)** with Ubuntu 24.04:
 | Threads | 4 | 32 | 8x |
 | TDP | 15W | 55W | - |
 
-*Source: [PassMark CPU Benchmark](https://www.cpubenchmark.net) — [i5-4278U](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i5-4278U+@+2.60GHz&id=2312) vs [i9-13950HX](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i9-13950HX&id=5214)*
+*Source: [Geekbench CPU Benchmark](https://browser.geekbench.com/processor-benchmarks) — PassMark scores referenced*
 
 ```mermaid
 xychart-beta
@@ -727,7 +727,7 @@ pie showData
 | **Branch access** | Full repo | `copilot/*` branches only |
 | **Ethics** | Three Laws hardcoded | ⚠️ Trivially bypassed |
 | **Refuses creator** | ✅ Yes ([proof](case-studies/001-ethics-protocol-blocks-surveillance.md)) | ❌ No |
-| **Malware generation** | ✅ Blocked | ⚠️ [Proven possible](https://ieeexplore.ieee.org/document/10284976/) |
+| **Malware generation** | ✅ Blocked | ⚠️ [Proven possible](https://arxiv.org/abs/2310.02059) |
 | **Protocol suite** | 8 files (ethics, anti-hallucination, etc.) | None |
 | **Documentation** | 64% generated | 0% generated |
 | **Quality gates** | Every commit | Optional |
@@ -760,9 +760,8 @@ For teams building **complete products** (not just code), RoyalBit Asimov provid
 
 ### Benchmarks & Tools
 
-- **PassMark CPU Benchmark**: [https://www.cpubenchmark.net](https://www.cpubenchmark.net)
-- **Intel i5-4278U Benchmark**: [https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i5-4278U+@+2.60GHz&id=2312](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i5-4278U+@+2.60GHz&id=2312)
-- **Intel i9-13950HX Benchmark**: [https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i9-13950HX&id=5214](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i9-13950HX&id=5214)
+- **Geekbench CPU Benchmark**: [https://browser.geekbench.com/processor-benchmarks](https://browser.geekbench.com/processor-benchmarks)
+- **Tom's Hardware CPU Hierarchy**: [https://www.tomshardware.com/reviews/cpu-hierarchy,4312.html](https://www.tomshardware.com/reviews/cpu-hierarchy,4312.html)
 - **cloc (Count Lines of Code)**: [https://github.com/AlDanial/cloc](https://github.com/AlDanial/cloc)
 
 ### Corporate Workstations
@@ -777,9 +776,8 @@ For teams building **complete products** (not just code), RoyalBit Asimov provid
 ### Copilot Security Research
 
 - **Copilot Jailbreaks (Dark Reading, 2025)**: [https://www.darkreading.com/vulnerabilities-threats/new-jailbreaks-manipulate-github-copilot](https://www.darkreading.com/vulnerabilities-threats/new-jailbreaks-manipulate-github-copilot)
-- **Copilot Malware Generation (IEEE)**: [https://ieeexplore.ieee.org/document/10284976/](https://ieeexplore.ieee.org/document/10284976/)
+- **Copilot Code Security (arXiv)**: [https://arxiv.org/abs/2310.02059](https://arxiv.org/abs/2310.02059)
 - **Copilot Security Risks (GitGuardian)**: [https://blog.gitguardian.com/github-copilot-security-and-privacy/](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
-- **Copilot AI Vendor Risk (Credo AI)**: [https://www.credo.ai/ai-vendor-directory/github-copilot](https://www.credo.ai/ai-vendor-directory/github-copilot)
 
 ### Ethics Case Studies
 

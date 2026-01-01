@@ -125,8 +125,8 @@ quality:
 
 ## References
 
-- [Redis Streams Documentation](https://redis.io/docs/data-types/streams/)
+- [Redis Streams Documentation](https://redis.io/docs/latest/develop/data-types/streams/)
 - [redis-rs crate](https://docs.rs/redis) - Rust async client
-- [Consumer Groups Tutorial](https://redis.io/docs/data-types/streams-tutorial/)
+- [Consumer Groups Tutorial](https://redis.io/docs/latest/develop/data-types/streams/#consumer-groups)
 
 ---

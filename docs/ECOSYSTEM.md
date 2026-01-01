@@ -218,7 +218,7 @@ Solo senior dev: 3-4 months (~500 hours) → With RoyalBit Asimov: ~38 hours = *
 | Productivity | 1.1-1.6x | **50-150x** | [arXiv:2302.06590](https://arxiv.org/abs/2302.06590), git logs |
 | Autonomy | Autocomplete | Ships releases | Verified |
 | Self-hosting | No | **Yes** | This repo |
-| Cost | $39/user/mo | **R&D (not available)** | [GitHub pricing](https://github.com/features/copilot/plans) |
+| Cost | $39/user/mo | **R&D (not available)** | [GitHub Copilot Plans](https://docs.github.com/en/copilot/about-github-copilot/subscription-plans-for-github-copilot) |
 
 ## Green Coding
 
