@@ -515,7 +515,7 @@ posts:
     x: 2026-01-01T03:08:48.000743448+00:00
     linkedin: 2026-01-01T03:12:48.773723454+00:00
 - id: hitm-vs-fixed-multiagent
-  title: "HITM Swarm vs Fixed Multi-Agent - The Math"
+  title: HITM Swarm vs Fixed Multi-Agent - The Math
   url: https://github.com/royalbit/asimov/blob/main/docs/adr/056-extended-thinking-vs-rag-agentic.md
   x: |
     🚨 Fixed multi-agent AI collapses at 10+ steps. HITM swarm orchestration doesn't.
@@ -524,12 +524,12 @@ posts:
 
     The results:
 
-    At 10 steps (typical complex task):
+    At 10 steps - typical complex task:
     → Dynamic Swarm + HITM: 90.7% success
     → Fixed Multi-Agent: 2.3% success
     → Gap: 39x
 
-    At 20 steps (large feature):
+    At 20 steps - large feature:
     → Dynamic Swarm + HITM: 82.2% success
     → Fixed Multi-Agent: 0.05% success
     → Gap: 1,502x
@@ -545,12 +545,12 @@ posts:
 
     Context quality matters 5x more than error correction.
 
-    Full context (200K tokens): 97% base accuracy
+    Full context - 200K tokens: 97% base accuracy
     Fragmented context: 80% base accuracy
 
     That 17% gap compounds exponentially. By step 10, game over.
 
-    Human oversight isn't a bottleneck—it's 74% fewer cascading errors (Google/MIT 2024).
+    Human oversight isn't a bottleneck—it's 74% fewer cascading errors - Google/MIT 2024.
 
     We open-sourced everything. Validate yourself:
 
@@ -570,12 +570,12 @@ posts:
 
     The results:
 
-    At 10 steps (typical complex task):
+    At 10 steps - typical complex task:
     • Dynamic Swarm + HITM: 90.7% success
     • Fixed Multi-Agent: 2.3% success
     • Gap: 39x
 
-    At 20 steps (large feature):
+    At 20 steps - large feature:
     • Dynamic Swarm + HITM: 82.2% success
     • Fixed Multi-Agent: 0.05% success
     • Gap: 1,502x
@@ -591,12 +591,12 @@ posts:
 
     Context quality matters 5x more than error correction.
 
-    • Full context (200K tokens): 97% base accuracy
+    • Full context - 200K tokens: 97% base accuracy
     • Fragmented context: 80% base accuracy
 
     That 17% gap compounds exponentially. By step 10, game over.
 
-    Human oversight isn't a bottleneck—it's 74% fewer cascading errors (Google/MIT 2024).
+    Human oversight isn't a bottleneck—it's 74% fewer cascading errors - Google/MIT 2024.
 
     We open-sourced everything. Validate yourself:
 
@@ -610,4 +610,6 @@ posts:
     The math doesn't lie.
 
     #AI #Agents #MultiAgent #SoftwareEngineering #Research
-  posted: null
+  posted:
+    x: 2026-01-01T08:14:17.928776981+00:00
+    linkedin: 2026-01-01T08:15:24.537486845+00:00
