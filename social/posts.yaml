@@ -1,0 +1,265 @@
+posts:
+- id: adr-054-brooks-law
+  title: Brooks' Law for AI Agents
+  url: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+  x: |
+    Brooks' Law applies to AI agents.
+
+    4 agents = 6 channels
+    10 agents = 45 channels
+
+    Google/MIT: overhead exponent 1.724.
+
+    Worse than quadratic.
+
+    One context beats many agents.
+
+    #AI #Agents
+  linkedin: |
+    Brooks' Law applies to AI agents.
+
+    "Adding manpower to a late software project makes it later." — Fred Brooks, 1975
+
+    The math is brutal:
+    - 4 agents = 6 communication channels (manageable)
+    - 10 agents = 45 channels (chaos)
+    - 20 agents = 190 channels (impossible)
+
+    Google/MIT measured it in December 2024:
+    - Communication overhead scales with exponent 1.724
+    - Maximum effective team size: 3-4 agents
+    - Independent agents show 17.2x error amplification vs single-agent baseline
+
+    This is why LangChain, CrewAI, and other "agentic frameworks" hit a wall.
+
+    They fragment context across agents. Each agent gets 8-32k tokens. They coordinate through external infrastructure—state machines, message queues, databases.
+
+    Every handoff loses information. Every coordination point adds latency. Every agent has a different view of the problem.
+
+    The alternative: One large context (200k+ tokens) where AI decides when to spawn agents.
+
+    Context IS the coordination layer.
+
+    No serialization. No translation errors. No "telephone game" between agents.
+
+    The research is clear. We documented it with 50+ verified references.
+
+    https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+
+    #AI #Agents #SoftwareEngineering #LangChain #MultiAgent
+  posted: {}
+
+- id: adr-054-cognition-quote
+  title: Cognition Agrees
+  url: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+  x: |
+    "In 2025, running multiple agents only results in fragile systems."
+
+    — Cognition (Devin team)
+
+    They built the hype.
+    They're saying don't.
+
+    One context beats many agents.
+
+    #AI #Devin
+  linkedin: |
+    When your competitor validates your thesis.
+
+    Cognition—the team behind Devin, the most hyped AI coding agent—published this:
+
+    "In 2025, running multiple agents in collaboration only results in fragile systems. The decision-making ends up being too dispersed and context isn't able to be shared thoroughly enough between the agents."
+
+    Their recommendation:
+    1. All agents should read from the same context
+    2. All agents should write to the same context
+
+    This is exactly what we've been building with RoyalBit Asimov.
+
+    Not fixed agent topologies. Not pre-defined roles.
+
+    One large context (200k+ tokens) where the AI sees everything and decides when parallelization benefit exceeds coordination cost.
+
+    The research backs it up:
+    - Full-file context: 95% accuracy
+    - Fragmented retrieval: 80% accuracy
+
+    That 15% gap is the difference between shipping and debugging.
+
+    Cognition learned it the hard way. The research confirms it. The math proves it.
+
+    One context beats many agents.
+
+    Source: https://cognition.ai/blog/dont-build-multi-agents
+    Our research: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+
+    #AI #Agents #Devin #SoftwareEngineering #MultiAgent
+  posted: {}
+
+- id: adr-054-accuracy-gap
+  title: 95% vs 80%
+  url: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+  x: |
+    Full context: 95% accuracy.
+    Fragmented: 80% accuracy.
+
+    SWE-bench finding.
+
+    The difference? Coherence.
+
+    Full = relationships.
+    Fragments = stitching.
+
+    One context beats many agents.
+
+    #AI #SWEbench
+  linkedin: |
+    The number that should change how you think about AI agents.
+
+    On SWE-bench-Verified:
+    - Full-file context: 95% accuracy
+    - Fragmented retrieval: 80% accuracy
+
+    15 percentage points. Same task. Same model. Different architecture.
+
+    The difference comes from coherence.
+
+    With full files, the model sees relationships across the entire document. Variable definitions. Function calls. Import statements. The whole picture.
+
+    With fragmented retrieval (RAG, multi-agent handoffs), the model stitches together disjointed pieces. Context is lost at every boundary. Relationships are severed.
+
+    This is why multi-agent systems struggle with complex reasoning.
+
+    Agent A sees the function signature.
+    Agent B sees the implementation.
+    Agent C sees the tests.
+
+    None of them see the whole.
+
+    The "Rule of 4" from Google/MIT research:
+    - Maximum effective team size: 3-4 agents
+    - Beyond that, coordination overhead dominates
+    - 17.2x error amplification with independent agents
+
+    The solution isn't better coordination infrastructure.
+
+    The solution is not fragmenting context in the first place.
+
+    One 200k-token context. AI decides when to spawn agents. Context IS the coordination layer.
+
+    https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+
+    #AI #SWEbench #Coding #SoftwareEngineering #Agents
+  posted: {}
+
+- id: adr-054-one-liner
+  title: One Context Beats Many Agents
+  url: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+  x: |
+    One context beats many agents.
+
+    Research:
+    - 95% vs 80% (SWE-bench)
+    - 17.2x error rate (Google/MIT)
+    - Max 3-4 agents (Rule of 4)
+
+    50+ references in ADR-054.
+
+    #AI #Agents
+  linkedin: |
+    One context beats many agents. The research proves it.
+
+    We spent a week gathering hard data on agentic AI architectures. 50+ verified references. Real benchmarks. Peer-reviewed research.
+
+    The findings:
+
+    1. Brooks' Law applies to AI agents
+    Communication overhead = N × (N-1) / 2
+    Google/MIT measured: exponent 1.724 (worse than quadratic)
+
+    2. Full context crushes fragmented
+    SWE-bench-Verified: 95% vs 80% accuracy
+    The 15% gap is coherence—relationships across the whole, not stitched fragments
+
+    3. The Rule of 4
+    Maximum effective team size: 3-4 agents
+    Beyond that, coordination overhead dominates performance gains
+
+    4. Multi-agent token overhead
+    Anthropic's own research: 15x more tokens than single-agent chat
+    Token usage explains 80% of performance variance
+
+    5. Cognition (Devin) agrees
+    "In 2025, running multiple agents in collaboration only results in fragile systems."
+
+    The implication:
+
+    LangChain, CrewAI, AutoGen—they're engineering complexity around a fundamental limitation. Fragmenting context to work within smaller windows. Building coordination infrastructure to reconnect what should never have been separated.
+
+    The alternative: One large context (200k+ tokens). AI decides when to spawn agents. Context IS the coordination layer.
+
+    O(1) coordination vs O(n^1.724).
+
+    The math doesn't lie.
+
+    Full research: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+
+    #AI #Agents #SoftwareEngineering #Research #LangChain #MultiAgent
+  posted: {}
+
+- id: adr-054-rag-vs-context
+  title: RAG is Losing
+  url: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+  x: |
+    Long context outperforms RAG by 7-13%.
+
+    Google DeepMind, July 2024:
+    - GPT-4O: +13.1%
+    - Gemini-1.5-Pro: +7.6%
+
+    RAG is 25x cheaper.
+    But loses on multi-step reasoning, implicit queries, general questions.
+
+    When accuracy matters, use the context window.
+
+    #AI #RAG #LLM
+  linkedin: |
+    RAG was a workaround for small context windows. The workaround is becoming obsolete.
+
+    Google DeepMind, July 2024:
+    - Long context outperforms RAG by 7-13% on average
+    - GPT-4O: +13.1% with full context
+    - Gemini-1.5-Pro: +7.6% with full context
+
+    RAG failure patterns (from the research):
+    1. Multi-step reasoning: Query requires previous step results for retrieval
+    2. General queries: Too vague for effective retrieval
+    3. Implicit queries: Requires holistic context understanding
+    4. Long/complex queries: Challenging for retriever to parse
+
+    The cost trade-off:
+    - RAG: 4% of long-context cost
+    - Long context: 25x more expensive
+
+    But here's the thing:
+
+    For code understanding, the accuracy gap is 95% vs 80% (SWE-bench).
+
+    That 15% is the difference between shipping and debugging for hours.
+
+    For high-value tasks—code generation, complex reasoning, multi-step analysis—the 25x cost premium pays for itself in accuracy and developer time.
+
+    RAG still wins for:
+    - Dynamic/frequently updated data
+    - Cost-sensitive applications
+    - Simple lookups
+
+    But for reasoning? For code? For complex analysis?
+
+    Use the context window.
+
+    Research: https://arxiv.org/abs/2407.16833
+    Our analysis: https://github.com/royalbit/asimov/blob/main/docs/adr/054-dynamic-swarm-vs-fixed-agentic-frameworks.md
+
+    #AI #RAG #LLM #SoftwareEngineering #Research
+  posted: {}
