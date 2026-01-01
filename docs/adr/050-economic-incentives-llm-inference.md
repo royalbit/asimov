@@ -151,14 +151,96 @@ Source: [Stop LLM Hallucinations](https://masterofcode.com/blog/hallucinations-i
 - Economic pressures will continue as AI companies seek profitability
 - Users can make informed choices about when to request deeper analysis
 
-## Mitigation Strategies (To Be Researched)
+## Mitigation Strategies (Researched 2025-12-31)
 
-1. **Explicit thoroughness requests** in prompts
-2. **Extended thinking** features (when available)
-3. **Chain-of-thought prompting** to force deeper reasoning
-4. **Response length requirements** in system prompts
-5. **Multi-turn verification** of important answers
-6. **Protocol-level instructions** requiring comprehensive responses
+### 1. Anti-Underthinking Prompts
+
+Research shows LLMs use **225% more tokens** on incorrect answers due to **418% more frequent thought-switching** (arXiv:2501.18585). Counter with:
+
+```
+When exploring a solution approach, commit to it thoroughly before
+considering alternatives. If you find a promising path, follow it
+to completion before switching strategies. Avoid premature abandonment
+of reasoning paths.
+```
+
+### 2. "Wait" Token Self-Verification
+
+The s1 paper (January 2025) shows appending "Wait" tokens prompts self-reflection:
+
+```
+After reaching an initial answer, pause and ask yourself:
+"Wait, let me verify this. Have I considered all aspects?
+Let me double-check my reasoning..."
+```
+
+### 3. Explicit Length and Depth Requirements
+
+Specify minimum requirements to overcome token-saving behaviors:
+
+```
+Provide a comprehensive analysis including:
+1) Background context (minimum 300 words)
+2) Detailed analysis (minimum 500 words)
+3) Supporting examples (at least 3)
+4) Potential counterarguments
+5) Synthesis and conclusions
+```
+
+### 4. Chain-of-Thought Forcing
+
+Include explicit reasoning instructions:
+
+```
+Think step by step. Before providing your final answer:
+1. Break down the problem into components
+2. Address each component systematically
+3. Show your reasoning at each step
+4. Verify your conclusions
+```
+
+### 5. Verbosity Signaling
+
+Use complexity markers that signal need for thorough responses:
+- "deep dive", "comprehensive", "analyze", "evaluate", "assess", "research"
+- GPT-5 uses internal verbosity scales (1-10, default 3) - explicitly request higher
+
+### 6. Detection Methods
+
+**Underthinking Score**: `1 - (tokens_to_first_correct_thought / total_tokens)`
+
+High scores indicate shallow exploration. Monitor for:
+- Excessive transition words ("alternatively", "on the other hand")
+- Premature thought-switching without deep exploration
+- Redundant filler vs. substantive content ratio
+
+### 7. LLM-as-a-Judge Evaluation
+
+Use a separate LLM to evaluate response quality:
+
+```python
+evaluation_prompt = """
+Evaluate the following response for:
+1. Depth of analysis (1-10)
+2. Evidence of reasoning steps shown (1-10)
+3. Consideration of alternatives/edge cases (1-10)
+4. Premature conclusions without justification (yes/no)
+"""
+```
+
+### 8. Multi-Agent Techniques
+
+- **Multi-Agent Debate**: Multiple model instances critique and refine answers
+- **Sequential Voting**: Stop only when answer is repeated N times
+- **Forest-of-Thought**: Think along several paths simultaneously
+
+### 9. Model Parameters
+
+| Setting | Effect | Use Case |
+|---------|--------|----------|
+| Temperature 0.1-0.3 | More deterministic | Factual Q&A |
+| Temperature 0.5-0.8 | Balanced exploration | Reasoning tasks |
+| High max_tokens | Prevents truncation | All tasks |
 
 ## References
 
@@ -185,6 +267,16 @@ Source: [Stop LLM Hallucinations](https://masterofcode.com/blog/hallucinations-i
 - [Claude Code Issue #600](https://github.com/anthropics/claude-code/issues/600)
 - [Anthropic Pricing](https://www.anthropic.com/pricing)
 - [OpenAI Cost Optimization Guide](https://platform.openai.com/docs/guides/cost-optimization)
+
+### Countermeasures Research (Added 2025-12-31)
+
+- [Harnessing the Reasoning Economy Survey (arXiv)](https://arxiv.org/abs/2503.24377)
+- [Thoughts Are All Over the Place: Underthinking (arXiv)](https://arxiv.org/abs/2501.18585)
+- [Stop Overthinking Survey (arXiv)](https://arxiv.org/abs/2503.16419)
+- [How to Get Better Outputs from LLMs (NVIDIA)](https://developer.nvidia.com/blog/how-to-get-better-outputs-from-your-large-language-model/)
+- [State of LLM Reasoning (Sebastian Raschka)](https://magazine.sebastianraschka.com/p/state-of-llm-reasoning-and-inference-scaling)
+- [LLM Evaluation Metrics (Confident AI)](https://www.confident-ai.com/blog/llm-evaluation-metrics-everything-you-need-for-llm-evaluation)
+- [OptimalThinkingBench (arXiv)](https://arxiv.org/html/2508.13141v1)
 
 ### Related ADRs
 

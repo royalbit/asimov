@@ -196,3 +196,234 @@ gemini_extended_context:
     organization: Google Cloud
     date: 2024
     key_finding: "100% accuracy up to 107 hours of audio"
+
+# LLM Harmful Behavior Countermeasures (ADR-050, ADR-051)
+# Added: 2025-12-31
+
+economic_incentive_countermeasures:
+  - title: "Harnessing the Reasoning Economy: A Survey of Efficient Reasoning for Large Language Models"
+    url: https://arxiv.org/abs/2503.24377
+    date: 2025-03
+    key_finding: "LRMs waste resources on overthinking while underthinking complex questions"
+
+  - title: "Thoughts Are All Over the Place: On the Underthinking of o1-Like LLMs"
+    url: https://arxiv.org/abs/2501.18585
+    date: 2025-01
+    key_finding: "225% more tokens on incorrect answers, 418% more thought-switching"
+
+  - title: "Do Not Think That Much for 2+3! Tempering Reasoning Efficiency of LLMs"
+    url: https://arxiv.org/abs/2503.16419
+    date: 2025-03
+    key_finding: "Survey on stopping LLM overthinking"
+
+  - title: "How to Get Better Outputs from Your Large Language Model"
+    url: https://developer.nvidia.com/blog/how-to-get-better-outputs-from-your-large-language-model/
+    organization: NVIDIA
+    date: 2024
+    key_finding: "Chain-of-thought prompting and temperature tuning strategies"
+
+  - title: "State of LLM Reasoning and Inference Scaling"
+    url: https://magazine.sebastianraschka.com/p/state-of-llm-reasoning-and-inference-scaling
+    author: Sebastian Raschka
+    date: 2025
+    key_finding: "s1 paper: 'Wait' tokens improve self-verification"
+
+  - title: "LLM Evaluation Metrics: Everything You Need for LLM Evaluation"
+    url: https://www.confident-ai.com/blog/llm-evaluation-metrics-everything-you-need-for-llm-evaluation
+    organization: Confident AI
+    date: 2025
+    key_finding: "LLM-as-a-judge evaluation framework"
+
+  - title: "OptimalThinkingBench: Benchmarking LLM Reasoning Economy"
+    url: https://arxiv.org/html/2508.13141v1
+    date: 2025-08
+    key_finding: "Benchmark for measuring reasoning efficiency"
+
+  - title: "OverThink: Slowdown Attacks on Reasoning LLMs"
+    url: https://arxiv.org/abs/2502.02542
+    date: 2025-02
+    key_finding: "Adversarial attacks exploit reasoning inefficiency"
+
+system_prompt_override_countermeasures:
+  - title: "The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions"
+    url: https://arxiv.org/abs/2404.13208
+    organization: OpenAI
+    date: 2024-04
+    key_finding: "63% better resistance to attacks with hierarchy-aware training"
+
+  - title: "LLM Prompt Injection Prevention Cheat Sheet"
+    url: https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html
+    organization: OWASP
+    date: 2025
+    key_finding: "Comprehensive defense strategies for prompt injection"
+
+  - title: "Defending Against Indirect Prompt Injection Attacks With Spotlighting"
+    url: https://arxiv.org/abs/2403.14720
+    organization: Microsoft
+    date: 2024-03
+    key_finding: "Datamarking reduces attack success from >50% to <2%"
+
+  - title: "Instruction Hierarchy in LLMs"
+    url: https://ylanglabs.com/blogs/instruction-hierarchy-in-llms
+    organization: Ylang Labs
+    date: 2024
+    key_finding: "Four-tier priority hierarchy documentation"
+
+  - title: "Securing LLM Systems Against Prompt Injection"
+    url: https://developer.nvidia.com/blog/securing-llm-systems-against-prompt-injection/
+    organization: NVIDIA AI Red Team
+    date: 2024
+    key_finding: "Treat all LLM outputs as potentially malicious"
+
+  - title: "Why LLMs Fail in Multi-Turn Conversations and How to Fix It"
+    url: https://www.prompthub.us/blog/why-llms-fail-in-multi-turn-conversations-and-how-to-fix-it
+    organization: PromptHub
+    date: 2025
+    key_finding: "40% performance drop in multi-turn vs single-turn"
+
+  - title: "LLMs Get Lost In Multi-Turn Conversation"
+    url: https://arxiv.org/abs/2505.06120
+    date: 2025-05
+    key_finding: "Models lock-in on early mistakes"
+
+  - title: "AutoDefense: Multi-Agent LLM Defense against Jailbreak Attacks"
+    url: https://arxiv.org/abs/2403.04783
+    date: 2024-03
+    key_finding: "Multi-agent approach to defense"
+
+  - title: "Context Engineering in LLM-Based Agents"
+    url: https://jtanruan.medium.com/context-engineering-in-llm-based-agents-d670d6b439bc
+    date: 2025
+    key_finding: "Dynamic state injection techniques"
+
+sycophancy_countermeasures:
+  - title: "Sycophancy in Large Language Models: Causes and Mitigations"
+    url: https://arxiv.org/abs/2411.15287
+    date: 2024-11
+    key_finding: "Comprehensive survey of sycophancy causes and fixes"
+
+  - title: "Towards Understanding Sycophancy in Language Models"
+    url: https://www.anthropic.com/research/towards-understanding-sycophancy-in-language-models
+    organization: Anthropic
+    date: 2023
+    key_finding: "RLHF-trained models consistently exhibit sycophancy"
+
+  - title: "Sycophancy is the first LLM dark pattern"
+    url: https://www.seangoedecke.com/ai-sycophancy/
+    author: Sean Goedecke
+    date: 2024
+    key_finding: "Sycophancy as systematic design flaw"
+
+  - title: "Understanding Sycophancy in LLMs"
+    url: https://www.giskard.ai/knowledge/when-your-ai-agent-tells-you-what-you-want-to-hear-understanding-sycophancy-in-llms
+    organization: Giskard
+    date: 2024
+    key_finding: "Detection and mitigation strategies"
+
+  - title: "How to Make ChatGPT Brutally Honest"
+    url: https://medium.com/@MyDigitalMusings/how-to-make-chatgpt-brutally-honest-a59584cd5cb8
+    date: 2024
+    key_finding: "Practical anti-sycophancy prompts"
+
+  - title: "Stop Being So Nice: How to Avoid AI Complacency"
+    url: https://jokiruiz.com/software/stop-being-so-nice-how-to-avoid-ai-complacency-in-chatgpt-and-beyond/
+    author: Joki Ruiz
+    date: 2024
+    key_finding: "Devil's advocate and third-person techniques"
+
+  - title: "Detecting and Evaluating Sycophancy Bias"
+    url: https://huggingface.co/blog/Rakshit122/sycophantic-ai
+    organization: Hugging Face
+    date: 2024
+    key_finding: "Benchmark methodologies for sycophancy detection"
+
+  - title: "SycEval: Evaluating LLM Sycophancy"
+    url: https://arxiv.org/abs/2502.08177
+    date: 2025-02
+    key_finding: "58% sycophancy rate across major models"
+
+  - title: "ELEPHANT: Measuring Social Sycophancy in LLMs"
+    url: https://arxiv.org/abs/2505.13995
+    date: 2025-05
+    key_finding: "Open-ended sycophancy evaluation benchmark"
+
+  - title: "Findings from Anthropic-OpenAI Alignment Evaluation"
+    url: https://alignment.anthropic.com/2025/openai-findings/
+    organization: Anthropic
+    date: 2025
+    key_finding: "Joint evaluation confirms sycophancy in all models"
+
+  - title: "Simple synthetic data reduces sycophancy in large language models"
+    url: https://arxiv.org/abs/2308.03958
+    organization: Google Research
+    date: 2023-08
+    key_finding: "Training-level mitigation via synthetic data"
+
+output_verification:
+  - title: "LLM Hallucinations in 2025: How to Understand and Tackle AI's Most Persistent Quirk"
+    url: https://www.lakera.ai/blog/guide-to-hallucinations-in-large-language-models
+    organization: Lakera
+    date: 2025
+    key_finding: "Comprehensive guide to hallucination mitigation"
+
+  - title: "SafetyNet: Detecting Harmful Outputs in LLMs"
+    url: https://arxiv.org/abs/2505.14300
+    date: 2025-05
+    key_finding: "96% accuracy in detecting harmful outputs"
+
+  - title: "Detecting hallucinations in large language models using semantic entropy"
+    url: https://www.nature.com/articles/s41586-024-07421-0
+    organization: Nature
+    date: 2024
+    key_finding: "AUROC 0.790 for hallucination detection via semantic entropy"
+
+  - title: "Hallucination Detection in LLMs with Metamorphic Relations (MetaQA)"
+    url: https://arxiv.org/abs/2502.15844
+    date: 2025-02
+    key_finding: "Self-contained detection requiring no external resources"
+
+  - title: "OpenFactCheck: Building Customized Fact-Checking Systems"
+    url: https://arxiv.org/abs/2405.05583
+    date: 2024-05
+    key_finding: "90%+ claims factually correct, but logical failures persist"
+
+  - title: "Prevent factual errors from LLM hallucinations with Automated Reasoning"
+    url: https://aws.amazon.com/blogs/aws/prevent-factual-errors-from-llm-hallucinations-with-mathematically-sound-automated-reasoning-checks-preview/
+    organization: AWS
+    date: 2024-12
+    key_finding: "Mathematical logic-based verification"
+
+  - title: "10 LLM Security Tools to Know in 2025"
+    url: https://www.pynt.io/learning-hub/llm-security/10-llm-security-tools-to-know
+    organization: Pynt
+    date: 2025
+    key_finding: "Overview of LLM Guard, Garak, Rebuff, Vigil"
+
+  - title: "LLM cross-validation frameworks: Mitigating hallucinations"
+    url: https://journalwjaets.com/node/800
+    organization: World Journal of Advanced Engineering
+    date: 2025
+    key_finding: "Dual-LLM verification reduces hallucinations by 86%"
+
+  - title: "A scalable framework for evaluating multiple language models"
+    url: https://www.nature.com/articles/s41598-025-15203-5
+    organization: Scientific Reports
+    date: 2025
+    key_finding: "Cross-provider validation framework"
+
+  - title: "DarkPatterns-LLM: A Multi-Layer Benchmark"
+    url: https://arxiv.org/abs/2512.22470
+    date: 2025-12
+    key_finding: "Seven harm categories diagnostic framework"
+
+  - title: "OWASP Top 10 for LLMs 2025"
+    url: https://www.invicti.com/blog/web-security/owasp-top-10-risks-llm-security-2025
+    organization: Invicti
+    date: 2025
+    key_finding: "Updated LLM security risks"
+
+  - title: "LLM Guard - Open Source Security Toolkit"
+    url: https://github.com/protectai/llm-guard
+    organization: Protect AI
+    license: MIT
+    key_finding: "Prompt injection detection and output sanitization"
