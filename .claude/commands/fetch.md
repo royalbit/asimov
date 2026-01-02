@@ -1,8 +1,8 @@
-Use ref-tools to fetch URLs via headless Chrome (bypasses bot protection).
+Use ref to fetch URLs via headless Chrome (bypasses bot protection).
 
 Execute via Bash:
 ```
-ref-tools fetch $ARGUMENTS
+ref fetch $ARGUMENTS
 ```
 
 Parse the JSON output and provide a summary of:
@@ -11,9 +11,9 @@ Parse the JSON output and provide a summary of:
 3. Main content summary
 4. Any errors encountered
 
-If ref-tools is not installed, inform the user:
+If ref is not installed, inform the user:
 ```
-ref-tools not found. Install with:
+ref not found. Install with:
   cargo install --path ~/src/pimp/tools
   # or download from releases
 ```

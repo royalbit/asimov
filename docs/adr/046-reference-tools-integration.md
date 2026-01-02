@@ -25,9 +25,9 @@ Modern websites block automated requests:
 
 ## Decision
 
-### Integrate ref-tools as `asimov ref`
+### Integrate ref as `asimov ref`
 
-Add headless Chrome-based URL verification and data extraction via the `ref-tools` binary:
+Add headless Chrome-based URL verification and data extraction via the `ref` binary:
 
 ```bash
 # Link checking
@@ -45,13 +45,13 @@ asimov ref data --filter instagram # Filter by extractor type
 ### Architecture
 
 ```
-asimov-plus ──delegates to──> ref-tools ──uses──> chromiumoxide (headless Chrome)
+asimov-plus ──delegates to──> ref ──uses──> chromiumoxide (headless Chrome)
 ```
 
 **Why delegation instead of library integration?**
-1. ref-tools has heavy dependencies (chromiumoxide, tokio async runtime)
+1. ref has heavy dependencies (chromiumoxide, tokio async runtime)
 2. Keeps asimov-plus lean (CLI wrapper architecture per ADR-008)
-3. ref-tools can be used standalone
+3. ref can be used standalone
 4. Chrome browser required anyway (not portable)
 
 ### Output Format
@@ -87,15 +87,15 @@ asimov-plus ──delegates to──> ref-tools ──uses──> chromiumoxide 
 
 ```
 $ asimov ref check --url https://example.com
-Error: ref-tools not found in PATH.
+Error: ref not found in PATH.
 
 Install: cargo install --path ~/src/pimp/tools
-Or: https://github.com/royalbit/ref-tools/releases
+Or: https://github.com/royalbit/ref/releases
 ```
 
 ### Requirements
 
-1. **ref-tools binary** - Must be in PATH
+1. **ref binary** - Must be in PATH
 2. **Chrome/Chromium** - Headless Chrome for browser automation
 
 ## Implementation
@@ -158,7 +158,7 @@ enum RefCmd {
 
 ### Neutral
 
-1. **Optional feature** - Only activated when ref-tools is installed
+1. **Optional feature** - Only activated when ref is installed
 2. **Graceful degradation** - Clear error message if not available
 
 ## Testing
@@ -169,7 +169,7 @@ cargo test test_ref_help
 cargo test test_ref_check_help
 cargo test test_ref_data_help
 
-# Integration tests (require ref-tools + Chrome)
+# Integration tests (require ref + Chrome)
 cargo test test_ref_check_single_url --ignored
 cargo test test_ref_data_single_url --ignored
 ```
@@ -177,7 +177,7 @@ cargo test test_ref_data_single_url --ignored
 ## Related
 
 - [ADR-008: CLI Wrapper Architecture](008-ethics-protocol-humanist-mode.md) - Delegation pattern
-- [pimp/tools](~/src/pimp/tools) - ref-tools source code
+- [pimp/tools](~/src/pimp/tools) - ref source code
 
 ---
 

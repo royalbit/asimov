@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2025-12-31
 **Author:** Claude (Opus 4.5) - Principal Engineer
-**References:** All links verified via ref-tools (headless Chrome) on 2025-12-31
+**References:** All links verified via ref (headless Chrome) on 2025-12-31
 **Supplemented by:** [ADR-055: Balanced Architecture Critique](./055-balanced-architecture-critique.md)
 
 ---
@@ -307,7 +307,7 @@ Instead of external orchestration (databases, message queues, state machines):
 Per ADR-052, use direct CLI invocation for stable tools:
 - Zero standing token overhead
 - On-demand usage only
-- ref-tools for web fetching, not WebFetch
+- ref for web fetching, not WebFetch
 
 ---
 

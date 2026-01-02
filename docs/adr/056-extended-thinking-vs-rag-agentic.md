@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2025-12-31 (Amended 2026-01-01)
 **Author:** Claude (Opus 4.5) - Principal Engineer
-**References:** All links verified via ref-tools (headless Chrome)
+**References:** All links verified via ref (headless Chrome)
 **Supplements:** ADR-054, ADR-055
 
 ---

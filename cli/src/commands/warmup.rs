@@ -44,16 +44,13 @@ pub struct WarmupResult {
 fn detect_tools() -> Vec<ToolInfo> {
     let mut tools = Vec::new();
 
-    // Check for ref-tools
-    if let Ok(output) = std::process::Command::new("which")
-        .arg("ref-tools")
-        .output()
-    {
+    // Check for ref
+    if let Ok(output) = std::process::Command::new("which").arg("ref").output() {
         if output.status.success() {
             let path = String::from_utf8_lossy(&output.stdout).trim().to_string();
 
             // Try to get version
-            let version = std::process::Command::new("ref-tools")
+            let version = std::process::Command::new("ref")
                 .arg("--version")
                 .output()
                 .ok()
@@ -66,10 +63,10 @@ fn detect_tools() -> Vec<ToolInfo> {
                 });
 
             tools.push(ToolInfo {
-                name: "ref-tools".to_string(),
+                name: "ref".to_string(),
                 path,
                 version,
-                directive: "Use `ref-tools fetch <url>` via Bash instead of WebFetch/WebSearch. Bypasses bot protection, outputs structured JSON.".to_string(),
+                directive: "Use `ref fetch <url>` via Bash instead of WebFetch/WebSearch. Bypasses bot protection, outputs structured JSON.".to_string(),
             });
         }
     }
@@ -611,8 +608,8 @@ next:
     #[test]
     fn test_detect_tools_returns_vec() {
         let tools = detect_tools();
-        // Should return a Vec (may be empty if ref-tools not installed)
-        // If ref-tools is installed, should have at least one entry
+        // Should return a Vec (may be empty if ref not installed)
+        // If ref is installed, should have at least one entry
         for tool in &tools {
             assert!(!tool.name.is_empty());
             assert!(!tool.directive.is_empty());

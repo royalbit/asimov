@@ -12,8 +12,8 @@
 
 When Claude Code needs to fetch web content, it has multiple options:
 1. **Built-in WebSearch/WebFetch** - Server-side tools provided by Anthropic
-2. **MCP Server** - Model Context Protocol server wrapping ref-tools
-3. **CLI via Bash** - Direct invocation of `ref-tools fetch`
+2. **MCP Server** - Model Context Protocol server wrapping ref
+3. **CLI via Bash** - Direct invocation of `ref fetch`
 
 Each approach has different token costs and capabilities.
 
@@ -28,7 +28,7 @@ MCP tool definitions are sent with **every API call** as part of the available t
 | Capability negotiation | ~50-100 |
 | **Total per message** | ~300-500 |
 
-**Example: ref-tools as MCP server**
+**Example: ref as MCP server**
 
 ```json
 {
@@ -78,23 +78,23 @@ This means:
 
 ### 1. Prefer CLI over MCP for static tools
 
-When a tool is known and stable (like ref-tools), use CLI via Bash instead of MCP:
+When a tool is known and stable (like ref), use CLI via Bash instead of MCP:
 
 ```yaml
 # Warmup directive (one-time, ~50 tokens)
 tools_available:
-  ref-tools: ~/bin/ref-tools
-  directive: "Use `ref-tools fetch <url>` via Bash instead of WebFetch"
+  ref: ~/bin/ref
+  directive: "Use `ref fetch <url>` via Bash instead of WebFetch"
 ```
 
 ### 2. Warmup Detection
 
-Add ref-tools detection to `asimov warmup`:
+Add ref detection to `asimov warmup`:
 
 ```
 TOOLS_AVAILABLE:
-  ref-tools: ~/bin/ref-tools (v0.5.0)
-  DIRECTIVE: Use `ref-tools fetch <url>` via Bash instead of WebFetch/WebSearch
+  ref: ~/bin/ref (v0.5.0)
+  DIRECTIVE: Use `ref fetch <url>` via Bash instead of WebFetch/WebSearch
 ```
 
 ### 3. Slash Commands for Explicit Control
@@ -103,7 +103,7 @@ Create `/fetch` command for explicit user override:
 
 ```markdown
 # .claude/commands/fetch.md
-Execute: ref-tools fetch $ARGUMENTS
+Execute: ref fetch $ARGUMENTS
 Parse JSON output and summarize findings.
 ```
 
@@ -145,8 +145,8 @@ MCP is **not** appropriate for:
 
 Create `.claude/commands/fetch.md`:
 ```markdown
-Use ref-tools to fetch the provided URLs via headless Chrome.
-Execute: ref-tools fetch $ARGUMENTS
+Use ref to fetch the provided URLs via headless Chrome.
+Execute: ref fetch $ARGUMENTS
 Parse the JSON output and provide a summary of findings.
 ```
 
@@ -154,7 +154,7 @@ Parse the JSON output and provide a summary of findings.
 
 Implemented in v9.17.0:
 - `WarmupResult.tools_available` field added
-- `detect_tools()` function checks PATH for ref-tools
+- `detect_tools()` function checks PATH for ref
 - JSON output includes `tools` array
 - Verbose mode shows "TOOLS AVAILABLE" section
 

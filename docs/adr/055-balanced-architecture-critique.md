@@ -4,7 +4,7 @@
 **Date:** 2025-12-31
 **Author:** Claude (Opus 4.5) - Principal Engineer
 **Supersedes:** None (supplements ADR-054)
-**References:** All links verified via ref-tools (headless Chrome) on 2025-12-31
+**References:** All links verified via ref (headless Chrome) on 2025-12-31
 
 ---
 
