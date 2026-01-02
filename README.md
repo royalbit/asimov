@@ -1,5 +1,7 @@
 # RoyalBit Asimov
 
+> 📌 **R&D Prototype** — Interpret claims as hypotheses, not proven facts.
+
 [![CI](https://github.com/royalbit/asimov/actions/workflows/ci.yml/badge.svg)](https://github.com/royalbit/asimov/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/code-ELv2-blue.svg)](LICENSE)
 [![Docs License](https://img.shields.io/badge/docs-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
