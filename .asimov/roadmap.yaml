@@ -4,9 +4,9 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "10.4.0"
+  version: "10.4.1"
   status: released
-  summary: "Credibility & Transparency - citations, derivations, limitations, sim code"
+  summary: "Freshness protocol enforcement - MUST use ref, NEVER WebSearch/WebFetch"
 
 next:
   - version: "10.5.0"

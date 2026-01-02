@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.4.1] - 2026-01-02
+
+### Changed
+
+- **Freshness protocol enforcement** - Changed from "Prefer ref over WebSearch/WebFetch" to "MUST use ref, NEVER use WebSearch/WebFetch". Explains WHY: 403/999 bot protection blocks WebSearch/WebFetch, ref uses headless Chrome and works.
+
+---
+
 ## [10.4.0] - 2026-01-01
 
 ### Added
