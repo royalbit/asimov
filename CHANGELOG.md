@@ -5,6 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.10.0] - 2026-01-03
+
+### Changed
+
+- **ADR-062: Migrations as template** - Removed migrations protocol from core, now embedded in API templates with database-specific guidance (SQLx, GORM, Alembic, TypeORM, Flyway)
+- **ADR-063: Clean project templates** - Removed `deliverables_template` and `references` sections from all 21 templates
+- **ADR-064: Professional sprint protocol** - Removed ALL CAPS compaction reminder, professional calm language
+- Protocol count: 8 → 7
+
+---
+
+## [10.7.0] - 2026-01-03
+
+### Added
+
+- **ADR-061: AI Profiles** - Auto-detect AI CLI (Claude, Gemini, Codex), prompt if multiple found
+- Multi-AI launcher support with automatic detection
+
+### Changed
+
+- Updated help text with supported AI CLIs
+- AI-agnostic descriptions throughout
+
+---
+
+## [10.6.0] - 2026-01-03
+
+### Changed
+
+- **ADR-060: AI-Agnostic Warmup** - Stop creating `.claude/` directory, warmup outputs all context directly
+- Removed Claude-specific hooks from init
+- Simplified WarmupEntry struct (removed misleading load array)
+
+---
+
+## [10.5.0] - 2026-01-03
+
+### Removed
+
+- **ADR-059: Delete kingship protocol** - Removed sci-fi protocol (not actionable, unprofessional)
+- Protocol count: 9 → 8
+
+---
+
 ## [10.4.1] - 2026-01-02
 
 ### Changed

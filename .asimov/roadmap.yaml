@@ -4,13 +4,11 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "10.10.0"
-  status: released
-  summary: "Clean release: migrations as template, cleaner templates, professional sprint"
+  version: "11.0.0"
+  status: in_progress
+  summary: "Documentation audit: professional language, keep Asimov name and robot laws as ethics inspiration"
 
 next:
-  - version: "11.0.0"
-    summary: "Documentation audit: remove/archive all sci-fi references (use agents)"
 
 backlog:
   - "ADR-058 Documentation Standards: All claims require primary sources"

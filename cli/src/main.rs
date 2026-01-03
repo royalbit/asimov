@@ -17,7 +17,7 @@ use output::{
 #[derive(Parser)]
 #[command(name = "asimov")]
 #[command(about = "RoyalBit Asimov CLI - AI development with protocol enforcement")]
-#[command(long_about = "RoyalBit Asimov CLI v10.10.0
+#[command(long_about = "RoyalBit Asimov CLI v11.0.0
 Copyright (c) 2025 RoyalBit Inc.
 Licensed under Elastic License 2.0 (ELv2).
 
