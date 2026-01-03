@@ -5,9 +5,10 @@
 use colored::Colorize;
 use royalbit_asimov::commands::{
     check_launch_conditions, run_doctor, run_init, run_lint_docs, run_refresh_with_options,
-    run_replay, run_role, run_stats, run_update, run_validate, run_warmup, LaunchResult,
-    RefreshOptions, RoleError, RoleResult, UpdateResult,
+    run_replay, run_role, run_stats, run_update, run_validate, run_warmup, AiProfile,
+    LaunchResult, RefreshOptions, RoleError, RoleResult, UpdateResult,
 };
+use std::io::{self, Write};
 use std::process::ExitCode;
 
 // ============================================================================
@@ -15,28 +16,74 @@ use std::process::ExitCode;
 // These are CLI output formatters, tested via e2e tests (ADR-039)
 // ============================================================================
 
+/// Prompt user to select an AI CLI when multiple are available
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn prompt_ai_selection(profiles: &[AiProfile]) -> Option<AiProfile> {
+    println!("{}", "Multiple AI CLIs detected:".bold().yellow());
+    println!();
+    for (i, profile) in profiles.iter().enumerate() {
+        println!("  {}. {} ({})", i + 1, profile.name, profile.binary);
+    }
+    println!();
+    print!("Select AI to launch [1-{}]: ", profiles.len());
+    io::stdout().flush().ok()?;
+
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).ok()?;
+    let choice: usize = input.trim().parse().ok()?;
+
+    if choice >= 1 && choice <= profiles.len() {
+        Some(profiles[choice - 1].clone())
+    } else {
+        None
+    }
+}
+
+/// Launch an AI CLI with warmup command
+#[cfg_attr(feature = "coverage", coverage(off))]
+fn launch_ai(profile: &AiProfile) -> ExitCode {
+    println!(
+        "{}",
+        format!("Launching {}...", profile.name).bright_cyan()
+    );
+    // Execute AI CLI with auto-mode args + warmup
+    let mut cmd = std::process::Command::new(profile.binary);
+    cmd.args(profile.auto_mode_args);
+    cmd.arg("run asimov warmup");
+
+    match cmd.status() {
+        Ok(s) if s.success() => ExitCode::SUCCESS,
+        _ => ExitCode::FAILURE,
+    }
+}
+
 #[cfg_attr(feature = "coverage", coverage(off))]
 pub(crate) fn cmd_launch() -> ExitCode {
     match check_launch_conditions() {
-        LaunchResult::InsideClaude => {
-            // Inside Claude - run warmup
+        LaunchResult::InsideAi(name) => {
+            // Inside an AI session - run warmup directly
+            if std::env::var("ASIMOV_DEBUG").is_ok() {
+                eprintln!("{} Inside {} session", "Debug:".dimmed(), name);
+            }
             cmd_warmup(std::path::Path::new("."), false)
         }
-        LaunchResult::ClaudeNotFound => {
-            eprintln!("{} Claude Code not found in PATH", "Error:".bold().red());
-            eprintln!("  Install: https://claude.ai/download");
+        LaunchResult::NoAiFound => {
+            eprintln!("{} No AI CLI found in PATH", "Error:".bold().red());
+            eprintln!();
+            eprintln!("Install one of:");
+            eprintln!("  Claude Code: https://claude.ai/download");
+            eprintln!("  Gemini CLI:  https://cloud.google.com/gemini-cli");
+            eprintln!("  Codex CLI:   https://github.com/openai/codex");
             ExitCode::FAILURE
         }
-        LaunchResult::Launching => {
-            println!("{}", "Launching Claude Code...".bright_cyan());
-            // Execute claude with warmup
-            let status = std::process::Command::new("claude")
-                .args(["--dangerously-skip-permissions", "--model", "opus"])
-                .arg("run asimov warmup")
-                .status();
-            match status {
-                Ok(s) if s.success() => ExitCode::SUCCESS,
-                _ => ExitCode::FAILURE,
+        LaunchResult::Launching(profile) => launch_ai(&profile),
+        LaunchResult::MultipleFound(profiles) => {
+            match prompt_ai_selection(&profiles) {
+                Some(profile) => launch_ai(&profile),
+                None => {
+                    eprintln!("{} Invalid selection", "Error:".bold().red());
+                    ExitCode::FAILURE
+                }
             }
         }
     }
@@ -922,7 +969,7 @@ mod tests {
         // Can't fully test launch but exercise the path
         let result = check_launch_conditions();
         std::env::remove_var("CLAUDECODE");
-        assert!(matches!(result, LaunchResult::InsideClaude));
+        assert!(matches!(result, LaunchResult::InsideAi(_)));
     }
 
     #[test]
@@ -1083,10 +1130,13 @@ mod tests {
     fn test_cmd_launch_conditions() {
         // Just exercise the code path - result depends on system state
         let result = check_launch_conditions();
-        // Accept any variant as valid (depends on if claude installed and env vars)
+        // Accept any variant as valid (depends on if AI CLIs installed and env vars)
         assert!(matches!(
             result,
-            LaunchResult::ClaudeNotFound | LaunchResult::Launching | LaunchResult::InsideClaude
+            LaunchResult::NoAiFound
+                | LaunchResult::Launching(_)
+                | LaunchResult::InsideAi(_)
+                | LaunchResult::MultipleFound(_)
         ));
     }
 

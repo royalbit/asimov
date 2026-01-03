@@ -17,17 +17,22 @@ use output::{
 #[derive(Parser)]
 #[command(name = "asimov")]
 #[command(about = "RoyalBit Asimov CLI - AI development with protocol enforcement")]
-#[command(long_about = "RoyalBit Asimov CLI v10.0.0
+#[command(long_about = "RoyalBit Asimov CLI v10.7.0
 Copyright (c) 2025 RoyalBit Inc.
 Licensed under Elastic License 2.0 (ELv2).
 
-LAUNCHER MODE:
-  asimov                             # From terminal: launches Claude Code + auto-warmup
-  asimov                             # Inside Claude: runs warmup directly
+LAUNCHER MODE (AI-agnostic, v10.7.0 ADR-061):
+  asimov                             # Auto-detect AI CLI, launch + warmup
+  asimov                             # Inside AI session: runs warmup directly
+
+SUPPORTED AI CLIs:
+  - Claude Code (claude)             # https://claude.ai/download
+  - Gemini CLI (gemini)              # https://cloud.google.com/gemini-cli
+  - Codex CLI (codex)                # https://github.com/openai/codex
 
 EXAMPLES:
-  asimov                             # Start session (launcher mode)
-  asimov warmup                      # Manual warmup (inside Claude Code)
+  asimov                             # Start session (auto-detect AI)
+  asimov warmup                      # Manual warmup (inside AI session)
   asimov role                        # List available roles
   asimov role eng                    # Switch to Principal Engineer role
   asimov validate                    # Validate roadmap.yaml
