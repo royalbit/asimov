@@ -8,7 +8,7 @@ use royalbit_asimov::commands::{
     run_replay, run_role, run_stats, run_update, run_validate, run_warmup, AiProfile, LaunchResult,
     RefreshOptions, RoleError, RoleResult, UpdateResult,
 };
-use std::io::{self, Write};
+use std::io::{self, Write as _};
 use std::process::ExitCode;
 
 // ============================================================================
@@ -97,13 +97,16 @@ fn launch_ai(profile: &AiProfile) -> ExitCode {
         "wip": wip
     });
 
-    // Pipe warmup context directly to AI CLI via stdin
+    // Pass warmup as prompt argument (not stdin - breaks terminal raw mode)
+    let prompt = warmup_json.to_string();
+
     let mut cmd = std::process::Command::new(profile.binary);
     cmd.args(profile.auto_mode_args);
-    cmd.stdin(std::process::Stdio::piped());
+    cmd.arg(&prompt); // Pass as positional prompt argument
 
-    let mut child = match cmd.spawn() {
-        Ok(c) => c,
+    match cmd.status() {
+        Ok(s) if s.success() => ExitCode::SUCCESS,
+        Ok(_) => ExitCode::FAILURE,
         Err(e) => {
             eprintln!(
                 "{} Failed to start {}: {}",
@@ -111,18 +114,8 @@ fn launch_ai(profile: &AiProfile) -> ExitCode {
                 profile.name,
                 e
             );
-            return ExitCode::FAILURE;
+            ExitCode::FAILURE
         }
-    };
-
-    // Write warmup JSON to stdin
-    if let Some(mut stdin) = child.stdin.take() {
-        let _ = writeln!(stdin, "{}", warmup_json);
-    }
-
-    match child.wait() {
-        Ok(s) if s.success() => ExitCode::SUCCESS,
-        _ => ExitCode::FAILURE,
     }
 }
 
