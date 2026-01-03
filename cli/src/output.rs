@@ -39,16 +39,88 @@ fn prompt_ai_selection(profiles: &[AiProfile]) -> Option<AiProfile> {
     }
 }
 
-/// Launch an AI CLI with warmup command
+/// Launch an AI CLI with warmup context piped directly (v11.0.1)
 #[cfg_attr(feature = "coverage", coverage(off))]
 fn launch_ai(profile: &AiProfile) -> ExitCode {
     println!("{}", format!("Launching {}...", profile.name).bright_cyan());
-    // Execute AI CLI with auto-mode args + warmup
+
+    // Get warmup content directly (don't make AI run a command)
+    let warmup_result = run_warmup(std::path::Path::new("."), false);
+    if warmup_result.error.is_some() {
+        eprintln!(
+            "{} Failed to generate warmup context",
+            "Error:".bold().red()
+        );
+        return ExitCode::FAILURE;
+    }
+
+    // Build the warmup JSON (same as cmd_warmup non-verbose output)
+    let protocols: serde_json::Value = warmup_result
+        .protocols_json
+        .as_ref()
+        .and_then(|s| serde_json::from_str(s).ok())
+        .unwrap_or(serde_json::json!({}));
+
+    let project_json: serde_json::Value = warmup_result
+        .project_yaml
+        .as_ref()
+        .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
+        .unwrap_or(serde_json::json!({}));
+
+    let roadmap_json: serde_json::Value = warmup_result
+        .roadmap_yaml
+        .as_ref()
+        .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
+        .unwrap_or(serde_json::json!({}));
+
+    let wip = if warmup_result.wip_active {
+        serde_json::json!({
+            "active": true,
+            "item": warmup_result.wip_item,
+            "progress": warmup_result.wip_progress,
+            "milestone": warmup_result.next_milestone,
+            "rule": "RESUME IMMEDIATELY. User consent given at milestone start."
+        })
+    } else {
+        serde_json::json!({
+            "active": false,
+            "next_milestone": warmup_result.next_milestone,
+            "next_summary": warmup_result.next_summary
+        })
+    };
+
+    let warmup_json = serde_json::json!({
+        "version": warmup_result.current_version,
+        "protocols": protocols,
+        "project": project_json,
+        "roadmap": roadmap_json,
+        "wip": wip
+    });
+
+    // Pipe warmup context directly to AI CLI via stdin
     let mut cmd = std::process::Command::new(profile.binary);
     cmd.args(profile.auto_mode_args);
-    cmd.arg("run asimov warmup");
+    cmd.stdin(std::process::Stdio::piped());
 
-    match cmd.status() {
+    let mut child = match cmd.spawn() {
+        Ok(c) => c,
+        Err(e) => {
+            eprintln!(
+                "{} Failed to start {}: {}",
+                "Error:".bold().red(),
+                profile.name,
+                e
+            );
+            return ExitCode::FAILURE;
+        }
+    };
+
+    // Write warmup JSON to stdin
+    if let Some(mut stdin) = child.stdin.take() {
+        let _ = writeln!(stdin, "{}", warmup_json);
+    }
+
+    match child.wait() {
         Ok(s) if s.success() => ExitCode::SUCCESS,
         _ => ExitCode::FAILURE,
     }
