@@ -343,7 +343,7 @@ Good:
 - "Use Result<T, ForgeError> for all fallible functions"
 - "Never use unwrap() in library code"
 
-### 2. Context is King
+### 2. Context Matters
 
 Bad: "Write tests"
 

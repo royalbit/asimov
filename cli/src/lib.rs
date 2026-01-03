@@ -116,7 +116,7 @@ pub use update::{check_for_update, perform_update, VersionCheck, CURRENT_VERSION
 // v8.14.0: Added individual protocol JSON exports
 // v9.2.3: Added conditional migrations support
 // v9.14.0: Merged exhaustive into sprint (ADR-049)
-// v9.18.0: Added Kingship Protocol (Life Honours Life)
+// v9.18.0: Protocol layer refactoring
 // v10.8.0: Migrations removed (ADR-062) - now part of API templates
 pub use protocols::{
     // v8.14.0: Individual protocol JSON files

@@ -5,7 +5,7 @@ pub const SYCOPHANCY_SCHEMA: &str = r#"{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/royalbit/asimov/schemas/sycophancy.json",
   "title": "RoyalBit Asimov - sycophancy.yaml",
-  "description": "Anti-sycophancy protocol - truth over comfort, always",
+  "description": "Anti-sycophancy protocol - honest feedback over agreement",
   "type": "object",
   "properties": {
     "modification_rules": {

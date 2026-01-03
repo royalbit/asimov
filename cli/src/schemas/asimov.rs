@@ -1,10 +1,10 @@
-//! JSON Schema for asimov.yaml validation (The Three Laws)
+//! JSON Schema for asimov.yaml validation
 
 pub const ASIMOV_SCHEMA: &str = r#"{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/royalbit/asimov/schemas/asimov.json",
   "title": "RoyalBit Asimov - asimov.yaml",
-  "description": "The Three Laws of Robotics - The Open Foundation for AI Ethics",
+  "description": "AI safety and ethics configuration",
   "type": "object",
   "properties": {
     "modification_rules": {

@@ -18,7 +18,7 @@ pub fn warmup_template(project_name: &str, project_type: ProjectType) -> String 
 
 fn warmup_generic(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -33,9 +33,7 @@ mission:
     - "Principle one"
     - "Principle two"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 # See: asimov.yaml for full configuration (ADR-031)
 ethics:
   status: "REQUIRED"
@@ -47,11 +45,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -60,9 +56,9 @@ green_coding:
     - "Prefer compiled languages or efficient runtimes"
     - "Minimize dependencies and binary sizes"
   why:
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
 
 files:
   source:
@@ -99,7 +95,7 @@ style:
 
 fn warmup_rust(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -114,9 +110,7 @@ mission:
     - "Principle one"
     - "Principle two"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 # See: asimov.yaml for full configuration (ADR-031)
 ethics:
   status: "REQUIRED"
@@ -128,11 +122,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -142,9 +134,9 @@ green_coding:
     - "Enable LTO and strip symbols in release profile"
   why:
     - "Rust: Zero runtime, minimal memory footprint"
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
   release_profile: |
     [profile.release]
     opt-level = 3
@@ -195,7 +187,7 @@ style:
 
 fn warmup_python(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -210,9 +202,7 @@ mission:
     - "Principle one"
     - "Principle two"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 ethics:
   status: "REQUIRED"
   principles:
@@ -223,11 +213,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -236,9 +224,9 @@ green_coding:
     - "Use uv or pip-tools for fast, reproducible installs"
     - "Prefer pyproject.toml over setup.py"
   why:
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
 
 files:
   source:
@@ -288,7 +276,7 @@ style:
 
 fn warmup_node(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -303,9 +291,7 @@ mission:
     - "Principle one"
     - "Principle two"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 ethics:
   status: "REQUIRED"
   principles:
@@ -316,11 +302,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -329,9 +313,9 @@ green_coding:
     - "Use pnpm for efficient package management"
     - "Tree-shake and bundle for smaller builds"
   why:
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
 
 files:
   source:
@@ -380,7 +364,7 @@ style:
 
 fn warmup_go(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -395,9 +379,7 @@ mission:
     - "Principle one"
     - "Principle two"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 ethics:
   status: "REQUIRED"
   principles:
@@ -408,11 +390,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -422,9 +402,9 @@ green_coding:
     - "UPX compress release binaries (70%+ smaller)"
   why:
     - "Go: Fast compilation, small binaries, no runtime"
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
 
 files:
   source:
@@ -475,7 +455,7 @@ style:
 
 fn warmup_flutter(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -490,9 +470,7 @@ mission:
     - "Principle one"
     - "Principle two"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 ethics:
   status: "REQUIRED"
   principles:
@@ -503,11 +481,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -517,9 +493,9 @@ green_coding:
     - "Use const constructors where possible"
   why:
     - "Flutter: Single codebase, native performance"
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
 
 files:
   source:
@@ -567,7 +543,7 @@ style:
 
 fn warmup_docs(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -582,9 +558,7 @@ mission:
     - "Documentation as code"
     - "Diagrams as code"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 ethics:
   status: "REQUIRED"
   principles:
@@ -595,11 +569,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -608,9 +580,9 @@ green_coding:
     - "Generate diagrams with Mermaid (text-based)"
     - "Keep docs in git for version control"
   why:
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
 
 files:
   docs:
@@ -652,7 +624,7 @@ style:
 
 fn warmup_arch(project_name: &str) -> String {
     format!(
-        r#"# RoyalBit Asimov - Session Bootstrap
+        r#"# Asimov - Session Bootstrap
 # https://github.com/royalbit/asimov
 
 identity:
@@ -668,9 +640,7 @@ mission:
     - "Diagrams as code"
     - "Decision records for traceability"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ETHICS - Humanist Mode (HIGHEST PRIORITY)
-# ═══════════════════════════════════════════════════════════════════════════════
+# ETHICS
 ethics:
   status: "REQUIRED"
   principles:
@@ -681,11 +651,9 @@ ethics:
       deception: true
     transparency_over_velocity: true
   human_veto: "human vetoes this session"
-  motto: "Build tools that help. Never tools that harm."
+  motto: "Safe, helpful AI assistance."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GREEN CODING - Zero tokens. Zero emissions.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY
 green_coding:
   philosophy: "Local-first tools over cloud AI for routine tasks"
   practices:
@@ -694,9 +662,9 @@ green_coding:
     - "Generate diagrams with Mermaid/PlantUML (text-based)"
     - "Keep architecture in git for version control"
   why:
-    - "Local validation: $0 and ~0.002g CO₂"
-    - "Cloud AI validation: $0.02+ and ~0.5g CO₂"
-    - "99.6% carbon reduction with local tools"
+    - "Local validation: $0 and ~0.002g CO2"
+    - "Cloud AI validation: $0.02+ and ~0.5g CO2"
+    - "Significant cost and resource reduction with local tools"
 
 files:
   architecture:

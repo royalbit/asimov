@@ -5,7 +5,7 @@ pub const FRESHNESS_SCHEMA: &str = r#"{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/royalbit/asimov/schemas/freshness.json",
   "title": "RoyalBit Asimov - freshness.yaml",
-  "description": "Date-aware search protocol - stale data is not hallucination",
+  "description": "Date-aware search protocol for current information",
   "type": "object",
   "properties": {
     "modification_rules": {

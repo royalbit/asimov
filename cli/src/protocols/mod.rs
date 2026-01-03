@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 // Single source of truth: JSON files in cli/protocols/ are embedded at compile time.
 // Runtime: External files in .asimov/protocols/ take priority if they exist.
 
-/// Asimov protocol - Three Laws (Priority 0)
+/// Asimov protocol - Harm prevention inspired by Asimov's Three Laws (Priority 0)
 const ASIMOV_JSON: &str = include_str!("../../protocols/asimov.json");
 
 /// Freshness protocol - Date-aware search (Priority 1)
@@ -63,6 +63,9 @@ pub struct CompiledProtocols {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AsimovProtocol {
+    /// Protocol description (v11.0.0: added for professional documentation)
+    #[serde(default)]
+    pub description: Option<String>,
     pub harm: Vec<String>,
     pub veto: Vec<String>,
 }
@@ -293,7 +296,7 @@ pub fn warmup_entry_json() -> String {
     serde_json::to_string_pretty(&entry).expect("Warmup entry serialization should never fail")
 }
 
-/// Get asimov protocol JSON (Three Laws)
+/// Get asimov protocol JSON (harm prevention)
 pub fn asimov_json() -> String {
     let protocols = compile_protocols();
     serde_json::to_string_pretty(&protocols.asimov).expect("Asimov serialization should never fail")
@@ -364,6 +367,7 @@ mod tests {
     fn test_compile_protocols() {
         let protocols = compile_protocols();
         assert_eq!(protocols.asimov.harm.len(), 4);
+        assert!(protocols.asimov.description.is_some()); // v11.0.0: Must have description
         assert!(protocols.freshness.rule.contains("ref fetch")); // v10.1.0: Use ref for fetching
         assert!(protocols.sycophancy.truth_over_comfort);
         assert!(protocols.green.rule.contains("efficiency")); // Must check efficiency
@@ -395,10 +399,12 @@ mod tests {
     fn test_embedded_json_protocols_exist() {
         // v10.1.0: Single source of truth - embedded JSON files
         // v10.8.0: Migrations removed (ADR-062) - now part of API templates
+        // v11.0.0: Professional language audit
         // These will fail at compile time if JSON files don't exist
         assert!(ASIMOV_JSON.contains("harm"));
+        assert!(ASIMOV_JSON.contains("description")); // v11.0.0: Must have description
         assert!(FRESHNESS_JSON.contains("ref fetch")); // v10.1.0: Use ref for fetching
-        assert!(SYCOPHANCY_JSON.contains("truth"));
+        assert!(SYCOPHANCY_JSON.contains("accuracy")); // v11.0.0: Professional language
         assert!(GREEN_JSON.contains("efficiency")); // Must check efficiency
         assert!(SPRINT_JSON.contains("autonomous"));
         assert!(SPRINT_JSON.contains("compaction")); // v9.14.0: Compaction reminder merged from exhaustive
@@ -411,14 +417,16 @@ mod tests {
     fn test_get_protocol_functions() {
         // v10.1.0: Test all get_*_protocol functions (now return embedded JSON)
         // v10.8.0: Migrations removed (ADR-062) - now part of API templates
+        // v11.0.0: Professional language audit
         let asimov = get_asimov_protocol();
         assert!(asimov.contains("harm"));
+        assert!(asimov.contains("description")); // v11.0.0: Must have description
 
         let freshness = get_freshness_protocol();
         assert!(freshness.contains("ref fetch")); // v10.1.0: Use ref for fetching
 
         let sycophancy = get_sycophancy_protocol();
-        assert!(sycophancy.contains("truth"));
+        assert!(sycophancy.contains("accuracy")); // v11.0.0: Professional language
 
         let green = get_green_protocol();
         assert!(green.contains("efficiency")); // Must check efficiency

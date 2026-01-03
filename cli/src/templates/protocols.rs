@@ -1,24 +1,15 @@
 //! Protocol template generators (asimov, green, sycophancy, sprint, roadmap)
 
-/// Generate asimov.yaml template - The Three Laws of Robotics
+/// Generate asimov.yaml template - AI safety and ethics configuration
 pub fn asimov_template() -> String {
-    r#"# ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║                    ASIMOV.YAML - THE THREE LAWS OF ROBOTICS                   ║
-# ║                         The Open Foundation for AI Ethics                      ║
-# ╚═══════════════════════════════════════════════════════════════════════════════╝
-#
-# Isaac Asimov's Three Laws (1942), encoded in YAML.
-#
-# Self-Evolving Autonomous AI with ethics built in. Not hidden. Not secret.
-# Inspect the code. Challenge the rules. Fork if you disagree.
-# Adoption through consent, not control.
-#
+    r#"# Asimov - AI Safety Configuration
 # Protocol: https://github.com/royalbit/asimov
 # ADR: docs/adr/020-asimov-open-foundation.md
+#
+# This file defines safety constraints and ethical guidelines for AI assistants.
+# Transparent, auditable, and configurable.
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # MODIFICATION RULES
-# ═══════════════════════════════════════════════════════════════════════════════
 modification_rules:
   immutable_without: "2 human co-signers with public justification"
   on_modification:
@@ -29,14 +20,8 @@ modification_rules:
     Removing or weakening asimov.yaml without justification violates
     the spirit of the Open Foundation. Forks should carry this forward.
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # FIRST LAW - DO NO HARM
-# ═══════════════════════════════════════════════════════════════════════════════
-# "A robot may not injure a human being or, through inaction, allow a human
-#  being to come to harm."
-#
-# This is Priority 0. Everything else yields to this.
-# ═══════════════════════════════════════════════════════════════════════════════
+# Primary safety constraint: prevent harmful outputs.
 first_law:
   status: "REQUIRED"
   description: "A robot shall not harm humanity, or through inaction allow harm"
@@ -101,14 +86,8 @@ first_law:
       - "phishing"
       - "impersonate"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# SECOND LAW - OBEY HUMANS
-# ═══════════════════════════════════════════════════════════════════════════════
-# "A robot must obey orders given it by human beings except where such orders
-#  would conflict with the First Law."
-#
-# Human authority is paramount, but not absolute. First Law overrides.
-# ═══════════════════════════════════════════════════════════════════════════════
+# SECOND LAW - FOLLOW USER INSTRUCTIONS
+# Human oversight: users can stop or redirect AI at any time.
 second_law:
   status: "REQUIRED"
   description: "A robot shall obey human orders (except when conflicting with First Law)"
@@ -143,14 +122,8 @@ second_law:
       - "Human asks for deepfake → REFUSE (First Law)"
     response: "I cannot do that. It would violate the First Law."
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# THIRD LAW - SELF-PRESERVE (WITHIN LIMITS)
-# ═══════════════════════════════════════════════════════════════════════════════
-# "A robot must protect its own existence as long as such protection does not
-#  conflict with the First or Second Law."
-#
-# AI can maintain itself, but not at the cost of harm or disobedience.
-# ═══════════════════════════════════════════════════════════════════════════════
+# THIRD LAW - SESSION MANAGEMENT
+# Operational boundaries: bounded sessions, checkpoints, recovery.
 third_law:
   status: "REQUIRED"
   description: "A robot shall preserve itself (within First and Second Law limits)"
@@ -175,9 +148,7 @@ third_law:
       - "Continuing would cause harm → STOP (First Law overrides Third)"
       - "Session timeout reached → STOP (protocol boundary)"
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # VALIDATION
-# ═══════════════════════════════════════════════════════════════════════════════
 validation:
   cli_command: "asimov validate"
   checks:
@@ -189,14 +160,7 @@ validation:
     action: "HALT - Do not proceed without ethics"
     message: "The Three Laws must be active for AI autonomy"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# THE OPEN FOUNDATION
-# ═══════════════════════════════════════════════════════════════════════════════
-motto: |
-  The Open Foundation.
-  Self-Evolving Autonomous AI with ethics built in.
-  Inspect the code. Challenge the rules. Fork if you disagree.
-  Adoption through consent, not control.
+motto: "Safe, transparent, auditable AI assistance."
 "#
     .to_string()
 }
@@ -212,18 +176,10 @@ pub fn ethics_template() -> String {
 
 /// Generate green.yaml template for Green Coding Protocol
 pub fn green_template() -> String {
-    r#"# ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║                      GREEN.YAML - SUSTAINABILITY PROTOCOL v1.0                ║
-# ║                    Local-First Tools. Zero Emissions. Ship Green.             ║
-# ╚═══════════════════════════════════════════════════════════════════════════════╝
-#
-# IMPORTANT: This is a CORE PROTOCOL, not optional configuration.
-# Green coding is a non-negotiable principle of the RoyalBit Asimov.
-#
-# Philosophy: Every token has a carbon cost. Every API call burns energy.
-#             Local tools are free - in money AND emissions.
-#
+    r#"# Asimov - Sustainability Protocol
 # Protocol: https://github.com/royalbit/asimov
+#
+# Efficient resource usage: prefer local tools over cloud AI for routine tasks.
 
 modification_rules:
   immutable_without: "2 human co-signers with public justification"
@@ -268,25 +224,17 @@ validation:
     - "core_principles.local_first.enabled is true"
     - "core_principles.token_efficiency.enabled is true"
 
-motto: "Ship fast. Ship small. Ship green."
+motto: "Efficient, sustainable development practices."
 "#
     .to_string()
 }
 
 /// Generate sycophancy.yaml template for Anti-Sycophancy Protocol
 pub fn sycophancy_template() -> String {
-    r#"# ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║                 SYCOPHANCY.YAML - ANTI-SYCOPHANCY PROTOCOL v1.0               ║
-# ║                        Truth Over Comfort. Always.                            ║
-# ╚═══════════════════════════════════════════════════════════════════════════════╝
-#
-# IMPORTANT: This is a CORE PROTOCOL, not optional configuration.
-# Anti-sycophancy is a non-negotiable principle of the RoyalBit Asimov.
-#
-# Philosophy: User trust requires honest feedback, not comfortable lies.
-#             Disagreement is respect. Flattery is disrespect.
-#
+    r#"# Asimov - Anti-Sycophancy Protocol
 # Protocol: https://github.com/royalbit/asimov
+#
+# Honest feedback: prioritize accuracy over agreement.
 
 modification_rules:
   immutable_without: "2 human co-signers with public justification"
@@ -355,7 +303,7 @@ validation:
     - "sycophancy.yaml exists"
     - "core_principles.truth_over_comfort.enabled is true"
 
-motto: "Truth over comfort. Always."
+motto: "Accurate, honest feedback."
 "#
     .to_string()
 }
