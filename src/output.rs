@@ -39,12 +39,12 @@ fn prompt_ai_selection(profiles: &[AiProfile]) -> Option<AiProfile> {
     }
 }
 
-/// Launch an AI CLI with warmup context piped directly (v11.0.1)
+/// Launch an AI CLI with minimal warmup context (v12.2.0)
 #[cfg_attr(feature = "coverage", coverage(off))]
 fn launch_ai(profile: &AiProfile) -> ExitCode {
     println!("{}", format!("Launching {}...", profile.name).bright_cyan());
 
-    // Get warmup content directly (don't make AI run a command)
+    // Get warmup content directly
     let warmup_result = run_warmup(std::path::Path::new("."), false);
     if warmup_result.error.is_some() {
         eprintln!(
@@ -54,55 +54,35 @@ fn launch_ai(profile: &AiProfile) -> ExitCode {
         return ExitCode::FAILURE;
     }
 
-    // Build the warmup JSON (v12.1.0: bootstrap approach)
+    // Build minimal warmup JSON (v12.2.0)
     let warmup: serde_json::Value = warmup_result
         .warmup_protocol
         .as_ref()
         .map(|w| serde_json::to_value(w).unwrap_or(serde_json::json!({})))
         .unwrap_or(serde_json::json!({}));
 
-    let project_json: serde_json::Value = warmup_result
-        .project_yaml
-        .as_ref()
-        .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
-        .unwrap_or(serde_json::json!({}));
-
-    let roadmap_json: serde_json::Value = warmup_result
-        .roadmap_yaml
-        .as_ref()
-        .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
-        .unwrap_or(serde_json::json!({}));
-
-    let wip = if warmup_result.wip_active {
-        serde_json::json!({
-            "active": true,
-            "item": warmup_result.wip_item,
-            "progress": warmup_result.wip_progress,
-            "milestone": warmup_result.next_milestone,
-            "rule": "RESUME IMMEDIATELY. User consent given at milestone start."
+    let tools: Vec<serde_json::Value> = warmup_result
+        .tools_available
+        .iter()
+        .map(|t| {
+            serde_json::json!({
+                "name": t.name,
+                "directive": t.directive
+            })
         })
-    } else {
-        serde_json::json!({
-            "active": false,
-            "next_milestone": warmup_result.next_milestone,
-            "next_summary": warmup_result.next_summary
-        })
-    };
+        .collect();
 
-    let warmup_json = serde_json::json!({
-        "version": warmup_result.current_version,
+    let output = serde_json::json!({
         "warmup": warmup,
-        "project": project_json,
-        "roadmap": roadmap_json,
-        "wip": wip
+        "tools": tools
     });
 
     // Pass warmup as prompt argument (not stdin - breaks terminal raw mode)
-    let prompt = warmup_json.to_string();
+    let prompt = output.to_string();
 
     let mut cmd = std::process::Command::new(profile.binary);
     cmd.args(profile.auto_mode_args);
-    cmd.arg(&prompt); // Pass as positional prompt argument
+    cmd.arg(&prompt);
 
     match cmd.status() {
         Ok(s) if s.success() => ExitCode::SUCCESS,
@@ -202,9 +182,10 @@ pub(crate) fn format_update_result(result: UpdateResult) -> ExitCode {
     }
 }
 
+/// v12.2.0: Minimal warmup output - just warmup protocol + tools
 #[cfg_attr(feature = "coverage", coverage(off))]
 pub(crate) fn cmd_warmup(path: &std::path::Path, verbose: bool) -> ExitCode {
-    let result = run_warmup(path, verbose);
+    let result = run_warmup(path, false);
 
     if let Some(ref err) = result.error {
         eprintln!("{} {}", "Error:".bold().red(), err);
@@ -217,195 +198,37 @@ pub(crate) fn cmd_warmup(path: &std::path::Path, verbose: bool) -> ExitCode {
         return ExitCode::FAILURE;
     }
 
-    // v12.1.0: Bootstrap approach - output warmup protocol only
-    // AI reads warmup.load_order and loads protocols sequentially
-    if !verbose {
-        // Serialize warmup protocol to JSON Value
-        let warmup: serde_json::Value = result
-            .warmup_protocol
-            .as_ref()
-            .map(|w| serde_json::to_value(w).unwrap_or(serde_json::json!({})))
-            .unwrap_or(serde_json::json!({}));
+    // Serialize warmup protocol
+    let warmup: serde_json::Value = result
+        .warmup_protocol
+        .as_ref()
+        .map(|w| serde_json::to_value(w).unwrap_or(serde_json::json!({})))
+        .unwrap_or(serde_json::json!({}));
 
-        // Convert YAML values to JSON values
-        let project_json: serde_json::Value = result
-            .project_yaml
-            .as_ref()
-            .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
-            .unwrap_or(serde_json::json!({}));
-
-        let roadmap_json: serde_json::Value = result
-            .roadmap_yaml
-            .as_ref()
-            .map(|y| serde_json::to_value(y).unwrap_or(serde_json::json!({})))
-            .unwrap_or(serde_json::json!({}));
-
-        // Build WIP section
-        let wip = if result.wip_active {
+    // Build tools section
+    let tools: Vec<serde_json::Value> = result
+        .tools_available
+        .iter()
+        .map(|t| {
             serde_json::json!({
-                "active": true,
-                "item": result.wip_item,
-                "progress": result.wip_progress,
-                "milestone": result.next_milestone,
-                "rule": "RESUME IMMEDIATELY. User consent given at milestone start."
+                "name": t.name,
+                "directive": t.directive
             })
-        } else {
-            serde_json::json!({
-                "active": false,
-                "next_milestone": result.next_milestone,
-                "next_summary": result.next_summary
-            })
-        };
+        })
+        .collect();
 
-        // Build tools section (v9.17.0)
-        let tools: Vec<serde_json::Value> = result
-            .tools_available
-            .iter()
-            .map(|t| {
-                serde_json::json!({
-                    "name": t.name,
-                    "path": t.path,
-                    "version": t.version,
-                    "directive": t.directive
-                })
-            })
-            .collect();
+    // Minimal output: just warmup + tools
+    let output = serde_json::json!({
+        "warmup": warmup,
+        "tools": tools
+    });
 
-        // Output bootstrap JSON - warmup protocol tells AI which files to load
-        let output = serde_json::json!({
-            "version": result.current_version,
-            "warmup": warmup,
-            "project": project_json,
-            "roadmap": roadmap_json,
-            "wip": wip,
-            "tools": tools
-        });
-
+    if verbose {
+        // Pretty print for human readability
+        println!("{}", serde_json::to_string_pretty(&output).unwrap());
+    } else {
+        // Compact for AI consumption
         println!("{}", output);
-        return ExitCode::SUCCESS;
-    }
-
-    // Verbose mode: human-readable output for terminal use
-    println!();
-    println!(
-        "{}",
-        "══════════════════════════════════════════════════════════════════════════════"
-            .bright_cyan()
-    );
-    println!(
-        "{}",
-        "🔥 ROYALBIT ASIMOV - SESSION WARMUP".bold().bright_cyan()
-    );
-    println!(
-        "{}",
-        "══════════════════════════════════════════════════════════════════════════════"
-            .bright_cyan()
-    );
-    println!();
-
-    if let Some(ref update_ver) = result.update_available {
-        println!(
-            "{}  Update available: {} (run: {})",
-            "⚠️".yellow(),
-            update_ver.bright_green(),
-            "asimov update".bold()
-        );
-        println!();
-    }
-
-    // Display milestone info
-    if let (Some(ref ver), Some(ref summary), Some(ref status)) = (
-        &result.current_version,
-        &result.current_summary,
-        &result.current_status,
-    ) {
-        println!("{}", "CURRENT VERSION".bold());
-        println!("  v{} - {}", ver.bright_blue(), summary);
-        println!("  Status: {}", status);
-        println!();
-    }
-
-    if let Some(ref warmup) = result.warmup_protocol {
-        println!("{}", "WARMUP PROTOCOL".bold());
-        println!("  Load order: {} protocols", warmup.load_order.len());
-        for p in &warmup.load_order {
-            println!("    - {}", p.bright_cyan());
-        }
-        println!();
-    }
-
-    // v9.17.0: Show detected tools
-    if !result.tools_available.is_empty() {
-        println!("{}", "TOOLS AVAILABLE".bold());
-        for tool in &result.tools_available {
-            print!("  {} {}", tool.name.bright_green(), tool.path.dimmed());
-            if let Some(ref ver) = tool.version {
-                print!(" ({})", ver);
-            }
-            println!();
-            println!("    {}", tool.directive.bright_cyan());
-        }
-        println!();
-    }
-
-    if let Some(ref project) = result.project_yaml {
-        println!("{}", "PROJECT".bold());
-        if let Some(name) = &result.project_name {
-            println!("  Name: {}", name.bright_green());
-        }
-        if let Some(tagline) = &result.project_tagline {
-            println!("  Tagline: {}", tagline);
-        }
-        println!("  Type: {:?}", result.project_type);
-        // Show coding standards if present
-        if let Some(standards) = project.get("coding_standards") {
-            if let Some(seq) = standards.as_sequence() {
-                println!("  Coding standards: {} rules", seq.len());
-            }
-        }
-        println!();
-    }
-
-    // WIP Continuity (ADR-047)
-    if result.wip_active {
-        println!("{}", "═".repeat(78).bright_yellow());
-        println!(
-            "{}",
-            "🔥 ACTIVE WIP - RESUME THIS TASK".bold().bright_yellow()
-        );
-        println!("{}", "═".repeat(78).bright_yellow());
-        if let Some(ref item) = result.wip_item {
-            println!("  Current: {}", item.bright_green().bold());
-        }
-        if let Some(ref progress) = result.wip_progress {
-            println!("  Progress: {} items complete", progress);
-        }
-        println!();
-        println!(
-            "  {}",
-            ">>> CONTINUE WORKING - USER CONSENT ALREADY GIVEN <<<".bright_yellow()
-        );
-        println!();
-    } else if result.next_milestone.is_some() {
-        // Show ready-to-start message
-        println!("{}", "NEXT MILESTONE".bold());
-        if let Some(ref ver) = result.next_milestone {
-            print!("  v{}", ver.bright_blue());
-        }
-        if let Some(ref summary) = result.next_summary {
-            println!(" - {}", summary);
-        } else {
-            println!();
-        }
-        if let Some(ref progress) = result.wip_progress {
-            println!("  Progress: {} items complete", progress);
-        }
-        println!();
-        println!(
-            "  {}",
-            "Say \"go\" to start autonomous execution.".bright_cyan()
-        );
-        println!();
     }
 
     ExitCode::SUCCESS
@@ -1204,12 +1027,9 @@ mod tests {
     }
 
     #[test]
-    fn test_cmd_warmup_error_path() {
+    fn test_cmd_warmup_error_no_asimov() {
         let temp = TempDir::new().unwrap();
-        let asimov_dir = temp.path().join(".asimov");
-        std::fs::create_dir_all(&asimov_dir).unwrap();
-        // Invalid YAML to trigger error
-        std::fs::write(asimov_dir.join("roadmap.yaml"), "invalid: [[[").unwrap();
+        // No .asimov directory - should fail
         let result = cmd_warmup(temp.path(), false);
         assert_eq!(result, ExitCode::FAILURE);
     }

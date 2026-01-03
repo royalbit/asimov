@@ -1,10 +1,8 @@
 {
-  "on_start": [
-    "read_project",
-    "read_roadmap",
-    "load_protocols"
-  ],
-  "load_order": [
+  "on_start": ["load_files"],
+  "files": [
+    ".asimov/project.yaml",
+    ".asimov/roadmap.yaml",
     ".asimov/freshness.json",
     ".asimov/asimov.json",
     ".asimov/sycophancy.json",
@@ -12,5 +10,5 @@
     ".asimov/green.json",
     ".asimov/sprint.json"
   ],
-  "note": "Load protocols in order above. Each builds on previous context."
+  "note": "Read files in order. Project/roadmap first, then protocols."
 }

@@ -98,19 +98,19 @@ pub struct SprintProtocol {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WarmupProtocol {
     pub on_start: Vec<String>,
-    /// Protocol files to load in order (v12.1.0: bootstrap approach)
+    /// Files to load in order (v12.2.0: minimal warmup)
     #[serde(default)]
-    pub load_order: Vec<String>,
+    pub files: Vec<String>,
     /// Human-readable note
     #[serde(default)]
     pub note: Option<String>,
 }
 
-/// Warmup entry point - v12.1.0: bootstrap approach
+/// Warmup entry point - v12.2.0: minimal warmup
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WarmupEntry {
     pub on_start: Vec<String>,
-    pub load_order: Vec<String>,
+    pub files: Vec<String>,
     pub note: String,
 }
 
@@ -291,15 +291,13 @@ pub fn to_yaml() -> String {
 
 // ========== Individual Protocol JSON Output (v8.14.0) ==========
 
-/// Get warmup entry point JSON - v12.1.0: bootstrap approach
+/// Get warmup entry point JSON - v12.2.0: minimal warmup
 pub fn warmup_entry_json() -> String {
     let entry = WarmupEntry {
-        on_start: vec![
-            "read_project".into(),
-            "read_roadmap".into(),
-            "load_protocols".into(),
-        ],
-        load_order: vec![
+        on_start: vec!["load_files".into()],
+        files: vec![
+            ".asimov/project.yaml".into(),
+            ".asimov/roadmap.yaml".into(),
             ".asimov/freshness.json".into(),
             ".asimov/asimov.json".into(),
             ".asimov/sycophancy.json".into(),
@@ -307,7 +305,7 @@ pub fn warmup_entry_json() -> String {
             ".asimov/green.json".into(),
             ".asimov/sprint.json".into(),
         ],
-        note: "Load protocols in order above. Each builds on previous context.".into(),
+        note: "Read files in order. Project/roadmap first, then protocols.".into(),
     };
     serde_json::to_string_pretty(&entry).expect("Warmup entry serialization should never fail")
 }
@@ -424,8 +422,8 @@ mod tests {
         assert!(GREEN_JSON.contains("efficiency")); // Must check efficiency
         assert!(SPRINT_JSON.contains("autonomous"));
         assert!(SPRINT_JSON.contains("compaction")); // v9.14.0: Compaction reminder merged from exhaustive
-        assert!(WARMUP_JSON.contains("load_order")); // v12.1.0: Bootstrap approach
-                                                     // v10.8.0: MIGRATIONS_JSON removed (ADR-062)
+        assert!(WARMUP_JSON.contains("files")); // v12.2.0: Minimal warmup
+                                                // v10.8.0: MIGRATIONS_JSON removed (ADR-062)
         assert!(CODING_STANDARDS_JSON.contains("Human-readable"));
     }
 
@@ -522,11 +520,11 @@ mod tests {
     }
 
     #[test]
-    fn test_load_warmup_protocol_has_load_order() {
+    fn test_load_warmup_protocol_has_files() {
         let warmup = load_warmup_protocol();
         assert!(
-            !warmup.load_order.is_empty(),
-            "load_order should not be empty: {:?}",
+            !warmup.files.is_empty(),
+            "files should not be empty: {:?}",
             warmup
         );
     }

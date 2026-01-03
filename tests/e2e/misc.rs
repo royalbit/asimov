@@ -265,13 +265,10 @@ fn e2e_warmup_runs_from_project_dir() {
         output.status.success(),
         "Warmup should succeed when run from project dir, stdout: {stdout}, stderr: {stderr}"
     );
+    // v12.2.0: Warmup now outputs JSON with warmup protocol + tools
     assert!(
-        stdout.contains("ROYALBIT ASIMOV"),
-        "Should show warmup banner"
-    );
-    assert!(
-        stdout.contains("PROTOCOLS"),
-        "Should show protocols section"
+        stdout.contains("warmup") && stdout.contains("files"),
+        "Should show warmup protocol with files. stdout: {stdout}"
     );
 }
 
