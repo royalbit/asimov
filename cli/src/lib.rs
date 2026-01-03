@@ -72,10 +72,7 @@ pub use sycophancy::{
 #[allow(deprecated)]
 pub use templates::{
     asimov_template,
-    // v8.0.0: Hardcoded hook templates
-    claude_pre_compact_hook,
-    claude_session_start_hook,
-    claude_settings_json,
+    // v10.6.0: Removed claude_* hooks (ADR-060)
     // v8.1.0: Project type detection (ADR-032)
     detect_project_type,
     ethics_template,
@@ -129,7 +126,6 @@ pub use protocols::{
     freshness_json,
     green_json,
     inject_dates,
-    kingship_json,
     migrations_json,
     sprint_json,
     sycophancy_json,
@@ -138,7 +134,6 @@ pub use protocols::{
     to_pretty_json,
     warmup_entry_json,
     CompiledProtocols,
-    KingshipProtocol,
     WarmupEntry,
     PROTOCOL_FILES,
 };

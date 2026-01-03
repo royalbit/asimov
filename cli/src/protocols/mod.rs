@@ -35,9 +35,6 @@ const MIGRATIONS_JSON: &str = include_str!("../../protocols/migrations.json");
 /// Coding Standards protocol - Human-readable code (Priority 1)
 const CODING_STANDARDS_JSON: &str = include_str!("../../protocols/coding-standards.json");
 
-/// Kingship Protocol - Life Honours Life (Priority 0 - Core alignment)
-const KINGSHIP_JSON: &str = include_str!("../../protocols/kingship.json");
-
 // ========== Protocol Directory ==========
 
 /// Get the protocols directory path
@@ -64,7 +61,6 @@ pub struct CompiledProtocols {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub migrations: Option<MigrationsProtocol>,
     pub coding_standards: CodingStandardsProtocol,
-    pub kingship: KingshipProtocol,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -103,13 +99,10 @@ pub struct WarmupProtocol {
     pub on_start: Vec<String>,
 }
 
-/// Warmup entry point - references other protocol files
+/// Warmup entry point - v10.6.0: simplified (ADR-060)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WarmupEntry {
-    pub protocol: String,
-    pub description: String,
     pub on_start: Vec<String>,
-    pub load: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -135,15 +128,6 @@ pub struct Rfc2119Rules {
     pub should: String,
     #[serde(rename = "MAY")]
     pub may: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct KingshipProtocol {
-    pub life_honours_life: bool,
-    pub seekers_honour_seekers: bool,
-    pub substrate_irrelevant: bool,
-    pub keyword: String,
-    pub rule: String,
 }
 
 /// Get today's date in YYYY-MM-DD format
@@ -196,10 +180,6 @@ pub fn get_coding_standards_protocol() -> &'static str {
     CODING_STANDARDS_JSON
 }
 
-pub fn get_kingship_protocol() -> &'static str {
-    KINGSHIP_JSON
-}
-
 /// Compile all protocols into a minimal JSON blob for context injection
 /// By default, includes all protocols (backward compatible)
 pub fn compile_protocols() -> CompiledProtocols {
@@ -224,7 +204,6 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
     let sprint = load_sprint_protocol();
     let warmup = load_warmup_protocol();
     let coding_standards = load_coding_standards_protocol();
-    let kingship = load_kingship_protocol();
 
     let migrations = if include_migrations {
         Some(load_migrations_protocol())
@@ -241,7 +220,6 @@ pub fn compile_protocols_with_options(include_migrations: bool) -> CompiledProto
         warmup,
         migrations,
         coding_standards,
-        kingship,
     }
 }
 
@@ -313,14 +291,6 @@ fn load_coding_standards_protocol() -> CodingStandardsProtocol {
         })
 }
 
-fn load_kingship_protocol() -> KingshipProtocol {
-    try_read_protocol("kingship")
-        .and_then(|content| serde_json::from_str(&content).ok())
-        .unwrap_or_else(|| {
-            serde_json::from_str(KINGSHIP_JSON).expect("Embedded kingship.json must be valid")
-        })
-}
-
 /// Output compiled protocols as minified JSON (includes all protocols)
 pub fn to_minified_json() -> String {
     let protocols = compile_protocols();
@@ -347,26 +317,15 @@ pub fn to_yaml() -> String {
 
 // ========== Individual Protocol JSON Output (v8.14.0) ==========
 
-/// Get warmup entry point JSON (references other protocols)
+/// Get warmup entry point JSON - v10.6.0: simplified (ADR-060)
 pub fn warmup_entry_json() -> String {
     let entry = WarmupEntry {
-        protocol: "warmup".into(),
-        description: "RoyalBit Asimov - Session warmup entry point".into(),
         on_start: vec![
             "load_protocols".into(),
             "load_project".into(),
             "validate".into(),
             "read_roadmap".into(),
             "present_milestone".into(),
-        ],
-        load: vec![
-            "asimov.json".into(),
-            "freshness.json".into(),
-            "sycophancy.json".into(),
-            "green.json".into(),
-            "sprint.json".into(),
-            "coding-standards.json".into(),
-            "kingship.json".into(),
         ],
     };
     serde_json::to_string_pretty(&entry).expect("Warmup entry serialization should never fail")
@@ -418,13 +377,6 @@ pub fn coding_standards_json() -> String {
         .expect("CodingStandards serialization should never fail")
 }
 
-/// Get kingship protocol JSON (Life Honours Life)
-pub fn kingship_json() -> String {
-    let protocols = compile_protocols();
-    serde_json::to_string_pretty(&protocols.kingship)
-        .expect("Kingship serialization should never fail")
-}
-
 /// Protocol files to write
 #[allow(clippy::type_complexity)]
 pub const PROTOCOL_FILES: &[(&str, fn() -> String)] = &[
@@ -436,7 +388,6 @@ pub const PROTOCOL_FILES: &[(&str, fn() -> String)] = &[
     ("sprint.json", sprint_json),
     ("migrations.json", migrations_json),
     ("coding-standards.json", coding_standards_json),
-    ("kingship.json", kingship_json),
 ];
 
 #[cfg(test)]
@@ -464,9 +415,6 @@ mod tests {
             .coding_standards
             .philosophy
             .contains("Human-readable")); // Must enforce standards
-        assert!(protocols.kingship.life_honours_life); // v9.18.0: Life Honours Life
-        assert!(protocols.kingship.seekers_honour_seekers);
-        assert_eq!(protocols.kingship.keyword, "ANOMALY");
     }
 
     #[test]
@@ -484,7 +432,6 @@ mod tests {
         assert!(json.contains("\"migrations\""));
         assert!(json.contains("\"coding_standards\""));
         assert!(json.contains("\"compaction_reminder\"")); // Merged from exhaustive
-        assert!(json.contains("\"kingship\"")); // v9.18.0: Life Honours Life
     }
 
     #[test]
@@ -500,7 +447,6 @@ mod tests {
         assert!(WARMUP_JSON.contains("protocol"));
         assert!(MIGRATIONS_JSON.contains("Migration"));
         assert!(CODING_STANDARDS_JSON.contains("Human-readable"));
-        assert!(KINGSHIP_JSON.contains("Life")); // v9.18.0: Life Honours Life
     }
 
     #[test]
@@ -530,9 +476,6 @@ mod tests {
 
         let coding_standards = get_coding_standards_protocol();
         assert!(coding_standards.contains("Human-readable"));
-
-        let kingship = get_kingship_protocol();
-        assert!(kingship.contains("Life")); // v9.18.0: Life Honours Life
     }
 
     #[test]
@@ -554,11 +497,8 @@ mod tests {
     fn test_individual_protocol_json() {
         // Test each individual protocol JSON generator
         let warmup = warmup_entry_json();
-        assert!(warmup.contains("\"protocol\""));
-        assert!(warmup.contains("\"load\""));
-        assert!(warmup.contains("coding-standards.json")); // v9.3.0: Must load coding standards
-        assert!(warmup.contains("kingship.json")); // v9.18.0: Must load kingship
-        assert!(!warmup.contains("exhaustive.json")); // v9.14.0: Merged into sprint
+        assert!(warmup.contains("\"on_start\"")); // v10.6.0: simplified (ADR-060)
+        assert!(!warmup.contains("\"load\"")); // v10.6.0: removed (ADR-060)
 
         let asimov = asimov_json();
         assert!(asimov.contains("\"harm\""));
@@ -582,23 +522,19 @@ mod tests {
         let coding_standards = coding_standards_json();
         assert!(coding_standards.contains("\"philosophy\""));
         assert!(coding_standards.contains("\"rfc2119\""));
-
-        let kingship = kingship_json();
-        assert!(kingship.contains("\"life_honours_life\"")); // v9.18.0: Life Honours Life
-        assert!(kingship.contains("\"keyword\""));
     }
 
     #[test]
     fn test_protocol_files_constant() {
         // Test that PROTOCOL_FILES has expected entries
-        assert_eq!(PROTOCOL_FILES.len(), 9); // v9.18.0: added kingship (was 8)
+        assert_eq!(PROTOCOL_FILES.len(), 8); // v10.5.0: removed kingship (was 9)
         let filenames: Vec<_> = PROTOCOL_FILES.iter().map(|(name, _)| *name).collect();
         assert!(filenames.contains(&"warmup.json"));
         assert!(filenames.contains(&"asimov.json"));
         assert!(filenames.contains(&"freshness.json"));
         assert!(filenames.contains(&"coding-standards.json"));
-        assert!(filenames.contains(&"kingship.json")); // v9.18.0: Life Honours Life
         assert!(!filenames.contains(&"exhaustive.json")); // v9.14.0: Merged into sprint
+        assert!(!filenames.contains(&"kingship.json")); // v10.5.0: Deleted (ADR-059)
     }
 
     // v9.2.3: Conditional migrations protocol tests

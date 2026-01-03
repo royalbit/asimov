@@ -2,8 +2,8 @@
 //! v9.7.0: Add dev dependencies for coding standards tools (ADR-044)
 
 use crate::{
-    claude_pre_compact_hook, claude_session_start_hook, claude_settings_json, get_template_by_name,
-    git_precommit_hook, protocols::PROTOCOL_FILES, roadmap_template, ProjectType,
+    get_template_by_name, git_precommit_hook, protocols::PROTOCOL_FILES, roadmap_template,
+    ProjectType,
 };
 use std::path::Path;
 
@@ -161,51 +161,9 @@ pub fn run_init(dir: &Path, name: &str, type_str: &str, force: bool) -> InitResu
         result.files_created.push(".gitignore".to_string());
     }
 
-    // Install Claude hooks
-    let claude_dir = dir.join(".claude");
-    let hooks_dir = claude_dir.join("hooks");
-    let _ = std::fs::create_dir_all(&hooks_dir);
-
-    let settings_path = claude_dir.join("settings.json");
-    if !settings_path.exists() || force {
-        if let Err(e) = std::fs::write(&settings_path, claude_settings_json()) {
-            result.error = Some(format!("Failed to write settings.json: {}", e));
-            return result;
-        }
-        result.hooks_installed.push("settings.json".to_string());
-    }
-
-    let session_start_path = hooks_dir.join("session-start.sh");
-    if !session_start_path.exists() || force {
-        if let Err(e) = std::fs::write(&session_start_path, claude_session_start_hook()) {
-            result.error = Some(format!("Failed to write session-start.sh: {}", e));
-            return result;
-        }
-        #[cfg(unix)]
-        {
-            use std::os::unix::fs::PermissionsExt;
-            let _ = std::fs::set_permissions(
-                &session_start_path,
-                std::fs::Permissions::from_mode(0o755),
-            );
-        }
-        result.hooks_installed.push("session-start.sh".to_string());
-    }
-
-    let pre_compact_path = hooks_dir.join("pre-compact.sh");
-    if !pre_compact_path.exists() || force {
-        if let Err(e) = std::fs::write(&pre_compact_path, claude_pre_compact_hook()) {
-            result.error = Some(format!("Failed to write pre-compact.sh: {}", e));
-            return result;
-        }
-        #[cfg(unix)]
-        {
-            use std::os::unix::fs::PermissionsExt;
-            let _ =
-                std::fs::set_permissions(&pre_compact_path, std::fs::Permissions::from_mode(0o755));
-        }
-        result.hooks_installed.push("pre-compact.sh".to_string());
-    }
+    // v10.6.0: Removed .claude/ directory creation (ADR-060)
+    // Users who want Claude-specific hooks can create them manually
+    // asimov warmup outputs all context directly - no hooks needed
 
     // Install git pre-commit hook if in git repo
     let git_hooks_dir = dir.join(".git").join("hooks");

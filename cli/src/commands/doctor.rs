@@ -132,71 +132,10 @@ pub fn run_doctor(dir: &Path) -> DoctorResult {
         }
     }
 
-    // Check 3: Claude hooks
-    let claude_dir = dir.join(".claude");
-    let settings_path = claude_dir.join("settings.json");
-    let hooks_dir = claude_dir.join("hooks");
-    let session_start = hooks_dir.join("session-start.sh");
-    let pre_compact = hooks_dir.join("pre-compact.sh");
+    // v10.6.0: Removed .claude/ checks (ADR-060)
+    // asimov warmup outputs all context directly - no Claude-specific hooks needed
 
-    if !settings_path.exists() {
-        result.checks.push(DoctorCheck {
-            name: ".claude/settings.json".to_string(),
-            passed: false,
-            message: "missing".to_string(),
-            auto_fixed: false,
-        });
-        result
-            .issues
-            .push("Claude Code hooks not configured - run 'asimov init'".to_string());
-    } else {
-        result.checks.push(DoctorCheck {
-            name: ".claude/settings.json".to_string(),
-            passed: true,
-            message: "exists".to_string(),
-            auto_fixed: false,
-        });
-    }
-
-    if !session_start.exists() {
-        result.checks.push(DoctorCheck {
-            name: ".claude/hooks/session-start.sh".to_string(),
-            passed: false,
-            message: "missing".to_string(),
-            auto_fixed: false,
-        });
-        result
-            .issues
-            .push("Session start hook missing - run 'asimov init'".to_string());
-    } else {
-        result.checks.push(DoctorCheck {
-            name: ".claude/hooks/session-start.sh".to_string(),
-            passed: true,
-            message: "exists".to_string(),
-            auto_fixed: false,
-        });
-    }
-
-    if !pre_compact.exists() {
-        result.checks.push(DoctorCheck {
-            name: ".claude/hooks/pre-compact.sh".to_string(),
-            passed: false,
-            message: "missing".to_string(),
-            auto_fixed: false,
-        });
-        result
-            .issues
-            .push("Pre-compact hook missing - run 'asimov init'".to_string());
-    } else {
-        result.checks.push(DoctorCheck {
-            name: ".claude/hooks/pre-compact.sh".to_string(),
-            passed: true,
-            message: "exists".to_string(),
-            auto_fixed: false,
-        });
-    }
-
-    // Check 4: Git
+    // Check 3: Git
     let git_dir = dir.join(".git");
     if !git_dir.exists() {
         result.warnings.push("Not a git repository".to_string());

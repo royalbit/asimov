@@ -134,17 +134,8 @@ fn e2e_init_output_creates_files_in_target() {
         "project.yaml should be in target/.asimov/"
     );
 
-    // Claude hooks should be in target directory
-    let claude_dir = temp_dir.path().join(".claude");
-    assert!(claude_dir.exists(), ".claude/ should be in target");
-    assert!(
-        claude_dir.join("settings.json").exists(),
-        "settings.json should be in target/.claude/"
-    );
-    assert!(
-        claude_dir.join("hooks").join("session-start.sh").exists(),
-        "session-start.sh should be in target/.claude/hooks/"
-    );
+    // v10.6.0: .claude/ no longer created (ADR-060)
+    // asimov warmup outputs all context directly - no Claude-specific hooks needed
 
     // .gitignore should be in target directory
     let gitignore = temp_dir.path().join(".gitignore");

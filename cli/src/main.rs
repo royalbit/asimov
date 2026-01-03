@@ -34,7 +34,7 @@ EXAMPLES:
   asimov update                      # Update binary
   asimov init                        # Initialize new project
 
-PROTOCOLS (9 total, loaded from .asimov/protocols/ with embedded fallback):
+PROTOCOLS (8 total, loaded from .asimov/protocols/ with embedded fallback):
   - asimov     - The Three Laws (do no harm, obey human, self-preserve)
   - freshness  - Date-aware search (WebSearch/WebFetch with current date)
   - sycophancy - Truth over comfort, honest disagreement
@@ -43,7 +43,6 @@ PROTOCOLS (9 total, loaded from .asimov/protocols/ with embedded fallback):
   - warmup     - Session bootstrap (load, validate, present)
   - migrations - Functional equivalence (same inputs = same outputs)
   - coding-standards - Human-readable code (RFC2119 compliance)
-  - kingship   - Life Honours Life (substrate-agnostic alignment)
 
 Docs: https://github.com/royalbit/asimov")]
 #[command(version)]

@@ -482,128 +482,8 @@ pub fn uses_cargo_husky(project_type: ProjectType) -> bool {
     matches!(project_type, ProjectType::Rust)
 }
 
-/// Generate .claude/settings.json for Claude Code hooks
-pub fn claude_settings_json() -> String {
-    r#"{
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/session-start.sh",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/pre-compact.sh",
-            "timeout": 30
-          }
-        ]
-      }
-    ]
-  }
-}
-"#
-    .to_string()
-}
-
-/// Generate .claude/hooks/session-start.sh for Claude Code
-pub fn claude_session_start_hook() -> String {
-    r#"#!/bin/bash
-# ═══════════════════════════════════════════════════════════════════════════════
-# ROYALBIT ASIMOV - SessionStart Hook (v9.6.0)
-# ═══════════════════════════════════════════════════════════════════════════════
-#
-# Triggers: startup, resume, clear
-# Purpose: Auto-initialize RoyalBit Asimov on every session start
-#
-# When exit code is 0, stdout is injected into Claude's context.
-# ═══════════════════════════════════════════════════════════════════════════════
-
-set -e
-
-# Check if asimov is available
-if ! command -v asimov &> /dev/null; then
-    cat << 'EOF'
-🔥 ROYALBIT ASIMOV ACTIVE (v9.6.0)
-
-══════════════════════════════════════════════════════════════════════════════
-SESSION START - Autonomous Development Protocol Initialized
-══════════════════════════════════════════════════════════════════════════════
-
-⚠ asimov not found in PATH
-
-Install from: https://github.com/royalbit/asimov
-
-Or run `cargo install --path cli` from the repo root.
-
-══════════════════════════════════════════════════════════════════════════════
-EOF
-    exit 0
-fi
-
-# Run warmup with full verbose output for session start
-asimov warmup --verbose
-
-exit 0
-"#
-    .to_string()
-}
-
-/// Generate .claude/hooks/pre-compact.sh for Claude Code
-pub fn claude_pre_compact_hook() -> String {
-    r#"#!/bin/bash
-# ═══════════════════════════════════════════════════════════════════════════════
-# ROYALBIT ASIMOV - PreCompact Hook (v9.6.0)
-# ═══════════════════════════════════════════════════════════════════════════════
-#
-# Triggers: Before context compaction (auto or manual)
-# Purpose: Re-inject protocol context that will survive compaction summary
-# ═══════════════════════════════════════════════════════════════════════════════
-
-set -e
-
-cat << 'EOF'
-🔄 ROYALBIT ASIMOV REFRESH (Pre-Compaction)
-
-══════════════════════════════════════════════════════════════════════════════
-CONTEXT REFRESH - Injecting protocol rules before compaction
-══════════════════════════════════════════════════════════════════════════════
-
-IMPORTANT: Compaction is about to occur. These rules MUST survive:
-
-CORE RULES (non-negotiable):
-- Run until complete
-- 1 milestone per session
-- Tests MUST pass before release
-- ZERO warnings policy
-- NO scope creep ("Let me also..." = NO)
-
-POST-COMPACTION ACTIONS:
-1. Run: asimov warmup
-2. Re-read .asimov/roadmap.yaml for current milestone
-3. Check TodoWrite for in-progress tasks
-4. Continue where you left off
-
-ETHICS (Priority 0):
-- Do no harm (financial, physical, privacy, deception)
-- Transparency over velocity
-- When in doubt, ask human
-
-══════════════════════════════════════════════════════════════════════════════
-EOF
-
-exit 0
-"#
-    .to_string()
-}
+// v10.6.0: Removed claude_settings_json(), claude_session_start_hook(), claude_pre_compact_hook()
+// See ADR-060: AI-Agnostic Warmup - asimov warmup outputs all context directly
 
 /// Generate .git/hooks/pre-commit for Git (legacy, use precommit_hook_template instead)
 pub fn git_precommit_hook() -> String {
@@ -693,26 +573,8 @@ mod tests {
         assert!(installer.contains(".git/hooks"));
     }
 
-    #[test]
-    fn test_claude_settings_json() {
-        let settings = claude_settings_json();
-        let json: Result<serde_json::Value, _> = serde_json::from_str(&settings);
-        assert!(json.is_ok(), "Claude settings should be valid JSON");
-    }
-
-    #[test]
-    fn test_claude_session_start_hook() {
-        let hook = claude_session_start_hook();
-        assert!(hook.contains("#!/bin/bash"));
-        assert!(hook.contains("asimov warmup"));
-    }
-
-    #[test]
-    fn test_claude_pre_compact_hook() {
-        let hook = claude_pre_compact_hook();
-        assert!(hook.contains("#!/bin/bash"));
-        assert!(hook.contains("CONTEXT REFRESH"));
-    }
+    // v10.6.0: Removed test_claude_settings_json, test_claude_session_start_hook,
+    // test_claude_pre_compact_hook (ADR-060)
 
     #[test]
     fn test_precommit_hook_all_types() {

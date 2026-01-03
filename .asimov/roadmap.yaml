@@ -4,14 +4,23 @@
 # See: CHANGELOG.md for release history
 
 current:
-  version: "10.4.1"
+  version: "10.6.0"
   status: released
-  summary: "Freshness protocol enforcement - MUST use ref, NEVER WebSearch/WebFetch"
+  summary: "ADR-060: AI-Agnostic Warmup - stop creating .claude/, warmup outputs all context"
 
 next:
-  - version: "10.5.0"
-    summary: "ADR-058 Documentation Standards: All claims require primary sources - transparency as moat"
+  - version: "10.7.0"
+    summary: "ADR-061: AI Profiles - auto-detect AI CLI, prompt if multiple"
+  - version: "10.8.0"
+    summary: "Convert migrations protocol to project template"
+  - version: "10.9.0"
+    summary: "Remove deliverables_template and references from project templates"
+  - version: "10.10.0"
+    summary: "Tone down sprint.json (remove ALL CAPS compaction reminder)"
+  - version: "11.0.0"
+    summary: "Documentation audit: remove/archive all sci-fi references (use agents)"
 
 backlog:
-  - "Session Controller: spawn() instead of exec() to supervise Claude Code, watch for compaction signals, auto-inject warmup before context loss - true self-healing"
+  - "ADR-058 Documentation Standards: All claims require primary sources"
+  - "Session Controller: spawn() to supervise AI CLI, auto-inject warmup"
   - "ADR-034 auto-inheritance: Support ~inherit~ marker in roadmap deliverables"
